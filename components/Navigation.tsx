@@ -27,7 +27,6 @@ export default class Navigation extends React.Component {
   };
 
   render() {
-    const { children } = this.props;
     const { open } = this.state;
     return (
       <div>
@@ -47,7 +46,6 @@ export default class Navigation extends React.Component {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <div style={{ height: "calc(100vh - 50px)" }}>{children}</div>
       </div>
     );
   }

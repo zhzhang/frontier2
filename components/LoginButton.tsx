@@ -7,9 +7,9 @@ const LoginButton = () => {
   console.log(user);
   console.log(isAuthenticated);
   console.log(isLoading);
-  if (isLoading) {
-    return null;
-  }
+  // if (isLoading) {
+  //   return null;
+  // }
   if (!isAuthenticated) {
     return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
   }
