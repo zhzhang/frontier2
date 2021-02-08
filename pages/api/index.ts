@@ -1,5 +1,5 @@
-import { ApolloServer } from 'apollo-server-micro'
-import { GraphQLDate } from 'graphql-iso-date'
+import { ApolloServer } from "apollo-server-micro";
+import { GraphQLDate } from "graphql-iso-date";
 import {
   asNexusMethod,
   makeSchema,
@@ -7,84 +7,84 @@ import {
   nullable,
   objectType,
   stringArg,
-} from 'nexus'
-import path from 'path'
-import prisma from '../../lib/prisma'
+} from "nexus";
+import path from "path";
+import prisma from "../../lib/prisma";
 
-export const GQLDate = asNexusMethod(GraphQLDate, 'date')
+export const GQLDate = asNexusMethod(GraphQLDate, "date");
 
 const User = objectType({
-  name: 'User',
+  name: "User",
   definition(t) {
-    t.int('id')
-    t.string('name')
-    t.string('email')
-    t.list.field('posts', {
-      type: 'Post',
+    t.int("id");
+    t.string("name");
+    t.string("email");
+    t.list.field("posts", {
+      type: "Post",
       resolve: (parent) =>
         prisma.user
           .findUnique({
             where: { id: Number(parent.id) },
           })
           .posts(),
-    })
+    });
   },
-})
+});
 
 const Post = objectType({
-  name: 'Post',
+  name: "Post",
   definition(t) {
-    t.int('id')
-    t.string('title')
-    t.nullable.string('content')
-    t.boolean('published')
-    t.nullable.field('author', {
-      type: 'User',
+    t.int("id");
+    t.string("title");
+    t.nullable.string("content");
+    t.boolean("published");
+    t.nullable.field("author", {
+      type: "User",
       resolve: (parent) =>
         prisma.post
           .findUnique({
             where: { id: Number(parent.id) },
           })
           .author(),
-    })
+    });
   },
-})
+});
 
 const Query = objectType({
-  name: 'Query',
+  name: "Query",
   definition(t) {
-    t.field('post', {
-      type: 'Post',
+    t.field("post", {
+      type: "Post",
       args: {
         postId: nonNull(stringArg()),
       },
       resolve: (_, args) => {
         return prisma.post.findUnique({
           where: { id: Number(args.postId) },
-        })
+        });
       },
-    })
+    });
 
-    t.list.field('feed', {
-      type: 'Post',
+    t.list.field("feed", {
+      type: "Post",
       resolve: (_parent, _args) => {
         return prisma.post.findMany({
           where: { published: true },
-        })
+        });
       },
-    })
+    });
 
-    t.list.field('drafts', {
-      type: 'Post',
+    t.list.field("drafts", {
+      type: "Post",
       resolve: (_parent, _args, ctx) => {
         return prisma.post.findMany({
           where: { published: false },
-        })
+        });
       },
-    })
+    });
 
-    t.list.field('filterPosts', {
-      type: 'Post',
+    t.list.field("filterPosts", {
+      type: "Post",
       args: {
         searchString: nullable(stringArg()),
       },
@@ -96,17 +96,17 @@ const Query = objectType({
               { content: { contains: searchString } },
             ],
           },
-        })
+        });
       },
-    })
+    });
   },
-})
+});
 
 const Mutation = objectType({
-  name: 'Mutation',
+  name: "Mutation",
   definition(t) {
-    t.field('signupUser', {
-      type: 'User',
+    t.field("signupUser", {
+      type: "User",
       args: {
         name: stringArg(),
         email: nonNull(stringArg()),
@@ -117,24 +117,24 @@ const Mutation = objectType({
             name,
             email,
           },
-        })
+        });
       },
-    })
+    });
 
-    t.nullable.field('deletePost', {
-      type: 'Post',
+    t.nullable.field("deletePost", {
+      type: "Post",
       args: {
         postId: stringArg(),
       },
       resolve: (_, { postId }, ctx) => {
         return prisma.post.delete({
           where: { id: Number(postId) },
-        })
+        });
       },
-    })
+    });
 
-    t.field('createDraft', {
-      type: 'Post',
+    t.field("createDraft", {
+      type: "Post",
       args: {
         title: nonNull(stringArg()),
         content: stringArg(),
@@ -150,12 +150,12 @@ const Mutation = objectType({
               connect: { email: authorEmail },
             },
           },
-        })
+        });
       },
-    })
+    });
 
-    t.nullable.field('publish', {
-      type: 'Post',
+    t.nullable.field("publish", {
+      type: "Post",
       args: {
         postId: stringArg(),
       },
@@ -163,26 +163,32 @@ const Mutation = objectType({
         return prisma.post.update({
           where: { id: Number(postId) },
           data: { published: true },
-        })
+        });
       },
-    })
+    });
   },
-})
+});
 
 export const schema = makeSchema({
   types: [Query, Mutation, Post, User, GQLDate],
   outputs: {
-    typegen: path.join(process.cwd(), 'pages/api/nexus-typegen.ts'),
-    schema: path.join(process.cwd(), 'pages/api/schema.graphql'),
+    typegen: path.join(process.cwd(), "pages/api/nexus-typegen.ts"),
+    schema: path.join(process.cwd(), "pages/api/schema.graphql"),
   },
-})
+});
 
 export const config = {
   api: {
     bodyParser: false,
   },
-}
+};
 
-export default new ApolloServer({ schema }).createHandler({
-  path: '/api',
-})
+export default new ApolloServer({
+  schema,
+  context: ({ req }) => {
+    const token = req.headers.authorization || "";
+    console.log(token);
+  },
+}).createHandler({
+  path: "/api",
+});

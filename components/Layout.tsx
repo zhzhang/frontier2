@@ -1,12 +1,14 @@
 import Navigation from "./Navigation";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { useRouter } from "next/router";
 
 const Layout = (props) => {
+  // const router = useRouter();
   return (
     <Auth0Provider
-      domain={process.env.AUTH0_DOMAIN}
-      clientId={process.env.AUTH0_CLIENT_ID}
-      redirectUri={process.env.AUTH0_REDIRECT_URL}
+      domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
+      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
+      redirectUri={process.env.NEXT_PUBLIC_REDIRECT_URL}
     >
       <Navigation />
       <div className="layout">{props.children}</div>
