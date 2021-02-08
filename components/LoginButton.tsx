@@ -4,16 +4,13 @@ import Button from "@material-ui/core/Button";
 
 const LoginButton = () => {
   const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
-  console.log(user);
-  console.log(isAuthenticated);
-  console.log(isLoading);
   // if (isLoading) {
   //   return null;
   // }
   if (!isAuthenticated) {
     return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
   }
-  return null
+  return null;
 };
 
 export default LoginButton;

@@ -2,10 +2,28 @@ import React from "react";
 import Head from "next/head";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ApolloClient } from "apollo-client";
+import { Auth0Provider } from "@auth0/auth0-react";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "@apollo/client/link/context";
+import { useAuth0 } from "@auth0/auth0-react";
 
 let apolloClient = null;
+
+export function withAuthenticatedApollo(PageComponent, { ssr = true } = {}) {
+  const WithAuthenticatedApollo = ({ ...props }) => {
+    const ApolloWrapped = withApollo(PageComponent);
+    return (
+      <Auth0Provider
+        domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
+        clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
+        redirectUri={process.env.NEXT_PUBLIC_REDIRECT_URL}
+      >
+        <ApolloWrapped {...props}></ApolloWrapped>
+      </Auth0Provider>
+    );
+  };
+  return withApollo(WithAuthenticatedApollo);
+}
 
 /**
  * Creates and provides the apolloContext
@@ -17,7 +35,9 @@ let apolloClient = null;
  */
 export function withApollo(PageComponent, { ssr = true } = {}) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
-    const client = apolloClient || initApolloClient(apolloState);
+    const { getAccessTokenSilently } = useAuth0();
+    const client =
+      apolloClient || initApolloClient(apolloState, getAccessTokenSilently);
     return (
       <ApolloProvider client={client}>
         <PageComponent {...pageProps} />
@@ -102,16 +122,16 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
  * Creates or reuses apollo client in the browser.
  * @param  {Object} initialState
  */
-function initApolloClient(initialState) {
+function initApolloClient(initialState, getAccessTokenSilently) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === "undefined") {
-    return createApolloClient(initialState);
+    return createApolloClient(initialState, getAccessTokenSilently);
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = createApolloClient(initialState);
+    apolloClient = createApolloClient(initialState, getAccessTokenSilently);
   }
 
   return apolloClient;
@@ -121,12 +141,13 @@ function initApolloClient(initialState) {
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient(initialState = {}) {
+function createApolloClient(initialState = {}, getAccessTokenSilently) {
   const ssrMode = typeof window === "undefined";
   const cache = new InMemoryCache().restore(initialState);
-  const authLink = setContext((_, { headers }) => {
+  const authLink = setContext(async (_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = localStorage.getItem("token");
+    const token = await getAccessTokenSilently();
+    console.log(token);
     // return the headers to the context so httpLink can read them
     return {
       headers: {
