@@ -3,6 +3,7 @@ import Link from "next/link";
 import { withAuthenticatedApollo } from "../apollo/client";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const FeedQuery = gql`
   query FeedQuery {
@@ -38,9 +39,12 @@ const Post = ({ post }) => (
 );
 
 const Blog = () => {
+  const auth = useAuth0();
   const { loading, error, data } = useQuery(FeedQuery);
-
-  if (loading) {
+  if (typeof window === "undefined") {
+    return <div>Loading ...</div>;
+  }
+  if (auth.isLoading || loading) {
     return <div>Loading ...</div>;
   }
   if (error) {

@@ -9,7 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 let apolloClient = null;
 
-export function withAuthenticatedApollo(PageComponent, { ssr = true } = {}) {
+export function withAuthenticatedApollo(PageComponent) {
   const WithAuthenticatedApollo = ({ ...props }) => {
     const ApolloWrapped = withApollo(PageComponent);
     return (
@@ -17,12 +17,14 @@ export function withAuthenticatedApollo(PageComponent, { ssr = true } = {}) {
         domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
         clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
         redirectUri={process.env.NEXT_PUBLIC_REDIRECT_URL}
+        useRefreshTokens={true}
+        cacheLocation={"localstorage"}
       >
         <ApolloWrapped {...props}></ApolloWrapped>
       </Auth0Provider>
     );
   };
-  return withApollo(WithAuthenticatedApollo);
+  return WithAuthenticatedApollo;
 }
 
 /**
@@ -31,13 +33,18 @@ export function withAuthenticatedApollo(PageComponent, { ssr = true } = {}) {
  * your PageComponent via HOC pattern.
  * @param {Function|Class} PageComponent
  * @param {Object} [config]
- * @param {Boolean} [config.ssr=true]
  */
-export function withApollo(PageComponent, { ssr = true } = {}) {
+export function withApollo(PageComponent) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
-    const { getAccessTokenSilently } = useAuth0();
-    const client =
-      apolloClient || initApolloClient(apolloState, getAccessTokenSilently);
+    const auth = useAuth0();
+    if (typeof window === "undefined") {
+      return <div>Loading ...</div>;
+    }
+    if (auth.isLoading) {
+      return <div>Loading ...</div>;
+    }
+    console.log(auth);
+    const client = apolloClient || initApolloClient(apolloState, auth);
     return (
       <ApolloProvider client={client}>
         <PageComponent {...pageProps} />
@@ -57,63 +64,6 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
     WithApollo.displayName = `withApollo(${displayName})`;
   }
 
-  if (ssr || PageComponent.getInitialProps) {
-    WithApollo.getInitialProps = async (ctx) => {
-      const { AppTree } = ctx;
-
-      // Initialize ApolloClient, add it to the ctx object so
-      // we can use it in `PageComponent.getInitialProp`.
-      const apolloClient = (ctx.apolloClient = initApolloClient());
-
-      // Run wrapped getInitialProps methods
-      let pageProps = {};
-      if (PageComponent.getInitialProps) {
-        pageProps = await PageComponent.getInitialProps(ctx);
-      }
-
-      // Only on the server:
-      if (typeof window === "undefined") {
-        // When redirecting, the response is finished.
-        // No point in continuing to render
-        if (ctx.res && ctx.res.finished) {
-          return pageProps;
-        }
-
-        // Only if ssr is enabled
-        if (ssr) {
-          try {
-            // Run all GraphQL queries
-            const { getDataFromTree } = await import("@apollo/react-ssr");
-            await getDataFromTree(
-              <AppTree
-                pageProps={{
-                  ...pageProps,
-                  apolloClient,
-                }}
-              />
-            );
-          } catch (error) {
-            // Prevent Apollo Client GraphQL errors from crashing SSR.
-            // Handle them in components via the data.error prop:
-            // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-            console.error("Error while running `getDataFromTree`", error);
-          }
-
-          // getDataFromTree does not call componentWillUnmount
-          // head side effect therefore need to be cleared manually
-          Head.rewind();
-        }
-      }
-
-      // Extract query data from the Apollo store
-      const apolloState = apolloClient.cache.extract();
-      return {
-        ...pageProps,
-        apolloState,
-      };
-    };
-  }
-
   return WithApollo;
 }
 
@@ -122,16 +72,16 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
  * Creates or reuses apollo client in the browser.
  * @param  {Object} initialState
  */
-function initApolloClient(initialState, getAccessTokenSilently) {
+function initApolloClient(initialState, auth) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === "undefined") {
-    return createApolloClient(initialState, getAccessTokenSilently);
+    return createApolloClient(initialState, auth);
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = createApolloClient(initialState, getAccessTokenSilently);
+    apolloClient = createApolloClient(initialState, auth);
   }
 
   return apolloClient;
@@ -141,12 +91,14 @@ function initApolloClient(initialState, getAccessTokenSilently) {
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient(initialState = {}, getAccessTokenSilently) {
-  const ssrMode = typeof window === "undefined";
+function createApolloClient(initialState = {}, auth) {
   const cache = new InMemoryCache().restore(initialState);
   const authLink = setContext(async (_, { headers }) => {
+    if (!auth.isAuthenticated) {
+      return headers;
+    }
     // get the authentication token from local storage if it exists
-    const token = await getAccessTokenSilently();
+    const token = await auth.getAccessTokenSilently();
     console.log(token);
     // return the headers to the context so httpLink can read them
     return {
@@ -158,7 +110,6 @@ function createApolloClient(initialState = {}, getAccessTokenSilently) {
   });
 
   return new ApolloClient({
-    ssrMode,
     link: authLink.concat(createIsomorphLink()),
     cache,
   });
