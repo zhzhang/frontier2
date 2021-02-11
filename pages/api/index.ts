@@ -54,49 +54,14 @@ const Post = objectType({
 const Query = objectType({
   name: "Query",
   definition(t) {
-    t.field("post", {
-      type: "Post",
+    t.field("user", {
+      type: "User",
       args: {
-        postId: nonNull(stringArg()),
+        userId: nonNull(stringArg()),
       },
       resolve: (_, args) => {
-        return prisma.post.findUnique({
-          where: { id: Number(args.postId) },
-        });
-      },
-    });
-
-    t.list.field("feed", {
-      type: "Post",
-      resolve: (_parent, _args) => {
-        return prisma.post.findMany({
-          where: { published: true },
-        });
-      },
-    });
-
-    t.list.field("drafts", {
-      type: "Post",
-      resolve: (_parent, _args, ctx) => {
-        return prisma.post.findMany({
-          where: { published: false },
-        });
-      },
-    });
-
-    t.list.field("filterPosts", {
-      type: "Post",
-      args: {
-        searchString: nullable(stringArg()),
-      },
-      resolve: (_, { searchString }, ctx) => {
-        return prisma.post.findMany({
-          where: {
-            OR: [
-              { title: { contains: searchString } },
-              { content: { contains: searchString } },
-            ],
-          },
+        return prisma.user.findUnique({
+          where: { id: args.userId },
         });
       },
     });
@@ -113,58 +78,7 @@ const Mutation = objectType({
         email: nonNull(stringArg()),
       },
       resolve: (_, { name, email }, ctx) => {
-        return prisma.user.create({
-          data: {
-            name,
-            email,
-          },
-        });
-      },
-    });
-
-    t.nullable.field("deletePost", {
-      type: "Post",
-      args: {
-        postId: stringArg(),
-      },
-      resolve: (_, { postId }, ctx) => {
-        return prisma.post.delete({
-          where: { id: Number(postId) },
-        });
-      },
-    });
-
-    t.field("createDraft", {
-      type: "Post",
-      args: {
-        title: nonNull(stringArg()),
-        content: stringArg(),
-        authorEmail: stringArg(),
-      },
-      resolve: (_, { title, content, authorEmail }, ctx) => {
-        return prisma.post.create({
-          data: {
-            title,
-            content,
-            published: false,
-            author: {
-              connect: { email: authorEmail },
-            },
-          },
-        });
-      },
-    });
-
-    t.nullable.field("publish", {
-      type: "Post",
-      args: {
-        postId: stringArg(),
-      },
-      resolve: (_, { postId }, ctx) => {
-        return prisma.post.update({
-          where: { id: Number(postId) },
-          data: { published: true },
-        });
+        return prisma.user.create({});
       },
     });
   },

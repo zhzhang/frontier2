@@ -9,31 +9,57 @@ datasource db {
 
 model User {
   email          String        @unique
-  id             Int           @id @default(autoincrement())
+  id             String        @id
   name           String?
   articles       Article[]
   Organization   Organization? @relation(fields: [organizationId], references: [id])
-  organizationId Int?
+  organizationId String?
+  Membership     Membership[]
+  Review         Review[]
 }
 
 model Article {
-  id      Int    @id
-  url     String
-  Authors User[]
+  id       String   @id @default(cuid())
+  url      String
+  abstract String
+  Authors  User[]
+  Review   Review[]
 }
 
 model Organization {
-  id          Int     @id
+  id          String       @id @default(cuid())
   name        String
   description String?
   admins      User[]
-  Venue       Venue[]
+  venues      Venue[]
+  memberships Membership[]
+}
+
+model Membership {
+  id             String       @id @default(cuid())
+  user           User         @relation(fields: [userId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  role           String
+  userId         String
+  organizationId String
 }
 
 model Venue {
-  id             Int          @id
+  id             String       @id @default(cuid())
   name           String
   description    String?
   organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId Int
+  organizationId String
+  Review         Review[]
+}
+
+model Review {
+  id        String  @id @default(cuid())
+  body      String
+  article   Article @relation(fields: [articleId], references: [id])
+  author    User    @relation(fields: [userId], references: [id])
+  venue     Venue?  @relation(fields: [venueId], references: [id])
+  articleId String
+  userId    String
+  venueId   String?
 }
