@@ -8,6 +8,7 @@ import {
   objectType,
   stringArg,
 } from "nexus";
+import jwt_decode from "jwt-decode";
 import path from "path";
 import prisma from "../../lib/prisma";
 
@@ -187,7 +188,8 @@ export default new ApolloServer({
   schema,
   context: ({ req }) => {
     const token = req.headers.authorization || "";
-    console.log(token);
+    const decoded = jwt_decode(token);
+    console.log(decoded);
   },
 }).createHandler({
   path: "/api",

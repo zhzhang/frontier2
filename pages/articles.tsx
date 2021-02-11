@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
-import { withAuthenticatedApollo } from "../apollo/client";
+import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
@@ -83,4 +83,4 @@ function Draft(props) {
   );
 }
 
-export default withAuthenticatedApollo(Draft);
+export default withApollo(Draft);

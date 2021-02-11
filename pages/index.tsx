@@ -1,9 +1,8 @@
 import Layout from "../components/Layout";
 import Link from "next/link";
-import { withAuthenticatedApollo } from "../apollo/client";
+import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { useAuth0 } from "@auth0/auth0-react";
 
 const FeedQuery = gql`
   query FeedQuery {
@@ -39,12 +38,11 @@ const Post = ({ post }) => (
 );
 
 const Blog = () => {
-  const auth = useAuth0();
   const { loading, error, data } = useQuery(FeedQuery);
   if (typeof window === "undefined") {
     return <div>Loading ...</div>;
   }
-  if (auth.isLoading || loading) {
+  if (loading) {
     return <div>Loading ...</div>;
   }
   if (error) {
@@ -81,4 +79,4 @@ const Blog = () => {
   );
 };
 
-export default withAuthenticatedApollo(Blog);
+export default withApollo(Blog);
