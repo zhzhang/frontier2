@@ -20,9 +20,10 @@ model User {
 
 model Article {
   id       String   @id @default(cuid())
-  url      String
+  title    String
   abstract String
   authors  User[]
+  url      String
   reviews  Review[]
 }
 

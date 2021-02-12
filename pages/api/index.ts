@@ -1,23 +1,29 @@
 import { ApolloServer } from "apollo-server-micro";
 import { GraphQLDate } from "graphql-iso-date";
+import { GraphQLUpload, FileUpload } from "graphql-upload";
 import {
   asNexusMethod,
   makeSchema,
   nonNull,
+  list,
   nullable,
   objectType,
+  arg,
   stringArg,
 } from "nexus";
 import jwt_decode from "jwt-decode";
 import path from "path";
 import prisma from "../../lib/prisma";
 
+export type Upload = Promise<FileUpload>;
+export const Upload = asNexusMethod(GraphQLUpload!, "upload");
+
 export const GQLDate = asNexusMethod(GraphQLDate, "date");
 
 const User = objectType({
   name: "User",
   definition(t) {
-    t.int("id");
+    t.string("id");
     t.string("name");
     t.string("email");
     t.list.field("articles", {
@@ -35,12 +41,32 @@ const User = objectType({
 const Article = objectType({
   name: "Article",
   definition(t) {
-    t.int("id");
+    t.string("id");
     t.string("url");
     t.string("abstract");
     t.list.field("authors", {
       type: "User",
       resolve: (parent) => [],
+    });
+  },
+});
+
+const Organization = objectType({
+  name: "Organization",
+  definition(t) {
+    t.string("id");
+    t.string("name");
+    t.string("description");
+    t.list.field("admins", {
+      type: "User",
+      resolve: (parent) => {
+        prisma.membership.findMany({
+          where: {
+            role: "ADMIN",
+            organization: parent,
+          },
+        });
+      },
     });
   },
 });
@@ -59,7 +85,7 @@ const Query = objectType({
         });
       },
     });
-    t.field("articles", {
+    t.list.field("articles", {
       type: "Article",
       args: {},
       resolve: (_, args, ctx) => {
@@ -75,21 +101,25 @@ const Query = objectType({
 const Mutation = objectType({
   name: "Mutation",
   definition(t) {
-    t.field("signupUser", {
-      type: "User",
+    t.field("createArticle", {
+      type: "Article",
       args: {
-        name: stringArg(),
-        email: nonNull(stringArg()),
+        abstract: nonNull(stringArg()),
+        authorIds: nonNull(list(nonNull(stringArg()))),
+        fileData: nonNull(arg({ type: "Upload" })),
       },
-      resolve: (_, { name, email }, ctx) => {
-        return prisma.user.create({});
+      resolve: (_, { abstract, authorIds, fileData }, ctx) => {
+        console.log(abstract);
+        console.log(authorIds);
+        console.log(fileData);
+        return null;
       },
     });
   },
 });
 
 export const schema = makeSchema({
-  types: [Query, Mutation, User, Article, GQLDate],
+  types: [Query, Mutation, User, Article, GQLDate, Upload],
   outputs: {
     typegen: path.join(process.cwd(), "pages/api/nexus-typegen.ts"),
     schema: path.join(process.cwd(), "pages/api/schema.graphql"),

@@ -5,7 +5,7 @@
 type Article {
   abstract: String
   authors: [User]
-  id: Int
+  id: String
   url: String
 }
 
@@ -15,17 +15,20 @@ A date string, such as 2007-12-03, compliant with the `full-date` format outline
 scalar Date
 
 type Mutation {
-  signupUser(email: String!, name: String): User
+  createArticle(abstract: String!, authorIds: [String!]!, fileData: Upload!): Article
 }
 
 type Query {
-  articles: Article
+  articles: [Article]
   user(userId: String!): User
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   articles: [Article]
   email: String
-  id: Int
+  id: String
   name: String
 }

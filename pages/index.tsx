@@ -12,24 +12,6 @@ const ArticleQuery = gql`
   }
 `;
 
-const Post = ({ post }) => (
-  <Link href="/p/[id]" as={`/p/${post.id}`}>
-    <a>
-      <h2>{post.title}</h2>
-      <small>By {post.author.name}</small>
-      <p>{post.content}</p>
-      <style jsx>{`
-        a {
-          text-decoration: none;
-          color: inherit;
-          padding: 2rem;
-          display: block;
-        }
-      `}</style>
-    </a>
-  </Link>
-);
-
 const Blog = () => {
   const { loading, error, data } = useQuery(ArticleQuery);
   if (typeof window === "undefined") {
@@ -47,10 +29,8 @@ const Blog = () => {
       <div className="page">
         <h1>My Blog</h1>
         <main>
-          {data.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
+          {data.articles.map((post) => (
+            <div key={post.id} className="post"></div>
           ))}
         </main>
       </div>

@@ -11,6 +11,10 @@ declare global {
      * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Date";
+    /**
+     * The `Upload` scalar type represents a file upload.
+     */
+    upload<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Upload";
   }
 }
 declare global {
@@ -19,6 +23,10 @@ declare global {
      * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
+    /**
+     * The `Upload` scalar type represents a file upload.
+     */
+    upload<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Upload";
   }
 }
 
@@ -40,19 +48,20 @@ export interface NexusGenScalars {
   Boolean: boolean
   ID: string
   Date: any
+  Upload: any
 }
 
 export interface NexusGenObjects {
   Article: { // root type
     abstract?: string | null; // String
-    id?: number | null; // Int
+    id?: string | null; // String
     url?: string | null; // String
   }
   Mutation: {};
   Query: {};
   User: { // root type
     email?: string | null; // String
-    id?: number | null; // Int
+    id?: string | null; // String
     name?: string | null; // String
   }
 }
@@ -71,20 +80,20 @@ export interface NexusGenFieldTypes {
   Article: { // field return type
     abstract: string | null; // String
     authors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    id: number | null; // Int
+    id: string | null; // String
     url: string | null; // String
   }
   Mutation: { // field return type
-    signupUser: NexusGenRootTypes['User'] | null; // User
+    createArticle: NexusGenRootTypes['Article'] | null; // Article
   }
   Query: { // field return type
-    articles: NexusGenRootTypes['Article'] | null; // Article
+    articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     user: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     email: string | null; // String
-    id: number | null; // Int
+    id: string | null; // String
     name: string | null; // String
   }
 }
@@ -93,11 +102,11 @@ export interface NexusGenFieldTypeNames {
   Article: { // field return type name
     abstract: 'String'
     authors: 'User'
-    id: 'Int'
+    id: 'String'
     url: 'String'
   }
   Mutation: { // field return type name
-    signupUser: 'User'
+    createArticle: 'Article'
   }
   Query: { // field return type name
     articles: 'Article'
@@ -106,16 +115,17 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     articles: 'Article'
     email: 'String'
-    id: 'Int'
+    id: 'String'
     name: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    signupUser: { // args
-      email: string; // String!
-      name?: string | null; // String
+    createArticle: { // args
+      abstract: string; // String!
+      authorIds: string[]; // [String!]!
+      fileData: NexusGenScalars['Upload']; // Upload!
     }
   }
   Query: {
