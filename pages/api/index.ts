@@ -20,8 +20,8 @@ const User = objectType({
     t.int("id");
     t.string("name");
     t.string("email");
-    t.list.field("posts", {
-      type: "Post",
+    t.list.field("articles", {
+      type: "Article",
       resolve: (parent) =>
         prisma.user
           .findUnique({
@@ -32,21 +32,15 @@ const User = objectType({
   },
 });
 
-const Post = objectType({
-  name: "Post",
+const Article = objectType({
+  name: "Article",
   definition(t) {
     t.int("id");
-    t.string("title");
-    t.nullable.string("content");
-    t.boolean("published");
-    t.nullable.field("author", {
+    t.string("url");
+    t.string("abstract");
+    t.list.field("authors", {
       type: "User",
-      resolve: (parent) =>
-        prisma.post
-          .findUnique({
-            where: { id: Number(parent.id) },
-          })
-          .author(),
+      resolve: (parent) => [],
     });
   },
 });
@@ -85,7 +79,7 @@ const Mutation = objectType({
 });
 
 export const schema = makeSchema({
-  types: [Query, Mutation, Post, User, GQLDate],
+  types: [Query, Mutation, User, Article, GQLDate],
   outputs: {
     typegen: path.join(process.cwd(), "pages/api/nexus-typegen.ts"),
     schema: path.join(process.cwd(), "pages/api/schema.graphql"),
@@ -104,6 +98,28 @@ export default new ApolloServer({
     const token = req.headers.authorization || "";
     const decoded = jwt_decode(token);
     console.log(decoded);
+    // Add the user to the back end DB if they don't exist yet.
+    if (decoded.user_id) {
+      prisma.user
+        .findUnique({
+          where: { id: decoded.user_id },
+        })
+        .then((user) => {
+          console.log(user);
+          if (user == null) {
+            prisma.user
+              .create({
+                data: {
+                  id: decoded.user_id,
+                  email: decoded.email,
+                  name: decoded.name,
+                },
+              })
+              .catch((error) => console.log(error));
+          }
+        });
+      req.authenticated_user_id = decoded.user_id;
+    }
   },
 }).createHandler({
   path: "/api",

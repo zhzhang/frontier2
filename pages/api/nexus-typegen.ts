@@ -43,13 +43,12 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Mutation: {};
-  Post: { // root type
-    content?: string | null; // String
+  Article: { // root type
+    abstract?: string | null; // String
     id?: number | null; // Int
-    published?: boolean | null; // Boolean
-    title?: string | null; // String
+    url?: string | null; // String
   }
+  Mutation: {};
   Query: {};
   User: { // root type
     email?: string | null; // String
@@ -69,46 +68,44 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Article: { // field return type
+    abstract: string | null; // String
+    authors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    id: number | null; // Int
+    url: string | null; // String
+  }
   Mutation: { // field return type
     signupUser: NexusGenRootTypes['User'] | null; // User
-  }
-  Post: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
-    content: string | null; // String
-    id: number | null; // Int
-    published: boolean | null; // Boolean
-    title: string | null; // String
   }
   Query: { // field return type
     user: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
+    articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     email: string | null; // String
     id: number | null; // Int
     name: string | null; // String
-    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Article: { // field return type name
+    abstract: 'String'
+    authors: 'User'
+    id: 'Int'
+    url: 'String'
+  }
   Mutation: { // field return type name
     signupUser: 'User'
-  }
-  Post: { // field return type name
-    author: 'User'
-    content: 'String'
-    id: 'Int'
-    published: 'Boolean'
-    title: 'String'
   }
   Query: { // field return type name
     user: 'User'
   }
   User: { // field return type name
+    articles: 'Article'
     email: 'String'
     id: 'Int'
     name: 'String'
-    posts: 'Post'
   }
 }
 

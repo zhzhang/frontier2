@@ -4,8 +4,8 @@ import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
-const FeedQuery = gql`
-  query FeedQuery {
+const ArticleQuery = gql`
+  query ArticleQuery {
     feed {
       id
       title
@@ -38,7 +38,7 @@ const Post = ({ post }) => (
 );
 
 const Blog = () => {
-  const { loading, error, data } = useQuery(FeedQuery);
+  const { loading, error, data } = useQuery(ArticleQuery);
   if (typeof window === "undefined") {
     return <div>Loading ...</div>;
   }

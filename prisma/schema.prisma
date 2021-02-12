@@ -12,18 +12,18 @@ model User {
   id             String        @id
   name           String?
   articles       Article[]
+  memberships    Membership[]
+  reviews        Review[]
   Organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId String?
-  Membership     Membership[]
-  Review         Review[]
 }
 
 model Article {
   id       String   @id @default(cuid())
   url      String
   abstract String
-  Authors  User[]
-  Review   Review[]
+  authors  User[]
+  reviews  Review[]
 }
 
 model Organization {
