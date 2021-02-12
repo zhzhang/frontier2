@@ -59,6 +59,16 @@ const Query = objectType({
         });
       },
     });
+    t.field("articles", {
+      type: "Article",
+      args: {},
+      resolve: (_, args, ctx) => {
+        console.log(ctx);
+        return prisma.article.findMany({
+          where: { id: args.userId },
+        });
+      },
+    });
   },
 });
 
@@ -94,31 +104,27 @@ export const config = {
 
 export default new ApolloServer({
   schema,
-  context: ({ req }) => {
+  context: async ({ req }) => {
     const token = req.headers.authorization || "";
     const decoded = jwt_decode(token);
-    console.log(decoded);
     // Add the user to the back end DB if they don't exist yet.
     if (decoded.user_id) {
-      prisma.user
-        .findUnique({
-          where: { id: decoded.user_id },
-        })
-        .then((user) => {
-          console.log(user);
-          if (user == null) {
-            prisma.user
-              .create({
-                data: {
-                  id: decoded.user_id,
-                  email: decoded.email,
-                  name: decoded.name,
-                },
-              })
-              .catch((error) => console.log(error));
-          }
-        });
-      req.authenticated_user_id = decoded.user_id;
+      const user = await prisma.user.findUnique({
+        where: { id: decoded.user_id },
+      });
+      if (user == null) {
+        const newUser = await prisma.user
+          .create({
+            data: {
+              id: decoded.user_id,
+              email: decoded.email,
+              name: decoded.name,
+            },
+          })
+          .catch((error) => console.log(error));
+        return { newUser };
+      }
+      return { user };
     }
   },
 }).createHandler({

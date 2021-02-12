@@ -6,15 +6,8 @@ import { useQuery } from "@apollo/react-hooks";
 
 const ArticleQuery = gql`
   query ArticleQuery {
-    feed {
+    articles {
       id
-      title
-      content
-      published
-      author {
-        id
-        name
-      }
     }
   }
 `;

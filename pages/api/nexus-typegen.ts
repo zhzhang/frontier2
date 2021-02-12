@@ -78,6 +78,7 @@ export interface NexusGenFieldTypes {
     signupUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
+    articles: NexusGenRootTypes['Article'] | null; // Article
     user: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
@@ -99,6 +100,7 @@ export interface NexusGenFieldTypeNames {
     signupUser: 'User'
   }
   Query: { // field return type name
+    articles: 'Article'
     user: 'User'
   }
   User: { // field return type name
