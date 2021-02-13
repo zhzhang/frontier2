@@ -108,10 +108,12 @@ const Mutation = objectType({
         authorIds: nonNull(list(nonNull(stringArg()))),
         fileData: nonNull(arg({ type: "Upload" })),
       },
-      resolve: (_, { abstract, authorIds, fileData }, ctx) => {
+      resolve: async (_, { abstract, authorIds, fileData }) => {
         console.log(abstract);
         console.log(authorIds);
         console.log(fileData);
+        const { stream, filename, mimetype, encoding } = await fileData;
+        console.log(filename);
         return null;
       },
     });

@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import Link from "next/link";
 import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
+import create from "./create";
 
 const CreateArticleMutation = gql`
   mutation CreateArticleQuery(
@@ -20,7 +22,14 @@ const CreateArticleMutation = gql`
   }
 `;
 
+function useFile() {
+  const [file, setFile] = useState(null);
+
+  return { file: file, setFile: setFile };
+}
+
 const NewArticle = () => {
+  const { file, setFile } = useFile();
   const [createArticle, { loading, error, data }] = useMutation(
     CreateArticleMutation
   );
@@ -28,7 +37,35 @@ const NewArticle = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  return <Layout>Test</Layout>;
+  return (
+    <Layout>
+      <input
+        id="upload"
+        type="file"
+        onChange={({
+          target: {
+            files: [file],
+          },
+        }) => {
+          setFile(file);
+        }}
+      />
+      <button
+        onClick={() => {
+          console.log(file);
+          createArticle({
+            variables: {
+              abstract: "abstract!",
+              authorIds: ["a1!"],
+              fileData: file,
+            },
+          });
+        }}
+      >
+        Create
+      </button>
+    </Layout>
+  );
 };
 
 export default withApollo(NewArticle);

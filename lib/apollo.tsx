@@ -2,6 +2,7 @@ import React from "react";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import useAuth from "../lib/firebase";
 import firebase from "firebase";
@@ -87,7 +88,9 @@ function createApolloClient(initialState = {}) {
   });
 
   return new ApolloClient({
-    link: authLink.concat(createIsomorphLink()),
+    link: authLink
+      .concat(createIsomorphLink())
+      .concat(createUploadLink({ uri: "http://localhost:3000/api" })),
     cache,
   });
 }
