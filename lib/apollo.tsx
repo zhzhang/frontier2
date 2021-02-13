@@ -88,17 +88,9 @@ function createApolloClient(initialState = {}) {
   });
 
   return new ApolloClient({
-    link: authLink
-      .concat(createIsomorphLink())
-      .concat(createUploadLink({ uri: "http://localhost:3000/api" })),
+    link: createUploadLink({ uri: "http://localhost:3000/api" }).concat(
+      authLink
+    ),
     cache,
-  });
-}
-
-function createIsomorphLink() {
-  const { HttpLink } = require("apollo-link-http");
-  return new HttpLink({
-    uri: "http://localhost:3000/api",
-    credentials: "same-origin",
   });
 }

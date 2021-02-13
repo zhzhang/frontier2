@@ -10,14 +10,13 @@ const firebaseConfig = {
 
 import { useState, useEffect } from "react";
 
-var loading = true;
-
 function useAuth() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
-      loading = false;
+      setLoading(false);
       if (user != null) {
         setUser(user);
       }

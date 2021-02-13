@@ -10,8 +10,9 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Article" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "url" TEXT NOT NULL,
-    "abstract" TEXT NOT NULL
+    "title" TEXT NOT NULL,
+    "abstract" TEXT NOT NULL,
+    "url" TEXT NOT NULL
 );
 
 -- CreateTable

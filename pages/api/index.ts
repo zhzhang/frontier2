@@ -89,7 +89,6 @@ const Query = objectType({
       type: "Article",
       args: {},
       resolve: (_, args, ctx) => {
-        console.log(ctx);
         return prisma.article.findMany({
           where: { id: args.userId },
         });
@@ -108,11 +107,14 @@ const Mutation = objectType({
         authorIds: nonNull(list(nonNull(stringArg()))),
         fileData: nonNull(arg({ type: "Upload" })),
       },
-      resolve: async (_, { abstract, authorIds, fileData }) => {
-        console.log(abstract);
-        console.log(authorIds);
-        console.log(fileData);
-        const { stream, filename, mimetype, encoding } = await fileData;
+      resolve: async (_, args) => {
+        console.log(args);
+        const {
+          createReadStream,
+          filename,
+          mimetype,
+          encoding,
+        } = await args.fileData;
         console.log(filename);
         return null;
       },
@@ -134,11 +136,20 @@ export const config = {
   },
 };
 
+interface FirebaseToken {
+  user_id: string;
+  email: string;
+  name: string;
+}
+
 export default new ApolloServer({
   schema,
   context: async ({ req }) => {
     const token = req.headers.authorization || "";
-    const decoded = jwt_decode(token);
+    if (token == "") {
+      return;
+    }
+    const decoded: FirebaseToken = jwt_decode(token);
     // Add the user to the back end DB if they don't exist yet.
     if (decoded.user_id) {
       const user = await prisma.user.findUnique({
