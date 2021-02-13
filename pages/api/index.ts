@@ -1,5 +1,6 @@
 import { ApolloServer } from "apollo-server-micro";
 import { GraphQLDate } from "graphql-iso-date";
+import { rule, shield } from "graphql-shield";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
 import {
   asNexusMethod,
@@ -119,6 +120,18 @@ const Mutation = objectType({
         return null;
       },
     });
+  },
+});
+
+// Build the schema.
+const rules = {
+  isAuthenticated: rule()((_parent, _args, ctx) => {
+    return Boolean(ctx.user.user_id);
+  }),
+};
+export const middlewares = shield({
+  Mutation: {
+    createArticle: rules.isAuthenticated,
   },
 });
 
