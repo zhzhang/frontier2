@@ -16,10 +16,19 @@ scalar Date
 
 type Mutation {
   createArticle(abstract: String!, authorIds: [String!]!, fileData: Upload!): Article
+  createOrganization(description: String!, name: String!): Organization
+}
+
+type Organization {
+  admins: [User]
+  description: String
+  id: String
+  name: String
 }
 
 type Query {
   articles: [Article]
+  organization(id: String!): Organization
   user(userId: String!): User
 }
 

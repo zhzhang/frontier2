@@ -16,7 +16,7 @@ let apolloClient = null;
  * @param {Function|Class} PageComponent
  * @param {Object} [config]
  */
-export function withApollo(PageComponent: React.Component) {
+export function withApollo(PageComponent: JSX.Element) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     if (typeof window === "undefined") {
       return <div>Loading ...</div>;
@@ -88,8 +88,8 @@ function createApolloClient(initialState = {}) {
   });
 
   return new ApolloClient({
-    link: createUploadLink({ uri: "http://localhost:3000/api" }).concat(
-      authLink
+    link: authLink.concat(
+      createUploadLink({ uri: "http://localhost:3000/api" })
     ),
     cache,
   });

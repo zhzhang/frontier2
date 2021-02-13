@@ -58,6 +58,11 @@ export interface NexusGenObjects {
     url?: string | null; // String
   }
   Mutation: {};
+  Organization: { // root type
+    description?: string | null; // String
+    id?: string | null; // String
+    name?: string | null; // String
+  }
   Query: {};
   User: { // root type
     email?: string | null; // String
@@ -85,9 +90,17 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createArticle: NexusGenRootTypes['Article'] | null; // Article
+    createOrganization: NexusGenRootTypes['Organization'] | null; // Organization
+  }
+  Organization: { // field return type
+    admins: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    description: string | null; // String
+    id: string | null; // String
+    name: string | null; // String
   }
   Query: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
+    organization: NexusGenRootTypes['Organization'] | null; // Organization
     user: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
@@ -107,9 +120,17 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createArticle: 'Article'
+    createOrganization: 'Organization'
+  }
+  Organization: { // field return type name
+    admins: 'User'
+    description: 'String'
+    id: 'String'
+    name: 'String'
   }
   Query: { // field return type name
     articles: 'Article'
+    organization: 'Organization'
     user: 'User'
   }
   User: { // field return type name
@@ -127,8 +148,15 @@ export interface NexusGenArgTypes {
       authorIds: string[]; // [String!]!
       fileData: NexusGenScalars['Upload']; // Upload!
     }
+    createOrganization: { // args
+      description: string; // String!
+      name: string; // String!
+    }
   }
   Query: {
+    organization: { // args
+      id: string; // String!
+    }
     user: { // args
       userId: string; // String!
     }

@@ -60,8 +60,8 @@ const Organization = objectType({
     t.string("description");
     t.list.field("admins", {
       type: "User",
-      resolve: (parent) => {
-        prisma.membership.findMany({
+      resolve: async (parent) => {
+        return await prisma.membership.findMany({
           where: {
             role: "ADMIN",
             organization: parent,
@@ -95,6 +95,15 @@ const Query = objectType({
         });
       },
     });
+    t.field("organization", {
+      type: "Organization",
+      args: { id: nonNull(stringArg()) },
+      resolve: (_, args) => {
+        return prisma.organization.findUnique({
+          where: { id: args.id },
+        });
+      },
+    });
   },
 });
 
@@ -120,6 +129,22 @@ const Mutation = objectType({
         return null;
       },
     });
+    t.field("createOrganization", {
+      type: "Organization",
+      args: {
+        name: nonNull(stringArg()),
+        description: nonNull(stringArg()),
+      },
+      resolve: async (_, { name, description }, ctx) => {
+        const organization = await prisma.organization.create({
+          data: { name, description },
+        });
+        prisma.membership.create({
+          data: { userId: ctx.user.user_id, organization },
+        });
+        return organization;
+      },
+    });
   },
 });
 
@@ -136,7 +161,7 @@ export const middlewares = shield({
 });
 
 export const schema = makeSchema({
-  types: [Query, Mutation, User, Article, GQLDate, Upload],
+  types: [Query, Mutation, User, Article, Organization, GQLDate, Upload],
   outputs: {
     typegen: path.join(process.cwd(), "pages/api/nexus-typegen.ts"),
     schema: path.join(process.cwd(), "pages/api/schema.graphql"),

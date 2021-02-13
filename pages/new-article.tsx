@@ -22,14 +22,8 @@ const CreateArticleMutation = gql`
   }
 `;
 
-function useFile() {
-  const [file, setFile] = useState(null);
-
-  return { file: file, setFile: setFile };
-}
-
 const NewArticle = () => {
-  const { file, setFile } = useFile();
+  const [file, setFile] = useState(null);
   const [createArticle, { loading, error, data }] = useMutation(
     CreateArticleMutation
   );
