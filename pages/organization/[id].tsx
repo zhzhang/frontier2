@@ -11,6 +11,9 @@ const OrganizationQuery = gql`
       id
       name
       description
+      admins {
+        id
+      }
     }
   }
 `;
@@ -30,7 +33,8 @@ function Organization() {
     return <div>Error: {error.message}</div>;
   }
 
-  const { name, description } = data.organization;
+  const { name, description, admins } = data.organization;
+  console.log(admins);
 
   return (
     <Layout>
