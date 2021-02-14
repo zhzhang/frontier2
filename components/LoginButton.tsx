@@ -1,6 +1,5 @@
 import React from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import Button from "@material-ui/core/Button";
 import firebase from "firebase";
 import useAuth from "../lib/firebase";
 

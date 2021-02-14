@@ -1,5 +1,6 @@
 import Navigation from "./Navigation";
 import Container from "react-bootstrap/Container";
+import "react-quill/dist/quill.snow.css";
 
 const Layout = (props) => {
   return (
@@ -11,7 +12,9 @@ const Layout = (props) => {
         crossOrigin="anonymous"
       />
       <Navigation />
-      <Container>{props.children}</Container>
+      <Container fluid className="mt-5">
+        {props.children}
+      </Container>
     </>
   );
 };

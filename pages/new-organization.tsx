@@ -7,6 +7,8 @@ import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
+import { Quill } from "../components/Quill";
+
 const CreateOrganizationMutation = gql`
   mutation CreateOrganizationQuery($name: String!, $description: String!) {
     createOrganization(name: $name, description: $description) {
@@ -24,6 +26,7 @@ const NewOrganization = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+  console.log(description);
 
   return (
     <Layout>
@@ -40,13 +43,9 @@ const NewOrganization = () => {
 
         <Form.Group controlId="formBasicDescrption">
           <Form.Label>Description</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Org description here..."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+          <Quill value={description} onChange={setDescription} />
         </Form.Group>
+
         <Button
           variant="primary"
           onClick={() =>

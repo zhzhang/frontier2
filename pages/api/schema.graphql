@@ -28,6 +28,7 @@ type Organization {
 
 type Query {
   articles: [Article]
+  browseOrganizations(tags: [String]): [Organization]
   organization(id: String!): Organization
   user(userId: String!): User
 }

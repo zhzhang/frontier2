@@ -1,5 +1,6 @@
 import { ApolloServer } from "apollo-server-micro";
 import { GraphQLDate } from "graphql-iso-date";
+import { applyMiddleware } from "graphql-middleware";
 import { rule, shield } from "graphql-shield";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
 import {
@@ -104,6 +105,13 @@ const Query = objectType({
         });
       },
     });
+    t.list.field("browseOrganizations", {
+      type: "Organization",
+      args: { tags: list(stringArg()) },
+      resolve: (_, args) => {
+        return prisma.organization.findMany();
+      },
+    });
   },
 });
 
@@ -139,8 +147,12 @@ const Mutation = objectType({
         const organization = await prisma.organization.create({
           data: { name, description },
         });
-        prisma.membership.create({
-          data: { userId: ctx.user.user_id, organization },
+        await prisma.membership.create({
+          data: {
+            userId: ctx.user.id,
+            organizationId: organization.id,
+            role: "ADMIN",
+          },
         });
         return organization;
       },
@@ -151,12 +163,16 @@ const Mutation = objectType({
 // Build the schema.
 const rules = {
   isAuthenticated: rule()((_parent, _args, ctx) => {
-    return Boolean(ctx.user.user_id);
+    if (Boolean(ctx.user)) {
+      return Boolean(ctx.user.id);
+    }
+    return false;
   }),
 };
-export const middlewares = shield({
+export const permissions = shield({
   Mutation: {
     createArticle: rules.isAuthenticated,
+    createOrganization: rules.isAuthenticated,
   },
 });
 
@@ -181,7 +197,7 @@ interface FirebaseToken {
 }
 
 export default new ApolloServer({
-  schema,
+  schema: applyMiddleware(schema, permissions),
   context: async ({ req }) => {
     const token = req.headers.authorization || "";
     if (token == "") {
@@ -203,7 +219,7 @@ export default new ApolloServer({
             },
           })
           .catch((error) => console.log(error));
-        return { newUser };
+        return { user: newUser };
       }
       return { user };
     }
