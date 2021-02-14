@@ -41,7 +41,7 @@ function Organizations() {
         <Link href="/organization/[id]" as={`/organization/${id}`}>
           <Jumbotron>
             <h1>{name}</h1>
-            <Quill value={description} />
+            <Quill value={description} modules={{ toolbar: false }} readOnly />
           </Jumbotron>
         </Link>
       ))}

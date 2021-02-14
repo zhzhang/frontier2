@@ -4,6 +4,7 @@ import { withApollo } from "../../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Jumbotron from "react-bootstrap/Jumbotron";
+import { Quill } from "../../components/Quill";
 
 const OrganizationQuery = gql`
   query OrganizationQuery($id: String!) {
@@ -40,7 +41,7 @@ function Organization() {
     <Layout>
       <Jumbotron>
         <h1>{name}</h1>
-        <p>{description}</p>
+        <Quill value={description} modules={{ toolbar: false }} readOnly />
       </Jumbotron>
     </Layout>
   );
