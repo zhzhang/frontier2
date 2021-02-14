@@ -26,7 +26,6 @@ const NewOrganization = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-  console.log(description);
 
   return (
     <Layout>
@@ -43,7 +42,13 @@ const NewOrganization = () => {
 
         <Form.Group controlId="formBasicDescrption">
           <Form.Label>Description</Form.Label>
-          <Quill value={description} onChange={setDescription} />
+          <Quill
+            value={description}
+            onChange={setDescription}
+            modules={{
+              toolbar: [["bold", "italic", "underline", "strike"], ["formula"]],
+            }}
+          />
         </Form.Group>
 
         <Button

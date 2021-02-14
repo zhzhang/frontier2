@@ -1,8 +1,12 @@
 import Navigation from "./Navigation";
 import Container from "react-bootstrap/Container";
-import "react-quill/dist/quill.snow.css";
+import katex from "katex";
+import "katex/dist/katex.min.css";
 
 const Layout = (props) => {
+  if (typeof window !== "undefined") {
+    window.katex = katex;
+  }
   return (
     <>
       <link
@@ -11,6 +15,7 @@ const Layout = (props) => {
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
         crossOrigin="anonymous"
       />
+
       <Navigation />
       <Container fluid className="mt-5">
         {props.children}
