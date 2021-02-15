@@ -1,7 +1,7 @@
 import LoginButton from "./LoginButton";
 import Navbar from "react-bootstrap/Navbar";
 
-const Navigation = (props) => {
+const Navigation = () => {
   return (
     <Navbar bg="light" fixed="top">
       <Navbar.Brand href="#home">Frontier</Navbar.Brand>

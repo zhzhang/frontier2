@@ -13,9 +13,7 @@ const OrganizationQuery = gql`
       id
       name
       description
-      admins {
-        id
-      }
+      role
     }
   }
 `;

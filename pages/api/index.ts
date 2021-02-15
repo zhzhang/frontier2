@@ -9,6 +9,7 @@ import {
   nonNull,
   list,
   nullable,
+  enumType,
   objectType,
   arg,
   stringArg,
@@ -16,11 +17,22 @@ import {
 import jwt_decode from "jwt-decode";
 import path from "path";
 import prisma from "../../lib/prisma";
+import { RoleEnum } from "../../lib/types";
 
 export type Upload = Promise<FileUpload>;
 export const Upload = asNexusMethod(GraphQLUpload!, "upload");
 
 export const GQLDate = asNexusMethod(GraphQLDate, "date");
+
+export const Role = enumType({
+  name: "Role",
+  members: {
+    REVIEWER: "REVIEWER",
+    MEMBER: "MEMBER",
+    ADMIN: "ADMIN",
+    NONE: "NONE",
+  },
+});
 
 const User = objectType({
   name: "User",
@@ -59,17 +71,34 @@ const Organization = objectType({
     t.string("id");
     t.string("name");
     t.string("description");
-    t.list.field("admins", {
-      type: "User",
-      resolve: async (parent) => {
-        return await prisma.membership.findMany({
+    t.field("role", {
+      type: Role,
+      resolve: async (_, parent, ctx) => {
+        if (!ctx.user) {
+          return RoleEnum.NONE;
+        }
+        const membership = await prisma.membership.findFirst({
           where: {
-            role: "ADMIN",
-            organization: parent,
+            organizationId: parent.id,
+            userId: ctx.user.id,
           },
         });
+        return membership.role;
       },
     });
+    t.list.field("venues", {
+      type: "Venue",
+      resolve: (parent) => [],
+    });
+  },
+});
+
+const Venue = objectType({
+  name: "Venue",
+  definition(t) {
+    t.string("id");
+    t.string("name");
+    t.string("description");
   },
 });
 
@@ -147,14 +176,28 @@ const Mutation = objectType({
         const organization = await prisma.organization.create({
           data: { name, description },
         });
-        await prisma.membership.create({
+        const membership = await prisma.membership.create({
           data: {
             userId: ctx.user.id,
             organizationId: organization.id,
-            role: "ADMIN",
+            role: RoleEnum.ADMIN,
           },
         });
         return organization;
+      },
+    });
+    t.field("createVenue", {
+      type: "Venue",
+      args: {
+        name: nonNull(stringArg()),
+        description: nonNull(stringArg()),
+        organizationId: nonNull(stringArg()),
+      },
+      resolve: async (_, { name, description, organizationId }, ctx) => {
+        const venue = await prisma.venue.create({
+          data: { name, description, organizationId },
+        });
+        return venue;
       },
     });
   },
@@ -170,14 +213,21 @@ const rules = {
   }),
 };
 export const permissions = shield({
-  Mutation: {
-    createArticle: rules.isAuthenticated,
-    createOrganization: rules.isAuthenticated,
-  },
+  Mutation: rules.isAuthenticated,
 });
 
 export const schema = makeSchema({
-  types: [Query, Mutation, User, Article, Organization, GQLDate, Upload],
+  types: [
+    Query,
+    Mutation,
+    User,
+    Article,
+    Organization,
+    Venue,
+    Role,
+    GQLDate,
+    Upload,
+  ],
   outputs: {
     typegen: path.join(process.cwd(), "pages/api/nexus-typegen.ts"),
     schema: path.join(process.cwd(), "pages/api/schema.graphql"),
@@ -194,6 +244,7 @@ interface FirebaseToken {
   user_id: string;
   email: string;
   name: string;
+  exp: number;
 }
 
 export default new ApolloServer({
@@ -204,6 +255,10 @@ export default new ApolloServer({
       return;
     }
     const decoded: FirebaseToken = jwt_decode(token);
+    if (Math.floor(Date.now() / 1000) > decoded.exp) {
+      console.log("Token expired");
+      return;
+    }
     // Add the user to the back end DB if they don't exist yet.
     if (decoded.user_id) {
       const user = await prisma.user.findUnique({

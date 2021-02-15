@@ -17,7 +17,7 @@ const Layout = (props) => {
       />
 
       <Navigation />
-      <Container fluid className="mt-5">
+      <Container fluid style={{ paddingTop: 80 }}>
         {props.children}
       </Container>
     </>

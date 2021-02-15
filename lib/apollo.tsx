@@ -4,6 +4,7 @@ import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
+import Spinner from "react-bootstrap/Spinner";
 import useAuth from "../lib/firebase";
 import firebase from "firebase";
 
@@ -19,11 +20,11 @@ let apolloClient = null;
 export function withApollo(PageComponent: JSX.Element) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     if (typeof window === "undefined") {
-      return <div>Loading ...</div>;
+      return <Spinner animation="border" role="status" />;
     }
     const { user, loading } = useAuth();
     if (loading) {
-      return <div>Loading auth ...</div>;
+      return <Spinner animation="border" role="status" />;
     }
     const client = apolloClient || initApolloClient(apolloState);
     return (

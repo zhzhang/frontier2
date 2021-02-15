@@ -17,13 +17,15 @@ scalar Date
 type Mutation {
   createArticle(abstract: String!, authorIds: [String!]!, fileData: Upload!): Article
   createOrganization(description: String!, name: String!): Organization
+  createVenue(description: String!, name: String!, organizationId: String!): Venue
 }
 
 type Organization {
-  admins: [User]
   description: String
   id: String
   name: String
+  role: Role
+  venues: [Venue]
 }
 
 type Query {
@@ -33,12 +35,25 @@ type Query {
   user(userId: String!): User
 }
 
+enum Role {
+  ADMIN
+  MEMBER
+  NONE
+  REVIEWER
+}
+
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
 type User {
   articles: [Article]
   email: String
+  id: String
+  name: String
+}
+
+type Venue {
+  description: String
   id: String
   name: String
 }

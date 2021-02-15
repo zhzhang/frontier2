@@ -31,9 +31,7 @@ model Organization {
   id          String       @id @default(cuid())
   name        String
   description String?
-  admins      User[]
   venues      Venue[]
-  memberships Membership[]
 }
 
 model Membership {
@@ -51,7 +49,6 @@ model Venue {
   description    String?
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  Review         Review[]
 }
 
 model Review {

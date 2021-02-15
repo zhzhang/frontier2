@@ -39,6 +39,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  Role: "ADMIN" | "MEMBER" | "NONE" | "REVIEWER"
 }
 
 export interface NexusGenScalars {
@@ -69,6 +70,11 @@ export interface NexusGenObjects {
     id?: string | null; // String
     name?: string | null; // String
   }
+  Venue: { // root type
+    description?: string | null; // String
+    id?: string | null; // String
+    name?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -79,7 +85,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Article: { // field return type
@@ -91,12 +97,14 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOrganization: NexusGenRootTypes['Organization'] | null; // Organization
+    createVenue: NexusGenRootTypes['Venue'] | null; // Venue
   }
   Organization: { // field return type
-    admins: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     description: string | null; // String
     id: string | null; // String
     name: string | null; // String
+    role: NexusGenEnums['Role'] | null; // Role
+    venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Query: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
@@ -107,6 +115,11 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     email: string | null; // String
+    id: string | null; // String
+    name: string | null; // String
+  }
+  Venue: { // field return type
+    description: string | null; // String
     id: string | null; // String
     name: string | null; // String
   }
@@ -122,12 +135,14 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createArticle: 'Article'
     createOrganization: 'Organization'
+    createVenue: 'Venue'
   }
   Organization: { // field return type name
-    admins: 'User'
     description: 'String'
     id: 'String'
     name: 'String'
+    role: 'Role'
+    venues: 'Venue'
   }
   Query: { // field return type name
     articles: 'Article'
@@ -138,6 +153,11 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     articles: 'Article'
     email: 'String'
+    id: 'String'
+    name: 'String'
+  }
+  Venue: { // field return type name
+    description: 'String'
     id: 'String'
     name: 'String'
   }
@@ -153,6 +173,11 @@ export interface NexusGenArgTypes {
     createOrganization: { // args
       description: string; // String!
       name: string; // String!
+    }
+    createVenue: { // args
+      description: string; // String!
+      name: string; // String!
+      organizationId: string; // String!
     }
   }
   Query: {
@@ -178,7 +203,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 
