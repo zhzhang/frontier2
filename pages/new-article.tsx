@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
-import Link from "next/link";
 import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
-import create from "./create";
+
+import dynamic from "next/dynamic";
+
+const PDFViewer = dynamic(() => import("../components/PDFViewer"), {
+  ssr: false,
+});
 
 const CreateArticleMutation = gql`
   mutation CreateArticleQuery(
@@ -24,6 +28,10 @@ const CreateArticleMutation = gql`
 
 const NewArticle = () => {
   const [file, setFile] = useState(null);
+  const [title, setTitle] = useState("");
+  const [abstract, setAbstract] = useState("");
+  const [authors, setAuthors] = useState([]);
+  const [venue, setVenue] = useState("id");
   const [createArticle, { loading, error, data }] = useMutation(
     CreateArticleMutation
   );
@@ -58,6 +66,11 @@ const NewArticle = () => {
       >
         Create
       </button>
+      {file !== null ? (
+        <PDFViewer file={file} width={700} pageNumber={10} />
+      ) : (
+        "PDF goes here"
+      )}
     </Layout>
   );
 };
