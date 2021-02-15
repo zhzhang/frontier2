@@ -16,15 +16,18 @@ model User {
   reviews        Review[]
   Organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId String?
+  Submission     Submission?   @relation(fields: [submissionId], references: [id])
+  submissionId   String?
 }
 
 model Article {
-  id       String   @id @default(cuid())
-  title    String
-  abstract String
-  authors  User[]
-  url      String
-  reviews  Review[]
+  id         String       @id @default(cuid())
+  title      String
+  abstract   String
+  authors    User[]
+  url        String
+  reviews    Review[]
+  Submission Submission[]
 }
 
 model Organization {
@@ -32,6 +35,8 @@ model Organization {
   name        String
   description String?
   venues      Venue[]
+  User        User[]
+  Membership  Membership[]
 }
 
 model Membership {
@@ -49,6 +54,8 @@ model Venue {
   description    String?
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
+  Review         Review[]
+  Submission     Submission[]
 }
 
 model Review {
@@ -60,4 +67,13 @@ model Review {
   articleId String
   userId    String
   venueId   String?
+}
+
+model Submission {
+  id        String  @id @default(cuid())
+  article   Article @relation(fields: [articleId], references: [id])
+  articleId String
+  venue     Venue   @relation(fields: [venueId], references: [id])
+  venueId   String
+  reviewers User[]
 }

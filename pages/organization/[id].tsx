@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { withApollo } from "../../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import Jumbotron from "react-bootstrap/Jumbotron";
 import { Quill } from "../../components/Quill";
+import VenueCard from "../../components/VenueCard";
 import { RoleEnum } from "../../lib/types";
 
 import Button from "react-bootstrap/Button";
@@ -151,16 +151,7 @@ function Organization() {
             <Col>
               {venues.length == 0
                 ? "No venues."
-                : venues.map((venue) => (
-                    <Jumbotron>
-                      <h3>{venue.name}</h3>
-                      <Quill
-                        value={venue.description}
-                        modules={{ toolbar: false }}
-                        readOnly
-                      />
-                    </Jumbotron>
-                  ))}
+                : venues.map((venue) => <VenueCard venue={venue} />)}
             </Col>
           </Row>
         </Container>
