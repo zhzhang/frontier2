@@ -11,6 +11,7 @@ import { RoleEnum } from "../../lib/types";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
@@ -24,13 +25,15 @@ const OrganizationQuery = gql`
       role
       venues {
         id
+        name
+        description
       }
     }
   }
 `;
 
-const CreateVenueQuery = gql`
-  mutation CreateVenueQuery(
+const CreateVenueMutation = gql`
+  mutation CreateVenueMutation(
     $name: String!
     $description: String!
     $organizationId: String!
@@ -46,6 +49,49 @@ const CreateVenueQuery = gql`
     }
   }
 `;
+
+const CreateVenueBody = ({ organizationId }) => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [createVenue, { loading, error, data }] = useMutation(
+    CreateVenueMutation
+  );
+  return (
+    <Form>
+      <Form.Group controlId="formBasicName">
+        <Form.Label>Venue Name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Venue Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="formBasicDescrption">
+        <Form.Label>Description</Form.Label>
+        <Quill
+          value={description}
+          onChange={setDescription}
+          modules={{
+            toolbar: [["bold", "italic", "underline", "strike"], ["formula"]],
+          }}
+        />
+      </Form.Group>
+
+      <Button
+        variant="primary"
+        onClick={() =>
+          createVenue({
+            variables: { name, description, organizationId },
+          })
+        }
+      >
+        Submit
+      </Button>
+    </Form>
+  );
+};
 
 function Organization() {
   const id = useRouter().query.id;
@@ -67,8 +113,11 @@ function Organization() {
 
   return (
     <>
-      <Modal show={showModal}>
-        <Modal.Header>Lol</Modal.Header>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header>New Venue</Modal.Header>
+        <Modal.Body>
+          <CreateVenueBody organizationId={id} />
+        </Modal.Body>
       </Modal>
       <Layout>
         <Container fluid>
@@ -99,7 +148,20 @@ function Organization() {
             ) : null}
           </Row>
           <Row>
-            <Col>{venues.length == 0 ? "No venues." : "venues"}</Col>
+            <Col>
+              {venues.length == 0
+                ? "No venues."
+                : venues.map((venue) => (
+                    <Jumbotron>
+                      <h3>{venue.name}</h3>
+                      <Quill
+                        value={venue.description}
+                        modules={{ toolbar: false }}
+                        readOnly
+                      />
+                    </Jumbotron>
+                  ))}
+            </Col>
           </Row>
         </Container>
       </Layout>

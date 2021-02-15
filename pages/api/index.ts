@@ -88,7 +88,13 @@ const Organization = objectType({
     });
     t.list.field("venues", {
       type: "Venue",
-      resolve: (parent) => [],
+      resolve: async (parent) => {
+        return await prisma.venue.findMany({
+          where: {
+            organizationId: parent.id,
+          },
+        });
+      },
     });
   },
 });
