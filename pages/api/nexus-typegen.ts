@@ -112,6 +112,7 @@ export interface NexusGenFieldTypes {
     organization: NexusGenRootTypes['Organization'] | null; // Organization
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     user: NexusGenRootTypes['User'] | null; // User
+    venue: NexusGenRootTypes['Venue'] | null; // Venue
   }
   User: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
@@ -151,6 +152,7 @@ export interface NexusGenFieldTypeNames {
     organization: 'Organization'
     searchUsers: 'User'
     user: 'User'
+    venue: 'Venue'
   }
   User: { // field return type name
     articles: 'Article'
@@ -194,6 +196,9 @@ export interface NexusGenArgTypes {
     }
     user: { // args
       userId: string; // String!
+    }
+    venue: { // args
+      id: string; // String!
     }
   }
 }

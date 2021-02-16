@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Layout from "../components/Layout";
 import { withApollo } from "../lib/apollo";
 import { Quill } from "../components/Quill";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -30,7 +31,17 @@ const CreateArticleMutation = gql`
   }
 `;
 
+const GetVenueQuery = gql`
+  query GetVenueQuery($id: String!) {
+    venue(id: $id) {
+      name
+    }
+  }
+`;
+
 const NewArticle = () => {
+  const router = useRouter();
+  const { venueId } = router.query;
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [abstract, setAbstract] = useState("");
@@ -42,7 +53,11 @@ const NewArticle = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-  console.log(authors);
+  const venueResult = venueId
+    ? useQuery(GetVenueQuery, {
+        variables: { id: venueId },
+      })
+    : {};
 
   return (
     <Layout>
@@ -57,25 +72,6 @@ const NewArticle = () => {
           setFile(file);
         }}
       />
-      <button
-        onClick={() => {
-          console.log(file);
-          createArticle({
-            variables: {
-              abstract: "abstract!",
-              authorIds: ["a1!"],
-              fileData: file,
-            },
-          });
-        }}
-      >
-        Create
-      </button>
-      {file !== null ? (
-        <PDFViewer file={file} width={700} pageNumber={10} />
-      ) : (
-        "PDF goes here"
-      )}
       <Form>
         <Form.Group controlId="formBasicName">
           <Form.Label>Title</Form.Label>
@@ -97,23 +93,34 @@ const NewArticle = () => {
             }}
           />
         </Form.Group>
-
-        <Button
-          variant="primary"
-          onClick={() =>
-            createOrganization({
-              variables: { name, description },
-            })
-          }
-        >
-          Submit
-        </Button>
         <UserTypeahead
           id="user-typeahead"
           selected={authors}
           onChangeSelection={setAuthors}
         />
+        <Button
+          variant="primary"
+          onClick={() =>
+            createArticle({
+              variables: {
+                title,
+                abstract,
+                authorsIds: authors.map((a) => a.id),
+                venueId: venueId,
+              },
+            })
+          }
+        >
+          Submit
+        </Button>
       </Form>
+      {venueId && !venueResult.loading ? venueResult.data.venue.name : ""}
+      <br />
+      {file !== null ? (
+        <PDFViewer file={file} width={700} pageNumber={10} />
+      ) : (
+        "PDF goes here"
+      )}
     </Layout>
   );
 };

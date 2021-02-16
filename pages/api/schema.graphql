@@ -34,6 +34,7 @@ type Query {
   organization(id: String!): Organization
   searchUsers(query: String): [User]
   user(userId: String!): User
+  venue(id: String!): Venue
 }
 
 enum Role {

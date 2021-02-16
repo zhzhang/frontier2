@@ -140,6 +140,15 @@ const Query = objectType({
         });
       },
     });
+    t.field("venue", {
+      type: "Venue",
+      args: { id: nonNull(stringArg()) },
+      resolve: (_, args) => {
+        return prisma.venue.findUnique({
+          where: { id: args.id },
+        });
+      },
+    });
     t.list.field("browseOrganizations", {
       type: "Organization",
       args: { tags: list(stringArg()) },
