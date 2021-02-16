@@ -147,6 +147,19 @@ const Query = objectType({
         return prisma.organization.findMany();
       },
     });
+    t.list.field("searchUsers", {
+      type: "User",
+      args: { query: stringArg() },
+      resolve: async (_, { query }) => {
+        return await prisma.user.findMany({
+          where: {
+            name: {
+              contains: query,
+            },
+          },
+        });
+      },
+    });
   },
 });
 

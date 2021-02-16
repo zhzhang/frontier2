@@ -110,6 +110,7 @@ export interface NexusGenFieldTypes {
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     browseOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     organization: NexusGenRootTypes['Organization'] | null; // Organization
+    searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     user: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
@@ -148,6 +149,7 @@ export interface NexusGenFieldTypeNames {
     articles: 'Article'
     browseOrganizations: 'Organization'
     organization: 'Organization'
+    searchUsers: 'User'
     user: 'User'
   }
   User: { // field return type name
@@ -186,6 +188,9 @@ export interface NexusGenArgTypes {
     }
     organization: { // args
       id: string; // String!
+    }
+    searchUsers: { // args
+      query?: string | null; // String
     }
     user: { // args
       userId: string; // String!
