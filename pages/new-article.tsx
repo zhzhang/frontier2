@@ -5,6 +5,8 @@ import { Quill } from "../components/Quill";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
+import { uploadFile } from "../lib/firebase";
+import { UploadTypeEnum } from "../lib/types";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -17,14 +19,18 @@ const PDFViewer = dynamic(() => import("../components/PDFViewer"), {
 
 const CreateArticleMutation = gql`
   mutation CreateArticleQuery(
+    $title: String!
     $abstract: String!
     $authorIds: [String!]!
-    $fileData: Upload!
+    $ref: String!
+    $venueId: String
   ) {
     createArticle(
+      title: $title
       abstract: $abstract
       authorIds: $authorIds
-      fileData: $fileData
+      ref: $ref
+      venueId: $venueId
     ) {
       id
     }
@@ -50,14 +56,12 @@ const NewArticle = () => {
   const [createArticle, { loading, error, data }] = useMutation(
     CreateArticleMutation
   );
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
   const venueResult = venueId
     ? useQuery(GetVenueQuery, {
         variables: { id: venueId },
       })
     : {};
+  console.log(error);
 
   return (
     <Layout>
@@ -100,16 +104,28 @@ const NewArticle = () => {
         />
         <Button
           variant="primary"
-          onClick={() =>
-            createArticle({
-              variables: {
-                title,
-                abstract,
-                authorsIds: authors.map((a) => a.id),
-                venueId: venueId,
-              },
-            })
-          }
+          onClick={() => {
+            const { uploadTask, refPath } = uploadFile(
+              file,
+              UploadTypeEnum.ARTICLE
+            );
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {},
+              (error) => {},
+              () => {
+                createArticle({
+                  variables: {
+                    title,
+                    abstract,
+                    ref: refPath,
+                    authorIds: authors.map((a) => a.id),
+                    venueId: venueId,
+                  },
+                });
+              }
+            );
+          }}
         >
           Submit
         </Button>

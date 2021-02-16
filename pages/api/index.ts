@@ -18,6 +18,8 @@ import jwt_decode from "jwt-decode";
 import path from "path";
 import prisma from "../../lib/prisma";
 import { RoleEnum } from "../../lib/types";
+import { title } from "process";
+import { interopDefault } from "next/dist/next-server/server/load-components";
 
 export type Upload = Promise<FileUpload>;
 export const Upload = asNexusMethod(GraphQLUpload!, "upload");
@@ -178,20 +180,48 @@ const Mutation = objectType({
     t.field("createArticle", {
       type: "Article",
       args: {
+        title: nonNull(stringArg()),
         abstract: nonNull(stringArg()),
         authorIds: nonNull(list(nonNull(stringArg()))),
-        fileData: nonNull(arg({ type: "Upload" })),
+        ref: nonNull(stringArg()),
+        venueId: nullable(stringArg()),
+        // fileData: nonNull(arg({ type: "Upload" })),
       },
-      resolve: async (_, args) => {
-        console.log(args);
-        const {
-          createReadStream,
-          filename,
-          mimetype,
-          encoding,
-        } = await args.fileData;
-        console.log(filename);
-        return null;
+      resolve: async (_, { title, abstract, authorIds, ref, venueId }, ctx) => {
+        // const {
+        //   createReadStream,
+        //   filename,
+        //   mimetype,
+        //   encoding,
+        // } = await args.fileData;
+        const input = {
+          data: {
+            title: title,
+            authors: {
+              connect: authorIds.map((id) => ({
+                id: id,
+              })),
+            },
+            versions: {
+              create: [
+                {
+                  abstract: abstract,
+                  ref: ref,
+                },
+              ],
+            },
+          },
+        };
+        const article = await prisma.article.create(input);
+        if (venueId) {
+          const sub = await prisma.submission.create({
+            data: {
+              articleId: article.id,
+              venueId: venueId,
+            },
+          });
+        }
+        return article;
       },
     });
     t.field("createOrganization", {
@@ -234,10 +264,7 @@ const Mutation = objectType({
 // Build the schema.
 const rules = {
   isAuthenticated: rule()((_parent, _args, ctx) => {
-    if (Boolean(ctx.user)) {
-      return Boolean(ctx.user.id);
-    }
-    return false;
+    return Boolean(ctx.user);
   }),
 };
 export const permissions = shield({

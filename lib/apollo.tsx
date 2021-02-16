@@ -5,7 +5,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import Spinner from "react-bootstrap/Spinner";
-import useAuth from "../lib/firebase";
+import { useAuth } from "../lib/firebase";
 import firebase from "firebase";
 
 let apolloClient = null;

@@ -4,3 +4,9 @@ export enum RoleEnum {
   ADMIN = "ADMIN",
   NONE = "NONE",
 }
+
+export enum UploadTypeEnum {
+  ARTICLE,
+  LOGO,
+  PROFILE_IMAGE,
+}

@@ -21,13 +21,21 @@ model User {
 }
 
 model Article {
-  id         String       @id @default(cuid())
-  title      String
-  abstract   String
-  authors    User[]
-  url        String
-  reviews    Review[]
-  Submission Submission[]
+  id          String           @id @default(cuid())
+  title       String
+  authors     User[]
+  reviews     Review[]
+  versions    ArticleVersion[]
+  submissions Submission[]
+}
+
+model ArticleVersion {
+  id        String   @id @default(cuid())
+  abstract  String
+  ref       String
+  article   Article  @relation(fields: [articleId], references: [id])
+  articleId String
+  createdAt DateTime @default(now())
 }
 
 model Organization {

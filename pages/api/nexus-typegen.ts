@@ -172,7 +172,9 @@ export interface NexusGenArgTypes {
     createArticle: { // args
       abstract: string; // String!
       authorIds: string[]; // [String!]!
-      fileData: NexusGenScalars['Upload']; // Upload!
+      ref: string; // String!
+      title: string; // String!
+      venueId?: string | null; // String
     }
     createOrganization: { // args
       description: string; // String!
