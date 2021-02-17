@@ -3,10 +3,17 @@
 
 
 type Article {
-  abstract: String
   authors: [User]
   id: String
-  url: String
+  title: String
+  versions: [ArticleVersion]
+}
+
+type ArticleVersion {
+  abstract: String
+  createdAt: String
+  id: String
+  ref: String
 }
 
 """
@@ -35,6 +42,7 @@ type Query {
   searchUsers(query: String): [User]
   user(userId: String!): User
   venue(id: String!): Venue
+  venueSubmissions(venueId: String!): [Submission]
 }
 
 enum Role {
@@ -42,6 +50,13 @@ enum Role {
   MEMBER
   NONE
   REVIEWER
+}
+
+type Submission {
+  article: Article
+  articleId: String
+  id: String
+  venueId: String
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -58,4 +73,5 @@ type Venue {
   description: String
   id: String
   name: String
+  role: String
 }

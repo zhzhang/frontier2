@@ -8,7 +8,7 @@ const VenueCard = ({ venue }) => {
   const { id, name, description } = venue;
   return (
     <Jumbotron>
-      <h3>{name}</h3>
+      <h3 onClick={() => Router.push(`/venue/${id}`)}>{name}</h3>
       <Quill value={description} modules={{ toolbar: false }} readOnly />
       <Button onClick={() => Router.push(`/new-article?venueId=${id}`)}>
         Submit an article

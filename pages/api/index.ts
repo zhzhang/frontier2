@@ -58,12 +58,33 @@ const Article = objectType({
   name: "Article",
   definition(t) {
     t.string("id");
-    t.string("url");
-    t.string("abstract");
+    t.string("title");
     t.list.field("authors", {
       type: "User",
-      resolve: (parent) => [],
+      resolve: (parent) => {
+        return parent.authors;
+      },
     });
+    t.list.field("versions", {
+      type: "ArticleVersion",
+      resolve: async (parent) => {
+        return await prisma.articleVersion.findMany({
+          where: {
+            articleId: parent.id,
+          },
+        });
+      },
+    });
+  },
+});
+
+const ArticleVersion = objectType({
+  name: "ArticleVersion",
+  definition(t) {
+    t.string("id");
+    t.string("ref");
+    t.string("abstract");
+    t.string("createdAt");
   },
 });
 
@@ -107,6 +128,22 @@ const Venue = objectType({
     t.string("id");
     t.string("name");
     t.string("description");
+    t.string("role");
+  },
+});
+
+const Submission = objectType({
+  name: "Submission",
+  definition(t) {
+    t.string("id");
+    t.string("venueId");
+    t.string("articleId");
+    t.field("article", {
+      type: "Article",
+      resolve: (parent) => {
+        return parent.article;
+      },
+    });
   },
 });
 
@@ -127,9 +164,11 @@ const Query = objectType({
     t.list.field("articles", {
       type: "Article",
       args: {},
-      resolve: (_, args, ctx) => {
-        return prisma.article.findMany({
-          where: { id: args.userId },
+      resolve: async (_, args, ctx) => {
+        return await prisma.article.findMany({
+          include: {
+            authors: true,
+          },
         });
       },
     });
@@ -148,6 +187,18 @@ const Query = objectType({
       resolve: (_, args) => {
         return prisma.venue.findUnique({
           where: { id: args.id },
+        });
+      },
+    });
+    t.list.field("venueSubmissions", {
+      type: "Submission",
+      args: { venueId: nonNull(stringArg()) },
+      resolve: (_, args) => {
+        return prisma.submission.findMany({
+          where: { venueId: args.venueId },
+          include: {
+            article: true,
+          },
         });
       },
     });
@@ -277,7 +328,9 @@ export const schema = makeSchema({
     Mutation,
     User,
     Article,
+    ArticleVersion,
     Organization,
+    Submission,
     Venue,
     Role,
     GQLDate,
