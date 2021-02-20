@@ -15,6 +15,8 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const OrganizationQuery = gql`
   query OrganizationQuery($id: String!) {
@@ -37,15 +39,18 @@ const CreateVenueMutation = gql`
     $name: String!
     $description: String!
     $organizationId: String!
+    $submissionDeadline: Date!
   ) {
     createVenue(
       name: $name
       description: $description
       organizationId: $organizationId
+      submissionDeadline: $submissionDeadline
     ) {
       id
       name
       description
+      submissionDeadline
     }
   }
 `;
@@ -56,6 +61,7 @@ const CreateVenueBody = ({ organizationId }) => {
   const [createVenue, { loading, error, data }] = useMutation(
     CreateVenueMutation
   );
+  const [submissionDeadline, setDeadline] = useState(new Date());
   return (
     <Form>
       <Form.Group controlId="formBasicName">
@@ -79,11 +85,24 @@ const CreateVenueBody = ({ organizationId }) => {
         />
       </Form.Group>
 
+      <Form.Group controlId="formBasicDeadline">
+        <Form.Label>Submission Deadline</Form.Label>
+        <DatePicker
+          selected={submissionDeadline}
+          onChange={(date) => setDeadline(date)}
+        />
+      </Form.Group>
+
       <Button
         variant="primary"
         onClick={() =>
           createVenue({
-            variables: { name, description, organizationId },
+            variables: {
+              name,
+              description,
+              organizationId,
+              submissionDeadline: submissionDeadline.toISOString().slice(0, 10),
+            },
           })
         }
       >

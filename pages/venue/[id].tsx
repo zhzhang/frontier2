@@ -1,10 +1,10 @@
-import { useState } from "react";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 import { withApollo } from "../../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { Quill } from "../../components/Quill";
+import SubmissionCard from "../../components/SubmissionCard";
 
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -29,6 +29,17 @@ const SubmissionsQuery = gql`
       article {
         id
         title
+        versions {
+          abstract
+        }
+      }
+      chair {
+        id
+        name
+      }
+      requestedReviewers {
+        id
+        name
       }
     }
   }
@@ -39,12 +50,11 @@ function Venue() {
   const { loading, error, data } = useQuery(VenueQuery, {
     variables: { id },
   });
-  const result = useQuery(SubmissionsQuery, {
+  const submissionsResult = useQuery(SubmissionsQuery, {
     variables: { venueId: id },
   });
-  console.log(result);
 
-  if (loading) {
+  if (loading || submissionsResult.loading) {
     return <Spinner animation="border" />;
   }
   if (error) {
@@ -53,6 +63,7 @@ function Venue() {
   }
 
   const { name, description } = data.venue;
+  const submissions = submissionsResult.data.venueSubmissions;
 
   return (
     <>
@@ -72,6 +83,12 @@ function Venue() {
               />
             </Col>
           </Row>
+        </Container>
+        <h2>Submissions</h2>
+        <Container fluid>
+          {submissions.map((s) => (
+            <SubmissionCard submission={s} />
+          ))}
         </Container>
       </Layout>
     </>

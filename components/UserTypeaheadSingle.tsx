@@ -13,7 +13,7 @@ const SearchUsers = gql`
   }
 `;
 
-const UserTypeahead = ({ id, selected, onChangeSelection }) => {
+const UserTypeaheadSingle = ({ id, selected, onChangeSelection }) => {
   const [query, setQuery] = useState("");
   const { loading, error, data } = useQuery(SearchUsers, {
     variables: { query },
@@ -26,11 +26,10 @@ const UserTypeahead = ({ id, selected, onChangeSelection }) => {
   return (
     <AsyncTypeahead
       id={id}
-      multiple
+      multiple={false}
       isLoading={loading}
       options={options}
       onSearch={(query) => setQuery(query)}
-      filterBy={(entry) => !selected.some((s) => s.id === entry.id)}
       minLength={2}
       labelKey="name"
       placeholder="Search users."
@@ -40,4 +39,4 @@ const UserTypeahead = ({ id, selected, onChangeSelection }) => {
   );
 };
 
-export default UserTypeahead;
+export default UserTypeaheadSingle;

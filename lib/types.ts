@@ -2,6 +2,7 @@ export enum RoleEnum {
   REVIEWER = "REVIEWER",
   MEMBER = "MEMBER",
   ADMIN = "ADMIN",
+  AREA_CHAIR = "AREA_CHAIR",
   NONE = "NONE",
 }
 

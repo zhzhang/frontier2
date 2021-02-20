@@ -8,16 +8,15 @@ datasource db {
 }
 
 model User {
-  email          String        @unique
-  id             String        @id
-  name           String?
-  articles       Article[]
-  memberships    Membership[]
-  reviews        Review[]
-  Organization   Organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
-  Submission     Submission?   @relation(fields: [submissionId], references: [id])
-  submissionId   String?
+  email                   String                   @unique
+  id                      String                   @id
+  name                    String?
+  articles                Article[]
+  assignedSubmissions     Submission[]             @relation("chair")
+  reviews                 Review[]
+  reviewRequests          Submission[]
+  venueMemberships        VenueMembership[]
+  organizationMemberships OrganizationMembership[]
 }
 
 model Article {
@@ -39,15 +38,14 @@ model ArticleVersion {
 }
 
 model Organization {
-  id          String       @id @default(cuid())
+  id          String                   @id @default(cuid())
   name        String
   description String?
   venues      Venue[]
-  User        User[]
-  Membership  Membership[]
+  memberships OrganizationMembership[]
 }
 
-model Membership {
+model OrganizationMembership {
   id             String       @id @default(cuid())
   user           User         @relation(fields: [userId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
@@ -57,31 +55,42 @@ model Membership {
 }
 
 model Venue {
-  id             String       @id @default(cuid())
-  name           String
-  description    String?
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  Review         Review[]
-  Submission     Submission[]
+  id                 String            @id @default(cuid())
+  name               String
+  description        String?
+  organization       Organization      @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  submissionDeadline DateTime
+  submissions        Submission[]
+  memberships        VenueMembership[]
+}
+
+model VenueMembership {
+  id      String @id @default(cuid())
+  role    String
+  userId  String
+  venueId String
+  user    User   @relation(fields: [userId], references: [id])
+  venue   Venue  @relation(fields: [venueId], references: [id])
 }
 
 model Review {
-  id        String  @id @default(cuid())
-  body      String
-  article   Article @relation(fields: [articleId], references: [id])
-  author    User    @relation(fields: [userId], references: [id])
-  venue     Venue?  @relation(fields: [venueId], references: [id])
-  articleId String
-  userId    String
-  venueId   String?
+  id             String  @id @default(cuid())
+  body           String
+  article        Article @relation(fields: [articleId], references: [id])
+  author         User    @relation(fields: [authorId], references: [id])
+  articleId      String
+  authorId       String
+  reviewerNumber Int
 }
 
 model Submission {
-  id        String  @id @default(cuid())
-  article   Article @relation(fields: [articleId], references: [id])
-  articleId String
-  venue     Venue   @relation(fields: [venueId], references: [id])
-  venueId   String
-  reviewers User[]
+  id                 String  @id @default(cuid())
+  article            Article @relation(fields: [articleId], references: [id])
+  articleId          String
+  venue              Venue   @relation(fields: [venueId], references: [id])
+  venueId            String
+  chair              User?   @relation("chair", fields: [chairId], references: [id])
+  chairId            String?
+  requestedReviewers User[]
 }

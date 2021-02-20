@@ -85,6 +85,7 @@ export interface NexusGenObjects {
     id?: string | null; // String
     name?: string | null; // String
     role?: string | null; // String
+    submissionDeadline?: NexusGenScalars['Date'] | null; // Date
   }
 }
 
@@ -112,6 +113,7 @@ export interface NexusGenFieldTypes {
     ref: string | null; // String
   }
   Mutation: { // field return type
+    assignChair: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOrganization: NexusGenRootTypes['Organization'] | null; // Organization
     createVenue: NexusGenRootTypes['Venue'] | null; // Venue
@@ -135,7 +137,9 @@ export interface NexusGenFieldTypes {
   Submission: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
     articleId: string | null; // String
+    chair: NexusGenRootTypes['User'] | null; // User
     id: string | null; // String
+    requestedReviewers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     venueId: string | null; // String
   }
   User: { // field return type
@@ -149,6 +153,7 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
     name: string | null; // String
     role: string | null; // String
+    submissionDeadline: NexusGenScalars['Date'] | null; // Date
   }
 }
 
@@ -166,6 +171,7 @@ export interface NexusGenFieldTypeNames {
     ref: 'String'
   }
   Mutation: { // field return type name
+    assignChair: 'Submission'
     createArticle: 'Article'
     createOrganization: 'Organization'
     createVenue: 'Venue'
@@ -189,7 +195,9 @@ export interface NexusGenFieldTypeNames {
   Submission: { // field return type name
     article: 'Article'
     articleId: 'String'
+    chair: 'User'
     id: 'String'
+    requestedReviewers: 'User'
     venueId: 'String'
   }
   User: { // field return type name
@@ -203,11 +211,16 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     name: 'String'
     role: 'String'
+    submissionDeadline: 'Date'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
+    assignChair: { // args
+      chairId: string; // String!
+      submissionId: string; // String!
+    }
     createArticle: { // args
       abstract: string; // String!
       authorIds: string[]; // [String!]!
@@ -223,6 +236,7 @@ export interface NexusGenArgTypes {
       description: string; // String!
       name: string; // String!
       organizationId: string; // String!
+      submissionDeadline: NexusGenScalars['Date']; // Date!
     }
   }
   Query: {

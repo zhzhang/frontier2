@@ -22,9 +22,10 @@ A date string, such as 2007-12-03, compliant with the `full-date` format outline
 scalar Date
 
 type Mutation {
+  assignChair(chairId: String!, submissionId: String!): Submission
   createArticle(abstract: String!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createOrganization(description: String!, name: String!): Organization
-  createVenue(description: String!, name: String!, organizationId: String!): Venue
+  createVenue(description: String!, name: String!, organizationId: String!, submissionDeadline: Date!): Venue
 }
 
 type Organization {
@@ -55,7 +56,9 @@ enum Role {
 type Submission {
   article: Article
   articleId: String
+  chair: User
   id: String
+  requestedReviewers: [User]
   venueId: String
 }
 
@@ -74,4 +77,5 @@ type Venue {
   id: String
   name: String
   role: String
+  submissionDeadline: Date
 }

@@ -11,15 +11,12 @@ import {
   nullable,
   enumType,
   objectType,
-  arg,
   stringArg,
 } from "nexus";
 import jwt_decode from "jwt-decode";
 import path from "path";
 import prisma from "../../lib/prisma";
 import { RoleEnum } from "../../lib/types";
-import { title } from "process";
-import { interopDefault } from "next/dist/next-server/server/load-components";
 
 export type Upload = Promise<FileUpload>;
 export const Upload = asNexusMethod(GraphQLUpload!, "upload");
@@ -100,7 +97,7 @@ const Organization = objectType({
         if (!ctx.user) {
           return RoleEnum.NONE;
         }
-        const membership = await prisma.membership.findFirst({
+        const membership = await prisma.organizationMembership.findFirst({
           where: {
             organizationId: parent.id,
             userId: ctx.user.id,
@@ -129,6 +126,7 @@ const Venue = objectType({
     t.string("name");
     t.string("description");
     t.string("role");
+    t.field("submissionDeadline", { type: "Date" });
   },
 });
 
@@ -142,6 +140,18 @@ const Submission = objectType({
       type: "Article",
       resolve: (parent) => {
         return parent.article;
+      },
+    });
+    t.field("chair", {
+      type: "User",
+      resolve: (parent) => {
+        return parent.chair;
+      },
+    });
+    t.list.field("requestedReviewers", {
+      type: "User",
+      resolve: (parent) => {
+        return parent.requestedReviewers;
       },
     });
   },
@@ -198,6 +208,8 @@ const Query = objectType({
           where: { venueId: args.venueId },
           include: {
             article: true,
+            chair: true,
+            requestedReviewers: true,
           },
         });
       },
@@ -285,7 +297,7 @@ const Mutation = objectType({
         const organization = await prisma.organization.create({
           data: { name, description },
         });
-        const membership = await prisma.membership.create({
+        await prisma.organizationMembership.create({
           data: {
             userId: ctx.user.id,
             organizationId: organization.id,
@@ -301,12 +313,33 @@ const Mutation = objectType({
         name: nonNull(stringArg()),
         description: nonNull(stringArg()),
         organizationId: nonNull(stringArg()),
+        submissionDeadline: nonNull(GQLDate),
       },
-      resolve: async (_, { name, description, organizationId }, ctx) => {
+      resolve: async (
+        _,
+        { name, description, organizationId, submissionDeadline },
+        ctx
+      ) => {
         const venue = await prisma.venue.create({
-          data: { name, description, organizationId },
+          data: { name, description, organizationId, submissionDeadline },
         });
+        console.log(venue);
         return venue;
+      },
+    });
+    t.field("assignChair", {
+      type: "Submission",
+      args: {
+        submissionId: nonNull(stringArg()),
+        chairId: nonNull(stringArg()),
+      },
+      resolve: async (_, { submissionId, chairId }, ctx) => {
+        return await prisma.submission.update({
+          where: {
+            id: submissionId,
+          },
+          data: { chairId },
+        });
       },
     });
   },
