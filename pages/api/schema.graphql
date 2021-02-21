@@ -23,6 +23,7 @@ scalar Date
 
 type Mutation {
   assignChair(chairId: String!, submissionId: String!): Submission
+  assignReviewers(reviewerIds: [String!]!, submissionId: String!): Submission
   createArticle(abstract: String!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createOrganization(description: String!, name: String!): Organization
   createVenue(description: String!, name: String!, organizationId: String!, submissionDeadline: Date!): Venue
@@ -40,6 +41,7 @@ type Query {
   articles: [Article]
   browseOrganizations(tags: [String]): [Organization]
   organization(id: String!): Organization
+  reviewerAssignedSubmissions: [Submission]
   searchUsers(query: String): [User]
   user(userId: String!): User
   venue(id: String!): Venue

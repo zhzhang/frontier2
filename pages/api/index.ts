@@ -234,6 +234,24 @@ const Query = objectType({
         });
       },
     });
+    t.list.field("reviewerAssignedSubmissions", {
+      type: "Submission",
+      resolve: async (_, _args, ctx) => {
+        const user = await prisma.user.findUnique({
+          where: {
+            id: ctx.user.id,
+          },
+          include: {
+            reviewRequests: {
+              include: {
+                article: true,
+              },
+            },
+          },
+        });
+        return user.reviewRequests;
+      },
+    });
   },
 });
 
@@ -339,6 +357,27 @@ const Mutation = objectType({
             id: submissionId,
           },
           data: { chairId },
+        });
+      },
+    });
+    t.field("assignReviewers", {
+      type: "Submission",
+      args: {
+        submissionId: nonNull(stringArg()),
+        reviewerIds: nonNull(list(nonNull(stringArg()))),
+      },
+      resolve: async (_, { submissionId, reviewerIds }, ctx) => {
+        return await prisma.submission.update({
+          where: {
+            id: submissionId,
+          },
+          data: {
+            requestedReviewers: {
+              connect: reviewerIds.map((id) => {
+                return { id };
+              }),
+            },
+          },
         });
       },
     });

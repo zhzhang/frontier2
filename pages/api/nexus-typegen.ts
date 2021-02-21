@@ -114,6 +114,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     assignChair: NexusGenRootTypes['Submission'] | null; // Submission
+    assignReviewers: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOrganization: NexusGenRootTypes['Organization'] | null; // Organization
     createVenue: NexusGenRootTypes['Venue'] | null; // Venue
@@ -129,6 +130,7 @@ export interface NexusGenFieldTypes {
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     browseOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     organization: NexusGenRootTypes['Organization'] | null; // Organization
+    reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     user: NexusGenRootTypes['User'] | null; // User
     venue: NexusGenRootTypes['Venue'] | null; // Venue
@@ -172,6 +174,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     assignChair: 'Submission'
+    assignReviewers: 'Submission'
     createArticle: 'Article'
     createOrganization: 'Organization'
     createVenue: 'Venue'
@@ -187,6 +190,7 @@ export interface NexusGenFieldTypeNames {
     articles: 'Article'
     browseOrganizations: 'Organization'
     organization: 'Organization'
+    reviewerAssignedSubmissions: 'Submission'
     searchUsers: 'User'
     user: 'User'
     venue: 'Venue'
@@ -219,6 +223,10 @@ export interface NexusGenArgTypes {
   Mutation: {
     assignChair: { // args
       chairId: string; // String!
+      submissionId: string; // String!
+    }
+    assignReviewers: { // args
+      reviewerIds: string[]; // [String!]!
       submissionId: string; // String!
     }
     createArticle: { // args
