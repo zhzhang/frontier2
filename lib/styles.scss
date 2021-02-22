@@ -1,0 +1,17 @@
+@import "~bootstrap/scss/bootstrap";
+
+$theme-colors: (
+  "info": tomato,
+  "danger": teal,
+);
+
+.organization-logo {
+  height: 3em;
+  width: 3em;
+  margin-right: 5px;
+  float: left;
+}
+
+.ql-container {
+  border: none;
+}

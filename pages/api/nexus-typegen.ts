@@ -67,6 +67,7 @@ export interface NexusGenObjects {
   Organization: { // root type
     description?: string | null; // String
     id?: string | null; // String
+    logoRef?: string | null; // String
     name?: string | null; // String
   }
   Query: {};
@@ -133,6 +134,7 @@ export interface NexusGenFieldTypes {
   Organization: { // field return type
     description: string | null; // String
     id: string | null; // String
+    logoRef: string | null; // String
     name: string | null; // String
     role: NexusGenEnums['Role'] | null; // Role
     venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
@@ -205,6 +207,7 @@ export interface NexusGenFieldTypeNames {
   Organization: { // field return type name
     description: 'String'
     id: 'String'
+    logoRef: 'String'
     name: 'String'
     role: 'Role'
     venues: 'Venue'
@@ -270,6 +273,7 @@ export interface NexusGenArgTypes {
     }
     createOrganization: { // args
       description: string; // String!
+      logoRef?: string | null; // String
       name: string; // String!
     }
     createReview: { // args

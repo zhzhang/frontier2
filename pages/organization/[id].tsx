@@ -7,6 +7,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { Quill } from "../../components/Quill";
 import VenueCard from "../../components/VenueCard";
 import { RoleEnum } from "../../lib/types";
+import { useAuth } from "../../lib/firebase";
 
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -25,10 +26,12 @@ const OrganizationQuery = gql`
       name
       description
       role
+      logoRef
       venues {
         id
         name
         description
+        submissionDeadline
       }
     }
   }
@@ -62,6 +65,7 @@ const CreateVenueBody = ({ organizationId }) => {
     CreateVenueMutation
   );
   const [submissionDeadline, setDeadline] = useState(new Date());
+  const auth = useAuth();
   return (
     <Form>
       <Form.Group controlId="formBasicName">
@@ -93,21 +97,25 @@ const CreateVenueBody = ({ organizationId }) => {
         />
       </Form.Group>
 
-      <Button
-        variant="primary"
-        onClick={() =>
-          createVenue({
-            variables: {
-              name,
-              description,
-              organizationId,
-              submissionDeadline: submissionDeadline.toISOString().slice(0, 10),
-            },
-          })
-        }
-      >
-        Submit
-      </Button>
+      {auth.user === null || auth.user === undefined ? null : (
+        <Button
+          variant="primary"
+          onClick={() =>
+            createVenue({
+              variables: {
+                name,
+                description,
+                organizationId,
+                submissionDeadline: submissionDeadline
+                  .toISOString()
+                  .slice(0, 10),
+              },
+            })
+          }
+        >
+          Submit
+        </Button>
+      )}
     </Form>
   );
 };
@@ -127,8 +135,8 @@ function Organization() {
     return <div>Error: {error.message}</div>;
   }
 
-  const { name, description, role, venues } = data.organization;
-  console.log(venues);
+  const { name, description, role, logoRef, venues } = data.organization;
+  console.log(logoRef);
 
   return (
     <>
@@ -160,7 +168,7 @@ function Organization() {
             <Col>
               <h2>Venues</h2>
             </Col>
-            {role == RoleEnum.ADMIN ? (
+            {role === RoleEnum.ADMIN ? (
               <Col>
                 <Button onClick={() => setShowModal(true)}>Create</Button>
               </Col>

@@ -1,7 +1,8 @@
-import React from "react";
+import { useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
-import { useAuth } from "../lib/firebase";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
@@ -10,7 +11,6 @@ const uiConfig = {
   signInOptions: [
     firebase.auth.EmailAuthProvider.PROVIDER_ID,
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
   ],
   callbacks: {
     // Avoid redirects after sign-in.
@@ -19,12 +19,22 @@ const uiConfig = {
 };
 
 const LoginButton = () => {
-  const { user, loading } = useAuth();
-  if (user || loading) {
-    return null;
-  }
+  const [showModal, setShowModal] = useState(false);
   return (
-    <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    <>
+      <Button variant="secondary" onClick={() => setShowModal(true)}>
+        Log In
+      </Button>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header>Log In</Modal.Header>
+        <Modal.Body>
+          <StyledFirebaseAuth
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 

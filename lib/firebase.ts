@@ -36,6 +36,9 @@ export function uploadFile(file, type: UploadTypeEnum) {
     case UploadTypeEnum.ARTICLE:
       refPath = `articles/${uuid()}.pdf`;
       break;
+    case UploadTypeEnum.LOGO:
+      refPath = `logos/${uuid()}`;
+      break;
   }
   const ref = storageRef.child(refPath);
   const uploadTask = ref.put(file);

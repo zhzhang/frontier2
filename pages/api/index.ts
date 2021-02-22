@@ -104,6 +104,7 @@ const Organization = objectType({
     t.string("id");
     t.string("name");
     t.string("description");
+    t.string("logoRef");
     t.field("role", {
       type: Role,
       resolve: async (_, parent, ctx) => {
@@ -354,10 +355,11 @@ const Mutation = objectType({
       args: {
         name: nonNull(stringArg()),
         description: nonNull(stringArg()),
+        logoRef: nullable(stringArg()),
       },
-      resolve: async (_, { name, description }, ctx) => {
+      resolve: async (_, { name, description, logoRef }, ctx) => {
         const organization = await prisma.organization.create({
-          data: { name, description },
+          data: { name, description, logoRef },
         });
         await prisma.organizationMembership.create({
           data: {

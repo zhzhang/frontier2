@@ -41,6 +41,7 @@ model Organization {
   id          String                   @id @default(cuid())
   name        String
   description String?
+  logoRef     String?
   venues      Venue[]
   memberships OrganizationMembership[]
 }

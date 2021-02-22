@@ -1,11 +1,9 @@
 import Layout from "../components/Layout";
-import Link from "next/link";
+import OrganizationCard from "../components/OrganizationCard";
 import { useRouter } from "next/router";
 import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import { Quill } from "../components/Quill";
+import { useQuery } from "@apollo/react-hooks";
 
 const OrganizationQuery = gql`
   query OrganizationQuery {
@@ -13,7 +11,7 @@ const OrganizationQuery = gql`
       id
       name
       description
-      role
+      logoRef
     }
   }
 `;
@@ -35,13 +33,8 @@ function Organizations() {
 
   return (
     <Layout>
-      {data.browseOrganizations.map(({ id, name, description }) => (
-        <Link href="/organization/[id]" as={`/organization/${id}`}>
-          <Jumbotron>
-            <h1>{name}</h1>
-            <Quill value={description} modules={{ toolbar: false }} readOnly />
-          </Jumbotron>
-        </Link>
+      {data.browseOrganizations.map((organization) => (
+        <OrganizationCard organization={organization} />
       ))}
     </Layout>
   );
