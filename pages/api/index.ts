@@ -95,6 +95,7 @@ const ArticleVersion = objectType({
     t.string("ref");
     t.string("abstract");
     t.string("createdAt");
+    t.int("versionNumber");
   },
 });
 
@@ -120,12 +121,21 @@ const Organization = objectType({
         return membership.role;
       },
     });
-    t.list.field("venues", {
-      type: "Venue",
+    t.list.field("accepted", {
+      type: "MetaReview",
       resolve: async (parent) => {
-        return await prisma.venue.findMany({
+        return await prisma.metaReview.findMany({
           where: {
             organizationId: parent.id,
+            decision: true,
+          },
+          include: {
+            article: {
+              include: {
+                authors: true,
+                versions: true,
+              },
+            },
           },
         });
       },
@@ -146,14 +156,15 @@ const Review = objectType({
   },
 });
 
-const Venue = objectType({
-  name: "Venue",
+const MetaReview = objectType({
+  name: "MetaReview",
   definition(t) {
     t.string("id");
-    t.string("name");
-    t.string("description");
-    t.string("role");
-    t.field("submissionDeadline", { type: "Date" });
+    t.string("body");
+    t.boolean("decision");
+    t.field("author", { type: "User" });
+    t.field("article", { type: "Article" });
+    t.list.field("citedReviews", { type: "Review" });
   },
 });
 
@@ -161,7 +172,7 @@ const Submission = objectType({
   name: "Submission",
   definition(t) {
     t.string("id");
-    t.string("venueId");
+    t.string("organizationId");
     t.string("articleId");
     t.field("article", {
       type: "Article",
@@ -169,7 +180,7 @@ const Submission = objectType({
         return parent.article;
       },
     });
-    t.field("venue", { type: "Venue" });
+    t.field("organization", { type: "Organization" });
     t.field("chair", {
       type: "User",
       resolve: (parent) => {
@@ -219,33 +230,10 @@ const Query = objectType({
         });
       },
     });
-    t.field("venue", {
-      type: "Venue",
-      args: { id: nonNull(stringArg()) },
-      resolve: (_, args) => {
-        return prisma.venue.findUnique({
-          where: { id: args.id },
-        });
-      },
-    });
-    t.list.field("venueSubmissions", {
-      type: "Submission",
-      args: { venueId: nonNull(stringArg()) },
-      resolve: (_, args) => {
-        return prisma.submission.findMany({
-          where: { venueId: args.venueId },
-          include: {
-            article: true,
-            chair: true,
-            requestedReviewers: true,
-          },
-        });
-      },
-    });
     t.list.field("browseOrganizations", {
       type: "Organization",
       args: { tags: list(stringArg()) },
-      resolve: (_, args) => {
+      resolve: (_, _args) => {
         return prisma.organization.findMany();
       },
     });
@@ -294,11 +282,6 @@ const Query = objectType({
             reviews: {
               include: {
                 author: true,
-                submission: {
-                  include: {
-                    venue: true,
-                  },
-                },
               },
             },
           },
@@ -318,10 +301,14 @@ const Mutation = objectType({
         abstract: nonNull(stringArg()),
         authorIds: nonNull(list(nonNull(stringArg()))),
         ref: nonNull(stringArg()),
-        venueId: nullable(stringArg()),
+        organizationId: nullable(stringArg()),
         // fileData: nonNull(arg({ type: "Upload" })),
       },
-      resolve: async (_, { title, abstract, authorIds, ref, venueId }, ctx) => {
+      resolve: async (
+        _,
+        { title, abstract, authorIds, ref, organizationId },
+        ctx
+      ) => {
         // const {
         //   createReadStream,
         //   filename,
@@ -347,11 +334,11 @@ const Mutation = objectType({
           },
         };
         const article = await prisma.article.create(input);
-        if (venueId) {
+        if (organizationId) {
           const sub = await prisma.submission.create({
             data: {
               articleId: article.id,
-              venueId: venueId,
+              organizationId,
             },
           });
         }
@@ -377,26 +364,6 @@ const Mutation = objectType({
           },
         });
         return organization;
-      },
-    });
-    t.field("createVenue", {
-      type: "Venue",
-      args: {
-        name: nonNull(stringArg()),
-        description: nonNull(stringArg()),
-        organizationId: nonNull(stringArg()),
-        submissionDeadline: nonNull(GQLDate),
-      },
-      resolve: async (
-        _,
-        { name, description, organizationId, submissionDeadline },
-        ctx
-      ) => {
-        const venue = await prisma.venue.create({
-          data: { name, description, organizationId, submissionDeadline },
-        });
-        console.log(venue);
-        return venue;
       },
     });
     t.field("assignChair", {
@@ -507,8 +474,8 @@ export const schema = makeSchema({
     ArticleVersion,
     Organization,
     Submission,
-    Venue,
     Review,
+    MetaReview,
     Role,
     GQLDate,
     Upload,

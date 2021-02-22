@@ -12,11 +12,9 @@ model User {
   id                      String                   @id
   name                    String?
   articles                Article[]
-  assignedSubmissions     Submission[]             @relation("chair")
   reviews                 Review[]
-  reviewRequests          Submission[]
-  venueMemberships        VenueMembership[]
   organizationMemberships OrganizationMembership[]
+  MetaReview              MetaReview[]             @relation("chair")
 }
 
 model Article {
@@ -25,16 +23,17 @@ model Article {
   authors     User[]
   reviews     Review[]
   versions    ArticleVersion[]
-  submissions Submission[]
+  metaReviews MetaReview[]
 }
 
 model ArticleVersion {
-  id        String   @id @default(cuid())
-  abstract  String
-  ref       String
-  article   Article  @relation(fields: [articleId], references: [id])
-  articleId String
-  createdAt DateTime @default(now())
+  id            String   @id @default(cuid())
+  abstract      String
+  ref           String
+  article       Article  @relation(fields: [articleId], references: [id])
+  articleId     String
+  versionNumber Int
+  createdAt     DateTime @default(now())
 }
 
 model Organization {
@@ -42,8 +41,9 @@ model Organization {
   name        String
   description String?
   logoRef     String?
-  venues      Venue[]
   memberships OrganizationMembership[]
+  reviews     Review[]
+  metaReviews MetaReview[]
 }
 
 model OrganizationMembership {
@@ -55,47 +55,31 @@ model OrganizationMembership {
   organizationId String
 }
 
-model Venue {
-  id                 String            @id @default(cuid())
-  name               String
-  description        String?
-  organization       Organization      @relation(fields: [organizationId], references: [id])
-  organizationId     String
-  submissionDeadline DateTime
-  submissions        Submission[]
-  memberships        VenueMembership[]
-}
-
-model VenueMembership {
-  id      String @id @default(cuid())
-  role    String
-  userId  String
-  venueId String
-  user    User   @relation(fields: [userId], references: [id])
-  venue   Venue  @relation(fields: [venueId], references: [id])
-}
-
 model Review {
-  id             String  @id @default(cuid())
-  body           String @default("")
-  rating         Int @default(0)
-  article        Article @relation(fields: [articleId], references: [id])
-  author         User    @relation(fields: [authorId], references: [id])
+  id             String        @id @default(cuid())
+  body           String        @default("")
+  rating         Int           @default(0)
+  article        Article       @relation(fields: [articleId], references: [id])
+  author         User          @relation(fields: [authorId], references: [id])
   articleId      String
-  submission     Submission? @relation(fields: [submissionId], references: [id])
-  submissionId   String?
   authorId       String
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
   reviewNumber   Int
-  published      Boolean @default(false)
+  published      Boolean       @default(false)
+  MetaReview     MetaReview?   @relation(fields: [metaReviewId], references: [id])
+  metaReviewId   String?
 }
 
-model Submission {
-  id                 String  @id @default(cuid())
-  article            Article @relation(fields: [articleId], references: [id])
-  articleId          String
-  venue              Venue   @relation(fields: [venueId], references: [id])
-  venueId            String
-  chair              User?   @relation("chair", fields: [chairId], references: [id])
-  chairId            String?
-  requestedReviewers User[]
+model MetaReview {
+  id             String        @id @default(cuid())
+  body           String        @default("")
+  decision       Boolean       @default(false)
+  citedReviews   Review[]
+  article        Article       @relation(fields: [articleId], references: [id])
+  articleId      String
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  author         User          @relation("chair", fields: [authorId], references: [id])
+  authorId       String
 }

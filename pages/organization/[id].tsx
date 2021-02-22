@@ -5,14 +5,14 @@ import { withApollo } from "../../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { Quill } from "../../components/Quill";
-import VenueCard from "../../components/VenueCard";
-import { RoleEnum } from "../../lib/types";
+import AcceptedArticleCard from "../../components/AcceptedArticleCard";
 import { useAuth } from "../../lib/firebase";
+import { useRef } from "../../lib/firebase";
 
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
+import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
@@ -27,105 +27,41 @@ const OrganizationQuery = gql`
       description
       role
       logoRef
-      venues {
+      accepted {
         id
-        name
-        description
-        submissionDeadline
+        article {
+          id
+          title
+          authors {
+            id
+            name
+          }
+          versions {
+            id
+            abstract
+            versionNumber
+          }
+        }
       }
     }
   }
 `;
 
-const CreateVenueMutation = gql`
-  mutation CreateVenueMutation(
-    $name: String!
-    $description: String!
-    $organizationId: String!
-    $submissionDeadline: Date!
-  ) {
-    createVenue(
-      name: $name
-      description: $description
-      organizationId: $organizationId
-      submissionDeadline: $submissionDeadline
-    ) {
-      id
-      name
-      description
-      submissionDeadline
-    }
-  }
-`;
-
-const CreateVenueBody = ({ organizationId }) => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [createVenue, { loading, error, data }] = useMutation(
-    CreateVenueMutation
-  );
-  const [submissionDeadline, setDeadline] = useState(new Date());
-  const auth = useAuth();
+function Header({ name, logoRef }) {
+  const url = useRef(logoRef);
   return (
-    <Form>
-      <Form.Group controlId="formBasicName">
-        <Form.Label>Venue Name</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Venue Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formBasicDescrption">
-        <Form.Label>Description</Form.Label>
-        <Quill
-          value={description}
-          onChange={setDescription}
-          modules={{
-            toolbar: [["bold", "italic", "underline", "strike"], ["formula"]],
-          }}
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formBasicDeadline">
-        <Form.Label>Submission Deadline</Form.Label>
-        <DatePicker
-          selected={submissionDeadline}
-          onChange={(date) => setDeadline(date)}
-        />
-      </Form.Group>
-
-      {auth.user === null || auth.user === undefined ? null : (
-        <Button
-          variant="primary"
-          onClick={() =>
-            createVenue({
-              variables: {
-                name,
-                description,
-                organizationId,
-                submissionDeadline: submissionDeadline
-                  .toISOString()
-                  .slice(0, 10),
-              },
-            })
-          }
-        >
-          Submit
-        </Button>
-      )}
-    </Form>
+    <>
+      <Image src={url} className="organization-logo" thumbnail />
+      <h2>{name}</h2>
+    </>
   );
-};
+}
 
 function Organization() {
   const id = useRouter().query.id;
   const { loading, error, data } = useQuery(OrganizationQuery, {
     variables: { id },
   });
-  const [showModal, setShowModal] = useState(false);
 
   if (loading) {
     return <Spinner animation="border" />;
@@ -135,22 +71,15 @@ function Organization() {
     return <div>Error: {error.message}</div>;
   }
 
-  const { name, description, role, logoRef, venues } = data.organization;
-  console.log(logoRef);
+  const { name, description, role, logoRef, accepted } = data.organization;
 
   return (
     <>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header>New Venue</Modal.Header>
-        <Modal.Body>
-          <CreateVenueBody organizationId={id} />
-        </Modal.Body>
-      </Modal>
       <Layout>
         <Container fluid>
           <Row>
             <Col>
-              <h1>{name}</h1>
+              <Header name={name} logoRef={logoRef} />
             </Col>
           </Row>
           <Row>
@@ -164,23 +93,9 @@ function Organization() {
           </Row>
         </Container>
         <Container fluid>
-          <Row>
-            <Col>
-              <h2>Venues</h2>
-            </Col>
-            {role === RoleEnum.ADMIN ? (
-              <Col>
-                <Button onClick={() => setShowModal(true)}>Create</Button>
-              </Col>
-            ) : null}
-          </Row>
-          <Row>
-            <Col>
-              {venues.length == 0
-                ? "No venues."
-                : venues.map((venue) => <VenueCard venue={venue} />)}
-            </Col>
-          </Row>
+          {accepted.map((metaReview) => (
+            <AcceptedArticleCard metaReview={metaReview} />
+          ))}
         </Container>
       </Layout>
     </>

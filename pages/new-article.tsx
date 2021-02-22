@@ -23,23 +23,21 @@ const CreateArticleMutation = gql`
     $abstract: String!
     $authorIds: [String!]!
     $ref: String!
-    $venueId: String
   ) {
     createArticle(
       title: $title
       abstract: $abstract
       authorIds: $authorIds
       ref: $ref
-      venueId: $venueId
     ) {
       id
     }
   }
 `;
 
-const GetVenueQuery = gql`
+const GetOrganizationQuery = gql`
   query GetVenueQuery($id: String!) {
-    venue(id: $id) {
+    organization(id: $id) {
       name
     }
   }
@@ -47,21 +45,14 @@ const GetVenueQuery = gql`
 
 const NewArticle = () => {
   const router = useRouter();
-  const { venueId } = router.query;
+  const { organizationId } = router.query;
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [abstract, setAbstract] = useState("");
   const [authors, setAuthors] = useState([]);
-  const [venue, setVenue] = useState("id");
   const [createArticle, { loading, error, data }] = useMutation(
     CreateArticleMutation
   );
-  const venueResult = venueId
-    ? useQuery(GetVenueQuery, {
-        variables: { id: venueId },
-      })
-    : {};
-  console.log(error);
 
   return (
     <Layout>
@@ -120,7 +111,6 @@ const NewArticle = () => {
                     abstract,
                     ref: refPath,
                     authorIds: authors.map((a) => a.id),
-                    venueId: venueId,
                   },
                 });
               }
@@ -130,8 +120,6 @@ const NewArticle = () => {
           Submit
         </Button>
       </Form>
-      {venueId && !venueResult.loading ? venueResult.data.venue.name : ""}
-      <br />
       {file !== null ? (
         <PDFViewer file={file} width={700} pageNumber={10} />
       ) : (

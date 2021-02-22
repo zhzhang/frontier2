@@ -17,6 +17,7 @@ CREATE TABLE "ArticleVersion" (
     "abstract" TEXT NOT NULL,
     "ref" TEXT NOT NULL,
     "articleId" TEXT NOT NULL,
+    "versionNumber" INTEGER NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY ("articleId") REFERENCES "Article" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -40,49 +41,31 @@ CREATE TABLE "OrganizationMembership" (
 );
 
 -- CreateTable
-CREATE TABLE "Venue" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "description" TEXT,
-    "organizationId" TEXT NOT NULL,
-    "submissionDeadline" DATETIME NOT NULL,
-    FOREIGN KEY ("organizationId") REFERENCES "Organization" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- CreateTable
-CREATE TABLE "VenueMembership" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "role" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "venueId" TEXT NOT NULL,
-    FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("venueId") REFERENCES "Venue" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- CreateTable
 CREATE TABLE "Review" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "body" TEXT NOT NULL DEFAULT '',
     "rating" INTEGER NOT NULL DEFAULT 0,
     "articleId" TEXT NOT NULL,
-    "submissionId" TEXT,
     "authorId" TEXT NOT NULL,
+    "organizationId" TEXT,
     "reviewNumber" INTEGER NOT NULL,
     "published" BOOLEAN NOT NULL DEFAULT false,
     FOREIGN KEY ("articleId") REFERENCES "Article" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("submissionId") REFERENCES "Submission" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    FOREIGN KEY ("organizationId") REFERENCES "Organization" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "Submission" (
+CREATE TABLE "MetaReview" (
     "id" TEXT NOT NULL PRIMARY KEY,
+    "body" TEXT NOT NULL DEFAULT '',
+    "decision" BOOLEAN NOT NULL DEFAULT false,
     "articleId" TEXT NOT NULL,
-    "venueId" TEXT NOT NULL,
-    "chairId" TEXT,
+    "organizationId" TEXT,
+    "authorId" TEXT NOT NULL,
     FOREIGN KEY ("articleId") REFERENCES "Article" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("venueId") REFERENCES "Venue" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("chairId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    FOREIGN KEY ("organizationId") REFERENCES "Organization" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -94,11 +77,11 @@ CREATE TABLE "_ArticleToUser" (
 );
 
 -- CreateTable
-CREATE TABLE "_SubmissionToUser" (
+CREATE TABLE "_MetaReviewToReview" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL,
-    FOREIGN KEY ("A") REFERENCES "Submission" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("B") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY ("A") REFERENCES "MetaReview" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY ("B") REFERENCES "Review" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -111,7 +94,7 @@ CREATE UNIQUE INDEX "_ArticleToUser_AB_unique" ON "_ArticleToUser"("A", "B");
 CREATE INDEX "_ArticleToUser_B_index" ON "_ArticleToUser"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_SubmissionToUser_AB_unique" ON "_SubmissionToUser"("A", "B");
+CREATE UNIQUE INDEX "_MetaReviewToReview_AB_unique" ON "_MetaReviewToReview"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_SubmissionToUser_B_index" ON "_SubmissionToUser"("B");
+CREATE INDEX "_MetaReviewToReview_B_index" ON "_MetaReviewToReview"("B");

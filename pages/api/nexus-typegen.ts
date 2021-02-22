@@ -62,6 +62,15 @@ export interface NexusGenObjects {
     createdAt?: string | null; // String
     id?: string | null; // String
     ref?: string | null; // String
+    versionNumber?: number | null; // Int
+  }
+  MetaReview: { // root type
+    article?: NexusGenRootTypes['Article'] | null; // Article
+    author?: NexusGenRootTypes['User'] | null; // User
+    body?: string | null; // String
+    citedReviews?: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
+    decision?: boolean | null; // Boolean
+    id?: string | null; // String
   }
   Mutation: {};
   Organization: { // root type
@@ -83,20 +92,13 @@ export interface NexusGenObjects {
   Submission: { // root type
     articleId?: string | null; // String
     id?: string | null; // String
-    venue?: NexusGenRootTypes['Venue'] | null; // Venue
-    venueId?: string | null; // String
+    organization?: NexusGenRootTypes['Organization'] | null; // Organization
+    organizationId?: string | null; // String
   }
   User: { // root type
     email?: string | null; // String
     id?: string | null; // String
     name?: string | null; // String
-  }
-  Venue: { // root type
-    description?: string | null; // String
-    id?: string | null; // String
-    name?: string | null; // String
-    role?: string | null; // String
-    submissionDeadline?: NexusGenScalars['Date'] | null; // Date
   }
 }
 
@@ -123,6 +125,15 @@ export interface NexusGenFieldTypes {
     createdAt: string | null; // String
     id: string | null; // String
     ref: string | null; // String
+    versionNumber: number | null; // Int
+  }
+  MetaReview: { // field return type
+    article: NexusGenRootTypes['Article'] | null; // Article
+    author: NexusGenRootTypes['User'] | null; // User
+    body: string | null; // String
+    citedReviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
+    decision: boolean | null; // Boolean
+    id: string | null; // String
   }
   Mutation: { // field return type
     assignChair: NexusGenRootTypes['Submission'] | null; // Submission
@@ -130,16 +141,15 @@ export interface NexusGenFieldTypes {
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOrganization: NexusGenRootTypes['Organization'] | null; // Organization
     createReview: NexusGenRootTypes['Review'] | null; // Review
-    createVenue: NexusGenRootTypes['Venue'] | null; // Venue
     updateReview: NexusGenRootTypes['Review'] | null; // Review
   }
   Organization: { // field return type
+    accepted: Array<NexusGenRootTypes['MetaReview'] | null> | null; // [MetaReview]
     description: string | null; // String
     id: string | null; // String
     logoRef: string | null; // String
     name: string | null; // String
     role: NexusGenEnums['Role'] | null; // Role
-    venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Query: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
@@ -149,8 +159,6 @@ export interface NexusGenFieldTypes {
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     user: NexusGenRootTypes['User'] | null; // User
-    venue: NexusGenRootTypes['Venue'] | null; // Venue
-    venueSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
   }
   Review: { // field return type
     author: NexusGenRootTypes['User'] | null; // User
@@ -166,22 +174,15 @@ export interface NexusGenFieldTypes {
     articleId: string | null; // String
     chair: NexusGenRootTypes['User'] | null; // User
     id: string | null; // String
+    organization: NexusGenRootTypes['Organization'] | null; // Organization
+    organizationId: string | null; // String
     requestedReviewers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    venue: NexusGenRootTypes['Venue'] | null; // Venue
-    venueId: string | null; // String
   }
   User: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     email: string | null; // String
     id: string | null; // String
     name: string | null; // String
-  }
-  Venue: { // field return type
-    description: string | null; // String
-    id: string | null; // String
-    name: string | null; // String
-    role: string | null; // String
-    submissionDeadline: NexusGenScalars['Date'] | null; // Date
   }
 }
 
@@ -198,6 +199,15 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'String'
     id: 'String'
     ref: 'String'
+    versionNumber: 'Int'
+  }
+  MetaReview: { // field return type name
+    article: 'Article'
+    author: 'User'
+    body: 'String'
+    citedReviews: 'Review'
+    decision: 'Boolean'
+    id: 'String'
   }
   Mutation: { // field return type name
     assignChair: 'Submission'
@@ -205,16 +215,15 @@ export interface NexusGenFieldTypeNames {
     createArticle: 'Article'
     createOrganization: 'Organization'
     createReview: 'Review'
-    createVenue: 'Venue'
     updateReview: 'Review'
   }
   Organization: { // field return type name
+    accepted: 'MetaReview'
     description: 'String'
     id: 'String'
     logoRef: 'String'
     name: 'String'
     role: 'Role'
-    venues: 'Venue'
   }
   Query: { // field return type name
     article: 'Article'
@@ -224,8 +233,6 @@ export interface NexusGenFieldTypeNames {
     reviewerAssignedSubmissions: 'Submission'
     searchUsers: 'User'
     user: 'User'
-    venue: 'Venue'
-    venueSubmissions: 'Submission'
   }
   Review: { // field return type name
     author: 'User'
@@ -241,22 +248,15 @@ export interface NexusGenFieldTypeNames {
     articleId: 'String'
     chair: 'User'
     id: 'String'
+    organization: 'Organization'
+    organizationId: 'String'
     requestedReviewers: 'User'
-    venue: 'Venue'
-    venueId: 'String'
   }
   User: { // field return type name
     articles: 'Article'
     email: 'String'
     id: 'String'
     name: 'String'
-  }
-  Venue: { // field return type name
-    description: 'String'
-    id: 'String'
-    name: 'String'
-    role: 'String'
-    submissionDeadline: 'Date'
   }
 }
 
@@ -273,9 +273,9 @@ export interface NexusGenArgTypes {
     createArticle: { // args
       abstract: string; // String!
       authorIds: string[]; // [String!]!
+      organizationId?: string | null; // String
       ref: string; // String!
       title: string; // String!
-      venueId?: string | null; // String
     }
     createOrganization: { // args
       description: string; // String!
@@ -285,12 +285,6 @@ export interface NexusGenArgTypes {
     createReview: { // args
       articleId: string; // String!
       submissionId?: string | null; // String
-    }
-    createVenue: { // args
-      description: string; // String!
-      name: string; // String!
-      organizationId: string; // String!
-      submissionDeadline: NexusGenScalars['Date']; // Date!
     }
     updateReview: { // args
       body: string; // String!
@@ -314,12 +308,6 @@ export interface NexusGenArgTypes {
     }
     user: { // args
       userId: string; // String!
-    }
-    venue: { // args
-      id: string; // String!
-    }
-    venueSubmissions: { // args
-      venueId: string; // String!
     }
   }
 }

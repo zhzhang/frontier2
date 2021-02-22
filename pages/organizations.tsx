@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import OrganizationCard from "../components/OrganizationCard";
 import { useRouter } from "next/router";
 import { withApollo } from "../lib/apollo";
@@ -18,14 +19,10 @@ const OrganizationQuery = gql`
 `;
 
 function Organizations() {
-  const id = useRouter().query.id;
-  const { loading, error, data } = useQuery(OrganizationQuery, {
-    variables: {},
-  });
+  const { loading, error, data } = useQuery(OrganizationQuery);
 
   if (loading) {
-    console.log("loading");
-    return <div>Loading ...</div>;
+    return <Spinner />;
   }
   if (error) {
     console.log("error");

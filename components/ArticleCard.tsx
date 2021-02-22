@@ -10,8 +10,8 @@ const ArticleCard = ({ article }) => {
   return (
     <Jumbotron onClick={() => Router.push(`/article/${id}`)}>
       <h3>{title}</h3>
-      <Quill value={abstract} modules={{ toolbar: false }} readOnly />
       {authors.map((a) => a.name)}
+      <Quill value={abstract} modules={{ toolbar: false }} readOnly />
     </Jumbotron>
   );
 };

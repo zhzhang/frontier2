@@ -39,12 +39,6 @@ const ArticleQuery = gql`
           id
           name
         }
-        submission {
-          id
-          venue {
-            name
-          }
-        }
       }
     }
   }
@@ -65,13 +59,14 @@ function Article() {
 
   const { title, authors, versions, reviews } = data.article;
   const { abstract, ref } = versions[0];
+  console.log(data.article);
 
   return (
     <Layout>
       <div style={{ display: "flex", height: "100%" }}>
         <div className="flex-grow-1">
           <Container fluid>
-            <h1>{title}</h1>
+            <h2>{title}</h2>
             {authors.map((author) => (
               <h5>{author.name}</h5>
             ))}
@@ -87,7 +82,6 @@ function Article() {
                     ) : (
                       `Reviewer ${review.reviewNumber}`
                     )}{" "}
-                    {review.submission.venue.name}
                     <ChevronDown />
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0">
@@ -100,12 +94,12 @@ function Article() {
         </div>
         <div
           style={{
-            width: 820,
+            width: 720,
             height: "calc(100vh - 55px)",
             overflowY: "scroll",
           }}
         >
-          <PdfViewer fileRef={ref} width={800} />
+          <PdfViewer fileRef={ref} width={700} />
         </div>
       </div>
     </Layout>

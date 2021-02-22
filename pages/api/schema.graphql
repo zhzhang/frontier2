@@ -15,6 +15,7 @@ type ArticleVersion {
   createdAt: String
   id: String
   ref: String
+  versionNumber: Int
 }
 
 """
@@ -22,23 +23,31 @@ A date string, such as 2007-12-03, compliant with the `full-date` format outline
 """
 scalar Date
 
+type MetaReview {
+  article: Article
+  author: User
+  body: String
+  citedReviews: [Review]
+  decision: Boolean
+  id: String
+}
+
 type Mutation {
   assignChair(chairId: String!, submissionId: String!): Submission
   assignReviewers(reviewerIds: [String!]!, submissionId: String!): Submission
-  createArticle(abstract: String!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
+  createArticle(abstract: String!, authorIds: [String!]!, organizationId: String, ref: String!, title: String!): Article
   createOrganization(description: String!, logoRef: String, name: String!): Organization
   createReview(articleId: String!, submissionId: String): Review
-  createVenue(description: String!, name: String!, organizationId: String!, submissionDeadline: Date!): Venue
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
 }
 
 type Organization {
+  accepted: [MetaReview]
   description: String
   id: String
   logoRef: String
   name: String
   role: Role
-  venues: [Venue]
 }
 
 type Query {
@@ -49,8 +58,6 @@ type Query {
   reviewerAssignedSubmissions: [Submission]
   searchUsers(query: String): [User]
   user(userId: String!): User
-  venue(id: String!): Venue
-  venueSubmissions(venueId: String!): [Submission]
 }
 
 type Review {
@@ -75,9 +82,9 @@ type Submission {
   articleId: String
   chair: User
   id: String
+  organization: Organization
+  organizationId: String
   requestedReviewers: [User]
-  venue: Venue
-  venueId: String
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -88,12 +95,4 @@ type User {
   email: String
   id: String
   name: String
-}
-
-type Venue {
-  description: String
-  id: String
-  name: String
-  role: String
-  submissionDeadline: Date
 }
