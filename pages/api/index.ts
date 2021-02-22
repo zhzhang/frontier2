@@ -12,11 +12,15 @@ import {
   enumType,
   objectType,
   stringArg,
+  intArg,
+  booleanArg,
 } from "nexus";
 import jwt_decode from "jwt-decode";
 import path from "path";
 import prisma from "../../lib/prisma";
 import { RoleEnum } from "../../lib/types";
+import _ from "lodash";
+import context from "react-bootstrap/esm/AccordionContext";
 
 export type Upload = Promise<FileUpload>;
 export const Upload = asNexusMethod(GraphQLUpload!, "upload");
@@ -72,6 +76,15 @@ const Article = objectType({
         });
       },
     });
+    t.list.field("reviews", {
+      type: "Review",
+      resolve: (parent, _tmp, ctx) => {
+        return _.filter(
+          parent.reviews,
+          (review) => review.published || review.authorId === ctx.user.id
+        );
+      },
+    });
   },
 });
 
@@ -116,6 +129,18 @@ const Organization = objectType({
         });
       },
     });
+  },
+});
+
+const Review = objectType({
+  name: "Review",
+  definition(t) {
+    t.string("id");
+    t.string("body");
+    t.int("rating");
+    t.int("reviewNumber");
+    t.boolean("published");
+    t.field("author", { type: "User" });
   },
 });
 
@@ -252,6 +277,25 @@ const Query = objectType({
         return user.reviewRequests;
       },
     });
+    t.field("article", {
+      type: "Article",
+      args: { id: nonNull(stringArg()) },
+      resolve: async (_, { id }, ctx) => {
+        return await prisma.article.findUnique({
+          where: {
+            id,
+          },
+          include: {
+            versions: true,
+            reviews: {
+              include: {
+                author: true,
+              },
+            },
+          },
+        });
+      },
+    });
   },
 });
 
@@ -381,6 +425,56 @@ const Mutation = objectType({
         });
       },
     });
+    t.field("createReview", {
+      type: "Review",
+      args: {
+        articleId: nonNull(stringArg()),
+        submissionId: nullable(stringArg()),
+      },
+      resolve: async (_, { articleId, submissionId }, ctx) => {
+        const prevReviews = await prisma.review.findMany({
+          where: {
+            articleId,
+          },
+        });
+        const reviewNumber =
+          prevReviews.length === 0
+            ? 1
+            : _.max(prevReviews.map((review) => review.reviewNumber)) + 1;
+        const data = {
+          articleId,
+          reviewNumber,
+          authorId: ctx.user.id,
+        };
+        if (submissionId !== null && submissionId !== undefined) {
+          data.submissionId = submissionId;
+        }
+        return await prisma.review.create({
+          data,
+        });
+      },
+    });
+    t.field("updateReview", {
+      type: "Review",
+      args: {
+        id: nonNull(stringArg()),
+        body: nonNull(stringArg()),
+        rating: nonNull(intArg()),
+        published: nonNull(booleanArg()),
+      },
+      resolve: async (_, { id, body, rating, published }, ctx) => {
+        try {
+          await prisma.review.update({
+            where: {
+              id: id,
+            },
+            data: { body, rating, published },
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      },
+    });
   },
 });
 
@@ -404,6 +498,7 @@ export const schema = makeSchema({
     Organization,
     Submission,
     Venue,
+    Review,
     Role,
     GQLDate,
     Upload,

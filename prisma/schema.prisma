@@ -76,12 +76,16 @@ model VenueMembership {
 
 model Review {
   id             String  @id @default(cuid())
-  body           String
+  body           String @default("")
+  rating         Int @default(0)
   article        Article @relation(fields: [articleId], references: [id])
   author         User    @relation(fields: [authorId], references: [id])
   articleId      String
+  submission     Submission? @relation(fields: [submissionId], references: [id])
+  submissionId   String?
   authorId       String
-  reviewerNumber Int
+  reviewNumber   Int
+  published      Boolean @default(false)
 }
 
 model Submission {

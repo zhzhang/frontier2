@@ -8,7 +8,7 @@ const ArticleCard = ({ article }) => {
   const { id, title, versions, authors } = article;
   const abstract = versions[0].abstract;
   return (
-    <Jumbotron>
+    <Jumbotron onClick={() => Router.push(`/article/${id}`)}>
       <h3>{title}</h3>
       <Quill value={abstract} modules={{ toolbar: false }} readOnly />
       {authors.map((a) => a.name)}

@@ -5,6 +5,7 @@
 type Article {
   authors: [User]
   id: String
+  reviews: [Review]
   title: String
   versions: [ArticleVersion]
 }
@@ -26,7 +27,9 @@ type Mutation {
   assignReviewers(reviewerIds: [String!]!, submissionId: String!): Submission
   createArticle(abstract: String!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createOrganization(description: String!, name: String!): Organization
+  createReview(articleId: String!, submissionId: String): Review
   createVenue(description: String!, name: String!, organizationId: String!, submissionDeadline: Date!): Venue
+  updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
 }
 
 type Organization {
@@ -38,6 +41,7 @@ type Organization {
 }
 
 type Query {
+  article(id: String!): Article
   articles: [Article]
   browseOrganizations(tags: [String]): [Organization]
   organization(id: String!): Organization
@@ -46,6 +50,15 @@ type Query {
   user(userId: String!): User
   venue(id: String!): Venue
   venueSubmissions(venueId: String!): [Submission]
+}
+
+type Review {
+  author: User
+  body: String
+  id: String
+  published: Boolean
+  rating: Int
+  reviewNumber: Int
 }
 
 enum Role {

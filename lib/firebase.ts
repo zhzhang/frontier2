@@ -41,3 +41,11 @@ export function uploadFile(file, type: UploadTypeEnum) {
   const uploadTask = ref.put(file);
   return { uploadTask, refPath };
 }
+
+export function useRef(ref) {
+  const storage = firebase.storage();
+  const pathRef = storage.ref(ref);
+  const [url, setURL] = useState();
+  pathRef.getDownloadURL().then((url) => setURL(url));
+  return url;
+}

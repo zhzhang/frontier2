@@ -4,7 +4,7 @@ import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { Quill } from "../components/Quill";
-import SubmissionCard from "../components/SubmissionCard";
+import ReviewRequestCard from "../components/ReviewRequestCard";
 
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -47,10 +47,10 @@ function ReviewRequests() {
   return (
     <>
       <Layout>
-        <h2>Submissions</h2>
+        <h1>Review Requests</h1>
         <Container fluid>
           {submissions.map((s) => (
-            <SubmissionCard submission={s} />
+            <ReviewRequestCard submission={s} />
           ))}
         </Container>
       </Layout>
