@@ -25,7 +25,8 @@ CREATE TABLE "ArticleVersion" (
 CREATE TABLE "Organization" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
-    "description" TEXT
+    "description" TEXT,
+    "logoRef" TEXT
 );
 
 -- CreateTable
@@ -61,12 +62,16 @@ CREATE TABLE "VenueMembership" (
 -- CreateTable
 CREATE TABLE "Review" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "body" TEXT NOT NULL,
+    "body" TEXT NOT NULL DEFAULT '',
+    "rating" INTEGER NOT NULL DEFAULT 0,
     "articleId" TEXT NOT NULL,
+    "submissionId" TEXT,
     "authorId" TEXT NOT NULL,
-    "reviewerNumber" INTEGER NOT NULL,
+    "reviewNumber" INTEGER NOT NULL,
+    "published" BOOLEAN NOT NULL DEFAULT false,
     FOREIGN KEY ("articleId") REFERENCES "Article" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY ("submissionId") REFERENCES "Submission" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable

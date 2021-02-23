@@ -63,7 +63,7 @@ function Article() {
     return <div>Error: {error.message}</div>;
   }
 
-  const { title, versions, reviews } = data.article;
+  const { title, authors, versions, reviews } = data.article;
   const { abstract, ref } = versions[0];
 
   return (
@@ -72,7 +72,9 @@ function Article() {
         <div className="flex-grow-1">
           <Container fluid>
             <h1>{title}</h1>
-            <Quill value={abstract} modules={{ toolbar: false }} readOnly />
+            {authors.map((author) => (
+              <h5>{author.name}</h5>
+            ))}
             <h1>Reviews</h1>
             <Accordion>
               {reviews.map((review) => (
@@ -89,7 +91,7 @@ function Article() {
                     <ChevronDown />
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0">
-                    <Review review={review} editing={false} />
+                    <Review review={review} editing={true} />
                   </Accordion.Collapse>
                 </Card>
               ))}

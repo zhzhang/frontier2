@@ -1,4 +1,5 @@
 import Layout from "../components/Layout";
+import Container from "react-bootstrap/Container";
 import OrganizationCard from "../components/OrganizationCard";
 import { useRouter } from "next/router";
 import { withApollo } from "../lib/apollo";
@@ -33,9 +34,11 @@ function Organizations() {
 
   return (
     <Layout>
-      {data.browseOrganizations.map((organization) => (
-        <OrganizationCard organization={organization} />
-      ))}
+      <Container fluid style={{ paddingTop: 20 }}>
+        {data.browseOrganizations.map((organization) => (
+          <OrganizationCard organization={organization} />
+        ))}
+      </Container>
     </Layout>
   );
 }

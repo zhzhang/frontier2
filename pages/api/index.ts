@@ -290,6 +290,7 @@ const Query = objectType({
           },
           include: {
             versions: true,
+            authors: true,
             reviews: {
               include: {
                 author: true,
