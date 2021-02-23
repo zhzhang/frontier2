@@ -142,6 +142,7 @@ const Review = objectType({
     t.int("reviewNumber");
     t.boolean("published");
     t.field("author", { type: "User" });
+    t.field("submission", { type: "Submission" });
   },
 });
 
@@ -168,6 +169,7 @@ const Submission = objectType({
         return parent.article;
       },
     });
+    t.field("venue", { type: "Venue" });
     t.field("chair", {
       type: "User",
       resolve: (parent) => {
@@ -291,6 +293,11 @@ const Query = objectType({
             reviews: {
               include: {
                 author: true,
+                submission: {
+                  include: {
+                    venue: true,
+                  },
+                },
               },
             },
           },

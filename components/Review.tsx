@@ -1,4 +1,5 @@
 import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import { Quill } from "./Quill";
 import { withApollo } from "../lib/apollo";
@@ -21,11 +22,11 @@ const UpdateReviewMutation = gql`
 `;
 
 const Review = ({ review, editing }) => {
-  console.log(review);
   const [body, setBody] = useState(review.body);
   const [updateReview, { loading, error, data }] = useMutation(
     UpdateReviewMutation
   );
+  console.log(review);
   return (
     <>
       <Quill
@@ -34,7 +35,6 @@ const Review = ({ review, editing }) => {
         readOnly={!editing}
         onChange={setBody}
       />
-      <br />
       {editing ? (
         <>
           <Button
@@ -67,6 +67,7 @@ const Review = ({ review, editing }) => {
           </Button>
         </>
       ) : null}
+      {`Rating: ${review.rating}`}
     </>
   );
 };

@@ -21,9 +21,7 @@ const Layout = (props) => {
       />
 
       <Navigation />
-      <Container fluid style={{ paddingTop: 80 }}>
-        {props.children}
-      </Container>
+      <div style={{ paddingTop: 55 }}>{props.children}</div>
     </>
   );
 };

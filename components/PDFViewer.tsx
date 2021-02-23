@@ -5,7 +5,7 @@ import { useState } from "react";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = ({ file, fileRef, width }) => {
-  const [pageNumber, setPageNumber] = useState(1);
+  const [numPages, setNumPages] = useState(null);
   if (fileRef !== null && fileRef !== undefined) {
     file = useRef(fileRef);
     if (file === undefined) {
@@ -13,13 +13,16 @@ const PdfViewer = ({ file, fileRef, width }) => {
     }
   }
   return (
-    <>
-      <Document file={file}>
-        <Page pageNumber={pageNumber} width={width} />
-      </Document>
-      <button onClick={() => setPageNumber(pageNumber + 1)}>Up</button>
-      <button onClick={() => setPageNumber(pageNumber - 1)}>Down</button>
-    </>
+    <Document
+      file={file}
+      onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+    >
+      {Array.apply(null, Array(numPages))
+        .map((x, i) => i + 1)
+        .map((page) => (
+          <Page pageNumber={page} width={width} style={{ border: 1 }} />
+        ))}
+    </Document>
   );
 };
 

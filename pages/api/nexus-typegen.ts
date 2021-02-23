@@ -78,10 +78,12 @@ export interface NexusGenObjects {
     published?: boolean | null; // Boolean
     rating?: number | null; // Int
     reviewNumber?: number | null; // Int
+    submission?: NexusGenRootTypes['Submission'] | null; // Submission
   }
   Submission: { // root type
     articleId?: string | null; // String
     id?: string | null; // String
+    venue?: NexusGenRootTypes['Venue'] | null; // Venue
     venueId?: string | null; // String
   }
   User: { // root type
@@ -157,6 +159,7 @@ export interface NexusGenFieldTypes {
     published: boolean | null; // Boolean
     rating: number | null; // Int
     reviewNumber: number | null; // Int
+    submission: NexusGenRootTypes['Submission'] | null; // Submission
   }
   Submission: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
@@ -164,6 +167,7 @@ export interface NexusGenFieldTypes {
     chair: NexusGenRootTypes['User'] | null; // User
     id: string | null; // String
     requestedReviewers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    venue: NexusGenRootTypes['Venue'] | null; // Venue
     venueId: string | null; // String
   }
   User: { // field return type
@@ -230,6 +234,7 @@ export interface NexusGenFieldTypeNames {
     published: 'Boolean'
     rating: 'Int'
     reviewNumber: 'Int'
+    submission: 'Submission'
   }
   Submission: { // field return type name
     article: 'Article'
@@ -237,6 +242,7 @@ export interface NexusGenFieldTypeNames {
     chair: 'User'
     id: 'String'
     requestedReviewers: 'User'
+    venue: 'Venue'
     venueId: 'String'
   }
   User: { // field return type name

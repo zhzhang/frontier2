@@ -60,6 +60,7 @@ type Review {
   published: Boolean
   rating: Int
   reviewNumber: Int
+  submission: Submission
 }
 
 enum Role {
@@ -75,6 +76,7 @@ type Submission {
   chair: User
   id: String
   requestedReviewers: [User]
+  venue: Venue
   venueId: String
 }
 
