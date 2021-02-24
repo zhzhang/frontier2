@@ -89,9 +89,7 @@ function createApolloClient(initialState = {}) {
   });
 
   return new ApolloClient({
-    link: authLink.concat(
-      createUploadLink({ uri: "http://localhost:3000/api" })
-    ),
+    link: authLink.concat(createUploadLink({ uri: "/api" })),
     cache,
   });
 }
