@@ -511,7 +511,8 @@ interface FirebaseToken {
 }
 
 export default new ApolloServer({
-  schema: applyMiddleware(schema, permissions),
+  // schema: applyMiddleware(schema, permissions),
+  schema: schema,
   context: async ({ req }) => {
     const token = req.headers.authorization || "";
     if (token == "") {
