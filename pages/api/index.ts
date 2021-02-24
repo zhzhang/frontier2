@@ -472,9 +472,9 @@ const rules = {
     return Boolean(ctx.user);
   }),
 };
-export const permissions = shield({
-  Mutation: rules.isAuthenticated,
-});
+// export const permissions = shield({
+//   Mutation: rules.isAuthenticated,
+// });
 
 export const schema = makeSchema({
   types: [
