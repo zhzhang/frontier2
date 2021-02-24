@@ -4,6 +4,7 @@ import ArticleCard from "../components/ArticleCard";
 import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import Container from "react-bootstrap/Container";
 
 const GetArticlesQuery = gql`
   query GetArticlesQuery {
@@ -31,9 +32,11 @@ function Articles(props) {
   }
   return (
     <Layout>
-      {data.articles.map((article) => (
-        <ArticleCard article={article} />
-      ))}
+      <Container fluid style={{ paddingTop: 20 }}>
+        {data.articles.map((article) => (
+          <ArticleCard article={article} />
+        ))}
+      </Container>
     </Layout>
   );
 }

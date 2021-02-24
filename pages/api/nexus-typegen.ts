@@ -74,6 +74,7 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Organization: { // root type
+    abbreviation?: string | null; // String
     description?: string | null; // String
     id?: string | null; // String
     logoRef?: string | null; // String
@@ -83,7 +84,9 @@ export interface NexusGenObjects {
   Review: { // root type
     author?: NexusGenRootTypes['User'] | null; // User
     body?: string | null; // String
+    canAccess?: boolean | null; // Boolean
     id?: string | null; // String
+    organization?: NexusGenRootTypes['Organization'] | null; // Organization
     published?: boolean | null; // Boolean
     rating?: number | null; // Int
     reviewNumber?: number | null; // Int
@@ -144,6 +147,7 @@ export interface NexusGenFieldTypes {
     updateReview: NexusGenRootTypes['Review'] | null; // Review
   }
   Organization: { // field return type
+    abbreviation: string | null; // String
     accepted: Array<NexusGenRootTypes['MetaReview'] | null> | null; // [MetaReview]
     description: string | null; // String
     id: string | null; // String
@@ -163,7 +167,9 @@ export interface NexusGenFieldTypes {
   Review: { // field return type
     author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
+    canAccess: boolean | null; // Boolean
     id: string | null; // String
+    organization: NexusGenRootTypes['Organization'] | null; // Organization
     published: boolean | null; // Boolean
     rating: number | null; // Int
     reviewNumber: number | null; // Int
@@ -218,6 +224,7 @@ export interface NexusGenFieldTypeNames {
     updateReview: 'Review'
   }
   Organization: { // field return type name
+    abbreviation: 'String'
     accepted: 'MetaReview'
     description: 'String'
     id: 'String'
@@ -237,7 +244,9 @@ export interface NexusGenFieldTypeNames {
   Review: { // field return type name
     author: 'User'
     body: 'String'
+    canAccess: 'Boolean'
     id: 'String'
+    organization: 'Organization'
     published: 'Boolean'
     rating: 'Int'
     reviewNumber: 'Int'

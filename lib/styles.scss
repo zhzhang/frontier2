@@ -16,3 +16,11 @@ $theme-colors: (
 .ql-container {
   border: none;
 }
+
+.react-pdf__Page {
+  border: 1px;
+  border-style: solid;
+  margin: 5px;
+  padding: 2px;
+  border-radius: 2px;
+}

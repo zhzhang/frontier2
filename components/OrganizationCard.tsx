@@ -14,7 +14,7 @@ const OrganizationCard = ({ organization }) => {
     logoRef !== null && logoRef !== undefined ? useRef(logoRef) : null;
   return (
     <Jumbotron>
-      <Row>
+      <Row style={{ marginBottom: 10 }}>
         <Col>
           {url === null ? (
             <Image
@@ -30,7 +30,11 @@ const OrganizationCard = ({ organization }) => {
           </Link>
         </Col>
       </Row>
-      <Quill value={description} modules={{ toolbar: false }} readOnly />
+      <Row>
+        <Col>
+          <Quill value={description} modules={{ toolbar: false }} readOnly />
+        </Col>
+      </Row>
     </Jumbotron>
   );
 };

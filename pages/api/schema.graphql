@@ -42,6 +42,7 @@ type Mutation {
 }
 
 type Organization {
+  abbreviation: String
   accepted: [MetaReview]
   description: String
   id: String
@@ -63,7 +64,9 @@ type Query {
 type Review {
   author: User
   body: String
+  canAccess: Boolean
   id: String
+  organization: Organization
   published: Boolean
   rating: Int
   reviewNumber: Int

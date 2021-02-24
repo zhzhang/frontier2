@@ -13,7 +13,8 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
-import Modal from "react-bootstrap/Modal";
+import Tabs from "react-bootstrap/Tabs";
+import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
 import DatePicker from "react-datepicker";
@@ -29,6 +30,7 @@ const OrganizationQuery = gql`
       logoRef
       accepted {
         id
+        body
         article {
           id
           title
@@ -40,6 +42,23 @@ const OrganizationQuery = gql`
             id
             abstract
             versionNumber
+          }
+        }
+        author {
+          id
+          name
+        }
+        citedReviews {
+          author {
+            name
+          }
+          body
+          reviewNumber
+          rating
+          canAccess
+          organization {
+            logoRef
+            abbreviation
           }
         }
       }
@@ -72,30 +91,39 @@ function Organization() {
   }
 
   const { name, description, role, logoRef, accepted } = data.organization;
+  const tabKey = "accepted";
 
   return (
     <>
       <Layout>
-        <Container fluid>
-          <Row>
+        <Container style={{ paddingTop: 20 }} fluid>
+          <Row style={{ paddingBottom: 20 }}>
             <Col>
               <Header name={name} logoRef={logoRef} />
             </Col>
           </Row>
           <Row>
             <Col>
-              <Quill
-                value={description}
-                modules={{ toolbar: false }}
-                readOnly
-              />
+              <Tabs defaultActiveKey={tabKey}>
+                <Tab eventKey="info" title="Info">
+                  <Container fluid style={{ paddingTop: 10 }}>
+                    <Quill
+                      value={description}
+                      modules={{ toolbar: false }}
+                      readOnly
+                    />
+                  </Container>
+                </Tab>
+                <Tab eventKey="accepted" title="Accepted Articles">
+                  <Container fluid style={{ paddingTop: 10 }}>
+                    {accepted.map((metaReview) => (
+                      <AcceptedArticleCard metaReview={metaReview} />
+                    ))}
+                  </Container>
+                </Tab>
+              </Tabs>
             </Col>
           </Row>
-        </Container>
-        <Container fluid>
-          {accepted.map((metaReview) => (
-            <AcceptedArticleCard metaReview={metaReview} />
-          ))}
         </Container>
       </Layout>
     </>

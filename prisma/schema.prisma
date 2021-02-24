@@ -39,6 +39,7 @@ model ArticleVersion {
 model Organization {
   id          String                   @id @default(cuid())
   name        String
+  abbreviation String
   description String?
   logoRef     String?
   memberships OrganizationMembership[]
@@ -67,6 +68,7 @@ model Review {
   organizationId String?
   reviewNumber   Int
   published      Boolean       @default(false)
+  canAccess      Boolean       @default(true)
   MetaReview     MetaReview?   @relation(fields: [metaReviewId], references: [id])
   metaReviewId   String?
 }

@@ -105,6 +105,7 @@ const Organization = objectType({
     t.string("id");
     t.string("name");
     t.string("description");
+    t.string("abbreviation");
     t.string("logoRef");
     t.field("role", {
       type: Role,
@@ -130,10 +131,17 @@ const Organization = objectType({
             decision: true,
           },
           include: {
+            author: true,
             article: {
               include: {
                 authors: true,
                 versions: true,
+              },
+            },
+            citedReviews: {
+              include: {
+                author: true,
+                organization: true,
               },
             },
           },
@@ -151,8 +159,10 @@ const Review = objectType({
     t.int("rating");
     t.int("reviewNumber");
     t.boolean("published");
+    t.boolean("canAccess");
     t.field("author", { type: "User" });
     t.field("submission", { type: "Submission" });
+    t.field("organization", { type: "Organization" });
   },
 });
 
@@ -282,6 +292,7 @@ const Query = objectType({
             reviews: {
               include: {
                 author: true,
+                organization: true,
               },
             },
           },

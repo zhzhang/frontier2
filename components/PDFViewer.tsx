@@ -20,7 +20,7 @@ const PdfViewer = ({ file, fileRef, width }) => {
       {Array.apply(null, Array(numPages))
         .map((x, i) => i + 1)
         .map((page) => (
-          <Page pageNumber={page} width={width} style={{ border: 1 }} />
+          <Page pageNumber={page} width={700} />
         ))}
     </Document>
   );

@@ -1,4 +1,5 @@
 import Layout from "../../components/Layout";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { withApollo } from "../../lib/apollo";
 import gql from "graphql-tag";
@@ -34,10 +35,17 @@ const ArticleQuery = gql`
         body
         rating
         reviewNumber
+        canAccess
         published
         author {
           id
           name
+        }
+        organization {
+          id
+          name
+          abbreviation
+          logoRef
         }
       }
     }
@@ -49,6 +57,7 @@ function Article() {
   const { loading, error, data } = useQuery(ArticleQuery, {
     variables: { id },
   });
+  const [abstractOpen, setAbstractOpen] = useState(false);
   if (loading) {
     return <Spinner />;
   }
@@ -65,41 +74,50 @@ function Article() {
     <Layout>
       <div style={{ display: "flex", height: "100%" }}>
         <div className="flex-grow-1">
-          <Container fluid>
-            <h2>{title}</h2>
+          <Container fluid style={{ paddingTop: 10 }}>
+            <h4>{title}</h4>
             {authors.map((author) => (
-              <h5>{author.name}</h5>
+              <span>{author.name}</span>
             ))}
-            <h1>Reviews</h1>
-            <Accordion>
-              {reviews.map((review) => (
-                <Card>
-                  <Accordion.Toggle as={Card.Header} eventKey="0">
-                    {review.author ? (
-                      <>
-                        <PersonCircle /> {review.author.name}
-                      </>
-                    ) : (
-                      `Reviewer ${review.reviewNumber}`
-                    )}{" "}
-                    <ChevronDown />
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="0">
-                    <Review review={review} editing={true} />
-                  </Accordion.Collapse>
-                </Card>
-              ))}
+            <Accordion activeKey={abstractOpen ? "0" : null}>
+              <Card>
+                <Accordion.Toggle
+                  as={Card.Header}
+                  eventKey="0"
+                  onClick={() => setAbstractOpen(!abstractOpen)}
+                >
+                  Abstract
+                  <span style={{ float: "right" }}>
+                    {abstractOpen ? <ChevronUp /> : <ChevronDown />}
+                  </span>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0">
+                  <Quill
+                    value={abstract}
+                    modules={{ toolbar: false }}
+                    readOnly
+                  />
+                </Accordion.Collapse>
+              </Card>
             </Accordion>
+            <br />
+            <h4>Reviews</h4>
+            {reviews.map((review) => (
+              <div style={{ paddingBottom: 10 }}>
+                <Review review={review} editing={false} startOpen={true} />
+              </div>
+            ))}
           </Container>
         </div>
         <div
           style={{
-            width: 720,
+            minWidth: 730,
+            width: "auto",
             height: "calc(100vh - 55px)",
             overflowY: "scroll",
           }}
         >
-          <PdfViewer fileRef={ref} width={700} />
+          <PdfViewer fileRef={ref} />
         </div>
       </div>
     </Layout>
