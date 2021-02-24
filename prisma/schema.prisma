@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = "mysql://root:somerandompassword@35.202.204.111/main"
 }
 
 model User {
@@ -28,7 +28,7 @@ model Article {
 
 model ArticleVersion {
   id            String   @id @default(cuid())
-  abstract      String
+  abstract      String @db.MediumText
   ref           String
   article       Article  @relation(fields: [articleId], references: [id])
   articleId     String
@@ -40,7 +40,7 @@ model Organization {
   id          String                   @id @default(cuid())
   name        String
   abbreviation String
-  description String?
+  description String? @db.MediumText
   logoRef     String?
   memberships OrganizationMembership[]
   reviews     Review[]
@@ -58,7 +58,7 @@ model OrganizationMembership {
 
 model Review {
   id             String        @id @default(cuid())
-  body           String        @default("")
+  body           String        @db.MediumText
   rating         Int           @default(0)
   article        Article       @relation(fields: [articleId], references: [id])
   author         User          @relation(fields: [authorId], references: [id])
@@ -75,7 +75,7 @@ model Review {
 
 model MetaReview {
   id             String        @id @default(cuid())
-  body           String        @default("")
+  body           String        @db.MediumText
   decision       Boolean       @default(false)
   citedReviews   Review[]
   article        Article       @relation(fields: [articleId], references: [id])

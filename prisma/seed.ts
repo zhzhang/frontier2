@@ -101,6 +101,7 @@ M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist
             organizationId: organization.id,
             rating: 1,
             canAccess: false,
+            body: "",
           },
           {
             authorId: reviewer.id,
