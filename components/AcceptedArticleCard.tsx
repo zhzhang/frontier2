@@ -10,7 +10,6 @@ import gql from "graphql-tag";
 const AcceptedArticleCard = ({ metaReview }) => {
   const { article } = metaReview;
   const { title, authors } = article;
-  console.log(metaReview);
   return (
     <Accordion defaultActiveKey="1">
       <Card style={{ padding: 10 }}>

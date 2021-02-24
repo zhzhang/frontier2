@@ -26,7 +26,6 @@ const GetArticlesQuery = gql`
 
 function Articles(props) {
   const { loading, error, data } = useQuery(GetArticlesQuery, {});
-  console.log(data);
   if (loading) {
     return "Loading...";
   }

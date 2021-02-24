@@ -68,7 +68,6 @@ function Article() {
 
   const { title, authors, versions, reviews } = data.article;
   const { abstract, ref } = versions[0];
-  console.log(data.article);
 
   return (
     <Layout>
