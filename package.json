@@ -19,6 +19,7 @@
     "@apollo/react-ssr": "4.0.0",
     "@prisma/client": "^2.17.0",
     "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
     "apollo-link-schema": "1.2.5",
     "apollo-server-micro": "2.19.2",
     "apollo-upload-client": "^14.1.3",
