@@ -3,6 +3,7 @@
 
 
 type Article {
+  anonymous: Boolean
   authors: [User]
   id: String
   reviews: [Review]
@@ -49,6 +50,7 @@ type Organization {
   logoRef: String
   name: String
   role: Role
+  venues: [Venue]
 }
 
 type Query {
@@ -58,7 +60,7 @@ type Query {
   organization(id: String!): Organization
   reviewerAssignedSubmissions: [Submission]
   searchUsers(query: String): [User]
-  user(userId: String!): User
+  user(id: String!): User
 }
 
 type Review {
@@ -96,6 +98,12 @@ scalar Upload
 type User {
   articles: [Article]
   email: String
+  id: String
+  name: String
+}
+
+type Venue {
+  abbreviation: String
   id: String
   name: String
 }

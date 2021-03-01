@@ -7,14 +7,20 @@ import { useQuery } from "@apollo/react-hooks";
 import { Quill } from "../../components/Quill";
 import PdfViewer from "../../components/PDFViewer";
 import Review from "../../components/Review";
+import Spinner from "../../components/CenteredSpinner";
+import UserBadge from "../../components/UserBadge";
 
 import Accordion from "react-bootstrap/Accordion";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Spinner from "react-bootstrap/Spinner";
 import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
+import dateFormat from "dateformat";
+import _ from "lodash";
 
 const ArticleQuery = gql`
   query ArticleQuery($id: String!) {
@@ -29,6 +35,8 @@ const ArticleQuery = gql`
         id
         abstract
         ref
+        versionNumber
+        createdAt
       }
       reviews {
         id
@@ -53,10 +61,11 @@ const ArticleQuery = gql`
 `;
 
 function Article() {
-  const { id, reviewId } = useRouter().query;
+  const { id, reviewId, version } = useRouter().query;
   const { loading, error, data } = useQuery(ArticleQuery, {
     variables: { id },
   });
+  const [selectedVersionNumber, setVersionNumber] = useState(-1);
   const [abstractOpen, setAbstractOpen] = useState(false);
   if (loading) {
     return <Spinner />;
@@ -67,7 +76,13 @@ function Article() {
   }
 
   const { title, authors, versions, reviews } = data.article;
-  const { abstract, ref } = versions[0];
+  const selectedVersion =
+    selectedVersionNumber === -1
+      ? versions[0]
+      : _.find(versions, function (o) {
+          return o.versionNumber == selectedVersionNumber;
+        });
+  const { abstract, ref } = selectedVersion;
 
   return (
     <Layout>
@@ -75,9 +90,37 @@ function Article() {
         <div className="flex-grow-1">
           <Container fluid style={{ paddingTop: 10 }}>
             <h4>{title}</h4>
-            {authors.map((author) => (
-              <span>{author.name}</span>
-            ))}
+            <span>
+              Authors:{" "}
+              {authors !== null ? (
+                authors.map((author) => <UserBadge user={author} />)
+              ) : (
+                <em>anonymized</em>
+              )}
+            </span>
+            <div style={{ marginTop: 5, marginBottom: 5 }}>
+              <DropdownButton
+                title={`Version ${selectedVersion.versionNumber} - ${dateFormat(
+                  new Date(parseInt(selectedVersion.createdAt)),
+                  "mmm d, yyyy"
+                )}`}
+                as={ButtonGroup}
+                variant="secondary"
+                size="sm"
+                style={{ width: "100%" }}
+                onSelect={(versionNumber) => setVersionNumber(versionNumber)}
+              >
+                {versions.map((version) => (
+                  <Dropdown.Item
+                    eventKey={version.versionNumber}
+                    key={version.id}
+                  >{`Version ${version.versionNumber} - ${dateFormat(
+                    new Date(parseInt(version.createdAt)),
+                    "mmm d, yyyy"
+                  )}`}</Dropdown.Item>
+                ))}
+              </DropdownButton>
+            </div>
             <Accordion activeKey={abstractOpen ? "0" : null}>
               <Card>
                 <Accordion.Toggle
@@ -102,7 +145,7 @@ function Article() {
             <br />
             <h4>Reviews</h4>
             {reviews.map((review) => (
-              <div style={{ paddingBottom: 10 }}>
+              <div style={{ paddingBottom: 10 }} key={review.id}>
                 <Review review={review} editing={false} startOpen={true} />
               </div>
             ))}

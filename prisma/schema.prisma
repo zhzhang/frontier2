@@ -4,31 +4,34 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:somerandompassword@35.202.204.111/main"
+  url      = env("DB_URL")
 }
 
 model User {
-  email                   String                   @unique
   id                      String                   @id
+  email                   String                   @unique
   name                    String?
   articles                Article[]
   reviews                 Review[]
   organizationMemberships OrganizationMembership[]
-  MetaReview              MetaReview[]             @relation("chair")
+  metaReviews             MetaReview[]             @relation("chair")
+  threadMessage           ThreadMessage[]
 }
 
 model Article {
   id          String           @id @default(cuid())
-  title       String
+  title       String           @unique
   authors     User[]
   reviews     Review[]
   versions    ArticleVersion[]
   metaReviews MetaReview[]
+  submissions Submission[]
+  anonymous   Boolean          @default(true)
 }
 
 model ArticleVersion {
   id            String   @id @default(cuid())
-  abstract      String @db.MediumText
+  abstract      String   @db.MediumText
   ref           String
   article       Article  @relation(fields: [articleId], references: [id])
   articleId     String
@@ -36,15 +39,33 @@ model ArticleVersion {
   createdAt     DateTime @default(now())
 }
 
+model ThreadMessage {
+  id       String @id @default(cuid())
+  review   Review @relation(fields: [reviewId], references: [id])
+  author   User   @relation(fields: [userId], references: [id])
+  reviewId String
+  userId   String
+}
+
+model Submission {
+  id             String       @id @default(cuid())
+  article        Article      @relation(fields: [articleId], references: [id])
+  articleId      String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
 model Organization {
-  id          String                   @id @default(cuid())
-  name        String
+  id           String                   @id @default(cuid())
+  name         String
   abbreviation String
-  description String? @db.MediumText
-  logoRef     String?
-  memberships OrganizationMembership[]
-  reviews     Review[]
-  metaReviews MetaReview[]
+  description  String?                  @db.MediumText
+  logoRef      String?
+  memberships  OrganizationMembership[]
+  reviews      Review[]
+  metaReviews  MetaReview[]
+  submissions  Submission[]
+  venues       Venue[]
 }
 
 model OrganizationMembership {
@@ -56,21 +77,29 @@ model OrganizationMembership {
   organizationId String
 }
 
+model Venue {
+  id             String       @id @default(cuid())
+  name           String
+  abbreviation   String?
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
 model Review {
-  id             String        @id @default(cuid())
-  body           String        @db.MediumText
-  rating         Int           @default(0)
-  article        Article       @relation(fields: [articleId], references: [id])
-  author         User          @relation(fields: [authorId], references: [id])
+  id             String          @id @default(cuid())
+  body           String          @db.MediumText
+  rating         Int             @default(0)
+  article        Article         @relation(fields: [articleId], references: [id])
+  author         User            @relation(fields: [authorId], references: [id])
   articleId      String
   authorId       String
-  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organization   Organization?   @relation(fields: [organizationId], references: [id])
   organizationId String?
   reviewNumber   Int
-  published      Boolean       @default(false)
-  canAccess      Boolean       @default(true)
-  MetaReview     MetaReview?   @relation(fields: [metaReviewId], references: [id])
-  metaReviewId   String?
+  published      Boolean         @default(false)
+  canAccess      Boolean         @default(true)
+  threadMessages ThreadMessage[]
+  metaReviews    MetaReview[]
 }
 
 model MetaReview {

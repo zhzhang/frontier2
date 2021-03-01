@@ -2,6 +2,7 @@ import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Quill } from "./Quill";
+import UserBadge from "./UserBadge";
 import { withApollo } from "../lib/apollo";
 import Review from "../components/Review";
 import { useState } from "react";
@@ -16,7 +17,14 @@ const AcceptedArticleCard = ({ metaReview }) => {
     <Accordion activeKey={open ? "0" : null}>
       <Card style={{ padding: 10 }}>
         <h5>{title}</h5>
-        {authors.map((author) => author.name)}
+        <span>
+          Authors:{" "}
+          {authors !== null ? (
+            authors.map((author) => <UserBadge user={author} />)
+          ) : (
+            <em>anonymized</em>
+          )}
+        </span>
       </Card>
       <Card>
         <Accordion.Toggle
@@ -24,7 +32,9 @@ const AcceptedArticleCard = ({ metaReview }) => {
           eventKey="0"
           onClick={() => setOpen(!open)}
         >
-          {`Meta-Review by ${metaReview.author.name}`}
+          <span>
+            Meta-Review by: <UserBadge user={metaReview.author} />
+          </span>
           <span style={{ float: "right" }}>
             {open ? <ChevronUp /> : <ChevronDown />}
           </span>

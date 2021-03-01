@@ -27,7 +27,7 @@ async function main() {
   });
   const otherOrganization = await prisma.organization.create({
     data: {
-      name: "International Conference on Learning Represtations",
+      name: "International Conference on Learning Representations",
       abbreviation: "ICLR",
       description: `<p><span style="color: rgb(51, 51, 51);">The International Conference on Learning Representations (ICLR) is the premier gathering of professionals dedicated to the advancement of the branch of artificial intelligence called representation learning, but generally referred to as deep learning.
 
@@ -68,6 +68,7 @@ Participants at ICLR span a wide range of backgrounds, from academic and industr
           },
         ],
       },
+      anonymous: false,
     },
   });
 
@@ -84,35 +85,44 @@ s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
 M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.127155em;"><span class=""></span></span></span></span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.538em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.98692em;"><span class="" style="top: -3.363em; margin-right: 0.05em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.844314em;"><span class="" style="top: -2.656em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span class="" style="top: -3.2255em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line mtight" style="border-bottom-width: 0.049em;"></span></span><span class="" style="top: -3.384em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.344em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span><span class="mopen mtight">(</span><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.87905em;"><span class="" style="top: -2.656em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right: 0.03588em;">σ</span></span></span></span><span class="" style="top: -3.2255em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line mtight" style="border-bottom-width: 0.049em;"></span></span><span class="" style="top: -3.46239em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight">μ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.344em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span><span class="mclose mtight"><span class="mclose mtight">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.891314em;"><span class="" style="top: -2.931em; margin-right: 0.0714286em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>﻿</span> </li><li>Reviews can be viewed alongside article.</li></ul>`;
 
+  const review1 = await prisma.review.create({
+    data: {
+      authorId: reviewer.id,
+      reviewNumber: 1,
+      articleId: article.id,
+      published: true,
+      organizationId: organization.id,
+      rating: 1,
+      canAccess: false,
+      body: "",
+    },
+  });
+  const review2 = await prisma.review.create({
+    data: {
+      authorId: reviewer.id,
+      reviewNumber: 2,
+      articleId: article.id,
+      published: true,
+      organizationId: otherOrganization.id,
+      body: reviewBody,
+      rating: 3,
+    },
+  });
+
   const metaReview = await prisma.metaReview.create({
     data: {
       authorId: reviewer.id,
-      body: `<p><span style="color: rgb(51, 51, 51);">This is an example meta-review. Reviews that a author cites in writing the meta-review are attached to the meta-review. Reviews other organizations can be cited as well!</span></p>`,
+      body: `<p><span style="color: rgb(51, 51, 51);">This is an example meta-review. Reviews that a author cites in writing the meta-review are attached to the meta-review. Reviews from other organizations can be cited as well!</span></p>`,
       decision: true,
       articleId: article.id,
       organizationId: organization.id,
+    },
+  });
+  await prisma.metaReview.update({
+    where: { id: metaReview.id },
+    data: {
       citedReviews: {
-        create: [
-          {
-            authorId: reviewer.id,
-            reviewNumber: 1,
-            articleId: article.id,
-            published: true,
-            organizationId: organization.id,
-            rating: 1,
-            canAccess: false,
-            body: "",
-          },
-          {
-            authorId: reviewer.id,
-            reviewNumber: 2,
-            articleId: article.id,
-            published: true,
-            organizationId: otherOrganization.id,
-            body: reviewBody,
-            rating: 3,
-          },
-        ],
+        connect: [{ id: review1.id }, { id: review2.id }],
       },
     },
   });

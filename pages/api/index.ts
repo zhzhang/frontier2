@@ -45,12 +45,9 @@ const User = objectType({
     t.string("email");
     t.list.field("articles", {
       type: "Article",
-      resolve: (parent) =>
-        prisma.user
-          .findUnique({
-            where: { id: Number(parent.id) },
-          })
-          .posts(),
+      resolve: (parent) => {
+        return parent.articles;
+      },
     });
   },
 });
@@ -60,20 +57,20 @@ const Article = objectType({
   definition(t) {
     t.string("id");
     t.string("title");
+    t.boolean("anonymous");
     t.list.field("authors", {
       type: "User",
       resolve: (parent) => {
+        if (parent.anonymous) {
+          return null;
+        }
         return parent.authors;
       },
     });
     t.list.field("versions", {
       type: "ArticleVersion",
-      resolve: async (parent) => {
-        return await prisma.articleVersion.findMany({
-          where: {
-            articleId: parent.id,
-          },
-        });
+      resolve: (parent) => {
+        return _.orderBy(parent.versions, ["versionNumber"], ["desc"]);
       },
     });
     t.list.field("reviews", {
@@ -99,6 +96,15 @@ const ArticleVersion = objectType({
   },
 });
 
+const Venue = objectType({
+  name: "Venue",
+  definition(t) {
+    t.string("id");
+    t.string("name");
+    t.string("abbreviation");
+  },
+});
+
 const Organization = objectType({
   name: "Organization",
   definition(t) {
@@ -121,6 +127,10 @@ const Organization = objectType({
         });
         return membership.role;
       },
+    });
+    t.list.field("venues", {
+      type: "Venue",
+      resolve: (parent) => {},
     });
     t.list.field("accepted", {
       type: "MetaReview",
@@ -212,11 +222,39 @@ const Query = objectType({
     t.field("user", {
       type: "User",
       args: {
-        userId: nonNull(stringArg()),
+        id: nonNull(stringArg()),
       },
-      resolve: (_, args) => {
+      resolve: (_, { id }) => {
         return prisma.user.findUnique({
-          where: { id: args.userId },
+          where: { id },
+          include: {
+            articles: {
+              include: {
+                versions: true,
+                authors: true,
+              },
+            },
+          },
+        });
+      },
+    });
+    t.field("article", {
+      type: "Article",
+      args: { id: nonNull(stringArg()) },
+      resolve: async (_, { id }, ctx) => {
+        return await prisma.article.findUnique({
+          where: {
+            id,
+          },
+          include: {
+            versions: true,
+            authors: true,
+            reviews: {
+              include: {
+                organization: true,
+              },
+            },
+          },
         });
       },
     });
@@ -226,6 +264,7 @@ const Query = objectType({
       resolve: async (_, args, ctx) => {
         return await prisma.article.findMany({
           include: {
+            versions: true,
             authors: true,
           },
         });
@@ -276,27 +315,6 @@ const Query = objectType({
           },
         });
         return user.reviewRequests;
-      },
-    });
-    t.field("article", {
-      type: "Article",
-      args: { id: nonNull(stringArg()) },
-      resolve: async (_, { id }, ctx) => {
-        return await prisma.article.findUnique({
-          where: {
-            id,
-          },
-          include: {
-            versions: true,
-            authors: true,
-            reviews: {
-              include: {
-                author: true,
-                organization: true,
-              },
-            },
-          },
-        });
       },
     });
   },
@@ -484,6 +502,7 @@ export const schema = makeSchema({
     Article,
     ArticleVersion,
     Organization,
+    Venue,
     Submission,
     Review,
     MetaReview,

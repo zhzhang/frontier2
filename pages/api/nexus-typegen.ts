@@ -54,6 +54,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Article: { // root type
+    anonymous?: boolean | null; // Boolean
     id?: string | null; // String
     title?: string | null; // String
   }
@@ -103,6 +104,11 @@ export interface NexusGenObjects {
     id?: string | null; // String
     name?: string | null; // String
   }
+  Venue: { // root type
+    abbreviation?: string | null; // String
+    id?: string | null; // String
+    name?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -117,6 +123,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Article: { // field return type
+    anonymous: boolean | null; // Boolean
     authors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     id: string | null; // String
     reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
@@ -154,6 +161,7 @@ export interface NexusGenFieldTypes {
     logoRef: string | null; // String
     name: string | null; // String
     role: NexusGenEnums['Role'] | null; // Role
+    venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Query: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
@@ -190,10 +198,16 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
     name: string | null; // String
   }
+  Venue: { // field return type
+    abbreviation: string | null; // String
+    id: string | null; // String
+    name: string | null; // String
+  }
 }
 
 export interface NexusGenFieldTypeNames {
   Article: { // field return type name
+    anonymous: 'Boolean'
     authors: 'User'
     id: 'String'
     reviews: 'Review'
@@ -231,6 +245,7 @@ export interface NexusGenFieldTypeNames {
     logoRef: 'String'
     name: 'String'
     role: 'Role'
+    venues: 'Venue'
   }
   Query: { // field return type name
     article: 'Article'
@@ -264,6 +279,11 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     articles: 'Article'
     email: 'String'
+    id: 'String'
+    name: 'String'
+  }
+  Venue: { // field return type name
+    abbreviation: 'String'
     id: 'String'
     name: 'String'
   }
@@ -316,7 +336,7 @@ export interface NexusGenArgTypes {
       query?: string | null; // String
     }
     user: { // args
-      userId: string; // String!
+      id: string; // String!
     }
   }
 }

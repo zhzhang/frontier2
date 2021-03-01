@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 import Container from "react-bootstrap/Container";
-import Spinner from "react-bootstrap/Spinner";
+import Spinner from "../components/CenteredSpinner";
 import OrganizationCard from "../components/OrganizationCard";
 import { useRouter } from "next/router";
 import { withApollo } from "../lib/apollo";
