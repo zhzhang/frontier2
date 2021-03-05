@@ -1,3 +1,4 @@
+import { Auth0Provider } from "use-auth0-hooks";
 import prisma from "../lib/prisma";
 import { RoleEnum } from "../lib/types";
 
@@ -108,11 +109,18 @@ M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist
       rating: 3,
     },
   });
+  await prisma.threadMessage.create({
+    data: {
+      reviewId: review2.id,
+      userId: user.id,
+      body: `<p><span style="color: rgb(51, 51, 51Y);">Author rebuttals and other discussion on public reviews can be viewed in a thread below the review.</span></p>`,
+    },
+  });
 
   const metaReview = await prisma.metaReview.create({
     data: {
       authorId: reviewer.id,
-      body: `<p><span style="color: rgb(51, 51, 51);">This is an example meta-review. Reviews that a author cites in writing the meta-review are attached to the meta-review. Reviews from other organizations can be cited as well!</span></p>`,
+      body: `<p><span style="color: rgb(51, 51, 51Y);">This is an example meta-review. Reviews that a author cites in writing the meta-review are attached to the meta-review. Reviews from other organizations can be cited as well!</span></p>`,
       decision: true,
       articleId: article.id,
       organizationId: organization.id,

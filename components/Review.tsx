@@ -44,6 +44,8 @@ const Review = ({ review, editing, startOpen }) => {
     UpdateReviewMutation
   );
   const [open, setOpen] = useState(startOpen);
+  const { threadMessages } = review;
+  console.log(threadMessages);
   return (
     <Accordion activeKey={review.canAccess && open ? "0" : null}>
       <Card>
@@ -76,6 +78,18 @@ const Review = ({ review, editing, startOpen }) => {
               readOnly={!editing}
               onChange={setBody}
             />
+            {threadMessages.map((message) => (
+              <div>
+                <Quill
+                  value={message.body}
+                  modules={{
+                    toolbar: false,
+                  }}
+                  readOnly={!editing}
+                  onChange={setBody}
+                />
+              </div>
+            ))}
             {editing ? (
               <>
                 <Button

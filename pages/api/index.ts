@@ -21,6 +21,7 @@ import prisma from "../../lib/prisma";
 import { RoleEnum } from "../../lib/types";
 import _ from "lodash";
 import context from "react-bootstrap/esm/AccordionContext";
+import { assertPrismaClientInContext } from "nexus-plugin-prisma/dist/utils";
 
 export type Upload = Promise<FileUpload>;
 export const Upload = asNexusMethod(GraphQLUpload!, "upload");
@@ -80,6 +81,18 @@ const Article = objectType({
           parent.reviews,
           (review) => review.published || review.authorId === ctx.user.id
         );
+      },
+    });
+    t.list.field("acceptedOrganizations", {
+      type: "Organization",
+      resolve: async (parent) => {
+        const acceptances = await prisma.metaReview.findMany({
+          where: { articleId: parent.id, decision: true },
+          include: {
+            organization: true,
+          },
+        });
+        return acceptances.map((metaReview) => metaReview.organization);
       },
     });
   },
@@ -173,6 +186,19 @@ const Review = objectType({
     t.field("author", { type: "User" });
     t.field("submission", { type: "Submission" });
     t.field("organization", { type: "Organization" });
+    t.list.field("threadMessages", {
+      type: "ThreadMessage",
+    });
+  },
+});
+
+const ThreadMessage = objectType({
+  name: "ThreadMessage",
+  definition(t) {
+    t.string("id");
+    t.string("body");
+    t.field("author", { type: "User" });
+    t.string("createdAt");
   },
 });
 
@@ -266,6 +292,26 @@ const Query = objectType({
           include: {
             versions: true,
             authors: true,
+          },
+        });
+      },
+    });
+    t.list.field("reviews", {
+      type: "Review",
+      args: { articleId: nonNull(stringArg()) },
+      resolve: async (_, { articleId }, ctx) => {
+        return await prisma.review.findMany({
+          where: {
+            articleId,
+          },
+          include: {
+            author: true,
+            organization: true,
+            threadMessages: {
+              include: {
+                author: true,
+              },
+            },
           },
         });
       },
@@ -505,6 +551,7 @@ export const schema = makeSchema({
     Venue,
     Submission,
     Review,
+    ThreadMessage,
     MetaReview,
     Role,
     GQLDate,

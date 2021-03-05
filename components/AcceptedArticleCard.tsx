@@ -7,16 +7,24 @@ import { withApollo } from "../lib/apollo";
 import Review from "../components/Review";
 import { useState } from "react";
 import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
-import gql from "graphql-tag";
+import Router from "next/router";
 
 const AcceptedArticleCard = ({ metaReview }) => {
   const { article } = metaReview;
   const { title, authors } = article;
   const [open, setOpen] = useState(true);
+  const [hover, setHover] = useState(false);
   return (
     <Accordion activeKey={open ? "0" : null}>
       <Card style={{ padding: 10 }}>
-        <h5>{title}</h5>
+        <h4
+          onClick={() => Router.push(`/article/${article.id}`)}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          style={{ color: hover ? "blue" : "black" }}
+        >
+          {title}
+        </h4>
         <span>
           Authors:{" "}
           {authors !== null ? (

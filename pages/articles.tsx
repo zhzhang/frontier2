@@ -20,6 +20,9 @@ const GetArticlesQuery = gql`
         ref
         createdAt
       }
+      acceptedOrganizations {
+        name
+      }
     }
   }
 `;

@@ -7,14 +7,11 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import Spinner from "../../components/CenteredSpinner";
 import ArticleCard from "../../components/ArticleCard";
 
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/Row";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const UserQuery = gql`
@@ -24,6 +21,7 @@ const UserQuery = gql`
       name
       email
       articles {
+        id
         authors {
           id
           name
@@ -33,6 +31,10 @@ const UserQuery = gql`
           id
           versionNumber
           abstract
+        }
+        acceptedOrganizations {
+          id
+          name
         }
       }
     }

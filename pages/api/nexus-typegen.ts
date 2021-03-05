@@ -92,12 +92,19 @@ export interface NexusGenObjects {
     rating?: number | null; // Int
     reviewNumber?: number | null; // Int
     submission?: NexusGenRootTypes['Submission'] | null; // Submission
+    threadMessages?: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
   }
   Submission: { // root type
     articleId?: string | null; // String
     id?: string | null; // String
     organization?: NexusGenRootTypes['Organization'] | null; // Organization
     organizationId?: string | null; // String
+  }
+  ThreadMessage: { // root type
+    author?: NexusGenRootTypes['User'] | null; // User
+    body?: string | null; // String
+    createdAt?: string | null; // String
+    id?: string | null; // String
   }
   User: { // root type
     email?: string | null; // String
@@ -123,6 +130,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Article: { // field return type
+    acceptedOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     anonymous: boolean | null; // Boolean
     authors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     id: string | null; // String
@@ -169,6 +177,7 @@ export interface NexusGenFieldTypes {
     browseOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     organization: NexusGenRootTypes['Organization'] | null; // Organization
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
+    reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     user: NexusGenRootTypes['User'] | null; // User
   }
@@ -182,6 +191,7 @@ export interface NexusGenFieldTypes {
     rating: number | null; // Int
     reviewNumber: number | null; // Int
     submission: NexusGenRootTypes['Submission'] | null; // Submission
+    threadMessages: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
   }
   Submission: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
@@ -191,6 +201,12 @@ export interface NexusGenFieldTypes {
     organization: NexusGenRootTypes['Organization'] | null; // Organization
     organizationId: string | null; // String
     requestedReviewers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+  }
+  ThreadMessage: { // field return type
+    author: NexusGenRootTypes['User'] | null; // User
+    body: string | null; // String
+    createdAt: string | null; // String
+    id: string | null; // String
   }
   User: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
@@ -207,6 +223,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Article: { // field return type name
+    acceptedOrganizations: 'Organization'
     anonymous: 'Boolean'
     authors: 'User'
     id: 'String'
@@ -253,6 +270,7 @@ export interface NexusGenFieldTypeNames {
     browseOrganizations: 'Organization'
     organization: 'Organization'
     reviewerAssignedSubmissions: 'Submission'
+    reviews: 'Review'
     searchUsers: 'User'
     user: 'User'
   }
@@ -266,6 +284,7 @@ export interface NexusGenFieldTypeNames {
     rating: 'Int'
     reviewNumber: 'Int'
     submission: 'Submission'
+    threadMessages: 'ThreadMessage'
   }
   Submission: { // field return type name
     article: 'Article'
@@ -275,6 +294,12 @@ export interface NexusGenFieldTypeNames {
     organization: 'Organization'
     organizationId: 'String'
     requestedReviewers: 'User'
+  }
+  ThreadMessage: { // field return type name
+    author: 'User'
+    body: 'String'
+    createdAt: 'String'
+    id: 'String'
   }
   User: { // field return type name
     articles: 'Article'
@@ -331,6 +356,9 @@ export interface NexusGenArgTypes {
     }
     organization: { // args
       id: string; // String!
+    }
+    reviews: { // args
+      articleId: string; // String!
     }
     searchUsers: { // args
       query?: string | null; // String

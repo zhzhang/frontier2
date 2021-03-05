@@ -3,6 +3,7 @@
 
 
 type Article {
+  acceptedOrganizations: [Organization]
   anonymous: Boolean
   authors: [User]
   id: String
@@ -59,6 +60,7 @@ type Query {
   browseOrganizations(tags: [String]): [Organization]
   organization(id: String!): Organization
   reviewerAssignedSubmissions: [Submission]
+  reviews(articleId: String!): [Review]
   searchUsers(query: String): [User]
   user(id: String!): User
 }
@@ -73,6 +75,7 @@ type Review {
   rating: Int
   reviewNumber: Int
   submission: Submission
+  threadMessages: [ThreadMessage]
 }
 
 enum Role {
@@ -90,6 +93,13 @@ type Submission {
   organization: Organization
   organizationId: String
   requestedReviewers: [User]
+}
+
+type ThreadMessage {
+  author: User
+  body: String
+  createdAt: String
+  id: String
 }
 
 """The `Upload` scalar type represents a file upload."""

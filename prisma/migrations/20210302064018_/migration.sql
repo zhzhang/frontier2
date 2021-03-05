@@ -33,8 +33,10 @@ CREATE TABLE `ArticleVersion` (
 -- CreateTable
 CREATE TABLE `ThreadMessage` (
     `id` VARCHAR(191) NOT NULL,
+    `body` MEDIUMTEXT NOT NULL,
     `reviewId` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -73,7 +75,7 @@ CREATE TABLE `OrganizationMembership` (
 CREATE TABLE `Venue` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `abbreviation` VARCHAR(191) NOT NULL,
+    `abbreviation` VARCHAR(191),
     `organizationId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)

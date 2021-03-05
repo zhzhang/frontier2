@@ -6,9 +6,9 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { Quill } from "../../components/Quill";
 import PdfViewer from "../../components/PDFViewer";
-import Review from "../../components/Review";
 import Spinner from "../../components/CenteredSpinner";
 import UserBadge from "../../components/UserBadge";
+import Reviews from "../../components/article/Reviews";
 
 import Accordion from "react-bootstrap/Accordion";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
@@ -144,11 +144,7 @@ function Article() {
             </Accordion>
             <br />
             <h4>Reviews</h4>
-            {reviews.map((review) => (
-              <div style={{ paddingBottom: 10 }} key={review.id}>
-                <Review review={review} editing={false} startOpen={true} />
-              </div>
-            ))}
+            <Reviews articleId={id} />
           </Container>
         </div>
         <div

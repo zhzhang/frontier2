@@ -41,10 +41,12 @@ model ArticleVersion {
 
 model ThreadMessage {
   id       String @id @default(cuid())
-  review   Review @relation(fields: [reviewId], references: [id])
-  author   User   @relation(fields: [userId], references: [id])
+  body           String          @db.MediumText
   reviewId String
   userId   String
+  review   Review @relation(fields: [reviewId], references: [id])
+  author   User   @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
 }
 
 model Submission {

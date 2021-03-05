@@ -81,6 +81,9 @@ function Organization() {
                     />
                   </Container>
                 </Tab>
+                <Tab eventKey="venues" title="Venues">
+                  <Container fluid style={{ paddingTop: 10 }}></Container>
+                </Tab>
                 <Tab eventKey="accepted" title="Accepted Articles">
                   <ArticlesPane id={id} />
                 </Tab>
