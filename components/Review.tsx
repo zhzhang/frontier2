@@ -79,14 +79,14 @@ const Review = ({ review, editing, startOpen }) => {
               onChange={setBody}
             />
             {threadMessages.map((message) => (
-              <div>
+              <div style={{ marginLeft: "5px" }}>
+                <div>{message.author.name}</div>
                 <Quill
                   value={message.body}
                   modules={{
                     toolbar: false,
                   }}
                   readOnly={!editing}
-                  onChange={setBody}
                 />
               </div>
             ))}
