@@ -6,14 +6,16 @@ export default ({ user }) => {
   const { id, name, email } = user;
   const [hover, setHover] = useState(false);
   return (
-    <Badge
-      pill
-      variant={hover ? "primary" : "secondary"}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onClick={() => Router.push(`/user/${id}`)}
-    >
-      {name}
-    </Badge>
+    <span style={{ marginRight: 5 }}>
+      <Badge
+        pill
+        variant={hover ? "primary" : "secondary"}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onClick={() => Router.push(`/user/${id}`)}
+      >
+        {name}
+      </Badge>
+    </span>
   );
 };

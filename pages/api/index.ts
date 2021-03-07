@@ -65,7 +65,9 @@ const Article = objectType({
         if (parent.anonymous) {
           return null;
         }
-        return parent.authors;
+        return _.sortBy(parent.authors, ["authorNumber"]).map(
+          (authorship) => authorship.user
+        );
       },
     });
     t.list.field("versions", {
@@ -157,7 +159,11 @@ const Organization = objectType({
             author: true,
             article: {
               include: {
-                authors: true,
+                authors: {
+                  include: {
+                    user: true,
+                  },
+                },
                 versions: true,
               },
             },
@@ -254,14 +260,47 @@ const Query = objectType({
         return prisma.user.findUnique({
           where: { id },
           include: {
-            articles: {
+            authorships: {
               include: {
-                versions: true,
-                authors: true,
+                article: {
+                  include: {
+                    authors: {
+                      include: {
+                        user: true,
+                      },
+                    },
+                    versions: true,
+                  },
+                },
               },
             },
           },
         });
+      },
+    });
+    t.list.field("userArticles", {
+      type: "Article",
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: async (_, { id }) => {
+        return (
+          await prisma.articleAuthor.findMany({
+            where: { userId: id },
+            include: {
+              article: {
+                include: {
+                  authors: {
+                    include: {
+                      user: true,
+                    },
+                  },
+                  versions: true,
+                },
+              },
+            },
+          })
+        ).map((authorship) => authorship.article);
       },
     });
     t.field("article", {
@@ -274,7 +313,11 @@ const Query = objectType({
           },
           include: {
             versions: true,
-            authors: true,
+            authors: {
+              include: {
+                user: true,
+              },
+            },
             reviews: {
               include: {
                 organization: true,
@@ -291,7 +334,11 @@ const Query = objectType({
         return await prisma.article.findMany({
           include: {
             versions: true,
-            authors: true,
+            authors: {
+              include: {
+                user: true,
+              },
+            },
           },
         });
       },

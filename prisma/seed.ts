@@ -1,6 +1,7 @@
 import { Auth0Provider } from "use-auth0-hooks";
 import prisma from "../lib/prisma";
 import { RoleEnum } from "../lib/types";
+import cuid from "cuid";
 
 async function main() {
   const user = await prisma.user.create({
@@ -17,6 +18,38 @@ async function main() {
       name: "John Doe",
     },
   });
+
+  // Andrew Caines
+  const andrew = await prisma.user.create({
+    data: {
+      id: cuid(),
+      email: "andrew.caines@cl.cam.ac.uk",
+      name: "Andrew Caines",
+    },
+  });
+  const user2 = await prisma.user.create({
+    data: {
+      id: cuid(),
+      email: "hjc68@cl.cam.ac.uk",
+      name: "Hannah Craighead",
+    },
+  });
+  const user3 = await prisma.user.create({
+    data: {
+      id: cuid(),
+      email: "paula.buttery@cl.cam.ac.uk",
+      name: "Paula Buttery",
+    },
+  });
+  const user4 = await prisma.user.create({
+    data: {
+      id: cuid(),
+      email: "hellen.yannakoudakis@cl.cam.ac.uk",
+      name: "Helen Yannakoudakis",
+    },
+  });
+
+  // ORGANIZATION
   const organization = await prisma.organization.create({
     data: {
       id: "cklhou5t30000wpfwuehicxyu",
@@ -46,26 +79,33 @@ Participants at ICLR span a wide range of backgrounds, from academic and industr
     },
   });
   const abstract =
-    "<p>Automatic hypernymy detection is a crucial task in machine understand of natural languages, with applications in information extraction and question answering. Much of the work in unsupervised hypernymy detection revolves around the distributional semantic model (DSM) framework, in particular the representation of words as vectors in Vector Space Models (VSMs). Based on the hypothesis that hypernyms should be able to substitute for their hyponyms in most natural context, researchers have devised various asymmetric measures which quantify the overlap of context features as indicators of hypernymy. However, most VSMs make the strong assumption that individual context features occur independently of each other, which can lead to nonsensical results in hypernymy detection when the various contexts in which a word may found in a corpus are conflated. The proposed solution is to use density matrices, which make no independence assumptions about the context feature direction and can thus represent encode information about the original sentences in a corpus. In this thesis we present the first full-scale implementations of quantum density matrices as a distributional semantic model. We apply the density matrix model to the hypernymy detection problem and implement several quantum versions of previous asymmetric measures, many of which are novel adaptations. We show that density matrices perform reasonably well on three tasks in hypernymy detection, despite the simplicity of our context models, achieving an accuracy of 57.2% in the hypernymy direction task, and a precision of 61.9% in the hypernymy precision task using random noun pairs. Furthermore, we prove through a qualitative analysis that density matrices can indeed encode disparate word usages where VSMs cannot</p>";
-  const ref = "articles/7fcb70aa-af7e-4c45-9bce-e194c8dc8329.pdf";
+    "<p>We address the task of automatically grading the language proficiency of spontaneous speech based on textual features from automatic speech recognition transcripts. Motivated by recent advances in multi-task learning, we develop neural networks trained in a multi-task fashion that learn to predict the proficiency level of non-native English speakers by taking advantage of inductive transfer between the main task (grading) and auxiliary prediction tasks: morpho-syntactic labeling, language modeling, and native language identification (L1). We encode the transcriptions with both bi-directional recurrent neural networks and with bi-directional representations from transformers, compare against a feature-rich baseline, and analyse performance at different proficiency levels and with transcriptions of varying error rates. Our best performance comes from a transformer encoder with L1 prediction as an auxiliary task. We discuss areas for improvement and potential applications for text-only speech scoring.</p>";
   const article = await prisma.article.create({
     data: {
       id: "cklgwx4zu000058v2vz52cajm",
-      title: "Density Matrices for Lexical Entailment",
+      title:
+        "Investigating the Effect of Auxiliary Objectives for the Automated Grading of Learner English Speech Transcriptions",
       authors: {
-        connect: [{ id: user.id }],
+        create: [
+          { authorNumber: 1, user: { connect: { id: user2.id } } },
+          { authorNumber: 2, user: { connect: { id: andrew.id } } },
+          { authorNumber: 3, user: { connect: { id: user3.id } } },
+          { authorNumber: 4, user: { connect: { id: user4.id } } },
+        ],
       },
       versions: {
         create: [
           {
             abstract: abstract,
-            ref: ref,
+            ref: "articles/ACL2020_SpeechScoring.pdf",
             versionNumber: 1,
+            createdAt: "2020-01-06T12:00:00.000Z",
           },
           {
             abstract: abstract,
-            ref: ref,
+            ref: "articles/ACL2020_SpeechScoring_camera_ready.pdf",
             versionNumber: 2,
+            createdAt: "2020-06-11T12:00:00.000Z",
           },
         ],
       },
@@ -73,6 +113,13 @@ Participants at ICLR span a wide range of backgrounds, from academic and industr
     },
   });
 
+  const tmp = prisma.articleAuthor.create({
+    data: {
+      user: { connect: { id: user2.id } },
+      article: { connect: { id: article.id } },
+      authorNumber: 1,
+    },
+  });
   const reviewBody = `<h2>Features:</h2><ul><li>Full text editor built on Quill.js</li><li class="ql-indent-1">Headers</li><li class="ql-indent-1">Lists</li><li class="ql-indent-1"><strong>Bold</strong> <em>Italic</em> <s>Strikethrough</s></li><li class="ql-indent-1">Formulas <span class="ql-formula" data-value="f(x)=\\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-\\frac{1}{2}(\\frac{x-\\mu}{\\sigma})^{2}}">﻿<span contenteditable="false"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>σ</mi><msqrt><mrow><mn>2</mn><mi>π</mi></mrow></msqrt></mrow></mfrac><msup><mi>e</mi><mrow><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>μ</mi></mrow><mi>σ</mi></mfrac><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></msup></mrow><annotation encoding="application/x-tex">f(x)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^{2}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1.52492em; vertical-align: -0.538em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.55101em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right: 0.03588em;">σ</span><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.912845em;"><span class="svg-align" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord mtight" style="padding-left: 0.833em;"><span class="mord mtight">2</span><span class="mord mathnormal mtight" style="margin-right: 0.03588em;">π</span></span></span><span class="" style="top: -2.87284em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail mtight" style="min-width: 0.853em; height: 1.08em;"><svg width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
 c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
 c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
@@ -112,7 +159,7 @@ M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist
   await prisma.threadMessage.create({
     data: {
       reviewId: review2.id,
-      userId: user.id,
+      userId: andrew.id,
       body: `<p><span style="color: rgb(51, 51, 51Y);">Author rebuttals and other discussion on public reviews can be viewed in a thread below the review.</span></p>`,
     },
   });

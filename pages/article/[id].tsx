@@ -16,6 +16,7 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import OrganizationBadge from "../../components/OrganizationBadge";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
@@ -38,23 +39,9 @@ const ArticleQuery = gql`
         versionNumber
         createdAt
       }
-      reviews {
+      acceptedOrganizations {
         id
-        body
-        rating
-        reviewNumber
-        canAccess
-        published
-        author {
-          id
-          name
-        }
-        organization {
-          id
-          name
-          abbreviation
-          logoRef
-        }
+        name
       }
     }
   }
@@ -75,7 +62,7 @@ function Article() {
     return <div>Error: {error.message}</div>;
   }
 
-  const { title, authors, versions, reviews } = data.article;
+  const { title, authors, versions, acceptedOrganizations } = data.article;
   const selectedVersion =
     selectedVersionNumber === -1
       ? versions[0]
@@ -142,6 +129,15 @@ function Article() {
                 </Accordion.Collapse>
               </Card>
             </Accordion>
+            {acceptedOrganizations ? (
+              <span>
+                Accepted by:{" "}
+                {acceptedOrganizations.map((organization) => (
+                  <OrganizationBadge organization={organization} />
+                ))}
+              </span>
+            ) : null}
+            <br />
             <br />
             <h4>Reviews</h4>
             <Reviews articleId={id} />

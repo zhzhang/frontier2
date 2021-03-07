@@ -19,6 +19,16 @@ UNIQUE INDEX `Article.title_unique`(`title`),
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `ArticleAuthor` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `authorNumber` INTEGER NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `articleId` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `ArticleVersion` (
     `id` VARCHAR(191) NOT NULL,
     `abstract` MEDIUMTEXT NOT NULL,
@@ -63,7 +73,7 @@ CREATE TABLE `Organization` (
 
 -- CreateTable
 CREATE TABLE `OrganizationMembership` (
-    `id` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `role` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `organizationId` VARCHAR(191) NOT NULL,
@@ -109,20 +119,18 @@ CREATE TABLE `MetaReview` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_ArticleToUser` (
-    `A` VARCHAR(191) NOT NULL,
-    `B` VARCHAR(191) NOT NULL,
-UNIQUE INDEX `_ArticleToUser_AB_unique`(`A`, `B`),
-INDEX `_ArticleToUser_B_index`(`B`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `_MetaReviewToReview` (
     `A` VARCHAR(191) NOT NULL,
     `B` VARCHAR(191) NOT NULL,
 UNIQUE INDEX `_MetaReviewToReview_AB_unique`(`A`, `B`),
 INDEX `_MetaReviewToReview_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `ArticleAuthor` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ArticleAuthor` ADD FOREIGN KEY (`articleId`) REFERENCES `Article`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ArticleVersion` ADD FOREIGN KEY (`articleId`) REFERENCES `Article`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -165,12 +173,6 @@ ALTER TABLE `MetaReview` ADD FOREIGN KEY (`organizationId`) REFERENCES `Organiza
 
 -- AddForeignKey
 ALTER TABLE `MetaReview` ADD FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_ArticleToUser` ADD FOREIGN KEY (`A`) REFERENCES `Article`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_ArticleToUser` ADD FOREIGN KEY (`B`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_MetaReviewToReview` ADD FOREIGN KEY (`A`) REFERENCES `MetaReview`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

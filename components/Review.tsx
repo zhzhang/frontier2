@@ -48,15 +48,17 @@ const Review = ({ review, editing, startOpen }) => {
   console.log(threadMessages);
   return (
     <Accordion activeKey={review.canAccess && open ? "0" : null}>
-      <Card>
+      <Card style={{ border: "none" }}>
         <Accordion.Toggle
           as={Card.Header}
           eventKey="0"
           onClick={() => setOpen(!open)}
+          style={{
+            border: "1px solid rgba(0,0,0,.125)",
+            borderRadius: ".25rem",
+          }}
         >
-          <>
-            {`Reviewer ${review.reviewNumber} - ${review.organization.abbreviation}`}
-          </>
+          {`Reviewer ${review.reviewNumber} - ${review.organization.abbreviation}`}
           <span style={{ float: "right" }}>
             {review.canAccess ? (
               <>
@@ -70,26 +72,51 @@ const Review = ({ review, editing, startOpen }) => {
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <>
-            <Quill
-              value={body}
-              modules={{
-                toolbar: false,
+            <div
+              style={{
+                border: "1px solid rgba(0,0,0,.125)",
+                borderBottomLeftRadius: ".25rem",
+                borderBottomRightRadius: ".25rem",
               }}
-              readOnly={!editing}
-              onChange={setBody}
-            />
-            {threadMessages.map((message) => (
-              <div style={{ marginLeft: "5px" }}>
-                <div>{message.author.name}</div>
-                <Quill
-                  value={message.body}
-                  modules={{
-                    toolbar: false,
-                  }}
-                  readOnly={!editing}
-                />
-              </div>
-            ))}
+            >
+              <Quill
+                value={body}
+                modules={{
+                  toolbar: false,
+                }}
+                readOnly={!editing}
+                onChange={setBody}
+              />
+            </div>
+            {threadMessages
+              ? threadMessages.map((message) => (
+                  <div style={{ display: "flex", marginTop: "10px" }}>
+                    <div
+                      style={{
+                        width: "10px",
+                        borderLeft: "1px solid rgba(0,0,0,.125)",
+                      }}
+                    />
+                    <div
+                      style={{
+                        flex: 1,
+                        padding: "10px",
+                        border: "1px solid rgba(0,0,0,.125)",
+                        borderRadius: ".25rem",
+                      }}
+                    >
+                      <div>{message.author.name}</div>
+                      <Quill
+                        value={message.body}
+                        modules={{
+                          toolbar: false,
+                        }}
+                        readOnly={!editing}
+                      />
+                    </div>
+                  </div>
+                ))
+              : null}
             {editing ? (
               <>
                 <Button

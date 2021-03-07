@@ -180,6 +180,7 @@ export interface NexusGenFieldTypes {
     reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     user: NexusGenRootTypes['User'] | null; // User
+    userArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
   }
   Review: { // field return type
     author: NexusGenRootTypes['User'] | null; // User
@@ -273,6 +274,7 @@ export interface NexusGenFieldTypeNames {
     reviews: 'Review'
     searchUsers: 'User'
     user: 'User'
+    userArticles: 'Article'
   }
   Review: { // field return type name
     author: 'User'
@@ -364,6 +366,9 @@ export interface NexusGenArgTypes {
       query?: string | null; // String
     }
     user: { // args
+      id: string; // String!
+    }
+    userArticles: { // args
       id: string; // String!
     }
   }

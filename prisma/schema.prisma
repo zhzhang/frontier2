@@ -11,22 +11,31 @@ model User {
   id                      String                   @id
   email                   String                   @unique
   name                    String?
-  articles                Article[]
   reviews                 Review[]
   organizationMemberships OrganizationMembership[]
   metaReviews             MetaReview[]             @relation("chair")
   threadMessage           ThreadMessage[]
+  authorships ArticleAuthor[]
 }
 
 model Article {
   id          String           @id @default(cuid())
   title       String           @unique
-  authors     User[]
+  authors     ArticleAuthor[]
   reviews     Review[]
   versions    ArticleVersion[]
   metaReviews MetaReview[]
   submissions Submission[]
   anonymous   Boolean          @default(true)
+}
+
+model ArticleAuthor {
+  id           Int @id @default(autoincrement())
+  user         User    @relation(fields: [userId], references: [id])
+  authorNumber Int
+  userId       String
+  article      Article @relation(fields: [articleId], references: [id])
+  articleId    String
 }
 
 model ArticleVersion {
@@ -40,13 +49,13 @@ model ArticleVersion {
 }
 
 model ThreadMessage {
-  id       String @id @default(cuid())
-  body           String          @db.MediumText
-  reviewId String
-  userId   String
-  review   Review @relation(fields: [reviewId], references: [id])
-  author   User   @relation(fields: [userId], references: [id])
-  createdAt     DateTime @default(now())
+  id        String   @id @default(cuid())
+  body      String   @db.MediumText
+  reviewId  String
+  userId    String
+  review    Review   @relation(fields: [reviewId], references: [id])
+  author    User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Submission {
@@ -71,7 +80,7 @@ model Organization {
 }
 
 model OrganizationMembership {
-  id             String       @id @default(cuid())
+  id             Int @id @default(autoincrement())
   user           User         @relation(fields: [userId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
   role           String

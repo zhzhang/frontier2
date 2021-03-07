@@ -41,9 +41,34 @@ const UserQuery = gql`
   }
 `;
 
+const UserArticlesQuery = gql`
+  query UserArticlesQuery($id: String!) {
+    userArticles(id: $id) {
+      id
+      authors {
+        id
+        name
+      }
+      title
+      versions {
+        id
+        versionNumber
+        abstract
+      }
+      acceptedOrganizations {
+        id
+        name
+      }
+    }
+  }
+`;
+
 function User() {
   const id = useRouter().query.id;
   const { loading, error, data } = useQuery(UserQuery, {
+    variables: { id },
+  });
+  const articlesResult = useQuery(UserArticlesQuery, {
     variables: { id },
   });
 
@@ -71,9 +96,13 @@ function User() {
             <Tabs>
               <Tab eventKey="articles" title="Articles">
                 <Container fluid style={{ margin: 10 }}>
-                  {articles.map((article) => (
-                    <ArticleCard article={article} />
-                  ))}
+                  {articlesResult.loading ? (
+                    <Spinner />
+                  ) : (
+                    articlesResult.data.userArticles.map((article) => (
+                      <ArticleCard article={article} />
+                    ))
+                  )}
                 </Container>
               </Tab>
             </Tabs>

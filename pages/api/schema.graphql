@@ -63,6 +63,7 @@ type Query {
   reviews(articleId: String!): [Review]
   searchUsers(query: String): [User]
   user(id: String!): User
+  userArticles(id: String!): [Article]
 }
 
 type Review {
