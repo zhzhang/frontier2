@@ -74,7 +74,15 @@ function Article() {
   return (
     <Layout>
       <div style={{ display: "flex", height: "100%" }}>
-        <div className="flex-grow-1">
+        <div
+          className="flex-grow-1"
+          style={{
+            minWidth: 300,
+            width: "auto",
+            height: "calc(100vh - 55px)",
+            overflowY: "scroll",
+          }}
+        >
           <Container fluid style={{ paddingTop: 10 }}>
             <h4>{title}</h4>
             <span>

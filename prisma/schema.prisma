@@ -15,7 +15,7 @@ model User {
   organizationMemberships OrganizationMembership[]
   metaReviews             MetaReview[]             @relation("chair")
   threadMessage           ThreadMessage[]
-  authorships ArticleAuthor[]
+  authorships             ArticleAuthor[]
 }
 
 model Article {
@@ -30,7 +30,7 @@ model Article {
 }
 
 model ArticleAuthor {
-  id           Int @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   user         User    @relation(fields: [userId], references: [id])
   authorNumber Int
   userId       String
@@ -80,7 +80,7 @@ model Organization {
 }
 
 model OrganizationMembership {
-  id             Int @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   user           User         @relation(fields: [userId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
   role           String

@@ -45,7 +45,6 @@ const Review = ({ review, editing, startOpen }) => {
   );
   const [open, setOpen] = useState(startOpen);
   const { threadMessages } = review;
-  console.log(threadMessages);
   return (
     <Accordion activeKey={review.canAccess && open ? "0" : null}>
       <Card style={{ border: "none" }}>
