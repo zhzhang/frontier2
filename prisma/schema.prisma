@@ -13,9 +13,10 @@ model User {
   name                    String?
   reviews                 Review[]
   organizationMemberships OrganizationMembership[]
-  metaReviews             MetaReview[]             @relation("chair")
+  decisions               Decision[]               @relation("chair")
   threadMessage           ThreadMessage[]
   authorships             ArticleAuthor[]
+  chairSubmissions        Submission[]
 }
 
 model Article {
@@ -24,7 +25,7 @@ model Article {
   authors     ArticleAuthor[]
   reviews     Review[]
   versions    ArticleVersion[]
-  metaReviews MetaReview[]
+  decisions   Decision[]
   submissions Submission[]
   anonymous   Boolean          @default(true)
 }
@@ -64,6 +65,10 @@ model Submission {
   articleId      String
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
+  owner          User         @relation(fields: [ownerId], references: [id])
+  ownerId        String
+  decision       Decision     @relation(fields: [decisionId], references: [id])
+  decisionId     String
 }
 
 model Organization {
@@ -74,7 +79,7 @@ model Organization {
   logoRef      String?
   memberships  OrganizationMembership[]
   reviews      Review[]
-  metaReviews  MetaReview[]
+  decisions    Decision[]
   submissions  Submission[]
   venues       Venue[]
 }
@@ -110,10 +115,10 @@ model Review {
   published      Boolean         @default(false)
   canAccess      Boolean         @default(true)
   threadMessages ThreadMessage[]
-  metaReviews    MetaReview[]
+  decisions      Decision[]
 }
 
-model MetaReview {
+model Decision {
   id             String        @id @default(cuid())
   body           String        @db.MediumText
   decision       Boolean       @default(false)
@@ -124,4 +129,5 @@ model MetaReview {
   organizationId String?
   author         User          @relation("chair", fields: [authorId], references: [id])
   authorId       String
+  submission     Submission?
 }

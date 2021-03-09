@@ -65,7 +65,7 @@ export interface NexusGenObjects {
     ref?: string | null; // String
     versionNumber?: number | null; // Int
   }
-  MetaReview: { // root type
+  Decision: { // root type
     article?: NexusGenRootTypes['Article'] | null; // Article
     author?: NexusGenRootTypes['User'] | null; // User
     body?: string | null; // String
@@ -145,7 +145,7 @@ export interface NexusGenFieldTypes {
     ref: string | null; // String
     versionNumber: number | null; // Int
   }
-  MetaReview: { // field return type
+  Decision: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
     author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
@@ -163,7 +163,7 @@ export interface NexusGenFieldTypes {
   }
   Organization: { // field return type
     abbreviation: string | null; // String
-    accepted: Array<NexusGenRootTypes['MetaReview'] | null> | null; // [MetaReview]
+    accepted: Array<NexusGenRootTypes['Decision'] | null> | null; // [Decision]
     description: string | null; // String
     id: string | null; // String
     logoRef: string | null; // String
@@ -239,7 +239,7 @@ export interface NexusGenFieldTypeNames {
     ref: 'String'
     versionNumber: 'Int'
   }
-  MetaReview: { // field return type name
+  Decision: { // field return type name
     article: 'Article'
     author: 'User'
     body: 'String'
@@ -257,7 +257,7 @@ export interface NexusGenFieldTypeNames {
   }
   Organization: { // field return type name
     abbreviation: 'String'
-    accepted: 'MetaReview'
+    accepted: 'Decision'
     description: 'String'
     id: 'String'
     logoRef: 'String'
