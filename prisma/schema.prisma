@@ -74,7 +74,7 @@ model Submission {
 model Organization {
   id           String                   @id @default(cuid())
   name         String
-  abbreviation String
+  abbreviation String?
   description  String?                  @db.MediumText
   logoRef      String?
   memberships  OrganizationMembership[]

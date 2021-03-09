@@ -5,8 +5,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import Spinner from "../components/CenteredSpinner";
-import { useAuth } from "../lib/firebase";
-import firebase from "firebase";
+import { auth, useAuth } from "../lib/firebase";
 
 let apolloClient = null;
 
@@ -17,7 +16,7 @@ let apolloClient = null;
  * @param {Function|Class} PageComponent
  * @param {Object} [config]
  */
-export function withApollo(PageComponent: JSX.Element) {
+export function withApollo(PageComponent: React.FC) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     if (typeof window === "undefined") {
       return <Spinner animation="border" role="status" />;
@@ -76,9 +75,8 @@ function initApolloClient(initialState) {
 function createApolloClient(initialState = {}) {
   const cache = new InMemoryCache().restore(initialState);
   const authLink = setContext(async (_, { headers }) => {
-    const user = firebase.auth().currentUser;
-    const token =
-      user == null ? "" : await firebase.auth().currentUser.getIdToken();
+    const user = auth().currentUser;
+    const token = user == null ? "" : await auth().currentUser.getIdToken();
     // return the headers to the context so httpLink can read them
     return {
       headers: {

@@ -1,16 +1,13 @@
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
 import Badge from "react-bootstrap/Badge";
 import { Quill } from "./Quill";
 import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
-import Router from "next/router";
 import { useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
-import organizations from "../pages/organizations";
 
 const UpdateReviewMutation = gql`
   mutation UpdateReviewMutation(

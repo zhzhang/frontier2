@@ -46,7 +46,7 @@ const OrganizationQuery = gql`
   }
 `;
 
-export default ({ id }) => {
+const ArticlesPane = ({ id }) => {
   const { loading, error, data } = useQuery(OrganizationQuery, {
     variables: { id },
   });
@@ -56,9 +56,11 @@ export default ({ id }) => {
   const { accepted } = data.organization;
   return (
     <Container fluid style={{ paddingTop: 10 }}>
-      {accepted.map((metaReview) => (
-        <AcceptedArticleCard metaReview={metaReview} />
+      {accepted.map((decision) => (
+        <AcceptedArticleCard decision={decision} />
       ))}
     </Container>
   );
 };
+
+export default ArticlesPane;

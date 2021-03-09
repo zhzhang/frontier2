@@ -334,8 +334,9 @@ export interface NexusGenArgTypes {
       title: string; // String!
     }
     createOrganization: { // args
+      abbreviation?: string | null; // String
       description: string; // String!
-      logoRef?: string | null; // String
+      logoFile?: NexusGenScalars['Upload'] | null; // Upload
       name: string; // String!
     }
     createReview: { // args

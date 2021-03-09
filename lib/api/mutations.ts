@@ -1,6 +1,6 @@
 import {
   asNexusMethod,
-  makeSchema,
+  arg,
   nonNull,
   list,
   nullable,
@@ -12,6 +12,25 @@ import {
 } from "nexus";
 import prisma from "../prisma";
 import _ from "lodash";
+import AWS from "aws-sdk";
+import { RoleEnum } from "../types";
+import stream from "stream";
+
+function s3UploadFromStream(bucket, key) {
+  const pass = new stream.PassThrough();
+
+  const params = {
+    Key: key,
+    Body: pass,
+  };
+  bucket.upload(params, function (err, data) {
+    console.log(err, data);
+  });
+
+  console.log("hit");
+
+  return pass;
+}
 
 export default objectType({
   name: "Mutation",
@@ -24,19 +43,12 @@ export default objectType({
         authorIds: nonNull(list(nonNull(stringArg()))),
         ref: nonNull(stringArg()),
         organizationId: nullable(stringArg()),
-        // fileData: nonNull(arg({ type: "Upload" })),
       },
       resolve: async (
         _,
         { title, abstract, authorIds, ref, organizationId },
         ctx
       ) => {
-        // const {
-        //   createReadStream,
-        //   filename,
-        //   mimetype,
-        //   encoding,
-        // } = await args.fileData;
         const input = {
           data: {
             title: title,
@@ -72,17 +84,27 @@ export default objectType({
       args: {
         name: nonNull(stringArg()),
         description: nonNull(stringArg()),
-        logoRef: nullable(stringArg()),
+        abbreviation: nullable(stringArg()),
+        logoFile: nullable(arg({ type: "Upload" })),
       },
-      resolve: async (_, { name, description, logoRef }, ctx) => {
+      resolve: async (_, { name, description, logoFile }, ctx) => {
+        const { createReadStream, filename } = await logoFile;
+        const bucket = new AWS.S3({ params: { Bucket: "frontier-dev-logos" } });
+        const stream = createReadStream();
+        stream.pipe(s3UploadFromStream(bucket, filename));
         const organization = await prisma.organization.create({
-          data: { name, description, logoRef },
-        });
-        await prisma.organizationMembership.create({
           data: {
-            userId: ctx.user.id,
-            organizationId: organization.id,
-            role: RoleEnum.ADMIN,
+            name,
+            description,
+            logoRef,
+            memberships: {
+              create: [
+                {
+                  userId: ctx.user.id,
+                  role: RoleEnum.ADMIN,
+                },
+              ],
+            },
           },
         });
         return organization;

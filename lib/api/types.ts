@@ -12,6 +12,7 @@ import {
 } from "nexus";
 import prisma from "../prisma";
 import _ from "lodash";
+import { RoleEnum } from "../../lib/types";
 
 export const Role = enumType({
   name: "Role",
@@ -73,13 +74,13 @@ export const Article = objectType({
     t.list.field("acceptedOrganizations", {
       type: "Organization",
       resolve: async (parent) => {
-        const acceptances = await prisma.metaReview.findMany({
+        const acceptances = await prisma.decision.findMany({
           where: { articleId: parent.id, decision: true },
           include: {
             organization: true,
           },
         });
-        return acceptances.map((metaReview) => metaReview.organization);
+        return acceptances.map((decision) => decision.organization);
       },
     });
   },
@@ -135,7 +136,7 @@ export const Organization = objectType({
     t.list.field("accepted", {
       type: "Decision",
       resolve: async (parent) => {
-        return await prisma.metaReview.findMany({
+        return await prisma.decision.findMany({
           where: {
             organizationId: parent.id,
             decision: true,

@@ -164,7 +164,7 @@ M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist
     },
   });
 
-  const metaReview = await prisma.metaReview.create({
+  const decision = await prisma.decision.create({
     data: {
       authorId: reviewer.id,
       body: `<p><span style="color: rgb(51, 51, 51Y);">This is an example meta-review. Reviews that a author cites in writing the meta-review are attached to the meta-review. Reviews from other organizations can be cited as well!</span></p>`,
@@ -173,8 +173,8 @@ M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist
       organizationId: organization.id,
     },
   });
-  await prisma.metaReview.update({
-    where: { id: metaReview.id },
+  await prisma.decision.update({
+    where: { id: decision.id },
     data: {
       citedReviews: {
         connect: [{ id: review1.id }, { id: review2.id }],

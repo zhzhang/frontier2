@@ -1,4 +1,6 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/storage";
 import { UploadTypeEnum } from "./types";
 import { v4 as uuid } from "uuid";
 
@@ -51,4 +53,22 @@ export function useRef(ref) {
   const [url, setURL] = useState();
   pathRef.getDownloadURL().then((url) => setURL(url));
   return url;
+}
+
+export const uiConfig = {
+  // Popup signin flow rather than redirect flow.
+  signInFlow: "popup",
+  // We will display Google and Facebook as auth providers.
+  signInOptions: [
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+  ],
+  callbacks: {
+    // Avoid redirects after sign-in.
+    signInSuccessWithAuthResult: () => false,
+  },
+};
+
+export function auth() {
+  return firebase.auth();
 }

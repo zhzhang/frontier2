@@ -12,6 +12,7 @@ import {
 } from "nexus";
 import prisma from "../prisma";
 import _ from "lodash";
+import { RoleEnum } from "../types";
 
 export default objectType({
   name: "Query",

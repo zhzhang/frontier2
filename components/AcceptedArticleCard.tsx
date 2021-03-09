@@ -9,8 +9,8 @@ import { useState } from "react";
 import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
 import Router from "next/router";
 
-const AcceptedArticleCard = ({ metaReview }) => {
-  const { article } = metaReview;
+const AcceptedArticleCard = ({ decision }) => {
+  const { article } = decision;
   const { title, authors } = article;
   const [open, setOpen] = useState(true);
   const [hover, setHover] = useState(false);
@@ -41,7 +41,7 @@ const AcceptedArticleCard = ({ metaReview }) => {
           onClick={() => setOpen(!open)}
         >
           <span>
-            Meta-Review by: <UserBadge user={metaReview.author} />
+            Decision by: <UserBadge user={decision.author} />
           </span>
           <span style={{ float: "right" }}>
             {open ? <ChevronUp /> : <ChevronDown />}
@@ -50,11 +50,11 @@ const AcceptedArticleCard = ({ metaReview }) => {
         <Accordion.Collapse eventKey="0">
           <Card.Body>
             <Quill
-              value={metaReview.body}
+              value={decision.body}
               modules={{ toolbar: false }}
               readOnly
             />
-            {metaReview.citedReviews.map((review) => (
+            {decision.citedReviews.map((review) => (
               <Review review={review} editing={false} />
             ))}
           </Card.Body>

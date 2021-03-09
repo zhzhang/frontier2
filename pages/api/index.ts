@@ -7,10 +7,7 @@ import { asNexusMethod, makeSchema } from "nexus";
 import jwt_decode from "jwt-decode";
 import path from "path";
 import prisma from "../../lib/prisma";
-import { RoleEnum } from "../../lib/types";
 import _ from "lodash";
-import context from "react-bootstrap/esm/AccordionContext";
-import { assertPrismaClientInContext } from "nexus-plugin-prisma/dist/utils";
 import Query from "../../lib/api/queries";
 import Mutation from "../../lib/api/mutations";
 import {
@@ -37,9 +34,12 @@ const rules = {
     return Boolean(ctx.user);
   }),
 };
-export const permissions = shield({
-  Mutation: rules.isAuthenticated,
-});
+export const permissions = shield(
+  {
+    Mutation: rules.isAuthenticated,
+  },
+  { debug: true }
+);
 
 export const schema = makeSchema({
   types: [
@@ -79,7 +79,7 @@ interface FirebaseToken {
 
 export default new ApolloServer({
   // schema: applyMiddleware(schema, permissions),
-  schema: schema,
+  schema,
   context: async ({ req }) => {
     const token = req.headers.authorization || "";
     if (token == "") {
