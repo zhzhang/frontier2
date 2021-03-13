@@ -1,4 +1,7 @@
+import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import { ChevronUp, ChevronDown } from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
@@ -15,19 +18,20 @@ import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
 import Markdown from "../components/Markdown";
+import Error from "../components/Error";
 
 const CreateOrganizationMutation = gql`
   mutation CreateOrganizationQuery(
     $name: String!
     $description: String!
     $abbreviation: String
-    $logoFile: Upload
+    $logoRef: String
   ) {
     createOrganization(
       name: $name
       description: $description
       abbreviation: $abbreviation
-      logoFile: $logoFile
+      logoRef: $logoRef
     ) {
       id
     }
@@ -40,13 +44,11 @@ const NewOrganization = () => {
   const [description, setDescription] = useState(
     "Write a description of your organization!"
   );
+  const [previewOpen, setPreviewOpen] = useState(true);
   const [logoFile, setLogoFile] = useState();
   const [createOrganization, { loading, error, data }] = useMutation(
     CreateOrganizationMutation
   );
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
   if (!loading && data && data.createOrganization) {
     Router.push(`/organization/${data.createOrganization.id}`);
   }
@@ -85,17 +87,37 @@ const NewOrganization = () => {
           <Form.Group controlId="description">
             <Row>
               <Col>
-                <Form.Label>Description</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={4}
                   value={description}
-                  onChange={({ target: { value } }) => setDescription(value)}
+                  onChange={({ target: { value } }) => {
+                    setDescription(value);
+                  }}
                 />
               </Col>
+            </Row>
+            <Row>
               <Col>
-                <div>Preview</div>
-                <Markdown>{description}</Markdown>
+                <Accordion activeKey={previewOpen ? "0" : null}>
+                  <Card>
+                    <Accordion.Toggle
+                      as={Card.Header}
+                      eventKey="0"
+                      onClick={() => setPreviewOpen(!previewOpen)}
+                    >
+                      Preview
+                      <span className="float-right">
+                        {previewOpen ? <ChevronUp /> : <ChevronDown />}
+                      </span>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey="0">
+                      <div className="p-2">
+                        <Markdown>{description}</Markdown>
+                      </div>
+                    </Accordion.Collapse>
+                  </Card>
+                </Accordion>
               </Col>
             </Row>
           </Form.Group>
@@ -105,13 +127,9 @@ const NewOrganization = () => {
               <Col>
                 <Form.File
                   id="custom-file"
-                  label="Logo file"
-                  onChange={({
-                    target: {
-                      files: [file],
-                    },
-                  }) => {
-                    setLogoFile(file);
+                  label="Logo (Optional)"
+                  onChange={(e) => {
+                    setLogoFile(e.target.files[0]);
                   }}
                 />
               </Col>
@@ -126,14 +144,43 @@ const NewOrganization = () => {
           <Button
             variant="primary"
             onClick={() => {
-              createOrganization({
-                variables: { name, description, abbreviation, logoFile },
-              });
+              if (!logoFile) {
+                createOrganization({
+                  variables: {
+                    name,
+                    description,
+                    abbreviation,
+                  },
+                });
+                return;
+              }
+              const { uploadTask, refPath } = uploadFile(
+                logoFile,
+                UploadTypeEnum.LOGO
+              );
+              uploadTask.on(
+                "state_changed",
+                (snapshot) => {},
+                (error) => {},
+                () => {
+                  createOrganization({
+                    variables: {
+                      name,
+                      description,
+                      abbreviation,
+                      logoRef: refPath,
+                    },
+                  });
+                }
+              );
             }}
           >
             Create
           </Button>
         </Form>
+        {error ? (
+          <Error header="There was a problem creating your organization." />
+        ) : null}
       </Container>
     </Layout>
   );

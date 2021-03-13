@@ -2,7 +2,7 @@ import LoginButton from "./LoginButton";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { useAuth } from "../lib/firebase";
+import { auth, useAuth } from "../lib/firebase";
 
 const Navigation = () => {
   const { user, loading } = useAuth();
@@ -14,14 +14,13 @@ const Navigation = () => {
           <Nav.Link href="/articles">Articles</Nav.Link>
           <Nav.Link href="/organizations">Organizations</Nav.Link>
         </Nav>
-        {/* {!loading && user !== null && user !== undefined ? (
+        {!loading && user !== null && user !== undefined ? (
           <Nav className="justify-content-end">
             <NavDropdown title="Profile" id="basic-nav-dropdown">
               <NavDropdown.Item
                 href="#action/3.1"
                 onSelect={() =>
-                  firebase
-                    .auth()
+                  auth()
                     .signOut()
                     .then(() => location.reload())
                 }
@@ -32,7 +31,7 @@ const Navigation = () => {
           </Nav>
         ) : (
           <LoginButton />
-        )} */}
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

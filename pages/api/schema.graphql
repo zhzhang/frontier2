@@ -38,7 +38,7 @@ type Mutation {
   assignChair(chairId: String!, submissionId: String!): Submission
   assignReviewers(reviewerIds: [String!]!, submissionId: String!): Submission
   createArticle(abstract: String!, authorIds: [String!]!, organizationId: String, ref: String!, title: String!): Article
-  createOrganization(abbreviation: String, description: String!, logoFile: Upload, name: String!): Organization
+  createOrganization(abbreviation: String, description: String!, logoRef: String, name: String!): Organization
   createReview(articleId: String!, submissionId: String): Review
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
 }

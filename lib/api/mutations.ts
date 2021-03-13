@@ -32,6 +32,16 @@ function s3UploadFromStream(bucket, key) {
   return pass;
 }
 
+function readStreamData(stream) {
+  return new Promise(function (resolve, reject) {
+    stream
+      .on("data", (data) => console.log(data))
+      .on("end", () => resolve(""))
+      .on("error", reject);
+    console.log("data listen hit");
+  });
+}
+
 export default objectType({
   name: "Mutation",
   definition(t) {
@@ -85,18 +95,17 @@ export default objectType({
         name: nonNull(stringArg()),
         description: nonNull(stringArg()),
         abbreviation: nullable(stringArg()),
-        logoFile: nullable(arg({ type: "Upload" })),
+        logoRef: nullable(stringArg()),
+        // logoFile: nullable(arg({ type: "Upload" })),
       },
-      resolve: async (_, { name, description, logoFile }, ctx) => {
-        const { createReadStream, filename } = await logoFile;
-        const bucket = new AWS.S3({ params: { Bucket: "frontier-dev-logos" } });
-        const stream = createReadStream();
-        stream.pipe(s3UploadFromStream(bucket, filename));
+      resolve: async (_, { name, description, abbreviation, logoRef }, ctx) => {
+        // const { createReadStream, filename, mimetype } = await logoFile;
         const organization = await prisma.organization.create({
           data: {
             name,
             description,
             logoRef,
+            abbreviation,
             memberships: {
               create: [
                 {

@@ -3,13 +3,14 @@ import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 import { withApollo } from "../../lib/apollo";
 import gql from "graphql-tag";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { Quill } from "../../components/Quill";
 import { useAuth } from "../../lib/firebase";
 import { useRef } from "../../lib/firebase";
 import Spinner from "../../components/CenteredSpinner";
 import ArticlesPane from "../../components/organization/ArticlesPane";
 import VenuesPane from "../../components/organization/VenuesPane";
+import { RoleEnum } from "../../lib/types";
 
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -48,6 +49,7 @@ function Organization() {
   const { loading, error, data } = useQuery(OrganizationQuery, {
     variables: { id },
   });
+  const [tabKey, setTabKey] = useState("info");
 
   if (loading) {
     return <Spinner animation="border" />;
@@ -58,22 +60,26 @@ function Organization() {
   }
 
   const { name, description, role, logoRef } = data.organization;
-  const tabKey = "accepted";
 
   return (
     <>
       <Layout>
-        <Container style={{ paddingTop: 20 }} fluid>
-          <Row style={{ paddingBottom: 20 }}>
+        <Container className="mt-4" fluid>
+          <Row className="mb-3">
             <Col>
               <Header name={name} logoRef={logoRef} />
             </Col>
           </Row>
           <Row>
             <Col>
-              <Tabs defaultActiveKey={tabKey}>
+              <Tabs
+                activeKey={tabKey}
+                onSelect={(newTabKey) => {
+                  setTabKey(newTabKey);
+                }}
+              >
                 <Tab eventKey="info" title="Info">
-                  <Container fluid style={{ paddingTop: 10 }}>
+                  <Container fluid className="mt-2">
                     <Quill
                       value={description}
                       modules={{ toolbar: false }}
@@ -84,6 +90,11 @@ function Organization() {
                 <Tab eventKey="accepted" title="Accepted Articles">
                   <ArticlesPane id={id} />
                 </Tab>
+                {role === RoleEnum.ADMIN ? (
+                  <Tab eventKey="createVenue" title="Create Venue">
+                    <ArticlesPane id={id} />
+                  </Tab>
+                ) : null}
               </Tabs>
             </Col>
           </Row>
