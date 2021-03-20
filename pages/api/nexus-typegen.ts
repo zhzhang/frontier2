@@ -113,6 +113,7 @@ export interface NexusGenObjects {
   }
   Venue: { // root type
     abbreviation?: string | null; // String
+    date?: NexusGenScalars['Date'] | null; // Date
     id?: string | null; // String
     name?: string | null; // String
   }
@@ -159,6 +160,7 @@ export interface NexusGenFieldTypes {
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOrganization: NexusGenRootTypes['Organization'] | null; // Organization
     createReview: NexusGenRootTypes['Review'] | null; // Review
+    updateOrganization: NexusGenRootTypes['Organization'] | null; // Organization
     updateReview: NexusGenRootTypes['Review'] | null; // Review
   }
   Organization: { // field return type
@@ -217,6 +219,7 @@ export interface NexusGenFieldTypes {
   }
   Venue: { // field return type
     abbreviation: string | null; // String
+    date: NexusGenScalars['Date'] | null; // Date
     id: string | null; // String
     name: string | null; // String
   }
@@ -253,6 +256,7 @@ export interface NexusGenFieldTypeNames {
     createArticle: 'Article'
     createOrganization: 'Organization'
     createReview: 'Review'
+    updateOrganization: 'Organization'
     updateReview: 'Review'
   }
   Organization: { // field return type name
@@ -311,6 +315,7 @@ export interface NexusGenFieldTypeNames {
   }
   Venue: { // field return type name
     abbreviation: 'String'
+    date: 'Date'
     id: 'String'
     name: 'String'
   }
@@ -342,6 +347,13 @@ export interface NexusGenArgTypes {
     createReview: { // args
       articleId: string; // String!
       submissionId?: string | null; // String
+    }
+    updateOrganization: { // args
+      abbreviation?: string | null; // String
+      description?: string | null; // String
+      id: string; // String!
+      logoRef?: string | null; // String
+      name?: string | null; // String
     }
     updateReview: { // args
       body: string; // String!

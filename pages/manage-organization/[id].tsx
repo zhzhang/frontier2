@@ -18,6 +18,7 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Tabs from "react-bootstrap/Tabs";
+import Nav from "react-bootstrap/Nav";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/Row";
 import DatePicker from "react-datepicker";
@@ -67,38 +68,33 @@ function Organization() {
   const { name, description, role, logoRef } = data.organization;
 
   return (
-    <>
-      <Layout>
-        <Container className="mt-4" fluid>
-          <Row className="mb-3">
-            <Col>
-              <Header name={name} logoRef={logoRef} />
-            </Col>
-          </Row>
+    <Layout>
+      <Container fluid className="mt-3">
+        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
           <Row>
-            <Col>
-              <Tabs
-                activeKey={view}
-                onSelect={(newTabKey) => {
-                  router.query.view = newTabKey;
-                  router.push(router, undefined, { shallow: true });
-                }}
-              >
-                <Tab eventKey="info" title="Info">
-                  <InfoPane id={id} description={description} role={role} />
-                </Tab>
-                <Tab eventKey="venues" title="Venues">
-                  <VenuesPane id={id} />
-                </Tab>
-                <Tab eventKey="accepted" title="Accepted Articles">
-                  <ArticlesPane id={id} />
-                </Tab>
-              </Tabs>
+            <Col sm={2}>
+              <Nav variant="pills" className="flex-column">
+                <Nav.Item>
+                  <Nav.Link eventKey="info">Info</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="members">Members</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="submissions">Submissions</Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </Col>
+            <Col sm={10}>
+              <Tab.Content>
+                <Tab.Pane eventKey="first">Hello</Tab.Pane>
+                <Tab.Pane eventKey="second">Hello</Tab.Pane>
+              </Tab.Content>
             </Col>
           </Row>
-        </Container>
-      </Layout>
-    </>
+        </Tab.Container>
+      </Container>
+    </Layout>
   );
 }
 

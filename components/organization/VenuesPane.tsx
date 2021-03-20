@@ -1,6 +1,8 @@
 import gql from "graphql-tag";
 import Container from "react-bootstrap/Container";
 import AcceptedArticleCard from "../AcceptedArticleCard";
+import Error from "../Error";
+import VenueCard from "../VenueCard";
 import Spinner from "react-bootstrap/Spinner";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
@@ -8,39 +10,11 @@ const OrganizationQuery = gql`
   query OrganizationQuery($id: String!) {
     organization(id: $id) {
       id
-      accepted {
+      venues {
         id
-        body
-        article {
-          id
-          title
-          authors {
-            id
-            name
-          }
-          versions {
-            id
-            abstract
-            versionNumber
-          }
-        }
-        author {
-          id
-          name
-        }
-        citedReviews {
-          author {
-            name
-          }
-          body
-          reviewNumber
-          rating
-          canAccess
-          organization {
-            logoRef
-            abbreviation
-          }
-        }
+        name
+        abbreviation
+        date
       }
     }
   }
@@ -53,12 +27,22 @@ export default ({ id }) => {
   if (loading) {
     return <Spinner animation="border" style={{ top: "50%", left: "50%" }} />;
   }
-  const { accepted } = data.organization;
+  if (error) {
+    return (
+      <Container fluid style={{ paddingTop: 10 }}>
+        <Error header="There was a problem retrieving this organization's venues." />
+      </Container>
+    );
+  }
+  const { venues } = data.organization;
   return (
     <Container fluid style={{ paddingTop: 10 }}>
-      {accepted.map((metaReview) => (
-        <AcceptedArticleCard metaReview={metaReview} />
-      ))}
+      <h4>Past Venues</h4>
+      {venues
+        .filter((venue) => Date.parse(venue.date) < Date.now())
+        .map((venue) => (
+          <VenueCard venue={venue} />
+        ))}
     </Container>
   );
 };

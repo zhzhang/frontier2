@@ -17,14 +17,14 @@ const AcceptedArticleCard = ({ decision }) => {
   return (
     <Accordion activeKey={open ? "0" : null}>
       <Card style={{ padding: 10 }}>
-        <h4
+        <h6
           onClick={() => Router.push(`/article/${article.id}`)}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           style={{ color: hover ? "blue" : "black" }}
         >
           {title}
-        </h4>
+        </h6>
         <span>
           Authors:{" "}
           {authors !== null ? (

@@ -103,6 +103,7 @@ export const Venue = objectType({
     t.string("id");
     t.string("name");
     t.string("abbreviation");
+    t.field("date", { type: "Date" });
   },
 });
 
@@ -131,7 +132,13 @@ export const Organization = objectType({
     });
     t.list.field("venues", {
       type: "Venue",
-      resolve: (parent) => {},
+      resolve: async (parent) => {
+        return await prisma.venue.findMany({
+          where: {
+            organizationId: parent.id,
+          },
+        });
+      },
     });
     t.list.field("accepted", {
       type: "Decision",

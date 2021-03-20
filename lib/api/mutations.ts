@@ -119,6 +119,44 @@ export default objectType({
         return organization;
       },
     });
+    t.field("updateOrganization", {
+      type: "Organization",
+      args: {
+        id: nonNull(stringArg()),
+        name: nullable(stringArg()),
+        description: nullable(stringArg()),
+        abbreviation: nullable(stringArg()),
+        logoRef: nullable(stringArg()),
+      },
+      resolve: async (
+        _,
+        { id, name, description, abbreviation, logoRef },
+        ctx
+      ) => {
+        const membership = await prisma.organizationMembership.findFirst({
+          where: {
+            userId: ctx.user.id,
+            organizationId: id,
+            role: RoleEnum.ADMIN,
+          },
+        });
+        if (!membership) {
+          return null;
+        }
+        const organization = await prisma.organization.update({
+          where: {
+            id,
+          },
+          data: {
+            name,
+            description,
+            logoRef,
+            abbreviation,
+          },
+        });
+        return organization;
+      },
+    });
     t.field("assignChair", {
       type: "Submission",
       args: {

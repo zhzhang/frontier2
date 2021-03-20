@@ -65,16 +65,17 @@ model Submission {
   articleId      String
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  owner          User         @relation(fields: [ownerId], references: [id])
-  ownerId        String
-  decision       Decision     @relation(fields: [decisionId], references: [id])
-  decisionId     String
+  owner          User?        @relation(fields: [ownerId], references: [id])
+  ownerId        String?
+  decision       Decision?    @relation(fields: [decisionId], references: [id])
+  decisionId     String?
+  createdAt      DateTime     @default(now())
 }
 
 model Organization {
   id           String                   @id @default(cuid())
   name         String
-  description  String                  @db.MediumText
+  description  String                   @db.MediumText
   abbreviation String?
   logoRef      String?
   memberships  OrganizationMembership[]
@@ -99,6 +100,7 @@ model Venue {
   abbreviation   String?
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
+  date           DateTime
 }
 
 model Review {

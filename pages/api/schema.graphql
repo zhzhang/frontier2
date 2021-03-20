@@ -40,6 +40,7 @@ type Mutation {
   createArticle(abstract: String!, authorIds: [String!]!, organizationId: String, ref: String!, title: String!): Article
   createOrganization(abbreviation: String, description: String!, logoRef: String, name: String!): Organization
   createReview(articleId: String!, submissionId: String): Review
+  updateOrganization(abbreviation: String, description: String, id: String!, logoRef: String, name: String): Organization
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
 }
 
@@ -115,6 +116,7 @@ type User {
 
 type Venue {
   abbreviation: String
+  date: Date
   id: String
   name: String
 }
