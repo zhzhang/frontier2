@@ -2,9 +2,11 @@ import { Document, Page } from "react-pdf";
 import { useRef } from "../lib/firebase";
 import { pdfjs } from "react-pdf";
 import { useState } from "react";
+import { PdfLoader } from "./pdf-annotator";
+import PdfArticle from "./PdfArticle";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const PdfViewer = ({ file, fileRef, width }) => {
+const PdfViewer = ({ file, fileRef, width, editing }) => {
   const [numPages, setNumPages] = useState(null);
   if (fileRef !== null && fileRef !== undefined) {
     file = useRef(fileRef);
@@ -12,6 +14,11 @@ const PdfViewer = ({ file, fileRef, width }) => {
       return "Loading...";
     }
   }
+  return (
+    <PdfLoader url={file} beforeLoad={<span>loading</span>}>
+      {(pdfDocument) => <PdfArticle document={pdfDocument} highlights={[]} />}
+    </PdfLoader>
+  );
   return (
     <Document
       file={file}

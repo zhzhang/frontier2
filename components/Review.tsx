@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
-import { Quill } from "./Quill";
+import Markdown from "./Markdown";
 import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
@@ -75,14 +75,7 @@ const Review = ({ review, editing, startOpen }) => {
                 borderBottomRightRadius: ".25rem",
               }}
             >
-              <Quill
-                value={body}
-                modules={{
-                  toolbar: false,
-                }}
-                readOnly={!editing}
-                onChange={setBody}
-              />
+              <Markdown>{body}</Markdown>
             </div>
             {threadMessages
               ? threadMessages.map((message) => (
@@ -102,13 +95,7 @@ const Review = ({ review, editing, startOpen }) => {
                       }}
                     >
                       <div>{message.author.name}</div>
-                      <Quill
-                        value={message.body}
-                        modules={{
-                          toolbar: false,
-                        }}
-                        readOnly={!editing}
-                      />
+                      <Markdown>{message.body}</Markdown>
                     </div>
                   </div>
                 ))

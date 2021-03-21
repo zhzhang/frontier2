@@ -2,9 +2,10 @@ import Layout from "../../components/Layout";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { withApollo } from "../../lib/apollo";
+import { useRef } from "../../lib/firebase";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Quill } from "../../components/Quill";
+import Markdown from "../../components/Markdown";
 import PdfViewer from "../../components/PDFViewer";
 import Spinner from "../../components/CenteredSpinner";
 import UserBadge from "../../components/UserBadge";
@@ -58,7 +59,6 @@ function Article() {
     return <Spinner />;
   }
   if (error) {
-    console.log("error");
     return <div>Error: {error.message}</div>;
   }
 
@@ -129,11 +129,7 @@ function Article() {
                   </span>
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
-                  <Quill
-                    value={abstract}
-                    modules={{ toolbar: false }}
-                    readOnly
-                  />
+                  <Markdown>{abstract}</Markdown>
                 </Accordion.Collapse>
               </Card>
             </Accordion>

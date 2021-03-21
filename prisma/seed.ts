@@ -76,7 +76,7 @@ async function main() {
   });
 
   const abstract =
-    "<p>We address the task of automatically grading the language proficiency of spontaneous speech based on textual features from automatic speech recognition transcripts. Motivated by recent advances in multi-task learning, we develop neural networks trained in a multi-task fashion that learn to predict the proficiency level of non-native English speakers by taking advantage of inductive transfer between the main task (grading) and auxiliary prediction tasks: morpho-syntactic labeling, language modeling, and native language identification (L1). We encode the transcriptions with both bi-directional recurrent neural networks and with bi-directional representations from transformers, compare against a feature-rich baseline, and analyse performance at different proficiency levels and with transcriptions of varying error rates. Our best performance comes from a transformer encoder with L1 prediction as an auxiliary task. We discuss areas for improvement and potential applications for text-only speech scoring.</p>";
+    "We address the task of automatically grading the language proficiency of spontaneous speech based on textual features from automatic speech recognition transcripts. Motivated by recent advances in multi-task learning, we develop neural networks trained in a multi-task fashion that learn to predict the proficiency level of non-native English speakers by taking advantage of inductive transfer between the main task (grading) and auxiliary prediction tasks: morpho-syntactic labeling, language modeling, and native language identification (L1). We encode the transcriptions with both bi-directional recurrent neural networks and with bi-directional representations from transformers, compare against a feature-rich baseline, and analyse performance at different proficiency levels and with transcriptions of varying error rates. Our best performance comes from a transformer encoder with L1 prediction as an auxiliary task. We discuss areas for improvement and potential applications for text-only speech scoring.";
   const article = await prisma.article.create({
     data: {
       id: "cklgwx4zu000058v2vz52cajm",
@@ -146,14 +146,14 @@ async function main() {
     data: {
       reviewId: review2.id,
       userId: andrew.id,
-      body: `<p><span style="color: rgb(51, 51, 51Y);">Author rebuttals and other discussion on public reviews can be viewed in a thread below the review.</span></p>`,
+      body: `Author rebuttals and other discussion on public reviews can be viewed in a thread below the review.`,
     },
   });
 
   const decision = await prisma.decision.create({
     data: {
       authorId: reviewer.id,
-      body: `<p><span style="color: rgb(51, 51, 51Y);">This is an example meta-review. Reviews that a author cites in writing the meta-review are attached to the meta-review. Reviews from other organizations can be cited as well!</span></p>`,
+      body: `This is an example meta-review. Reviews that a author cites in writing the meta-review are attached to the meta-review. Reviews from other organizations can be cited as well!`,
       decision: true,
       articleId: article.id,
       organizationId: organization.id,
