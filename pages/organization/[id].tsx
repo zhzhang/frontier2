@@ -67,38 +67,36 @@ function Organization() {
   const { name, description, role, logoRef } = data.organization;
 
   return (
-    <>
-      <Layout>
-        <Container className="mt-4" fluid>
-          <Row className="mb-3">
-            <Col>
-              <Header name={name} logoRef={logoRef} />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Tabs
-                activeKey={view}
-                onSelect={(newTabKey) => {
-                  router.query.view = newTabKey;
-                  router.push(router, undefined, { shallow: true });
-                }}
-              >
-                <Tab eventKey="info" title="Info">
-                  <InfoPane id={id} description={description} role={role} />
-                </Tab>
-                <Tab eventKey="venues" title="Venues">
-                  <VenuesPane id={id} />
-                </Tab>
-                <Tab eventKey="accepted" title="Accepted Articles">
-                  <ArticlesPane id={id} />
-                </Tab>
-              </Tabs>
-            </Col>
-          </Row>
-        </Container>
-      </Layout>
-    </>
+    <Layout>
+      <Container className="mt-4" fluid>
+        <Row className="mb-3">
+          <Col>
+            <Header name={name} logoRef={logoRef} />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Tabs
+              activeKey={view}
+              onSelect={(newTabKey) => {
+                router.query.view = newTabKey;
+                router.push(router, undefined, { shallow: true });
+              }}
+            >
+              <Tab eventKey="info" title="Info">
+                <InfoPane id={id} description={description} role={role} />
+              </Tab>
+              <Tab eventKey="venues" title="Venues">
+                <VenuesPane id={id} />
+              </Tab>
+              <Tab eventKey="accepted" title="Accepted Articles">
+                <ArticlesPane id={id} />
+              </Tab>
+            </Tabs>
+          </Col>
+        </Row>
+      </Container>
+    </Layout>
   );
 }
 

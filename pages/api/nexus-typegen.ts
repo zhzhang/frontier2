@@ -39,7 +39,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  Role: "ADMIN" | "MEMBER" | "NONE" | "REVIEWER"
+  Role: "ACTION_EDITOR" | "ADMIN" | "NONE"
 }
 
 export interface NexusGenScalars {
@@ -161,12 +161,15 @@ export interface NexusGenFieldTypes {
     createOrganization: NexusGenRootTypes['Organization'] | null; // Organization
     createReview: NexusGenRootTypes['Review'] | null; // Review
     updateOrganization: NexusGenRootTypes['Organization'] | null; // Organization
+    updateOrganizationMembership: NexusGenRootTypes['Organization'] | null; // Organization
     updateReview: NexusGenRootTypes['Review'] | null; // Review
   }
   Organization: { // field return type
     abbreviation: string | null; // String
     accepted: Array<NexusGenRootTypes['Decision'] | null> | null; // [Decision]
+    admins: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     description: string | null; // String
+    editors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     id: string | null; // String
     logoRef: string | null; // String
     name: string | null; // String
@@ -257,12 +260,15 @@ export interface NexusGenFieldTypeNames {
     createOrganization: 'Organization'
     createReview: 'Review'
     updateOrganization: 'Organization'
+    updateOrganizationMembership: 'Organization'
     updateReview: 'Review'
   }
   Organization: { // field return type name
     abbreviation: 'String'
     accepted: 'Decision'
+    admins: 'User'
     description: 'String'
+    editors: 'User'
     id: 'String'
     logoRef: 'String'
     name: 'String'
@@ -354,6 +360,12 @@ export interface NexusGenArgTypes {
       id: string; // String!
       logoRef?: string | null; // String
       name?: string | null; // String
+    }
+    updateOrganizationMembership: { // args
+      action: string; // String!
+      organizationId: string; // String!
+      role: NexusGenEnums['Role']; // Role!
+      userId: string; // String!
     }
     updateReview: { // args
       body: string; // String!

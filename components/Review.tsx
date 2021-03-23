@@ -74,12 +74,16 @@ const Review = ({ review, editing, startOpen }) => {
                 borderBottomLeftRadius: ".25rem",
                 borderBottomRightRadius: ".25rem",
               }}
+              className="p-2"
             >
               <Markdown>{body}</Markdown>
             </div>
             {threadMessages
               ? threadMessages.map((message) => (
-                  <div style={{ display: "flex", marginTop: "10px" }}>
+                  <div
+                    style={{ display: "flex", marginTop: "10px" }}
+                    key={message.id}
+                  >
                     <div
                       style={{
                         width: "10px",
@@ -89,10 +93,10 @@ const Review = ({ review, editing, startOpen }) => {
                     <div
                       style={{
                         flex: 1,
-                        padding: "10px",
                         border: "1px solid rgba(0,0,0,.125)",
                         borderRadius: ".25rem",
                       }}
+                      className="p-2"
                     >
                       <div>{message.author.name}</div>
                       <Markdown>{message.body}</Markdown>

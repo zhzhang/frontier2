@@ -4,6 +4,8 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { ChevronUp, ChevronDown } from "react-bootstrap-icons";
 import Error from "../Error";
 import Markdown from "../Markdown";
@@ -61,48 +63,52 @@ const EditView = ({ description, setDescription }) => {
   );
 };
 
-const InfoPane = ({ id, description, role }) => {
-  const [editing, setEditing] = useState(false);
+const InfoPane = ({ id, description }) => {
+  const [editingDescription, setEditingDescription] = useState(false);
   const [updateOrganization, { loading, error, data }] = useMutation(
     UpdateOrganizationMutation
   );
   const [desc, setDescription] = useState(description);
   return (
     <Container fluid className="mt-2">
-      {editing ? (
-        <EditView description={desc} setDescription={setDescription} />
-      ) : (
-        <Markdown>{description}</Markdown>
-      )}
-      <div className="mt-2">
-        {role === RoleEnum.ADMIN ? (
-          editing ? (
-            <>
-              <Button
-                variant="primary"
-                onClick={() => {
-                  updateOrganization({
-                    variables: {
-                      id,
-                      description: desc,
-                    },
-                  });
-                  setEditing(false);
-                }}
-              >
-                Save
-              </Button>{" "}
-              <Button variant="secondary" onClick={() => setEditing(false)}>
-                Cancel
-              </Button>
-            </>
+      <Row>
+        <Col>
+          {editingDescription ? (
+            <EditView description={desc} setDescription={setDescription} />
           ) : (
-            <Button variant="primary" onClick={() => setEditing(true)}>
-              Edit
-            </Button>
-          )
-        ) : null}
-      </div>
+            <Markdown>{description}</Markdown>
+          )}
+        </Col>
+        <Col md={2}>
+          <div className="mt-2">
+            {editingDescription ? (
+              <>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    updateOrganization({
+                      variables: {
+                        id,
+                        description: desc,
+                      },
+                    });
+                    setEditing(false);
+                  }}
+                >
+                  Save
+                </Button>{" "}
+                <Button variant="secondary" onClick={() => setEditing(false)}>
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <Button variant="primary" onClick={() => setEditing(true)}>
+                Edit
+              </Button>
+            )}
+          </div>
+        </Col>
+      </Row>
     </Container>
   );
 };

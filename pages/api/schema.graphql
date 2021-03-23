@@ -41,13 +41,16 @@ type Mutation {
   createOrganization(abbreviation: String, description: String!, logoRef: String, name: String!): Organization
   createReview(articleId: String!, submissionId: String): Review
   updateOrganization(abbreviation: String, description: String, id: String!, logoRef: String, name: String): Organization
+  updateOrganizationMembership(action: String!, organizationId: String!, role: Role!, userId: String!): Organization
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
 }
 
 type Organization {
   abbreviation: String
   accepted: [Decision]
+  admins: [User]
   description: String
+  editors: [User]
   id: String
   logoRef: String
   name: String
@@ -81,10 +84,9 @@ type Review {
 }
 
 enum Role {
+  ACTION_EDITOR
   ADMIN
-  MEMBER
   NONE
-  REVIEWER
 }
 
 type Submission {

@@ -15,6 +15,7 @@ import _ from "lodash";
 import AWS from "aws-sdk";
 import { RoleEnum } from "../types";
 import stream from "stream";
+import { isOrganizationAdmin } from "./utils";
 
 function s3UploadFromStream(bucket, key) {
   const pass = new stream.PassThrough();
@@ -241,6 +242,49 @@ export default objectType({
         } catch (e) {
           console.log(e);
         }
+      },
+    });
+    t.field("updateOrganizationMembership", {
+      type: "Organization",
+      args: {
+        organizationId: nonNull(stringArg()),
+        userId: nonNull(stringArg()),
+        action: nonNull(stringArg()),
+        role: nonNull(arg({ type: "Role" })),
+      },
+      resolve: async (_, { organizationId, userId, action, role }, ctx) => {
+        if (await isOrganizationAdmin(ctx.user.id, organizationId)) {
+          const membership = await prisma.organizationMembership.findFirst({
+            where: {
+              organizationId,
+              userId,
+              role,
+            },
+          });
+          if (action == "REMOVE") {
+            if (membership) {
+              await prisma.organizationMembership.delete({
+                where: {
+                  id: membership.id,
+                },
+              });
+            }
+          } else if (action == "ADD") {
+            if (!membership) {
+              await prisma.organizationMembership.create({
+                data: {
+                  organizationId,
+                  userId,
+                  role,
+                },
+              });
+            }
+          }
+          return await prisma.organization.findUnique({
+            where: { id: organizationId },
+          });
+        }
+        return null;
       },
     });
   },

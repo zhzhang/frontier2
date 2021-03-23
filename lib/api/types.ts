@@ -17,9 +17,8 @@ import { RoleEnum } from "../../lib/types";
 export const Role = enumType({
   name: "Role",
   members: {
-    REVIEWER: "REVIEWER",
-    MEMBER: "MEMBER",
     ADMIN: "ADMIN",
+    ACTION_EDITOR: "ACTION_EDITOR",
     NONE: "NONE",
   },
 });
@@ -117,7 +116,7 @@ export const Organization = objectType({
     t.string("logoRef");
     t.field("role", {
       type: Role,
-      resolve: async (_, parent, ctx) => {
+      resolve: async (parent, _, ctx) => {
         if (!ctx.user) {
           return RoleEnum.NONE;
         }
@@ -127,7 +126,10 @@ export const Organization = objectType({
             userId: ctx.user.id,
           },
         });
-        return membership.role;
+        if (membership) {
+          return membership.role;
+        }
+        return RoleEnum.NONE;
       },
     });
     t.list.field("venues", {
@@ -138,6 +140,36 @@ export const Organization = objectType({
             organizationId: parent.id,
           },
         });
+      },
+    });
+    t.list.field("admins", {
+      type: "User",
+      resolve: async (parent) => {
+        const memberships = await prisma.organizationMembership.findMany({
+          where: {
+            organizationId: parent.id,
+            role: RoleEnum.ADMIN,
+          },
+          include: {
+            user: true,
+          },
+        });
+        return memberships.map((membership) => membership.user);
+      },
+    });
+    t.list.field("editors", {
+      type: "User",
+      resolve: async (parent) => {
+        const memberships = await prisma.organizationMembership.findMany({
+          where: {
+            organizationId: parent.id,
+            role: RoleEnum.ACTION_EDITOR,
+          },
+          include: {
+            user: true,
+          },
+        });
+        return memberships.map((membership) => membership.user);
       },
     });
     t.list.field("accepted", {

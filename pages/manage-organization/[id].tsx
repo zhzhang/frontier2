@@ -8,8 +8,9 @@ import Error from "../../components/Error";
 import { useAuth } from "../../lib/firebase";
 import { useRef } from "../../lib/firebase";
 import Spinner from "../../components/CenteredSpinner";
-import ArticlesPane from "../../components/manage-organization/ArticlesPane";
 import VenuesPane from "../../components/manage-organization/VenuesPane";
+import AdminsPane from "../../components/manage-organization/AdminsPane";
+import EditorsPane from "../../components/manage-organization/EditorsPane";
 import InfoPane from "../../components/manage-organization/InfoPane";
 import { RoleEnum } from "../../lib/types";
 
@@ -70,6 +71,9 @@ function Organization() {
   return (
     <Layout>
       <Container fluid className="mt-3">
+        <Header name={name} logoRef={logoRef} />
+      </Container>
+      <Container fluid className="mt-3">
         <Tab.Container
           id="left-tabs-example"
           activeKey={view}
@@ -79,25 +83,33 @@ function Organization() {
           }}
         >
           <Row>
-            <Col sm={2}>
+            <Col sm={3}>
               <Nav variant="pills" className="flex-column">
                 <Nav.Item>
                   <Nav.Link eventKey="info">Info</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="members">Members</Nav.Link>
+                  <Nav.Link eventKey="submissions">Submissions</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="submissions">Submissions</Nav.Link>
+                  <Nav.Link eventKey="editors">Action Editors</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="admins">Admins</Nav.Link>
                 </Nav.Item>
               </Nav>
             </Col>
-            <Col sm={10}>
+            <Col>
               <Tab.Content>
                 <Tab.Pane eventKey="info">
                   <InfoPane id={id} description={description} />
                 </Tab.Pane>
-                <Tab.Pane eventKey="members">Members</Tab.Pane>
+                <Tab.Pane eventKey="admins">
+                  <AdminsPane id={id} />
+                </Tab.Pane>
+                <Tab.Pane eventKey="editors">
+                  <EditorsPane id={id} />
+                </Tab.Pane>
                 <Tab.Pane eventKey="submissions">Submissions</Tab.Pane>
               </Tab.Content>
             </Col>

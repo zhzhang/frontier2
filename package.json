@@ -41,6 +41,7 @@
     "next": "10.0.6",
     "nexus": "1.0.0",
     "nexus-plugin-prisma": "0.31.0",
+    "pdfjs-dist": "^2.1.266",
     "react": "17.0.1",
     "react-apollo": "3.1.5",
     "react-bootstrap": "^1.4.3",

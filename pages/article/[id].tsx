@@ -88,12 +88,14 @@ function Article() {
             <span>
               Authors:{" "}
               {authors !== null ? (
-                authors.map((author) => <UserBadge user={author} />)
+                authors.map((author) => (
+                  <UserBadge user={author} key={author.id} />
+                ))
               ) : (
                 <em>anonymized</em>
               )}
             </span>
-            <div style={{ marginTop: 5, marginBottom: 5 }}>
+            <div className="mt-2 mb-2">
               <DropdownButton
                 title={`Version ${selectedVersion.versionNumber} - ${dateFormat(
                   new Date(parseInt(selectedVersion.createdAt)),
@@ -128,7 +130,7 @@ function Article() {
                     {abstractOpen ? <ChevronUp /> : <ChevronDown />}
                   </span>
                 </Accordion.Toggle>
-                <Accordion.Collapse eventKey="0">
+                <Accordion.Collapse eventKey="0" className="m-2">
                   <Markdown>{abstract}</Markdown>
                 </Accordion.Collapse>
               </Card>

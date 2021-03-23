@@ -14,11 +14,11 @@ const PdfViewer = ({ file, fileRef, width, editing }) => {
       return "Loading...";
     }
   }
-  return (
-    <PdfLoader url={file} beforeLoad={<span>loading</span>}>
-      {(pdfDocument) => <PdfArticle document={pdfDocument} highlights={[]} />}
-    </PdfLoader>
-  );
+  // return (
+  //   <PdfLoader url={file} beforeLoad={<span>loading</span>}>
+  //     {(pdfDocument) => <PdfArticle document={pdfDocument} highlights={[]} />}
+  //   </PdfLoader>
+  // );
   return (
     <Document
       file={file}

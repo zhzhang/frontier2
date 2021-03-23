@@ -10,7 +10,12 @@ const renderers = {
 };
 
 const Markdown = ({ children }) => (
-  <ReactMarkdown plugins={[math]} renderers={renderers} children={children} />
+  <ReactMarkdown
+    plugins={[math]}
+    renderers={renderers}
+    children={children}
+    className="markdown"
+  />
 );
 
 export default Markdown;
