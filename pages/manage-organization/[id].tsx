@@ -8,9 +8,9 @@ import Error from "../../components/Error";
 import { useAuth } from "../../lib/firebase";
 import { useRef } from "../../lib/firebase";
 import Spinner from "../../components/CenteredSpinner";
-import ArticlesPane from "../../components/organization/ArticlesPane";
-import VenuesPane from "../../components/organization/VenuesPane";
-import InfoPane from "../../components/organization/InfoPane";
+import ArticlesPane from "../../components/manage-organization/ArticlesPane";
+import VenuesPane from "../../components/manage-organization/VenuesPane";
+import InfoPane from "../../components/manage-organization/InfoPane";
 import { RoleEnum } from "../../lib/types";
 
 import Button from "react-bootstrap/Button";
@@ -70,7 +70,14 @@ function Organization() {
   return (
     <Layout>
       <Container fluid className="mt-3">
-        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+        <Tab.Container
+          id="left-tabs-example"
+          activeKey={view}
+          onSelect={(newTabKey) => {
+            router.query.view = newTabKey;
+            router.push(router, undefined, { shallow: true });
+          }}
+        >
           <Row>
             <Col sm={2}>
               <Nav variant="pills" className="flex-column">
@@ -87,8 +94,11 @@ function Organization() {
             </Col>
             <Col sm={10}>
               <Tab.Content>
-                <Tab.Pane eventKey="first">Hello</Tab.Pane>
-                <Tab.Pane eventKey="second">Hello</Tab.Pane>
+                <Tab.Pane eventKey="info">
+                  <InfoPane id={id} description={description} />
+                </Tab.Pane>
+                <Tab.Pane eventKey="members">Members</Tab.Pane>
+                <Tab.Pane eventKey="submissions">Submissions</Tab.Pane>
               </Tab.Content>
             </Col>
           </Row>

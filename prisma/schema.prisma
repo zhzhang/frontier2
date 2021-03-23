@@ -42,7 +42,7 @@ model ArticleAuthor {
 model ArticleVersion {
   id            String   @id @default(cuid())
   abstract      String   @db.MediumText
-  ref           String
+  ref           String?
   article       Article  @relation(fields: [articleId], references: [id])
   articleId     String
   versionNumber Int
