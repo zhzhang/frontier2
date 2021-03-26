@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 
 export const PdfAnnotator = dynamic(
-  async () => await import("./components/PdfAnnotator"),
+  async () => await import("./components/PdfArticle"),
   {
     ssr: false,
   }
