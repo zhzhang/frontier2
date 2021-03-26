@@ -155,8 +155,8 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
   }
   Mutation: { // field return type
-    assignChair: NexusGenRootTypes['Submission'] | null; // Submission
     assignReviewers: NexusGenRootTypes['Submission'] | null; // Submission
+    assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOrganization: NexusGenRootTypes['Organization'] | null; // Organization
     createReview: NexusGenRootTypes['Review'] | null; // Review
@@ -174,6 +174,7 @@ export interface NexusGenFieldTypes {
     logoRef: string | null; // String
     name: string | null; // String
     role: NexusGenEnums['Role'] | null; // Role
+    submissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Query: { // field return type
@@ -183,6 +184,7 @@ export interface NexusGenFieldTypes {
     organization: NexusGenRootTypes['Organization'] | null; // Organization
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
+    searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     user: NexusGenRootTypes['User'] | null; // User
     userArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
@@ -202,10 +204,10 @@ export interface NexusGenFieldTypes {
   Submission: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
     articleId: string | null; // String
-    chair: NexusGenRootTypes['User'] | null; // User
     id: string | null; // String
     organization: NexusGenRootTypes['Organization'] | null; // Organization
     organizationId: string | null; // String
+    owner: NexusGenRootTypes['User'] | null; // User
     requestedReviewers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
   ThreadMessage: { // field return type
@@ -254,8 +256,8 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
   }
   Mutation: { // field return type name
-    assignChair: 'Submission'
     assignReviewers: 'Submission'
+    assignSubmissionOwner: 'Submission'
     createArticle: 'Article'
     createOrganization: 'Organization'
     createReview: 'Review'
@@ -273,6 +275,7 @@ export interface NexusGenFieldTypeNames {
     logoRef: 'String'
     name: 'String'
     role: 'Role'
+    submissions: 'Submission'
     venues: 'Venue'
   }
   Query: { // field return type name
@@ -282,6 +285,7 @@ export interface NexusGenFieldTypeNames {
     organization: 'Organization'
     reviewerAssignedSubmissions: 'Submission'
     reviews: 'Review'
+    searchEditors: 'User'
     searchUsers: 'User'
     user: 'User'
     userArticles: 'Article'
@@ -301,10 +305,10 @@ export interface NexusGenFieldTypeNames {
   Submission: { // field return type name
     article: 'Article'
     articleId: 'String'
-    chair: 'User'
     id: 'String'
     organization: 'Organization'
     organizationId: 'String'
+    owner: 'User'
     requestedReviewers: 'User'
   }
   ThreadMessage: { // field return type name
@@ -329,13 +333,13 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    assignChair: { // args
-      chairId: string; // String!
-      submissionId: string; // String!
-    }
     assignReviewers: { // args
       reviewerIds: string[]; // [String!]!
       submissionId: string; // String!
+    }
+    assignSubmissionOwner: { // args
+      submissionId: string; // String!
+      userId: string; // String!
     }
     createArticle: { // args
       abstract: string; // String!
@@ -386,6 +390,10 @@ export interface NexusGenArgTypes {
     }
     reviews: { // args
       articleId: string; // String!
+    }
+    searchEditors: { // args
+      organizationId: string; // String!
+      query?: string | null; // String
     }
     searchUsers: { // args
       query?: string | null; // String

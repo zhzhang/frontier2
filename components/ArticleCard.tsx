@@ -30,7 +30,7 @@ const ArticleCard = ({ article }) => {
       </span>
       <Quill value={abstract} modules={{ toolbar: false }} readOnly />
       <span>
-        Accepted by:{" "}
+        {acceptedOrganizations.length === 0 ? null : "Accepted by: "}
         {acceptedOrganizations.map((org) => (
           <OrganizationBadge organization={org} />
         ))}

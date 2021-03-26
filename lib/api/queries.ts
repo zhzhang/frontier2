@@ -158,6 +158,22 @@ export default objectType({
         });
       },
     });
+    t.list.field("searchEditors", {
+      type: "User",
+      args: { query: stringArg(), organizationId: nonNull(stringArg()) },
+      resolve: async (_, { query, organizationId }) => {
+        const memberships = await prisma.organizationMembership.findMany({
+          where: {
+            organizationId,
+            role: RoleEnum.ACTION_EDITOR,
+          },
+          include: {
+            user: true,
+          },
+        });
+        return memberships.map((membership) => membership.user);
+      },
+    });
     t.list.field("reviewerAssignedSubmissions", {
       type: "Submission",
       resolve: async (_, _args, ctx) => {

@@ -3,9 +3,9 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { useState } from "react";
 
-const SearchUsers = gql`
-  query SearchUsers($query: String!) {
-    searchUsers(query: $query) {
+const SearchEditors = gql`
+  query SearchEditors($query: String!, $organizationId: String!) {
+    searchEditors(query: $query, organizationId: $organizationId) {
       id
       name
       email
@@ -13,26 +13,29 @@ const SearchUsers = gql`
   }
 `;
 
-// TODO: prevent this from firing a search with "" on init.
-const UserTypeahead = ({ id, selected, onChangeSelection }) => {
+const EditorTypeahead = ({
+  id,
+  organizationId,
+  selected,
+  onChangeSelection,
+}) => {
   const [query, setQuery] = useState("");
-  const { loading, error, data } = useQuery(SearchUsers, {
-    variables: { query },
+  const { loading, error, data } = useQuery(SearchEditors, {
+    variables: { query, organizationId },
   });
   var options = [];
   if (data !== undefined) {
-    options = data.searchUsers;
+    options = data.searchEditors;
   }
 
   return (
     <AsyncTypeahead
       id={id}
-      multiple
+      multiple={false}
       isLoading={loading}
       options={options}
       onSearch={(query) => setQuery(query)}
-      filterBy={(entry) => !selected.some((s) => s.id === entry.id)}
-      minLength={2}
+      minLength={1}
       labelKey="name"
       placeholder="Search users."
       selected={selected}
@@ -41,4 +44,4 @@ const UserTypeahead = ({ id, selected, onChangeSelection }) => {
   );
 };
 
-export default UserTypeahead;
+export default EditorTypeahead;

@@ -158,18 +158,18 @@ export default objectType({
         return organization;
       },
     });
-    t.field("assignChair", {
+    t.field("assignSubmissionOwner", {
       type: "Submission",
       args: {
         submissionId: nonNull(stringArg()),
-        chairId: nonNull(stringArg()),
+        userId: nonNull(stringArg()),
       },
-      resolve: async (_, { submissionId, chairId }, ctx) => {
+      resolve: async (_, { submissionId, userId }, ctx) => {
         return await prisma.submission.update({
           where: {
             id: submissionId,
           },
-          data: { chairId },
+          data: { ownerId: userId },
         });
       },
     });

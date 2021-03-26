@@ -69,6 +69,34 @@ export default ({ id }) => {
   return (
     <Container fluid className="mt-2">
       <h4>Admins</h4>
+      <Row className="d-flex pb-2">
+        <Col className="flex-grow-1">
+          <UserTypeahead
+            selected={newAdmins}
+            onChangeSelection={setNewAdmins}
+          />
+        </Col>
+        <Col>
+          <Button
+            variant="primary"
+            onClick={() => {
+              newAdmins.map((user) =>
+                updateOrganizationMembership({
+                  variables: {
+                    organizationId: id,
+                    userId: user.id,
+                    action: "ADD",
+                    role: RoleEnum.ADMIN,
+                  },
+                })
+              );
+              setNewAdmins([]);
+            }}
+          >
+            Add
+          </Button>
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Table bordered>
@@ -106,34 +134,6 @@ export default ({ id }) => {
               ))}
             </tbody>
           </Table>
-        </Col>
-      </Row>
-      <Row className="d-flex">
-        <Col className="flex-grow-1">
-          <UserTypeahead
-            selected={newAdmins}
-            onChangeSelection={setNewAdmins}
-          />
-        </Col>
-        <Col>
-          <Button
-            variant="primary"
-            onClick={() => {
-              newAdmins.map((user) =>
-                updateOrganizationMembership({
-                  variables: {
-                    organizationId: id,
-                    userId: user.id,
-                    action: "ADD",
-                    role: RoleEnum.ADMIN,
-                  },
-                })
-              );
-              setNewAdmins([]);
-            }}
-          >
-            Add
-          </Button>
         </Col>
       </Row>
     </Container>

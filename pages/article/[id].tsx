@@ -139,7 +139,10 @@ function Article() {
               <span>
                 Accepted by:{" "}
                 {acceptedOrganizations.map((organization) => (
-                  <OrganizationBadge organization={organization} />
+                  <OrganizationBadge
+                    organization={organization}
+                    key={organization.id}
+                  />
                 ))}
               </span>
             ) : null}

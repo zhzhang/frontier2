@@ -13,6 +13,7 @@ import {
 import prisma from "../prisma";
 import _ from "lodash";
 import { RoleEnum } from "../../lib/types";
+import { isOrganizationAdmin } from "./utils";
 
 export const Role = enumType({
   name: "Role",
@@ -57,8 +58,16 @@ export const Article = objectType({
     });
     t.list.field("versions", {
       type: "ArticleVersion",
-      resolve: (parent) => {
-        return _.orderBy(parent.versions, ["versionNumber"], ["desc"]);
+      resolve: async (parent) => {
+        return _.orderBy(
+          await prisma.articleVersion.findMany({
+            where: {
+              articleId: parent.id,
+            },
+          }),
+          ["versionNumber"],
+          ["desc"]
+        );
       },
     });
     t.list.field("reviews", {
@@ -172,6 +181,24 @@ export const Organization = objectType({
         return memberships.map((membership) => membership.user);
       },
     });
+    t.list.field("submissions", {
+      type: "Submission",
+      resolve: async (parent, _, ctx) => {
+        if (ctx.user) {
+          if (await isOrganizationAdmin(ctx.user.id, parent.id)) {
+            return await prisma.submission.findMany({
+              where: {
+                organizationId: parent.id,
+                decisionId: null,
+              },
+              include: {
+                article: true,
+              },
+            });
+          }
+        }
+      },
+    });
     t.list.field("accepted", {
       type: "Decision",
       resolve: async (parent) => {
@@ -258,10 +285,17 @@ export const Submission = objectType({
       },
     });
     t.field("organization", { type: "Organization" });
-    t.field("chair", {
+    t.field("owner", {
       type: "User",
-      resolve: (parent) => {
-        return parent.chair;
+      resolve: async (parent) => {
+        if (parent.ownerId) {
+          return await prisma.user.findUnique({
+            where: {
+              id: parent.ownerId,
+            },
+          });
+        }
+        return null;
       },
     });
     t.list.field("requestedReviewers", {

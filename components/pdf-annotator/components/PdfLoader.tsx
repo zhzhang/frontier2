@@ -1,14 +1,15 @@
 import { useState } from "react";
-import pdfjs from "pdfjs-dist";
+import * as pdfjs from "../pdfjs";
 
 const PDFLoader = ({ url, children }) => {
   const [document, setDocument] = useState(null);
-  pdfjs.getDocument(url).then((pdfDocument) => {
-    setDocument(pdfDocument);
-  });
   if (document) {
     return children(document);
   }
+  const loadingTask = pdfjs.getDocument(url);
+  loadingTask.promise.then((pdfDocument) => {
+    setDocument(pdfDocument);
+  });
   return "Loading";
 };
 

@@ -9,6 +9,7 @@ import { useAuth } from "../../lib/firebase";
 import { useRef } from "../../lib/firebase";
 import Spinner from "../../components/CenteredSpinner";
 import VenuesPane from "../../components/manage-organization/VenuesPane";
+import SubmissionsPane from "../../components/manage-organization/SubmissionsPane";
 import AdminsPane from "../../components/manage-organization/AdminsPane";
 import EditorsPane from "../../components/manage-organization/EditorsPane";
 import InfoPane from "../../components/manage-organization/InfoPane";
@@ -110,7 +111,9 @@ function Organization() {
                 <Tab.Pane eventKey="editors">
                   <EditorsPane id={id} />
                 </Tab.Pane>
-                <Tab.Pane eventKey="submissions">Submissions</Tab.Pane>
+                <Tab.Pane eventKey="submissions">
+                  <SubmissionsPane id={id} />
+                </Tab.Pane>
               </Tab.Content>
             </Col>
           </Row>

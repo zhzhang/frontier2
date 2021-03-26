@@ -168,9 +168,59 @@ async function main() {
     },
   });
 
-  prisma.submission.create({
+  const user5 = await prisma.user.create({
     data: {
-      articleId: article.id,
+      id: cuid(),
+      email: "chris@christianbentz.de",
+      name: "Christian Bentz",
+    },
+  });
+  const user6 = await prisma.user.create({
+    data: {
+      id: cuid(),
+      email: "kate.knill@eng.cam.ac.uk",
+      name: "Kate Knill",
+    },
+  });
+  const user7 = await prisma.user.create({
+    data: {
+      id: cuid(),
+      email: "marek.rei@imperial.ac.uk",
+      name: "Marek Rei",
+    },
+  });
+
+  // Second Article
+  const article2 = await prisma.article.create({
+    data: {
+      title: "Grammatical Error Detection in Transcriptions of Spoken English",
+      authors: {
+        create: [
+          { authorNumber: 1, user: { connect: { id: andrew.id } } },
+          { authorNumber: 2, user: { connect: { id: user5.id } } },
+          { authorNumber: 3, user: { connect: { id: user6.id } } },
+          { authorNumber: 4, user: { connect: { id: user7.id } } },
+          { authorNumber: 5, user: { connect: { id: user3.id } } },
+        ],
+      },
+      versions: {
+        create: [
+          {
+            abstract:
+              "We describe the collection of transcription corrections and grammatical error annotations for the CROWDED Corpus of spoken English monologues on business topics. The corpus recordings were crowdsourced from native speakers of English and learners of English with German as their first language. The new transcriptions and annotations are obtained from different crowdworkers: we analyse the 1108 new crowdworker submissions and propose that they can be used for automatic transcription post-editing and grammatical error correction for speech. To further explore the data we train grammatical error detection models with various configurations including pretrained and contextual word representations as input, additional features and auxiliary objectives, and extra training data from written error-annotated corpora. We find that a model concatenating pre-trained and contextual word representations as input performs best, and that additional information does not lead to further performance gains",
+            ref: "articles/CrowdED_GED.pdf",
+            versionNumber: 1,
+            createdAt: "2020-01-06T12:00:00.000Z",
+          },
+        ],
+      },
+      anonymous: true,
+    },
+  });
+
+  await prisma.submission.create({
+    data: {
+      articleId: article2.id,
       organizationId: organization.id,
     },
   });
