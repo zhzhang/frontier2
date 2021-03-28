@@ -6,7 +6,7 @@ import { PDFViewer, PDFLinkService } from "pdfjs-dist/web/pdf_viewer";
 
 import "pdfjs-dist/web/pdf_viewer.css";
 
-import "./PdfAnnotator.module.css";
+import styles from "./PdfAnnotator.module.css";
 
 import getBoundingRect from "../lib/get-bounding-rect";
 import getClientRects from "../lib/get-client-rects";
@@ -446,7 +446,7 @@ class PdfAnnotator extends Component {
       <div
         onPointerDown={this.onMouseDown}
         ref={(node) => (this.containerNode = node)}
-        className="PdfAnnotator"
+        className={styles.PdfAnnotator}
       >
         <div className="pdfViewer" />
         {typeof enableAreaSelection === "function" ? (

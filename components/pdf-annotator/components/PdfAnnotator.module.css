@@ -1,9 +1,9 @@
 .PdfAnnotator {
-  position: absolute;
-  right: 0;
-  overflow: auto;
-  width: 1000px;
-  height: calc(100% - 50px);
+  min-width: 730;
+  width: auto;
+  position: relative;
+  overflow-y: scroll;
+  height: calc(100vh - 55px);
 }
 
 .PdfAnnotator__highlight-layer {
@@ -12,7 +12,7 @@
   left: 0;
 }
 
-.PdfAnnotator__tip-container {
+.PdfAnnotatorTipContainer {
   z-index: 6;
   position: absolute;
 }

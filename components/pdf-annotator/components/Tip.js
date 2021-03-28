@@ -1,9 +1,6 @@
-//
+import React, { Component } from "react";
 
-import React, { Component } from 'react';
-
-import './Tip.module.css';
-
+import "./Tip.module.css";
 
 class Tip extends Component {
   render() {
@@ -11,10 +8,7 @@ class Tip extends Component {
 
     return (
       <div className="Tip">
-        <div
-          className="Tip__compact"
-          onClick={onConfirm}
-        >
+        <div className="Tip__compact" onClick={onConfirm}>
           Add reference
         </div>
       </div>

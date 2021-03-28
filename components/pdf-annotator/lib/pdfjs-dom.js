@@ -1,7 +1,5 @@
-//
-
 export const getPageFromElement = (target) => {
-  const node = target.closest('.page');
+  const node = target.closest(".page");
 
   if (!(node instanceof HTMLElement)) {
     return null;
@@ -12,24 +10,29 @@ export const getPageFromElement = (target) => {
   return { node, number };
 };
 
-export const getPageFromRange = (range) => {
-  const { parentElement } = range.startContainer;
+export const getDocument = (elm) => (elm || {}).ownerDocument || document;
+export const getWindow = (elm) =>
+  (getDocument(elm) || {}).defaultView || window;
 
-  if (!(parentElement instanceof HTMLElement)) {
+export const getPageFromRange = (range) => {
+  const parentElement = range.startContainer.parentElement;
+
+  if (!isHTMLElement(parentElement)) {
     return;
   }
 
   return getPageFromElement(parentElement);
 };
 
-export const findOrCreateContainerLayer = (
-  container,
-  className,
-) => {
+export const isHTMLElement = (elm) =>
+  elm instanceof HTMLElement || elm instanceof getWindow(elm).HTMLElement;
+
+export const findOrCreateContainerLayer = (container, className) => {
+  const doc = getDocument(container);
   let layer = container.querySelector(`.${className}`);
 
   if (!layer) {
-    layer = document.createElement('div');
+    layer = doc.createElement("div");
     layer.className = className;
     container.appendChild(layer);
   }

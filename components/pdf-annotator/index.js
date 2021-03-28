@@ -19,12 +19,7 @@ export const Highlight = dynamic(
 export const Popup = dynamic(async () => await import("./components/Popup"), {
   ssr: false,
 });
-export const AreaHighlight = dynamic(
-  async () => await import("./components/AreaHighlight"),
-  {
-    ssr: false,
-  }
-);
+
 export const PdfLoader = dynamic(
   async () => await import("./components/PdfLoader"),
   {

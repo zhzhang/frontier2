@@ -73,13 +73,12 @@ function Article() {
 
   return (
     <Layout>
-      <div style={{ display: "flex", height: "100%" }}>
+      <div style={{ display: "flex" }}>
         <div
           className="flex-grow-1"
           style={{
             minWidth: 300,
             width: "auto",
-            height: "calc(100vh - 55px)",
             overflowY: "scroll",
           }}
         >
@@ -152,16 +151,7 @@ function Article() {
             <Reviews articleId={id} />
           </Container>
         </div>
-        <div
-          style={{
-            minWidth: 730,
-            width: "auto",
-            height: "calc(100vh - 55px)",
-            overflowY: "scroll",
-          }}
-        >
-          <PdfViewer fileRef={ref} />
-        </div>
+        <PdfViewer fileRef={ref} />
       </div>
     </Layout>
   );

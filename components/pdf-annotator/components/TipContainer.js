@@ -1,6 +1,5 @@
-//
-
 import React, { Component } from "react";
+import styles from "./PdfAnnotator.module.css";
 
 const clamp = (value, left, right) => Math.min(Math.max(value, left), right);
 
@@ -66,7 +65,6 @@ class TipContainer extends Component {
         },
       })
     );
-    console.log("HIT");
 
     return (
       <div
@@ -75,7 +73,7 @@ class TipContainer extends Component {
           top,
           left,
         }}
-        className="PdfAnnotator__tip-container"
+        className={styles.PdfAnnotatorTipContainer}
         ref="container"
       >
         {childrenWithProps}

@@ -1,9 +1,6 @@
-//
+import React, { Component } from "react";
 
-import React, { Component } from 'react';
-
-import './Highlight.module.css';
-
+import "./Highlight.module.css";
 
 class Highlight extends Component {
   render() {
@@ -15,11 +12,11 @@ class Highlight extends Component {
       isScrolledTo,
     } = this.props;
 
-    const { rects, boundingRect } = position;
+    const { rects } = position;
 
     return (
       <div
-        className={`Highlight ${isScrolledTo ? 'Highlight--scrolledTo' : ''}`}
+        className={`Highlight ${isScrolledTo ? "Highlight--scrolledTo" : ""}`}
       >
         <div className="Highlight__parts">
           {rects.map((rect, index) => (
