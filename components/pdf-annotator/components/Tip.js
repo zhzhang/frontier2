@@ -1,19 +1,11 @@
-import React, { Component } from "react";
+import styles from "./Tip.module.css";
 
-import "./Tip.module.css";
-
-class Tip extends Component {
-  render() {
-    const { onConfirm, onOpen } = this.props;
-
-    return (
-      <div className="Tip">
-        <div className="Tip__compact" onClick={onConfirm}>
-          Add reference
-        </div>
-      </div>
-    );
-  }
-}
+const Tip = ({ onConfirm, onOpen }) => {
+  return (
+    <div className={styles.TipCompact} onClick={onConfirm}>
+      Add reference
+    </div>
+  );
+};
 
 export default Tip;

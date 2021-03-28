@@ -1,12 +1,12 @@
 .PdfAnnotator {
-  min-width: 730;
+  min-width: 730px;
   width: auto;
   position: relative;
   overflow-y: scroll;
   height: calc(100vh - 55px);
 }
 
-.PdfAnnotator__highlight-layer {
+.PdfAnnotatorHighlightLayer {
   position: absolute;
   z-index: 3;
   left: 0;

@@ -181,9 +181,6 @@ export default class PdfArticle extends React.Component {
     this.linkService.setDocument(document);
     this.linkService.setViewer(this.viewer);
     this.viewer.setDocument(document);
-
-    // debug
-    window.PdfViewer = this;
   }
 
   componentWillUnmount() {
@@ -221,7 +218,7 @@ export default class PdfArticle extends React.Component {
 
     return findOrCreateContainerLayer(
       textLayer.textLayerDiv,
-      "PdfHighlighter__highlight-layer"
+      styles.PdfHighlightLayer
     );
   }
 
