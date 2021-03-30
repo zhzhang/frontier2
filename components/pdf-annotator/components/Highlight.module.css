@@ -9,11 +9,11 @@
   font-size: 28px;
 }
 
-.Highlight__parts {
+.HighlightParts {
   opacity: 0.4;
 }
 
-.Highlight__part {
+.HighlightPart {
   cursor: pointer;
   position: absolute;
   background: rgba(255, 226, 143, 1);
@@ -31,6 +31,6 @@
   overflow-y: scroll;
 }
 
-.Highlight--scrolledTo .Highlight__part {
+.HighlightScrolledTo .Highlight__part {
   background: #c0392b;
 }

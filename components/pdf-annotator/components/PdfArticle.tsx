@@ -15,6 +15,7 @@ import debounce from "lodash.debounce";
 
 import Tip from "./Tip";
 import TipContainer from "./TipContainer";
+import Highlight from "./Highlight";
 
 export default class PdfArticle extends React.Component {
   viewer: null;
@@ -70,6 +71,10 @@ export default class PdfArticle extends React.Component {
     this.renderHighlights();
   };
 
+  onMouseDown = (event) => {
+    this.hideTipAndSelection();
+  };
+
   onSelectionChange = () => {
     const container = this.containerNode;
     const selection = getWindow(container).getSelection();
@@ -112,8 +117,18 @@ export default class PdfArticle extends React.Component {
     }
   };
 
+  hideTipAndSelection = () => {
+    this.setState({
+      tipPosition: null,
+      tipChildren: null,
+    });
+
+    this.setState({ ghostHighlight: null, tip: null }, () =>
+      this.renderHighlights()
+    );
+  };
+
   afterSelection = () => {
-    // const { onSelectionFinished } = this.props;
     const { isCollapsed, range } = this.state;
     if (!range || isCollapsed) {
       return;
@@ -122,31 +137,30 @@ export default class PdfArticle extends React.Component {
     if (!page) {
       return;
     }
-    const rects = getClientRects(range, page.node);
+    const rects = getClientRects(range, page.node).filter(
+      (rect) => rect.height > 0
+    );
     if (rects.length === 0) {
       return;
     }
     const boundingRect = getBoundingRect(rects);
     const viewportPosition = { boundingRect, rects, pageNumber: page.number };
-    const content = {
-      text: range.toString(),
-    };
     const scaledPosition = this.viewportPositionToScaled(viewportPosition);
     this.setTip(
       viewportPosition,
       <Tip
-        onOpen={() =>
-          this.setState(
-            {
-              ghostHighlight: { position: scaledPosition },
-            },
-            () => this.renderHighlights()
-          )
-        }
-        onConfirm={(comment) => {
-          this.addHighlight({ content, position, comment });
-
-          hideTipAndSelection();
+        // onOpen={() =>
+        //   this.setState(
+        //     {
+        //       ghostHighlight: { position: scaledPosition },
+        //     },
+        //     () => this.renderHighlights()
+        //   )
+        // }
+        onConfirm={() => {
+          const { highlights, setHighlights } = this.props;
+          setHighlights([...highlights, scaledPosition]);
+          this.hideTipAndSelection();
         }}
       />
     );
@@ -200,7 +214,7 @@ export default class PdfArticle extends React.Component {
     return [...highlights, ghostHighlight]
       .filter(Boolean)
       .reduce((res, highlight) => {
-        const { pageNumber } = highlight.position;
+        const { pageNumber } = highlight;
 
         res[pageNumber] = res[pageNumber] || [];
         res[pageNumber].push(highlight);
@@ -222,13 +236,30 @@ export default class PdfArticle extends React.Component {
     );
   }
 
+  scaledPositionToViewport({
+    pageNumber,
+    boundingRect,
+    rects,
+    usePdfCoordinates,
+  }) {
+    const viewport = this.viewer.getPageView(pageNumber - 1).viewport;
+
+    return {
+      boundingRect: scaledToViewport(boundingRect, viewport, usePdfCoordinates),
+      rects: (rects || []).map((rect) =>
+        scaledToViewport(rect, viewport, usePdfCoordinates)
+      ),
+      pageNumber,
+    };
+  }
+
   renderHighlights(nextProps?) {
     const { highlightTransform, highlights } = nextProps || this.props;
+    console.log(highlights);
 
     const { document } = this.props;
 
     const { tip, scrolledToHighlightId } = this.state;
-    console.log(tip);
 
     const highlightsByPage = this.groupHighlightsByPage(highlights);
 
@@ -239,39 +270,11 @@ export default class PdfArticle extends React.Component {
         ReactDom.render(
           <div>
             {(highlightsByPage[String(pageNumber)] || []).map(
-              ({ position, id, ...highlight }, index) => {
-                const viewportHighlight = {
-                  id,
-                  position: this.scaledPositionToViewport(position),
-                  ...highlight,
-                };
+              (highlight, index) => {
+                //const isScrolledTo = Boolean(scrolledToHighlightId === id);
+                const position = this.scaledPositionToViewport(highlight);
 
-                if (tip && tip.highlight.id === String(id)) {
-                  this.showTip(tip.highlight, tip.callback(viewportHighlight));
-                }
-
-                const isScrolledTo = Boolean(scrolledToHighlightId === id);
-
-                return highlightTransform(
-                  viewportHighlight,
-                  index,
-                  (highlight, callback) => {
-                    this.setState({
-                      tip: { highlight, callback },
-                    });
-
-                    this.showTip(highlight, callback(highlight));
-                  },
-                  this.hideTipAndSelection,
-                  (rect) => {
-                    const viewport = this.viewer.getPageView(pageNumber - 1)
-                      .viewport;
-
-                    return viewportToScaled(rect, viewport);
-                  },
-                  (boundingRect) => this.screenshot(boundingRect, pageNumber),
-                  isScrolledTo
-                );
+                return <Highlight isScrolledTo={true} position={position} />;
               }
             )}
           </div>,
@@ -284,8 +287,6 @@ export default class PdfArticle extends React.Component {
   renderTip = () => {
     const { tipPosition, tipChildren } = this.state;
     if (!tipPosition) return null;
-    console.log(tipPosition);
-    console.log(tipChildren);
 
     const { boundingRect, pageNumber } = tipPosition;
     const page = {
@@ -310,19 +311,9 @@ export default class PdfArticle extends React.Component {
 
   render() {
     return (
-      <div
-        ref={this.attachRef}
-        className={styles.PdfAnnotator}
-        // style={{
-        //   minWidth: 730,
-        //   width: "auto",
-        //   position: "relative",
-        //   overflowY: "scroll",
-        //   height: "calc(100vh - 55px)",
-        // }}
-      >
-        <div className="pdfViewer" />
+      <div ref={this.attachRef} className={styles.PdfAnnotator}>
         {this.renderTip()}
+        <div className="pdfViewer" onMouseDown={this.onMouseDown} />
       </div>
     );
   }

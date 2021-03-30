@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 
-import "./Highlight.module.css";
+import styles from "./Highlight.module.css";
 
 class Highlight extends Component {
   render() {
+    console.log(this.props);
     const {
       position,
       onClick,
@@ -11,14 +12,17 @@ class Highlight extends Component {
       onMouseOut,
       isScrolledTo,
     } = this.props;
+    console.log(position);
 
     const { rects } = position;
 
     return (
       <div
-        className={`Highlight ${isScrolledTo ? "Highlight--scrolledTo" : ""}`}
+        className={`${styles.Highlight} ${
+          isScrolledTo ? styles.HighlightScrolledTo : ""
+        }`}
       >
-        <div className="Highlight__parts">
+        <div className={styles.HighlightParts}>
           {rects.map((rect, index) => (
             <div
               onMouseOver={onMouseOver}
@@ -26,7 +30,7 @@ class Highlight extends Component {
               onClick={onClick}
               key={index}
               style={rect}
-              className="Highlight__part"
+              className={styles.HighlightPart}
             />
           ))}
         </div>

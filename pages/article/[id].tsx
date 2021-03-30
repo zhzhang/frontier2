@@ -55,6 +55,7 @@ function Article() {
   });
   const [selectedVersionNumber, setVersionNumber] = useState(-1);
   const [abstractOpen, setAbstractOpen] = useState(false);
+  const [highlights, setHighlights] = useState([]);
   if (loading) {
     return <Spinner />;
   }
@@ -151,7 +152,11 @@ function Article() {
             <Reviews articleId={id} />
           </Container>
         </div>
-        <PdfViewer fileRef={ref} />
+        <PdfViewer
+          fileRef={ref}
+          highlights={highlights}
+          setHighlights={setHighlights}
+        />
       </div>
     </Layout>
   );
