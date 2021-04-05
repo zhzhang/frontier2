@@ -1,16 +1,4 @@
-//
-
-// "viewport" rectangle is { top, left, width, height }
-
-// "scaled" means that data structure stores (0, 1) coordinates.
-// for clarity reasons I decided not to store actual (0, 1) coordinates, but
-// provide width and height, so user can compute ratio himself if needed
-
-
-export const viewportToScaled = (
-  rect,
-  { width, height },
-) => ({
+export const viewportToScaled = (rect, { width, height }) => ({
   x1: rect.left,
   y1: rect.top,
 
@@ -41,7 +29,7 @@ const pdfToViewport = (pdf, viewport) => {
 export const scaledToViewport = (
   scaled,
   viewport,
-  usePdfCoordinates = false,
+  usePdfCoordinates = false
 ) => {
   const { width, height } = viewport;
 
@@ -50,14 +38,14 @@ export const scaledToViewport = (
   }
 
   if (!scaled.x1) {
-    throw new Error('You are using old position format, please update');
+    throw new Error("You are using old position format, please update");
   }
 
-  const x1 = width * scaled.x1 / scaled.width;
-  const y1 = height * scaled.y1 / scaled.height;
+  const x1 = (width * scaled.x1) / scaled.width;
+  const y1 = (height * scaled.y1) / scaled.height;
 
-  const x2 = width * scaled.x2 / scaled.width;
-  const y2 = height * scaled.y2 / scaled.height;
+  const x2 = (width * scaled.x2) / scaled.width;
+  const y2 = (height * scaled.y2) / scaled.height;
 
   return {
     left: x1,

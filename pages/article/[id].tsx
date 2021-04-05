@@ -149,7 +149,7 @@ function Article() {
             <br />
             <br />
             <h4>Reviews</h4>
-            <Reviews articleId={id} />
+            <Reviews articleId={id} highlights={highlights} />
           </Container>
         </div>
         <PdfViewer

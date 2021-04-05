@@ -4,7 +4,6 @@ import styles from "./Highlight.module.css";
 
 class Highlight extends Component {
   render() {
-    console.log(this.props);
     const {
       position,
       onClick,
@@ -12,7 +11,6 @@ class Highlight extends Component {
       onMouseOut,
       isScrolledTo,
     } = this.props;
-    console.log(position);
 
     const { rects } = position;
 
@@ -31,6 +29,7 @@ class Highlight extends Component {
               key={index}
               style={rect}
               className={styles.HighlightPart}
+              id={index}
             />
           ))}
         </div>

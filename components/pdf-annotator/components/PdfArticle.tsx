@@ -12,6 +12,7 @@ import getClientRects from "../lib/get-client-rects";
 import getBoundingRect from "../lib/get-bounding-rect";
 import { scaledToViewport, viewportToScaled } from "../lib/coordinates";
 import debounce from "lodash.debounce";
+import shortid from "shortid";
 
 import Tip from "./Tip";
 import TipContainer from "./TipContainer";
@@ -101,6 +102,17 @@ export default class PdfArticle extends React.Component {
     this.debouncedAfterSelection();
   };
 
+  onScroll = () => {
+    this.setState(
+      {
+        scrolledToHighlightId: null,
+      },
+      () => this.renderHighlights()
+    );
+
+    this.viewer.container.removeEventListener("scroll", this.onScroll);
+  };
+
   viewportPositionToScaled({ pageNumber, boundingRect, rects }) {
     const viewport = this.viewer.getPageView(pageNumber - 1).viewport;
 
@@ -146,6 +158,7 @@ export default class PdfArticle extends React.Component {
     const boundingRect = getBoundingRect(rects);
     const viewportPosition = { boundingRect, rects, pageNumber: page.number };
     const scaledPosition = this.viewportPositionToScaled(viewportPosition);
+    scaledPosition.id = this.props.highlights.length + 1;
     this.setTip(
       viewportPosition,
       <Tip
@@ -253,9 +266,44 @@ export default class PdfArticle extends React.Component {
     };
   }
 
+  scrollTo = (highlight) => {
+    const { id, pageNumber, boundingRect, usePdfCoordinates } = highlight;
+
+    this.viewer.container.removeEventListener("scroll", this.onScroll);
+
+    const pageViewport = this.viewer.getPageView(pageNumber - 1).viewport;
+
+    const scrollMargin = 10;
+
+    this.viewer.scrollPageIntoView({
+      pageNumber,
+      destArray: [
+        null,
+        { name: "XYZ" },
+        ...pageViewport.convertToPdfPoint(
+          0,
+          scaledToViewport(boundingRect, pageViewport, usePdfCoordinates).top -
+            scrollMargin
+        ),
+        0,
+      ],
+    });
+
+    this.setState(
+      {
+        scrolledToHighlightId: id,
+      },
+      () => this.renderHighlights()
+    );
+
+    // wait for scrolling to finish
+    setTimeout(() => {
+      this.viewer.container.addEventListener("scroll", this.onScroll);
+    }, 100);
+  };
+
   renderHighlights(nextProps?) {
     const { highlightTransform, highlights } = nextProps || this.props;
-    console.log(highlights);
 
     const { document } = this.props;
 
@@ -271,10 +319,18 @@ export default class PdfArticle extends React.Component {
           <div>
             {(highlightsByPage[String(pageNumber)] || []).map(
               (highlight, index) => {
-                //const isScrolledTo = Boolean(scrolledToHighlightId === id);
+                const isScrolledTo = Boolean(
+                  scrolledToHighlightId === highlight.id
+                );
                 const position = this.scaledPositionToViewport(highlight);
 
-                return <Highlight isScrolledTo={true} position={position} />;
+                return (
+                  <Highlight
+                    isScrolledTo={isScrolledTo}
+                    position={position}
+                    id={highlight.id}
+                  />
+                );
               }
             )}
           </div>,

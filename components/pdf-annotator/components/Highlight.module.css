@@ -2,13 +2,6 @@
   position: absolute;
 }
 
-.Highlight__emoji {
-  position: absolute;
-  color: black;
-  opacity: 1;
-  font-size: 28px;
-}
-
 .HighlightParts {
   opacity: 0.4;
 }
@@ -31,6 +24,6 @@
   overflow-y: scroll;
 }
 
-.HighlightScrolledTo .Highlight__part {
-  background: #c0392b;
+.HighlightScrolledTo .HighlightPart {
+  background: #df331f;
 }
