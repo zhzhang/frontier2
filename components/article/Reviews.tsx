@@ -71,7 +71,7 @@ const Reviews = ({ articleId, highlights }) => {
       {highlights.map((highlight) => (
         <div>{highlight.id}</div>
       ))}
-      <Accordion activeKey={previewOpen ? "0" : null}>
+      <Accordion className="mb-2" activeKey={previewOpen ? "0" : null}>
         <Card>
           <Accordion.Toggle
             as={Card.Header}

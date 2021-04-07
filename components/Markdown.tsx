@@ -59,9 +59,10 @@ const Markdown = ({ highlights, scrollTo, children }) => {
   const renderers = {
     inlineMath: ({ value }) => <InlineMath math={value} />,
     math: ({ value }) => <BlockMath math={value} />,
-    highlight: ({ text, id }) => (
-      <Highlight text={text} id={id} scrollTo={scrollTo} />
-    ),
+    highlight: ({ text, id }) => {
+      console.log(text);
+      return <Highlight text={text} id={id} scrollTo={scrollTo} />;
+    },
   };
   return (
     <ReactMarkdown
