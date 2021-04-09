@@ -78,7 +78,7 @@ function Article() {
         <div
           style={{
             minWidth: 400,
-            flex: 1,
+            flex: 4,
             width: "auto",
             overflowY: "scroll",
             height: "calc(100vh - 55px)",

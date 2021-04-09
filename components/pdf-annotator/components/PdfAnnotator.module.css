@@ -1,5 +1,5 @@
 .PdfAnnotator {
-  flex: 2;
+  flex: 6;
   position: relative;
   overflow: auto;
   height: calc(100vh - 55px);

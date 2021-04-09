@@ -7,7 +7,11 @@ import visit from "unist-util-visit";
 import "katex/dist/katex.min.css"; // `react-katex` does not import the CSS for you
 
 const Highlight = ({ id, text, scrollTo }) => {
-  return <span onClick={() => scrollTo(id)}>{text}</span>;
+  return (
+    <span style={{ color: "blue" }} onClick={() => scrollTo(id)}>
+      {text}
+    </span>
+  );
 };
 
 const HIGHLIGHT_RE = /\[[^\]]+\]\{\d+\}/g;
@@ -15,13 +19,33 @@ const HIGHLIGHT_RE = /\[[^\]]+\]\{\d+\}/g;
 const extractParams = (string, start, end) => {
   const matchedText = string.slice(start, end);
   const parts = matchedText.split("]{");
-  const text = parts[0].slice(1, -1);
+  const text = parts[0].slice(1);
   const id = parts[1].slice(0, -1);
 
   return {
     type: "highlight",
     text,
     id,
+  };
+};
+
+const extractText = (string, start, end) => {
+  const startLine = string.slice(0, start).split("\n");
+  const endLine = string.slice(0, end).split("\n");
+
+  return {
+    type: "text",
+    value: string.slice(start, end),
+    position: {
+      start: {
+        line: startLine.length,
+        column: startLine[startLine.length - 1].length + 1,
+      },
+      end: {
+        line: endLine.length,
+        column: endLine[endLine.length - 1].length + 1,
+      },
+    },
   };
 };
 
@@ -37,12 +61,18 @@ const highlightPlugin = () => {
         const type = "highlight";
 
         if (match.index !== lastIndex) {
-          definition.push(
-            extractParams(node.value, match.index, HIGHLIGHT_RE.lastIndex)
-          );
+          definition.push(extractText(node.value, lastIndex, match.index));
         }
+        definition.push(
+          extractParams(node.value, match.index, HIGHLIGHT_RE.lastIndex)
+        );
 
         lastIndex = match.index + value.length;
+      }
+
+      if (lastIndex !== node.value.length) {
+        const text = extractText(node.value, lastIndex, node.value.length);
+        definition.push(text);
       }
 
       const last = parent.children.slice(position + 1);
@@ -60,7 +90,6 @@ const Markdown = ({ highlights, scrollTo, children }) => {
     inlineMath: ({ value }) => <InlineMath math={value} />,
     math: ({ value }) => <BlockMath math={value} />,
     highlight: ({ text, id }) => {
-      console.log(text);
       return <Highlight text={text} id={id} scrollTo={scrollTo} />;
     },
   };
