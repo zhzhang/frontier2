@@ -237,8 +237,10 @@ export const Review = objectType({
   definition(t) {
     t.string("id");
     t.string("body");
+    t.string("highlights");
     t.int("rating");
     t.int("reviewNumber");
+    t.int("articleVersion");
     t.boolean("published");
     t.boolean("canAccess");
     t.field("author", { type: "User" });
@@ -255,6 +257,8 @@ export const ThreadMessage = objectType({
   definition(t) {
     t.string("id");
     t.string("body");
+    t.string("highlights");
+    t.int("articleVersion");
     t.field("author", { type: "User" });
     t.string("createdAt");
   },

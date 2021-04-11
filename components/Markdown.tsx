@@ -5,10 +5,16 @@ import math from "remark-math";
 import gfm from "remark-gfm";
 import visit from "unist-util-visit";
 import "katex/dist/katex.min.css"; // `react-katex` does not import the CSS for you
+import _ from "lodash";
 
-const Highlight = ({ id, text, scrollTo }) => {
+const Highlight = ({ highlight, highlights, text, updateArticleAndScroll }) => {
   return (
-    <span style={{ color: "blue" }} onClick={() => scrollTo(id)}>
+    <span
+      style={{ color: "blue" }}
+      onClick={() => {
+        updateArticleAndScroll(highlight.articleVersion, highlights, highlight);
+      }}
+    >
       {text}
     </span>
   );
@@ -85,12 +91,20 @@ const highlightPlugin = () => {
   return transformer;
 };
 
-const Markdown = ({ highlights, scrollTo, children }) => {
+const Markdown = ({ highlights, updateArticleAndScroll, children }) => {
   const renderers = {
     inlineMath: ({ value }) => <InlineMath math={value} />,
     math: ({ value }) => <BlockMath math={value} />,
     highlight: ({ text, id }) => {
-      return <Highlight text={text} id={id} scrollTo={scrollTo} />;
+      const highlight = _.find(highlights, (o) => o.id == id);
+      return (
+        <Highlight
+          text={text}
+          highlight={highlight} // Highlight represented by this component.
+          highlights={highlights} // Highlights associated with the MD doc.
+          updateArticleAndScroll={updateArticleAndScroll}
+        />
+      );
     },
   };
   return (

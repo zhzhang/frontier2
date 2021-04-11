@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import Form from "react-bootstrap/Form";
 import { ChevronUp, ChevronDown } from "react-bootstrap-icons";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { useState } from "react";
 import Review from "../Review";
 
@@ -19,9 +19,11 @@ const ReviewsQuery = gql`
         name
       }
       body
+      highlights
       reviewNumber
       rating
       canAccess
+      articleVersion
       organization {
         id
         logoRef
@@ -33,14 +35,21 @@ const ReviewsQuery = gql`
           id
           name
         }
+        articleVersion
         body
+        highlights
         createdAt
       }
     }
   }
 `;
 
-const Reviews = ({ articleId, highlights }) => {
+const Reviews = ({
+  articleId,
+  highlights,
+  updateArticleAndScroll,
+  articleVersion,
+}) => {
   const { loading, error, data } = useQuery(ReviewsQuery, {
     variables: { articleId },
   });
@@ -57,7 +66,12 @@ const Reviews = ({ articleId, highlights }) => {
     <>
       {reviews.map((review) => (
         <div style={{ paddingBottom: 10 }} key={review.id}>
-          <Review review={review} editing={false} startOpen={true} />
+          <Review
+            review={review}
+            editing={false}
+            startOpen={true}
+            updateArticleAndScroll={updateArticleAndScroll}
+          />
         </div>
       ))}
       <Form.Control
@@ -68,7 +82,7 @@ const Reviews = ({ articleId, highlights }) => {
           setBody(value);
         }}
       />
-      {highlights.map((highlight) => (
+      {/* {highlights.map((highlight) => (
         <div>{highlight.id}</div>
       ))}
       <Accordion className="mb-2" activeKey={previewOpen ? "0" : null}>
@@ -85,11 +99,17 @@ const Reviews = ({ articleId, highlights }) => {
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <div className="p-2">
-              <Markdown>{body}</Markdown>
+              <Markdown
+                highlights={highlights}
+                updateArticleAndScroll={updateArticleAndScroll}
+                articleVersion={articleVersion}
+              >
+                {body}
+              </Markdown>
             </div>
           </Accordion.Collapse>
         </Card>
-      </Accordion>
+      </Accordion> */}
     </>
   );
 };

@@ -54,8 +54,10 @@ model ThreadMessage {
   body      String   @db.MediumText
   reviewId  String
   userId    String
+  articleVersion Int
   review    Review   @relation(fields: [reviewId], references: [id])
   author    User     @relation(fields: [userId], references: [id])
+  highlights    String @db.MediumText @default("[]")
   createdAt DateTime @default(now())
 }
 
@@ -109,7 +111,9 @@ model Review {
   rating         Int             @default(0)
   article        Article         @relation(fields: [articleId], references: [id])
   author         User            @relation(fields: [authorId], references: [id])
+  highlights    String @db.MediumText @default("[]")
   articleId      String
+  articleVersion Int
   authorId       String
   organization   Organization?   @relation(fields: [organizationId], references: [id])
   organizationId String?

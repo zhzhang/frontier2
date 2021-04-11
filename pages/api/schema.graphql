@@ -73,9 +73,11 @@ type Query {
 }
 
 type Review {
+  articleVersion: Int
   author: User
   body: String
   canAccess: Boolean
+  highlights: String
   id: String
   organization: Organization
   published: Boolean
@@ -102,9 +104,11 @@ type Submission {
 }
 
 type ThreadMessage {
+  articleVersion: Int
   author: User
   body: String
   createdAt: String
+  highlights: String
   id: String
 }
 

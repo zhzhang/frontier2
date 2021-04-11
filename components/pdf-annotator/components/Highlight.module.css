@@ -3,13 +3,14 @@
 }
 
 .HighlightParts {
-  opacity: 0.4;
+  opacity: 0.75;
 }
 
 .HighlightPart {
   cursor: pointer;
   position: absolute;
-  background: rgba(255, 226, 143, 1);
+  background: rgb(253, 191, 21);
+  opacity: 0.75;
   transition: background 0.3s;
 }
 
@@ -26,4 +27,5 @@
 
 .HighlightScrolledTo .HighlightPart {
   background: #df331f;
+  opacity: 0.75;
 }

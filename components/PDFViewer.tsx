@@ -1,9 +1,7 @@
 import { useRef } from "../lib/firebase";
-import { useState } from "react";
 import { PdfLoader, PdfAnnotator } from "./pdf-annotator";
 
-const PdfViewer = ({ file, fileRef, highlights, setHighlights, editing }) => {
-  const [numPages, setNumPages] = useState(null);
+const PdfViewer = ({ file, fileRef, ...props }) => {
   if (fileRef !== null && fileRef !== undefined) {
     file = useRef(fileRef);
     if (file === undefined) {
@@ -11,15 +9,9 @@ const PdfViewer = ({ file, fileRef, highlights, setHighlights, editing }) => {
     }
   }
   return (
-    <PdfLoader url={file} beforeLoad={<span>loading</span>}>
+    <PdfLoader url={file}>
       {(pdfDocument) => {
-        return (
-          <PdfAnnotator
-            document={pdfDocument}
-            highlights={highlights}
-            setHighlights={setHighlights}
-          />
-        );
+        return <PdfAnnotator document={pdfDocument} {...props} />;
       }}
     </PdfLoader>
   );

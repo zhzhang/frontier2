@@ -35,7 +35,8 @@ function getBadge(rating) {
   }
 }
 
-const Review = ({ review, editing, startOpen }) => {
+const Review = ({ review, editing, startOpen, updateArticleAndScroll }) => {
+  const { highlights } = review;
   const [body, setBody] = useState(review.body);
   const [updateReview, { loading, error, data }] = useMutation(
     UpdateReviewMutation
@@ -76,7 +77,12 @@ const Review = ({ review, editing, startOpen }) => {
               }}
               className="p-2"
             >
-              <Markdown>{body}</Markdown>
+              <Markdown
+                highlights={JSON.parse(highlights)}
+                updateArticleAndScroll={updateArticleAndScroll}
+              >
+                {body}
+              </Markdown>
             </div>
             {threadMessages
               ? threadMessages.map((message) => (

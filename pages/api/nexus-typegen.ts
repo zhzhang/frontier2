@@ -83,9 +83,11 @@ export interface NexusGenObjects {
   }
   Query: {};
   Review: { // root type
+    articleVersion?: number | null; // Int
     author?: NexusGenRootTypes['User'] | null; // User
     body?: string | null; // String
     canAccess?: boolean | null; // Boolean
+    highlights?: string | null; // String
     id?: string | null; // String
     organization?: NexusGenRootTypes['Organization'] | null; // Organization
     published?: boolean | null; // Boolean
@@ -101,9 +103,11 @@ export interface NexusGenObjects {
     organizationId?: string | null; // String
   }
   ThreadMessage: { // root type
+    articleVersion?: number | null; // Int
     author?: NexusGenRootTypes['User'] | null; // User
     body?: string | null; // String
     createdAt?: string | null; // String
+    highlights?: string | null; // String
     id?: string | null; // String
   }
   User: { // root type
@@ -190,9 +194,11 @@ export interface NexusGenFieldTypes {
     userArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
   }
   Review: { // field return type
+    articleVersion: number | null; // Int
     author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
     canAccess: boolean | null; // Boolean
+    highlights: string | null; // String
     id: string | null; // String
     organization: NexusGenRootTypes['Organization'] | null; // Organization
     published: boolean | null; // Boolean
@@ -211,9 +217,11 @@ export interface NexusGenFieldTypes {
     requestedReviewers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
   ThreadMessage: { // field return type
+    articleVersion: number | null; // Int
     author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
     createdAt: string | null; // String
+    highlights: string | null; // String
     id: string | null; // String
   }
   User: { // field return type
@@ -291,9 +299,11 @@ export interface NexusGenFieldTypeNames {
     userArticles: 'Article'
   }
   Review: { // field return type name
+    articleVersion: 'Int'
     author: 'User'
     body: 'String'
     canAccess: 'Boolean'
+    highlights: 'String'
     id: 'String'
     organization: 'Organization'
     published: 'Boolean'
@@ -312,9 +322,11 @@ export interface NexusGenFieldTypeNames {
     requestedReviewers: 'User'
   }
   ThreadMessage: { // field return type name
+    articleVersion: 'Int'
     author: 'User'
     body: 'String'
     createdAt: 'String'
+    highlights: 'String'
     id: 'String'
   }
   User: { // field return type name

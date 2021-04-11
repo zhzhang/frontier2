@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as pdfjs from "../pdfjs";
 
 const PDFLoader = ({ url, children }) => {
   const [document, setDocument] = useState(null);
+  useEffect(() => {
+    setDocument(null);
+  }, [url]);
   if (document) {
     return children(document);
   }
@@ -10,7 +13,7 @@ const PDFLoader = ({ url, children }) => {
   loadingTask.promise.then((pdfDocument) => {
     setDocument(pdfDocument);
   });
-  return "Loading";
+  return <div style={{ flex: 6 }}>Loading article...</div>;
 };
 
 export default PDFLoader;

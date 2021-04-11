@@ -17,6 +17,7 @@ import shortid from "shortid";
 import Tip from "./Tip";
 import TipContainer from "./TipContainer";
 import Highlight from "./Highlight";
+import _ from "lodash";
 
 export default class PdfArticle extends React.Component {
   viewer: null;
@@ -46,18 +47,15 @@ export default class PdfArticle extends React.Component {
 
     if (ref) {
       const { ownerDocument: doc } = ref;
-      // eventBus.on("textlayerrendered", this.onTextLayerRendered);
+      eventBus.on("textlayerrendered", this.onTextLayerRendered);
       eventBus.on("pagesinit", this.onDocumentReady);
       doc.addEventListener("selectionchange", this.onSelectionChange);
-      doc.addEventListener("keydown", this.handleKeyDown);
       doc.defaultView.addEventListener("resize", this.debouncedScaleValue);
       if (observer) observer.observe(ref);
-
       this.unsubscribe = () => {
         eventBus.off("pagesinit", this.onDocumentReady);
         eventBus.off("textlayerrendered", this.onTextLayerRendered);
         doc.removeEventListener("selectionchange", this.onSelectionChange);
-        doc.removeEventListener("keydown", this.handleKeyDown);
         doc.defaultView.removeEventListener("resize", this.debouncedScaleValue);
         if (observer) observer.disconnect();
       };
@@ -69,6 +67,11 @@ export default class PdfArticle extends React.Component {
   };
 
   onTextLayerRendered = () => {
+    const { onRenderedCallback, setScrollTo } = this.props;
+    if (onRenderedCallback) {
+      onRenderedCallback(this);
+    }
+    setScrollTo(() => this.scrollTo);
     this.renderHighlights();
   };
 
@@ -125,7 +128,7 @@ export default class PdfArticle extends React.Component {
 
   handleScaleValue = () => {
     if (this.viewer) {
-      this.viewer.currentScaleValue = "auto"; //"page-width";
+      this.viewer.currentScaleValue = 0.9; //"page-width";
     }
   };
 
@@ -158,21 +161,19 @@ export default class PdfArticle extends React.Component {
     const boundingRect = getBoundingRect(rects);
     const viewportPosition = { boundingRect, rects, pageNumber: page.number };
     const scaledPosition = this.viewportPositionToScaled(viewportPosition);
-    scaledPosition.id = this.props.highlights.length + 1;
+
     this.setTip(
       viewportPosition,
       <Tip
-        // onOpen={() =>
-        //   this.setState(
-        //     {
-        //       ghostHighlight: { position: scaledPosition },
-        //     },
-        //     () => this.renderHighlights()
-        //   )
-        // }
         onConfirm={() => {
-          const { highlights, setHighlights } = this.props;
-          setHighlights([...highlights, scaledPosition]);
+          const { highlights, setHighlights, articleVersion } = this.props;
+          const highlight = {
+            ...scaledPosition,
+            id: highlights.length + 1,
+            articleVersion,
+          };
+          console.log(highlight);
+          setHighlights([...highlights, highlight]);
           this.hideTipAndSelection();
         }}
       />
@@ -192,7 +193,7 @@ export default class PdfArticle extends React.Component {
   }
 
   componentDidMount() {
-    const { document } = this.props;
+    const { document, setViewer } = this.props;
 
     this.viewer =
       this.viewer ||
@@ -273,7 +274,7 @@ export default class PdfArticle extends React.Component {
 
     const pageViewport = this.viewer.getPageView(pageNumber - 1).viewport;
 
-    const scrollMargin = 10;
+    const scrollMargin = 150;
 
     this.viewer.scrollPageIntoView({
       pageNumber,
@@ -303,13 +304,18 @@ export default class PdfArticle extends React.Component {
   };
 
   renderHighlights(nextProps?) {
-    const { highlightTransform, highlights } = nextProps || this.props;
+    const { highlights, articleVersion } = nextProps || this.props;
 
     const { document } = this.props;
 
-    const { tip, scrolledToHighlightId } = this.state;
+    const { scrolledToHighlightId } = this.state;
 
-    const highlightsByPage = this.groupHighlightsByPage(highlights);
+    const highlightsToRender = _.filter(
+      highlights,
+      (h) => h.articleVersion === articleVersion
+    );
+
+    const highlightsByPage = this.groupHighlightsByPage(highlightsToRender);
 
     for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber++) {
       const highlightLayer = this.findOrCreateHighlightLayer(pageNumber);
@@ -329,6 +335,7 @@ export default class PdfArticle extends React.Component {
                     isScrolledTo={isScrolledTo}
                     position={position}
                     id={highlight.id}
+                    key={highlight.id}
                   />
                 );
               }

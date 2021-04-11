@@ -2,7 +2,6 @@ import Layout from "../../components/Layout";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { withApollo } from "../../lib/apollo";
-import { useRef } from "../../lib/firebase";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import Markdown from "../../components/Markdown";
@@ -20,7 +19,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import OrganizationBadge from "../../components/OrganizationBadge";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
+import { ChevronUp, ChevronDown } from "react-bootstrap-icons";
 import dateFormat from "dateformat";
 import _ from "lodash";
 
@@ -56,6 +55,9 @@ function Article() {
   const [selectedVersionNumber, setVersionNumber] = useState(-1);
   const [abstractOpen, setAbstractOpen] = useState(false);
   const [highlights, setHighlights] = useState([]);
+  const [onRenderedCallback, setRenderedCallback] = useState();
+  const [scrollTo, setScrollTo] = useState();
+
   if (loading) {
     return <Spinner />;
   }
@@ -72,6 +74,22 @@ function Article() {
         });
   const { abstract, ref } = selectedVersion;
 
+  const updateArticleAndScroll = (versionNumber, highlights, highlight) => {
+    if (selectedVersion.versionNumber === versionNumber) {
+      setHighlights(highlights);
+      scrollTo(highlight);
+    } else {
+      setVersionNumber(versionNumber);
+      setHighlights(highlights);
+      const onRenderedCallback = (viewer) => {
+        console.log("hit");
+        viewer.scrollTo(highlight);
+        setRenderedCallback(null);
+      };
+      setRenderedCallback(() => onRenderedCallback);
+    }
+  };
+
   return (
     <Layout>
       <div style={{ display: "flex" }}>
@@ -85,7 +103,7 @@ function Article() {
           }}
         >
           <Container fluid style={{ paddingTop: 10 }}>
-            <h4>{title}</h4>
+            <h5>{title}</h5>
             <span>
               Authors:{" "}
               {authors !== null ? (
@@ -149,14 +167,22 @@ function Article() {
             ) : null}
             <br />
             <br />
-            <h4>Reviews</h4>
-            <Reviews articleId={id} highlights={highlights} />
+            <h5>Reviews</h5>
+            <Reviews
+              articleId={id}
+              articleVersion={selectedVersion.versionNumber}
+              highlights={highlights}
+              updateArticleAndScroll={updateArticleAndScroll}
+            />
           </Container>
         </div>
         <PdfViewer
           fileRef={ref}
           highlights={highlights}
           setHighlights={setHighlights}
+          articleVersion={selectedVersion.versionNumber}
+          onRenderedCallback={onRenderedCallback}
+          setScrollTo={setScrollTo}
         />
       </div>
     </Layout>
