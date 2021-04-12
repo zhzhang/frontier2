@@ -1,4 +1,3 @@
-import { Auth0Provider } from "use-auth0-hooks";
 import prisma from "../lib/prisma";
 import { RoleEnum } from "../lib/types";
 import cuid from "cuid";
@@ -131,6 +130,7 @@ async function main() {
       rating: 1,
       canAccess: false,
       articleVersion: 1,
+      highlights: "[]",
       body: "",
     },
   });
@@ -153,6 +153,7 @@ async function main() {
       userId: andrew.id,
       body: `Author responses and other discussion on public reviews can be viewed in a thread below the review.`,
       articleVersion: 1,
+      highlights: "[]",
     },
   });
 

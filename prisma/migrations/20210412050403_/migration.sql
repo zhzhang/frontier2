@@ -32,7 +32,7 @@ CREATE TABLE `ArticleAuthor` (
 CREATE TABLE `ArticleVersion` (
     `id` VARCHAR(191) NOT NULL,
     `abstract` MEDIUMTEXT NOT NULL,
-    `ref` VARCHAR(191) NOT NULL,
+    `ref` VARCHAR(191),
     `articleId` VARCHAR(191) NOT NULL,
     `versionNumber` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -46,6 +46,8 @@ CREATE TABLE `ThreadMessage` (
     `body` MEDIUMTEXT NOT NULL,
     `reviewId` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
+    `articleVersion` INTEGER NOT NULL,
+    `highlights` MEDIUMTEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -56,8 +58,8 @@ CREATE TABLE `Submission` (
     `id` VARCHAR(191) NOT NULL,
     `articleId` VARCHAR(191) NOT NULL,
     `organizationId` VARCHAR(191) NOT NULL,
-    `ownerId` VARCHAR(191) NOT NULL,
-    `decisionId` VARCHAR(191) NOT NULL,
+    `ownerId` VARCHAR(191),
+    `decisionId` VARCHAR(191),
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 UNIQUE INDEX `Submission_decisionId_unique`(`decisionId`),
 
@@ -101,7 +103,9 @@ CREATE TABLE `Review` (
     `id` VARCHAR(191) NOT NULL,
     `body` MEDIUMTEXT NOT NULL,
     `rating` INTEGER NOT NULL DEFAULT 0,
+    `highlights` MEDIUMTEXT NOT NULL,
     `articleId` VARCHAR(191) NOT NULL,
+    `articleVersion` INTEGER NOT NULL,
     `authorId` VARCHAR(191) NOT NULL,
     `organizationId` VARCHAR(191),
     `reviewNumber` INTEGER NOT NULL,
@@ -153,10 +157,10 @@ ALTER TABLE `Submission` ADD FOREIGN KEY (`articleId`) REFERENCES `Article`(`id`
 ALTER TABLE `Submission` ADD FOREIGN KEY (`organizationId`) REFERENCES `Organization`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Submission` ADD FOREIGN KEY (`ownerId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Submission` ADD FOREIGN KEY (`ownerId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Submission` ADD FOREIGN KEY (`decisionId`) REFERENCES `Decision`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Submission` ADD FOREIGN KEY (`decisionId`) REFERENCES `Decision`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `OrganizationMembership` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
