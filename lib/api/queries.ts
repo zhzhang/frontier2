@@ -49,8 +49,8 @@ export default objectType({
       args: {
         id: nonNull(stringArg()),
       },
-      resolve: async (_, { id }) => {
-        return (
+      resolve: async (_parent, { id }, ctx) => {
+        const articles = (
           await prisma.articleAuthor.findMany({
             where: { userId: id },
             include: {
@@ -67,6 +67,10 @@ export default objectType({
             },
           })
         ).map((authorship) => authorship.article);
+        if (!(ctx.user?.id === id)) {
+          return _.filter(articles, (a) => !a.anonymous); // Filter out anonymous articles if the viewer is not the author.
+        }
+        return articles;
       },
     });
     t.field("article", {

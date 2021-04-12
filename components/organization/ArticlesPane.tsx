@@ -34,6 +34,7 @@ const OrganizationQuery = gql`
             name
           }
           body
+          highlights
           reviewNumber
           rating
           canAccess

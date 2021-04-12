@@ -14,7 +14,7 @@ const Navigation = () => {
           <Nav.Link href="/articles">Articles</Nav.Link>
           <Nav.Link href="/organizations">Organizations</Nav.Link>
         </Nav>
-        {!loading && user !== null && user !== undefined ? (
+        {/* {!loading && user !== null && user !== undefined ? (
           <Nav className="justify-content-end">
             <NavDropdown title="Profile" id="basic-nav-dropdown">
               <NavDropdown.Item
@@ -31,7 +31,7 @@ const Navigation = () => {
           </Nav>
         ) : (
           <LoginButton />
-        )}
+        )} */}
       </Navbar.Collapse>
     </Navbar>
   );

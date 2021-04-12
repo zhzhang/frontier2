@@ -144,6 +144,10 @@ export default class PdfArticle extends React.Component {
   };
 
   afterSelection = () => {
+    const { editing } = this.props;
+    if (!editing) {
+      return;
+    }
     const { isCollapsed, range } = this.state;
     if (!range || isCollapsed) {
       return;

@@ -1,5 +1,4 @@
 @import "~bootstrap/scss/bootstrap";
-@import "react-quill/dist/quill.snow.css";
 
 $theme-colors: (
   "info": tomato,
@@ -31,4 +30,23 @@ p {
 
 .markdown {
   font-size: 0.8rem;
+}
+
+.accordion .card-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.review-accordion-closed .card .card-header {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  margin-bottom: 0px;
+  border-radius: 0.25rem;
+}
+
+.review-accordion-open .card .card-header {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem 0.25rem 0px 0px;
+  margin-bottom: -1px;
 }

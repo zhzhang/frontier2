@@ -54,6 +54,7 @@ function Article() {
   });
   const [selectedVersionNumber, setVersionNumber] = useState(-1);
   const [abstractOpen, setAbstractOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [highlights, setHighlights] = useState([]);
   const [onRenderedCallback, setRenderedCallback] = useState();
   const [scrollTo, setScrollTo] = useState();
@@ -82,7 +83,6 @@ function Article() {
       setVersionNumber(versionNumber);
       setHighlights(highlights);
       const onRenderedCallback = (viewer) => {
-        console.log("hit");
         viewer.scrollTo(highlight);
         setRenderedCallback(null);
       };
@@ -154,8 +154,8 @@ function Article() {
                 </Accordion.Collapse>
               </Card>
             </Accordion>
-            {acceptedOrganizations ? (
-              <span>
+            {acceptedOrganizations.length > 0 ? (
+              <div className="mt-1">
                 Accepted by:{" "}
                 {acceptedOrganizations.map((organization) => (
                   <OrganizationBadge
@@ -163,9 +163,8 @@ function Article() {
                     key={organization.id}
                   />
                 ))}
-              </span>
+              </div>
             ) : null}
-            <br />
             <br />
             <h5>Reviews</h5>
             <Reviews
@@ -183,6 +182,7 @@ function Article() {
           articleVersion={selectedVersion.versionNumber}
           onRenderedCallback={onRenderedCallback}
           setScrollTo={setScrollTo}
+          editing={editing}
         />
       </div>
     </Layout>

@@ -71,10 +71,11 @@ const Reviews = ({
             editing={false}
             startOpen={true}
             updateArticleAndScroll={updateArticleAndScroll}
+            articleMode
           />
         </div>
       ))}
-      <Form.Control
+      {/* <Form.Control
         as="textarea"
         rows={4}
         value={body}
@@ -82,7 +83,7 @@ const Reviews = ({
           setBody(value);
         }}
       />
-      {/* {highlights.map((highlight) => (
+      {highlights.map((highlight) => (
         <div>{highlight.id}</div>
       ))}
       <Accordion className="mb-2" activeKey={previewOpen ? "0" : null}>

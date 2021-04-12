@@ -28,8 +28,6 @@ function s3UploadFromStream(bucket, key) {
     console.log(err, data);
   });
 
-  console.log("hit");
-
   return pass;
 }
 

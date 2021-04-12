@@ -8,6 +8,7 @@ import { useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
+import UserBadge from "../components/UserBadge";
 
 const UpdateReviewMutation = gql`
   mutation UpdateReviewMutation(
@@ -35,25 +36,30 @@ function getBadge(rating) {
   }
 }
 
-const Review = ({ review, editing, startOpen, updateArticleAndScroll }) => {
+const Review = ({
+  review,
+  editing,
+  startOpen,
+  updateArticleAndScroll,
+  articleMode,
+}) => {
   const { highlights } = review;
   const [body, setBody] = useState(review.body);
   const [updateReview, { loading, error, data }] = useMutation(
     UpdateReviewMutation
   );
-  const [open, setOpen] = useState(startOpen);
+  const [open, setOpen] = useState(startOpen && review.canAccess);
   const { threadMessages } = review;
   return (
-    <Accordion activeKey={review.canAccess && open ? "0" : null}>
+    <Accordion
+      activeKey={review.canAccess && open ? "0" : null}
+      className={open ? "review-accordion-open" : "review-accordion-closed"}
+    >
       <Card style={{ border: "none" }}>
         <Accordion.Toggle
           as={Card.Header}
           eventKey="0"
           onClick={() => setOpen(!open)}
-          style={{
-            border: "1px solid rgba(0,0,0,.125)",
-            borderRadius: ".25rem",
-          }}
         >
           {`Reviewer ${review.reviewNumber} - ${review.organization.abbreviation}`}
           <span style={{ float: "right" }}>
@@ -80,6 +86,7 @@ const Review = ({ review, editing, startOpen, updateArticleAndScroll }) => {
               <Markdown
                 highlights={JSON.parse(highlights)}
                 updateArticleAndScroll={updateArticleAndScroll}
+                articleMode={articleMode}
               >
                 {body}
               </Markdown>
@@ -104,8 +111,16 @@ const Review = ({ review, editing, startOpen, updateArticleAndScroll }) => {
                       }}
                       className="p-2"
                     >
-                      <div>{message.author.name}</div>
-                      <Markdown>{message.body}</Markdown>
+                      <div>
+                        <UserBadge user={message.author} />
+                      </div>
+                      <Markdown
+                        highlights={JSON.parse(message.highlights)}
+                        updateArticleAndScroll={updateArticleAndScroll}
+                        articleMode={articleMode}
+                      >
+                        {message.body}
+                      </Markdown>
                     </div>
                   </div>
                 ))

@@ -86,9 +86,9 @@ function Organization() {
               <Tab eventKey="info" title="Info">
                 <InfoPane id={id} description={description} role={role} />
               </Tab>
-              <Tab eventKey="venues" title="Venues">
+              {/* <Tab eventKey="venues" title="Venues">
                 <VenuesPane id={id} />
-              </Tab>
+              </Tab> */}
               <Tab eventKey="accepted" title="Accepted Articles">
                 <ArticlesPane id={id} />
               </Tab>

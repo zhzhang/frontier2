@@ -9,14 +9,14 @@ import _ from "lodash";
 
 const Highlight = ({ highlight, highlights, text, updateArticleAndScroll }) => {
   return (
-    <span
+    <a
       style={{ color: "blue" }}
       onClick={() => {
         updateArticleAndScroll(highlight.articleVersion, highlights, highlight);
       }}
     >
       {text}
-    </span>
+    </a>
   );
 };
 
@@ -91,11 +91,19 @@ const highlightPlugin = () => {
   return transformer;
 };
 
-const Markdown = ({ highlights, updateArticleAndScroll, children }) => {
+const Markdown = ({
+  highlights,
+  updateArticleAndScroll,
+  children,
+  articleMode,
+}) => {
   const renderers = {
-    inlineMath: ({ value }) => <InlineMath math={value} />,
     math: ({ value }) => <BlockMath math={value} />,
+    inlineMath: ({ value }) => <InlineMath math={value} />,
     highlight: ({ text, id }) => {
+      if (!articleMode) {
+        return text;
+      }
       const highlight = _.find(highlights, (o) => o.id == id);
       return (
         <Highlight
@@ -107,6 +115,7 @@ const Markdown = ({ highlights, updateArticleAndScroll, children }) => {
       );
     },
   };
+  console.log(math);
   return (
     <ReactMarkdown
       plugins={[math, gfm, highlightPlugin]}
