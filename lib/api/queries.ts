@@ -22,8 +22,8 @@ export default objectType({
       args: {
         id: nonNull(stringArg()),
       },
-      resolve: (_, { id }) => {
-        return prisma.user.findUnique({
+      resolve: (_, { id }, ctx) => {
+        return ctx.prisma.user.findUnique({
           where: { id },
           include: {
             authorships: {
@@ -51,7 +51,7 @@ export default objectType({
       },
       resolve: async (_parent, { id }, ctx) => {
         const articles = (
-          await prisma.articleAuthor.findMany({
+          await ctx.prisma.articleAuthor.findMany({
             where: { userId: id },
             include: {
               article: {
@@ -77,22 +77,9 @@ export default objectType({
       type: "Article",
       args: { id: nonNull(stringArg()) },
       resolve: async (_, { id }, ctx) => {
-        return await prisma.article.findUnique({
+        return await ctx.prisma.article.findUnique({
           where: {
             id,
-          },
-          include: {
-            versions: true,
-            authors: {
-              include: {
-                user: true,
-              },
-            },
-            reviews: {
-              include: {
-                organization: true,
-              },
-            },
           },
         });
       },
@@ -101,7 +88,7 @@ export default objectType({
       type: "Article",
       args: {},
       resolve: async (_, args, ctx) => {
-        return await prisma.article.findMany({
+        return await ctx.prisma.article.findMany({
           include: {
             versions: true,
             authors: {
@@ -113,11 +100,26 @@ export default objectType({
         });
       },
     });
+    t.list.field("articleVersions", {
+      type: "ArticleVersion",
+      args: {},
+      resolve: async (_parent, { articleId }, ctx) => {
+        return _.orderBy(
+          await prisma.articleVersion.findMany({
+            where: {
+              articleId,
+            },
+          }),
+          ["versionNumber"],
+          ["desc"]
+        );
+      },
+    });
     t.list.field("reviews", {
       type: "Review",
       args: { articleId: nonNull(stringArg()) },
       resolve: async (_, { articleId }, ctx) => {
-        return await prisma.review.findMany({
+        return await ctx.prisma.review.findMany({
           where: {
             articleId,
           },
@@ -136,8 +138,8 @@ export default objectType({
     t.field("organization", {
       type: "Organization",
       args: { id: nonNull(stringArg()) },
-      resolve: (_, args) => {
-        return prisma.organization.findUnique({
+      resolve: (_, args, ctx) => {
+        return ctx.prisma.organization.findUnique({
           where: { id: args.id },
         });
       },
@@ -145,15 +147,15 @@ export default objectType({
     t.list.field("browseOrganizations", {
       type: "Organization",
       args: { tags: list(stringArg()) },
-      resolve: (_, _args) => {
-        return prisma.organization.findMany();
+      resolve: (_, _args, ctx) => {
+        return ctx.prisma.organization.findMany();
       },
     });
     t.list.field("searchUsers", {
       type: "User",
       args: { query: stringArg() },
-      resolve: async (_, { query }) => {
-        return await prisma.user.findMany({
+      resolve: async (_, { query }, ctx) => {
+        return await ctx.prisma.user.findMany({
           where: {
             name: {
               contains: query,
@@ -165,8 +167,8 @@ export default objectType({
     t.list.field("searchEditors", {
       type: "User",
       args: { query: stringArg(), organizationId: nonNull(stringArg()) },
-      resolve: async (_, { query, organizationId }) => {
-        const memberships = await prisma.organizationMembership.findMany({
+      resolve: async (_, { query, organizationId }, ctx) => {
+        const memberships = await ctx.prisma.organizationMembership.findMany({
           where: {
             organizationId,
             role: RoleEnum.ACTION_EDITOR,
@@ -181,7 +183,7 @@ export default objectType({
     t.list.field("reviewerAssignedSubmissions", {
       type: "Submission",
       resolve: async (_, _args, ctx) => {
-        const user = await prisma.user.findUnique({
+        const user = await ctx.prisma.user.findUnique({
           where: {
             id: ctx.user.id,
           },

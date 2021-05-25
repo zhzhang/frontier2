@@ -1,5 +1,5 @@
-import prisma from "../prisma";
 import { RoleEnum } from "../types";
+import prisma from "../prisma";
 
 export async function isOrganizationAdmin(
   userId: string,

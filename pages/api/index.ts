@@ -2,12 +2,13 @@ import { ApolloServer } from "apollo-server-micro";
 import { GraphQLDate } from "graphql-iso-date";
 import { applyMiddleware } from "graphql-middleware";
 import { rule, shield } from "graphql-shield";
+import { nexusPrisma } from "nexus-plugin-prisma";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
 import { asNexusMethod, makeSchema } from "nexus";
 import jwt_decode from "jwt-decode";
 import path from "path";
-import prisma from "../../lib/prisma";
 import _ from "lodash";
+import prisma from "../../lib/prisma";
 import Query from "../../lib/api/queries";
 import Mutation from "../../lib/api/mutations";
 import {
@@ -42,6 +43,11 @@ export const permissions = shield(
 );
 
 export const schema = makeSchema({
+  plugins: [
+    nexusPrisma({
+      experimentalCRUD: true,
+    }),
+  ],
   types: [
     Query,
     Mutation,
@@ -62,6 +68,14 @@ export const schema = makeSchema({
     typegen: path.join(process.cwd(), "pages/api/nexus-typegen.ts"),
     schema: path.join(process.cwd(), "pages/api/schema.graphql"),
   },
+  // sourceTypes: {
+  //   modules: [
+  //     {
+  //       module: require.resolve(".prisma/client/index.d.ts"),
+  //       alias: "prisma",
+  //     },
+  //   ],
+  // },
 });
 
 export const config = {
@@ -81,15 +95,17 @@ export default new ApolloServer({
   // schema: applyMiddleware(schema, permissions),
   schema,
   context: async ({ req }) => {
+    const ctx = { prisma };
     const token = req.headers.authorization || "";
     if (token == "") {
-      return;
+      return ctx;
     }
     const decoded: FirebaseToken = jwt_decode(token);
     if (Math.floor(Date.now() / 1000) > decoded.exp) {
       console.log("Token expired");
-      return;
+      return ctx;
     }
+
     // Add the user to the back end DB if they don't exist yet.
     if (decoded.user_id) {
       const user = await prisma.user.findUnique({
@@ -105,9 +121,9 @@ export default new ApolloServer({
             },
           })
           .catch((error) => console.log(error));
-        return { user: newUser };
+        return { user: newUser, ...ctx };
       }
-      return { user };
+      return { user, ...ctx };
     }
   },
 }).createHandler({

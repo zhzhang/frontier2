@@ -4,20 +4,29 @@
 
 type Article {
   acceptedOrganizations: [Organization]
-  anonymous: Boolean
+  anonymous: Boolean!
   authors: [User]
-  id: String
-  reviews: [Review]
-  title: String
+  id: String!
+  reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, where: ArticleReviewsWhereInput): [Review!]!
+  title: String!
   versions: [ArticleVersion]
+}
+
+input ArticleReviewsWhereInput {
+  published: BoolFilter
 }
 
 type ArticleVersion {
   abstract: String
   createdAt: String
-  id: String
+  id: String!
   ref: String
   versionNumber: Int
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
 }
 
 """
@@ -45,6 +54,11 @@ type Mutation {
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
 }
 
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
 type Organization {
   abbreviation: String
   accepted: [Decision]
@@ -61,6 +75,7 @@ type Organization {
 
 type Query {
   article(id: String!): Article
+  articleVersions: [ArticleVersion]
   articles: [Article]
   browseOrganizations(tags: [String]): [Organization]
   organization(id: String!): Organization
@@ -85,6 +100,10 @@ type Review {
   reviewNumber: Int
   submission: Submission
   threadMessages: [ThreadMessage]
+}
+
+input ReviewWhereUniqueInput {
+  id: String
 }
 
 enum Role {
@@ -117,8 +136,8 @@ scalar Upload
 
 type User {
   articles: [Article]
-  email: String
-  id: String
+  email: String!
+  id: String!
   name: String
 }
 

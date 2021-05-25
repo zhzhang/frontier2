@@ -22,7 +22,11 @@ function Organizations() {
   const { loading, error, data } = useQuery(OrganizationQuery);
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
   }
   if (error) {
     return <div>Error: {error.message}</div>;

@@ -76,9 +76,9 @@ export default objectType({
             },
           },
         };
-        const article = await prisma.article.create(input);
+        const article = await ctx.prisma.article.create(input);
         if (organizationId) {
-          const sub = await prisma.submission.create({
+          const sub = await ctx.prisma.submission.create({
             data: {
               articleId: article.id,
               organizationId,
@@ -99,7 +99,7 @@ export default objectType({
       },
       resolve: async (_, { name, description, abbreviation, logoRef }, ctx) => {
         // const { createReadStream, filename, mimetype } = await logoFile;
-        const organization = await prisma.organization.create({
+        const organization = await ctx.prisma.organization.create({
           data: {
             name,
             description,
@@ -132,7 +132,7 @@ export default objectType({
         { id, name, description, abbreviation, logoRef },
         ctx
       ) => {
-        const membership = await prisma.organizationMembership.findFirst({
+        const membership = await ctx.prisma.organizationMembership.findFirst({
           where: {
             userId: ctx.user.id,
             organizationId: id,
@@ -142,7 +142,7 @@ export default objectType({
         if (!membership) {
           return null;
         }
-        const organization = await prisma.organization.update({
+        const organization = await ctx.prisma.organization.update({
           where: {
             id,
           },
@@ -163,7 +163,7 @@ export default objectType({
         userId: nonNull(stringArg()),
       },
       resolve: async (_, { submissionId, userId }, ctx) => {
-        return await prisma.submission.update({
+        return await ctx.prisma.submission.update({
           where: {
             id: submissionId,
           },
@@ -178,7 +178,7 @@ export default objectType({
         reviewerIds: nonNull(list(nonNull(stringArg()))),
       },
       resolve: async (_, { submissionId, reviewerIds }, ctx) => {
-        return await prisma.submission.update({
+        return await ctx.prisma.submission.update({
           where: {
             id: submissionId,
           },
@@ -199,7 +199,7 @@ export default objectType({
         submissionId: nullable(stringArg()),
       },
       resolve: async (_, { articleId, submissionId }, ctx) => {
-        const prevReviews = await prisma.review.findMany({
+        const prevReviews = await ctx.prisma.review.findMany({
           where: {
             articleId,
           },
@@ -216,7 +216,7 @@ export default objectType({
         if (submissionId !== null && submissionId !== undefined) {
           data.submissionId = submissionId;
         }
-        return await prisma.review.create({
+        return await ctx.prisma.review.create({
           data,
         });
       },
@@ -231,7 +231,7 @@ export default objectType({
       },
       resolve: async (_, { id, body, rating, published }, ctx) => {
         try {
-          await prisma.review.update({
+          await ctx.prisma.review.update({
             where: {
               id: id,
             },
@@ -252,7 +252,7 @@ export default objectType({
       },
       resolve: async (_, { organizationId, userId, action, role }, ctx) => {
         if (await isOrganizationAdmin(ctx.user.id, organizationId)) {
-          const membership = await prisma.organizationMembership.findFirst({
+          const membership = await ctx.prisma.organizationMembership.findFirst({
             where: {
               organizationId,
               userId,
@@ -261,7 +261,7 @@ export default objectType({
           });
           if (action == "REMOVE") {
             if (membership) {
-              await prisma.organizationMembership.delete({
+              await ctx.prisma.organizationMembership.delete({
                 where: {
                   id: membership.id,
                 },
@@ -269,7 +269,7 @@ export default objectType({
             }
           } else if (action == "ADD") {
             if (!membership) {
-              await prisma.organizationMembership.create({
+              await ctx.prisma.organizationMembership.create({
                 data: {
                   organizationId,
                   userId,
@@ -278,7 +278,7 @@ export default objectType({
               });
             }
           }
-          return await prisma.organization.findUnique({
+          return await ctx.prisma.organization.findUnique({
             where: { id: organizationId },
           });
         }

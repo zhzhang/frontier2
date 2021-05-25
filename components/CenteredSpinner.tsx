@@ -9,7 +9,7 @@ export default function CenteredSpinner(props) {
         left: "calc(50% - 16px)",
       }}
     >
-      <Spinner {...props} />
+      <Spinner animation="border" {...props} />
     </div>
   );
 }

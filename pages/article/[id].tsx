@@ -7,6 +7,7 @@ import { useQuery } from "@apollo/react-hooks";
 import Markdown from "../../components/Markdown";
 import PdfViewer from "../../components/PDFViewer";
 import Spinner from "../../components/CenteredSpinner";
+import ASpinner from "react-bootstrap/Spinner";
 import UserBadge from "../../components/UserBadge";
 import Reviews from "../../components/article/Reviews";
 
@@ -47,6 +48,18 @@ const ArticleQuery = gql`
   }
 `;
 
+const ArticleVersionsQuery = gql`
+  query ArticleVersionsQuery($articleVersion: String!) {
+    articleVersions(articleVersion: $articleVersion) {
+      id
+      abstract
+      ref
+      versionNumber
+      createdAt
+    }
+  }
+`;
+
 function Article() {
   const { id, reviewId, version } = useRouter().query;
   const { loading, error, data } = useQuery(ArticleQuery, {
@@ -60,7 +73,11 @@ function Article() {
   const [scrollTo, setScrollTo] = useState();
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
   }
   if (error) {
     return <div>Error: {error.message}</div>;

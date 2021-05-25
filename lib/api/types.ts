@@ -27,9 +27,9 @@ export const Role = enumType({
 export const User = objectType({
   name: "User",
   definition(t) {
-    t.string("id");
-    t.string("name");
-    t.string("email");
+    t.model.id();
+    t.model.name();
+    t.model.email();
     t.list.field("articles", {
       type: "Article",
       resolve: (parent) => {
@@ -42,9 +42,9 @@ export const User = objectType({
 export const Article = objectType({
   name: "Article",
   definition(t) {
-    t.string("id");
-    t.string("title");
-    t.boolean("anonymous");
+    t.model.id();
+    t.model.title();
+    t.model.anonymous();
     t.list.field("authors", {
       type: "User",
       resolve: (parent) => {
@@ -56,6 +56,7 @@ export const Article = objectType({
         );
       },
     });
+    // t.model.versions({ pagination: false });
     t.list.field("versions", {
       type: "ArticleVersion",
       resolve: async (parent) => {
@@ -70,15 +71,7 @@ export const Article = objectType({
         );
       },
     });
-    t.list.field("reviews", {
-      type: "Review",
-      resolve: (parent, _tmp, ctx) => {
-        return _.filter(
-          parent.reviews,
-          (review) => review.published || review.authorId === ctx.user.id
-        );
-      },
-    });
+    t.model.reviews({ filtering: { published: true } });
     t.list.field("acceptedOrganizations", {
       type: "Organization",
       resolve: async (parent) => {
@@ -97,7 +90,7 @@ export const Article = objectType({
 export const ArticleVersion = objectType({
   name: "ArticleVersion",
   definition(t) {
-    t.string("id");
+    t.model.id();
     t.string("ref");
     t.string("abstract");
     t.string("createdAt");

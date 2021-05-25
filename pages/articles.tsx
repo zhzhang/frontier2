@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from "../components/CenteredSpinner";
 import Layout from "../components/Layout";
 import ArticleCard from "../components/ArticleCard";
 import { withApollo } from "../lib/apollo";
@@ -30,7 +31,11 @@ const GetArticlesQuery = gql`
 function Articles(props) {
   const { loading, error, data } = useQuery(GetArticlesQuery, {});
   if (loading) {
-    return "Loading...";
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
   }
   return (
     <Layout>

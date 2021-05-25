@@ -29,13 +29,32 @@ declare global {
     upload<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Upload";
   }
 }
-
+declare global {
+  interface NexusGenCustomOutputProperties<TypeName extends string> {
+    crud: NexusPrisma<TypeName, 'crud'>
+    model: NexusPrisma<TypeName, 'model'>
+  }
+}
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {
+  ArticleReviewsWhereInput: { // input type
+    published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
+  }
+  BoolFilter: { // input type
+    equals?: boolean | null; // Boolean
+    not?: NexusGenInputs['NestedBoolFilter'] | null; // NestedBoolFilter
+  }
+  NestedBoolFilter: { // input type
+    equals?: boolean | null; // Boolean
+    not?: NexusGenInputs['NestedBoolFilter'] | null; // NestedBoolFilter
+  }
+  ReviewWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -54,14 +73,14 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Article: { // root type
-    anonymous?: boolean | null; // Boolean
-    id?: string | null; // String
-    title?: string | null; // String
+    anonymous: boolean; // Boolean!
+    id: string; // String!
+    title: string; // String!
   }
   ArticleVersion: { // root type
     abstract?: string | null; // String
     createdAt?: string | null; // String
-    id?: string | null; // String
+    id: string; // String!
     ref?: string | null; // String
     versionNumber?: number | null; // Int
   }
@@ -111,8 +130,8 @@ export interface NexusGenObjects {
     id?: string | null; // String
   }
   User: { // root type
-    email?: string | null; // String
-    id?: string | null; // String
+    email: string; // String!
+    id: string; // String!
     name?: string | null; // String
   }
   Venue: { // root type
@@ -136,17 +155,17 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 export interface NexusGenFieldTypes {
   Article: { // field return type
     acceptedOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
-    anonymous: boolean | null; // Boolean
+    anonymous: boolean; // Boolean!
     authors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    id: string | null; // String
-    reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
-    title: string | null; // String
+    id: string; // String!
+    reviews: NexusGenRootTypes['Review'][]; // [Review!]!
+    title: string; // String!
     versions: Array<NexusGenRootTypes['ArticleVersion'] | null> | null; // [ArticleVersion]
   }
   ArticleVersion: { // field return type
     abstract: string | null; // String
     createdAt: string | null; // String
-    id: string | null; // String
+    id: string; // String!
     ref: string | null; // String
     versionNumber: number | null; // Int
   }
@@ -183,6 +202,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
+    articleVersions: Array<NexusGenRootTypes['ArticleVersion'] | null> | null; // [ArticleVersion]
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     browseOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     organization: NexusGenRootTypes['Organization'] | null; // Organization
@@ -226,8 +246,8 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
-    email: string | null; // String
-    id: string | null; // String
+    email: string; // String!
+    id: string; // String!
     name: string | null; // String
   }
   Venue: { // field return type
@@ -288,6 +308,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     article: 'Article'
+    articleVersions: 'ArticleVersion'
     articles: 'Article'
     browseOrganizations: 'Organization'
     organization: 'Organization'
@@ -344,6 +365,15 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Article: {
+    reviews: { // args
+      after?: NexusGenInputs['ReviewWhereUniqueInput'] | null; // ReviewWhereUniqueInput
+      before?: NexusGenInputs['ReviewWhereUniqueInput'] | null; // ReviewWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      where?: NexusGenInputs['ArticleReviewsWhereInput'] | null; // ArticleReviewsWhereInput
+    }
+  }
   Mutation: {
     assignReviewers: { // args
       reviewerIds: string[]; // [String!]!
@@ -427,7 +457,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = keyof NexusGenEnums;
 

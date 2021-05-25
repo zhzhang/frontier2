@@ -50,15 +50,15 @@ model ArticleVersion {
 }
 
 model ThreadMessage {
-  id        String   @id @default(cuid())
-  body      String   @db.MediumText
-  reviewId  String
-  userId    String
+  id             String   @id @default(cuid())
+  body           String   @db.MediumText
+  reviewId       String
+  userId         String
   articleVersion Int
-  review    Review   @relation(fields: [reviewId], references: [id])
-  author    User     @relation(fields: [userId], references: [id])
-  highlights    String @db.MediumText
-  createdAt DateTime @default(now())
+  review         Review   @relation(fields: [reviewId], references: [id])
+  author         User     @relation(fields: [userId], references: [id])
+  highlights     String   @db.MediumText
+  createdAt      DateTime @default(now())
 }
 
 model Submission {
@@ -111,7 +111,7 @@ model Review {
   rating         Int             @default(0)
   article        Article         @relation(fields: [articleId], references: [id])
   author         User            @relation(fields: [authorId], references: [id])
-  highlights    String @db.MediumText
+  highlights     String          @db.MediumText
   articleId      String
   articleVersion Int
   authorId       String
