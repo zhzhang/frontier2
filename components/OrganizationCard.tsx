@@ -3,7 +3,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import { Quill } from "./Quill";
+import Markdown from "./Markdown";
 import { withApollo } from "../lib/apollo";
 import { useRef } from "../lib/firebase";
 
@@ -32,7 +32,7 @@ const OrganizationCard = ({ organization }) => {
       </Row>
       <Row>
         <Col>
-          <Quill value={description} modules={{ toolbar: false }} readOnly />
+          <Markdown>{description}</Markdown>
         </Col>
       </Row>
     </Jumbotron>

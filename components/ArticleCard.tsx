@@ -1,6 +1,6 @@
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Router from "next/router";
-import { Quill } from "./Quill";
+import Markdown from "./Markdown";
 import { withApollo } from "../lib/apollo";
 import OrganizationBadge from "../components/OrganizationBadge";
 import UserBadge from "../components/UserBadge";
@@ -28,7 +28,7 @@ const ArticleCard = ({ article }) => {
           <em>anonymized</em>
         )}
       </span>
-      <Quill value={abstract} modules={{ toolbar: false }} readOnly />
+      <Markdown>{abstract}</Markdown>
       <span>
         {acceptedOrganizations.length === 0 ? null : "Accepted by: "}
         {acceptedOrganizations.map((org) => (

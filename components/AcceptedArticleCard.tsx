@@ -1,13 +1,13 @@
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { Quill } from "./Quill";
 import UserBadge from "./UserBadge";
 import { withApollo } from "../lib/apollo";
 import Review from "../components/Review";
 import { useState } from "react";
 import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
 import Router from "next/router";
+import Markdown from "./Markdown";
 
 const AcceptedArticleCard = ({ decision }) => {
   const { article } = decision;
@@ -49,11 +49,7 @@ const AcceptedArticleCard = ({ decision }) => {
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body>
-            <Quill
-              value={decision.body}
-              modules={{ toolbar: false }}
-              readOnly
-            />
+            <Markdown>{decision.body}</Markdown>
             {decision.citedReviews.map((review) => (
               <Review review={review} editing={false} />
             ))}

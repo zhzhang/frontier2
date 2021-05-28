@@ -112,6 +112,6 @@ yarn-debug.log*
 # next.js build output
 .next
 
-.env
+.env*
 prisma/server-ca.pem
 prisma/client-identity.p12

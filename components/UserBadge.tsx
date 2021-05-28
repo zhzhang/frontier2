@@ -2,7 +2,7 @@ import Badge from "react-bootstrap/Badge";
 import { useState } from "react";
 import Router from "next/router";
 
-export default ({ user }) => {
+const UserBadge = ({ user }) => {
   const { id, name, email } = user;
   const [hover, setHover] = useState(false);
   return (
@@ -19,3 +19,5 @@ export default ({ user }) => {
     </span>
   );
 };
+
+export default UserBadge;

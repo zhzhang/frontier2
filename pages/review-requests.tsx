@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { withApollo } from "../lib/apollo";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Quill } from "../components/Quill";
 import ReviewRequestCard from "../components/ReviewRequestCard";
 
 import Container from "react-bootstrap/Container";

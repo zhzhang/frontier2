@@ -104,7 +104,6 @@ export const Venue = objectType({
     t.string("id");
     t.string("name");
     t.string("abbreviation");
-    t.field("date", { type: "Date" });
   },
 });
 

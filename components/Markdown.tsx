@@ -1,6 +1,6 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import { InlineMath, BlockMath } from "react-katex";
+import { InlineMath, BlockMath } from "./react-katex";
 import math from "remark-math";
 import gfm from "remark-gfm";
 import visit from "unist-util-visit";

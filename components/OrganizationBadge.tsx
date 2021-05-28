@@ -2,7 +2,7 @@ import Badge from "react-bootstrap/Badge";
 import { useState } from "react";
 import Router from "next/router";
 
-export default ({ organization }) => {
+const OrganizationBadge = ({ organization }) => {
   const { id, name } = organization;
   const [hover, setHover] = useState(false);
   return (
@@ -17,3 +17,5 @@ export default ({ organization }) => {
     </Badge>
   );
 };
+
+export default OrganizationBadge;

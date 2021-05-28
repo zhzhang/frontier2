@@ -8,10 +8,6 @@ import { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
     /**
-     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-     */
-    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Date";
-    /**
      * The `Upload` scalar type represents a file upload.
      */
     upload<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Upload";
@@ -19,10 +15,6 @@ declare global {
 }
 declare global {
   interface NexusGenCustomOutputMethods<TypeName extends string> {
-    /**
-     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-     */
-    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
     /**
      * The `Upload` scalar type represents a file upload.
      */
@@ -67,7 +59,6 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
-  Date: any
   Upload: any
 }
 
@@ -136,7 +127,6 @@ export interface NexusGenObjects {
   }
   Venue: { // root type
     abbreviation?: string | null; // String
-    date?: NexusGenScalars['Date'] | null; // Date
     id?: string | null; // String
     name?: string | null; // String
   }
@@ -252,7 +242,6 @@ export interface NexusGenFieldTypes {
   }
   Venue: { // field return type
     abbreviation: string | null; // String
-    date: NexusGenScalars['Date'] | null; // Date
     id: string | null; // String
     name: string | null; // String
   }
@@ -358,7 +347,6 @@ export interface NexusGenFieldTypeNames {
   }
   Venue: { // field return type name
     abbreviation: 'String'
-    date: 'Date'
     id: 'String'
     name: 'String'
   }

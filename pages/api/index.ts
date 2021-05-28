@@ -1,5 +1,4 @@
 import { ApolloServer } from "apollo-server-micro";
-import { GraphQLDate } from "graphql-iso-date";
 import { applyMiddleware } from "graphql-middleware";
 import { rule, shield } from "graphql-shield";
 import { nexusPrisma } from "nexus-plugin-prisma";
@@ -27,7 +26,6 @@ import {
 export type Upload = Promise<FileUpload>;
 export const Upload = asNexusMethod(GraphQLUpload!, "upload");
 
-export const GQLDate = asNexusMethod(GraphQLDate, "date");
 
 // Build the schema.
 const rules = {
@@ -61,7 +59,6 @@ export const schema = makeSchema({
     ThreadMessage,
     Decision,
     Role,
-    GQLDate,
     Upload,
   ],
   outputs: {
