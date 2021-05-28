@@ -5,6 +5,11 @@ const pem = "projects/97350118469/secrets/demo-server-ca-pem/versions/latest";
 // Imports the Secret Manager library
 const { SecretManagerServiceClient } = require("@google-cloud/secret-manager");
 
+const serviceAccount = JSON.parse(
+  Buffer.from(process.env.GCLOUD_CREDENTIALS, "base64")
+);
+console.log(serviceAccount);
+
 // Instantiates a client
 const client = new SecretManagerServiceClient();
 const fs = require("fs");
