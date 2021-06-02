@@ -39,9 +39,11 @@ function Articles(props) {
   }
   return (
     <Layout>
-      <Container fluid style={{ paddingTop: 20 }}>
+      <Container fluid>
         {data.articles.map((article) => (
-          <ArticleCard article={article} />
+          <div className="mt-3">
+            <ArticleCard article={article} />
+          </div>
         ))}
       </Container>
     </Layout>
