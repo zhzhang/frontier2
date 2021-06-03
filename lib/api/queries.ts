@@ -131,6 +131,26 @@ export default objectType({
         });
       },
     });
+    t.list.field("decisions", {
+      type: "Decision",
+      args: { articleId: nonNull(stringArg()) },
+      resolve: async (_, { articleId }, ctx) => {
+        return await ctx.prisma.decision.findMany({
+          where: {
+            articleId,
+          },
+          include: {
+            author: true,
+            organization: true,
+            reviews: {
+              include: {
+                author: true,
+              },
+            },
+          },
+        });
+      },
+    });
     t.field("organization", {
       type: "Organization",
       args: { id: nonNull(stringArg()) },

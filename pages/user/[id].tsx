@@ -76,7 +76,6 @@ function User() {
     return <Spinner animation="border" />;
   }
   if (error) {
-    console.log("error");
     return <div>Error: {error.message}</div>;
   }
 

@@ -11,7 +11,7 @@ const DiscussionSidebar = ({
   articleVersion,
 }) => {
   const router = useRouter();
-  const view = router.query.view ? router.query.view : "review";
+  const view = router.query.view ? router.query.view : "reviews";
   return (
     <Tabs
       activeKey={view}
@@ -20,7 +20,7 @@ const DiscussionSidebar = ({
         router.push(router, undefined, { shallow: true });
       }}
     >
-      <Tab eventKey="review" title="Reviews">
+      <Tab eventKey="reviews" title="Reviews">
         <div className="mt-2">
           <Reviews
             articleId={articleId}
@@ -30,9 +30,9 @@ const DiscussionSidebar = ({
           />
         </div>
       </Tab>
-      <Tab eventKey="comments" title="Comments">
+      <Tab eventKey="decisions" title="Decisions">
         <div className="mt-2">
-          <Comments
+          <Reviews
             articleId={articleId}
             articleVersion={articleVersion}
             highlights={highlights}

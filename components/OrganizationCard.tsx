@@ -9,7 +9,6 @@ import Row from "react-bootstrap/Row";
 
 const OrganizationCard = ({ organization }) => {
   const { id, name, description, logoRef } = organization;
-  console.log(organization);
   const url =
     logoRef !== null && logoRef !== undefined ? useRef(logoRef) : null;
   return (

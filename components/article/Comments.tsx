@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
+import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 
 const Reviews = ({
@@ -24,19 +25,25 @@ const Reviews = ({
         }}
       />
       {highlights.map((highlight) => (
-        <div>{highlight.id}</div>
+        <Alert
+          key={highlight.id}
+          variant="dark"
+          dismissible
+          onClick={() =>
+            updateArticleAndScroll(
+              highlight.articleVersion,
+              highlights,
+              highlight
+            )
+          }
+        >
+          Highlight {highlight.id}
+        </Alert>
       ))}
       <Accordion className="mb-2" activeKey={previewOpen ? "0" : null}>
         <Card>
-          <Accordion.Toggle
-            as={Card.Header}
-            eventKey="0"
-            onClick={() => setPreviewOpen(!previewOpen)}
-          >
+          <Accordion.Toggle as={Card.Header} eventKey="0">
             Preview
-            <span className="float-right">
-              {previewOpen ? <ChevronUp /> : <ChevronDown />}
-            </span>
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <div className="p-2">
