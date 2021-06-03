@@ -1,10 +1,11 @@
-import React from "react";
-import Spinner from "../components/CenteredSpinner";
-import Layout from "../components/Layout";
-import ArticleCard from "../components/ArticleCard";
-import { withApollo } from "../lib/apollo";
-import gql from "graphql-tag";
+import ArticleCard from "@/components/ArticleCard";
+import Spinner from "@/components/CenteredSpinner";
+import Error from "@/components/Error";
+import Layout from "@/components/Layout";
+import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import React from "react";
 import Container from "react-bootstrap/Container";
 
 const GetArticlesQuery = gql`
@@ -22,6 +23,7 @@ const GetArticlesQuery = gql`
         createdAt
       }
       acceptedOrganizations {
+        id
         name
       }
     }
@@ -34,6 +36,15 @@ function Articles(props) {
     return (
       <Layout>
         <Spinner />
+      </Layout>
+    );
+  }
+  if (error) {
+    return (
+      <Layout>
+        <Container fluid className="mt-3">
+          <Error header={"Error loading articles."} />
+        </Container>
       </Layout>
     );
   }

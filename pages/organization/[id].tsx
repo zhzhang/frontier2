@@ -1,26 +1,19 @@
-import { useState } from "react";
-import Layout from "../../components/Layout";
-import { useRouter } from "next/router";
-import { withApollo } from "../../lib/apollo";
-import gql from "graphql-tag";
+import Spinner from "@/components/CenteredSpinner";
+import Error from "@/components/Error";
+import Layout from "@/components/Layout";
+import ArticlesPane from "@/components/organization/ArticlesPane";
+import InfoPane from "@/components/organization/InfoPane";
+import { withApollo } from "@/lib/apollo";
+import { useRef } from "@/lib/firebase";
 import { useQuery } from "@apollo/react-hooks";
-import Error from "../../components/Error";
-import { useAuth } from "../../lib/firebase";
-import { useRef } from "../../lib/firebase";
-import Spinner from "../../components/CenteredSpinner";
-import ArticlesPane from "../../components/organization/ArticlesPane";
-import VenuesPane from "../../components/organization/VenuesPane";
-import InfoPane from "../../components/organization/InfoPane";
-import { RoleEnum } from "../../lib/types";
-
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
+import gql from "graphql-tag";
+import { useRouter } from "next/router";
 import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
-import Tabs from "react-bootstrap/Tabs";
-import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/Row";
-import DatePicker from "react-datepicker";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
 import "react-datepicker/dist/react-datepicker.css";
 
 const OrganizationQuery = gql`
@@ -40,7 +33,7 @@ function Header({ name, logoRef }) {
   return (
     <>
       <Image src={url} className="organization-logo" thumbnail />
-      <h2>{name}</h2>
+      <h1>{name}</h1>
     </>
   );
 }

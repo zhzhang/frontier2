@@ -17,6 +17,25 @@ model User {
   threadMessage           ThreadMessage[]
   authorships             ArticleAuthor[]
   chairSubmissions        Submission[]
+  relations               Relation[]
+}
+
+enum RelationType {
+  ADVISOR
+  ADVISEE
+  COAUTHOR
+  COWORKER
+  FAMILY
+  SOCIAL
+}
+
+model Relation {
+  id       String       @id
+  target   User         @relation(fields: [userId], references: [id])
+  relation RelationType
+  comment  String
+  userId   String
+  targetId String
 }
 
 model Article {
@@ -50,15 +69,14 @@ model ArticleVersion {
 }
 
 model ThreadMessage {
-  id             String   @id @default(cuid())
-  body           String   @db.MediumText
-  reviewId       String
-  userId         String
-  articleVersion Int
-  review         Review   @relation(fields: [reviewId], references: [id])
-  author         User     @relation(fields: [userId], references: [id])
-  highlights     String   @db.MediumText
-  createdAt      DateTime @default(now())
+  id         String   @id @default(cuid())
+  body       String   @db.MediumText
+  reviewId   String
+  userId     String
+  review     Review   @relation(fields: [reviewId], references: [id])
+  author     User     @relation(fields: [userId], references: [id])
+  highlights String   @db.MediumText
+  createdAt  DateTime @default(now())
 }
 
 model Submission {
@@ -113,7 +131,6 @@ model Review {
   author         User            @relation(fields: [authorId], references: [id])
   highlights     String          @db.MediumText
   articleId      String
-  articleVersion Int
   authorId       String
   organization   Organization?   @relation(fields: [organizationId], references: [id])
   organizationId String?
@@ -128,6 +145,7 @@ model Decision {
   id             String        @id @default(cuid())
   body           String        @db.MediumText
   decision       Boolean       @default(false)
+  highlights     String        @db.MediumText
   citedReviews   Review[]
   article        Article       @relation(fields: [articleId], references: [id])
   articleId      String
@@ -136,4 +154,5 @@ model Decision {
   author         User          @relation("chair", fields: [authorId], references: [id])
   authorId       String
   submission     Submission?
+  published      Boolean       @default(false)
 }

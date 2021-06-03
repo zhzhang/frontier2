@@ -1,11 +1,11 @@
-import React from "react";
-import ReactMarkdown from "react-markdown";
-import { InlineMath, BlockMath } from "./react-katex";
-import math from "remark-math";
-import gfm from "remark-gfm";
-import visit from "unist-util-visit";
 import "katex/dist/katex.min.css"; // `react-katex` does not import the CSS for you
 import _ from "lodash";
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
+import math from "remark-math";
+import visit from "unist-util-visit";
+import { BlockMath, InlineMath } from "./react-katex";
 
 const Highlight = ({ highlight, highlights, text, updateArticleAndScroll }) => {
   return (
@@ -115,7 +115,6 @@ const Markdown = ({
       );
     },
   };
-  console.log(math);
   return (
     <ReactMarkdown
       plugins={[math, gfm, highlightPlugin]}

@@ -1,10 +1,9 @@
-import Card from "react-bootstrap/Card";
-import Router from "next/router";
-import Markdown from "./Markdown";
-import { withApollo } from "@/lib/apollo";
+import Markdown from "@/components/Markdown";
 import OrganizationBadge from "@/components/OrganizationBadge";
 import UserBadge from "@/components/UserBadge";
+import { withApollo } from "@/lib/apollo";
 import { useState } from "react";
+import Card from "react-bootstrap/Card";
 
 const ArticleCard = ({ article }) => {
   const { id, title, versions, authors, acceptedOrganizations } = article;
@@ -13,14 +12,7 @@ const ArticleCard = ({ article }) => {
   return (
     <Card>
       <Card.Body>
-        <h5
-          onClick={() => Router.push(`/article/${id}`)}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          style={{ color: hover ? "blue" : "black" }}
-        >
-          {title}
-        </h5>
+        <a href={`/article/${id}`}>{title}</a>
         <div>
           Authors:{" "}
           {authors !== null ? (

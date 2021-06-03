@@ -1,6 +1,6 @@
+import cuid from "cuid";
 import prisma from "../lib/prisma";
 import { RoleEnum } from "../lib/types";
-import cuid from "cuid";
 
 async function main() {
   const user = await prisma.user.create({
@@ -129,7 +129,6 @@ async function main() {
       organizationId: organization.id,
       rating: 1,
       canAccess: false,
-      articleVersion: 1,
       highlights: "[]",
       body: "",
     },
@@ -141,7 +140,6 @@ async function main() {
       articleId: article.id,
       published: true,
       organizationId: otherOrganization.id,
-      articleVersion: 1,
       body: reviewBody,
       rating: 3,
       highlights: highlights,
@@ -152,7 +150,6 @@ async function main() {
       reviewId: review2.id,
       userId: andrew.id,
       body: `Author responses and other discussion on public reviews can be viewed in a thread below the review.`,
-      articleVersion: 1,
       highlights: "[]",
     },
   });
@@ -160,7 +157,8 @@ async function main() {
   const decision = await prisma.decision.create({
     data: {
       authorId: reviewer.id,
-      body: `This is an example meta-review. Reviews that a author cites in writing the meta-review are attached to the meta-review. Reviews from other organizations can be cited as well!`,
+      body: `This is an example meta-review. Reviews that an author cites in writing the meta-review are attached to the meta-review, and directly credit the reviewer. Reviews from other organizations can be cited as well!`,
+      highlights: "",
       decision: true,
       articleId: article.id,
       organizationId: organization.id,
@@ -234,8 +232,7 @@ async function main() {
 
   const venue = await prisma.venue.create({
     data: {
-      name:
-        "57th Annual Meeting of the Association for Computational Linguistics",
+      name: "57th Annual Meeting of the Association for Computational Linguistics",
       abbreviation: "ACL 2019",
       organizationId: organization.id,
       date: "2019-06-05T10:00:00.000Z",

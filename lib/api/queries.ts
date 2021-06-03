@@ -1,17 +1,6 @@
-import {
-  asNexusMethod,
-  makeSchema,
-  nonNull,
-  list,
-  nullable,
-  enumType,
-  objectType,
-  stringArg,
-  intArg,
-  booleanArg,
-} from "nexus";
-import prisma from "../prisma";
 import _ from "lodash";
+import { list, nonNull, objectType, stringArg } from "nexus";
+import prisma from "../prisma";
 import { RoleEnum } from "../types";
 
 export default objectType({
@@ -80,6 +69,13 @@ export default objectType({
         return await ctx.prisma.article.findUnique({
           where: {
             id,
+          },
+          include: {
+            authors: {
+              include: {
+                user: true,
+              },
+            },
           },
         });
       },

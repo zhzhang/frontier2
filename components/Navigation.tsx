@@ -1,8 +1,8 @@
-import LoginButton from "./LoginButton";
-import Navbar from "react-bootstrap/Navbar";
+import LoginButton from "@/components/LoginButton";
+import { auth, useAuth } from "@/lib/firebase";
 import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { auth, useAuth } from "../lib/firebase";
 
 const Navigation = () => {
   const { user, loading } = useAuth();
@@ -14,7 +14,7 @@ const Navigation = () => {
           <Nav.Link href="/articles">Articles</Nav.Link>
           <Nav.Link href="/organizations">Organizations</Nav.Link>
         </Nav>
-        {/* {!loading && user !== null && user !== undefined ? (
+        {!loading && user !== null && user !== undefined ? (
           <Nav className="justify-content-end">
             <NavDropdown title="Profile" id="basic-nav-dropdown">
               <NavDropdown.Item
@@ -31,7 +31,7 @@ const Navigation = () => {
           </Nav>
         ) : (
           <LoginButton />
-        )} */}
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

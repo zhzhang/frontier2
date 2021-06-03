@@ -1,28 +1,24 @@
-import Layout from "../../components/Layout";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { withApollo } from "../../lib/apollo";
-import gql from "graphql-tag";
+import DiscussionSidebar from "@/components/article/DiscussionSidebar";
+import Spinner from "@/components/CenteredSpinner";
+import Error from "@/components/Error";
+import Layout from "@/components/Layout";
+import Markdown from "@/components/Markdown";
+import PdfViewer from "@/components/PDFViewer";
+import UserBadge from "@/components/UserBadge";
+import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
-import Markdown from "../../components/Markdown";
-import PdfViewer from "../../components/PDFViewer";
-import Spinner from "../../components/CenteredSpinner";
-import ASpinner from "react-bootstrap/Spinner";
-import UserBadge from "../../components/UserBadge";
-import Reviews from "../../components/article/Reviews";
-
+import dateFormat from "dateformat";
+import gql from "graphql-tag";
+import _ from "lodash";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import Accordion from "react-bootstrap/Accordion";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import OrganizationBadge from "../../components/OrganizationBadge";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import { ChevronUp, ChevronDown } from "react-bootstrap-icons";
-import dateFormat from "dateformat";
-import _ from "lodash";
 
 const ArticleQuery = gql`
   query ArticleQuery($id: String!) {
@@ -48,18 +44,6 @@ const ArticleQuery = gql`
   }
 `;
 
-const ArticleVersionsQuery = gql`
-  query ArticleVersionsQuery($articleVersion: String!) {
-    articleVersions(articleVersion: $articleVersion) {
-      id
-      abstract
-      ref
-      versionNumber
-      createdAt
-    }
-  }
-`;
-
 function Article() {
   const { id, reviewId, version } = useRouter().query;
   const { loading, error, data } = useQuery(ArticleQuery, {
@@ -67,7 +51,7 @@ function Article() {
   });
   const [selectedVersionNumber, setVersionNumber] = useState(-1);
   const [abstractOpen, setAbstractOpen] = useState(false);
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(true);
   const [highlights, setHighlights] = useState([]);
   const [onRenderedCallback, setRenderedCallback] = useState();
   const [scrollTo, setScrollTo] = useState();
@@ -80,7 +64,11 @@ function Article() {
     );
   }
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <Layout>
+        <Error header="Error fetching article." />
+      </Layout>
+    );
   }
 
   const { title, authors, versions, acceptedOrganizations } = data.article;
@@ -122,7 +110,6 @@ function Article() {
           <Container fluid style={{ paddingTop: 10 }}>
             <h5>{title}</h5>
             <span>
-              Authors:{" "}
               {authors !== null ? (
                 authors.map((author) => (
                   <UserBadge user={author} key={author.id} />
@@ -171,25 +158,14 @@ function Article() {
                 </Accordion.Collapse>
               </Card>
             </Accordion>
-            {acceptedOrganizations.length > 0 ? (
-              <div className="mt-1">
-                Accepted by:{" "}
-                {acceptedOrganizations.map((organization) => (
-                  <OrganizationBadge
-                    organization={organization}
-                    key={organization.id}
-                  />
-                ))}
-              </div>
-            ) : null}
-            <br />
-            <h5>Reviews</h5>
-            <Reviews
-              articleId={id}
-              articleVersion={selectedVersion.versionNumber}
-              highlights={highlights}
-              updateArticleAndScroll={updateArticleAndScroll}
-            />
+            <div className="mt-2">
+              <DiscussionSidebar
+                articleId={id}
+                articleVersion={selectedVersion.versionNumber}
+                highlights={highlights}
+                updateArticleAndScroll={updateArticleAndScroll}
+              />
+            </div>
           </Container>
         </div>
         <PdfViewer

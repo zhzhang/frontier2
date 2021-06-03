@@ -1,9 +1,9 @@
+import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import AcceptedArticleCard from "../AcceptedArticleCard";
 import Error from "../Error";
-import Spinner from "react-bootstrap/Spinner";
-import { useQuery } from "@apollo/react-hooks";
 
 const OrganizationQuery = gql`
   query OrganizationQuery($id: String!) {

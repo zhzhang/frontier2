@@ -1,11 +1,10 @@
-import Layout from "../components/Layout";
-import Container from "react-bootstrap/Container";
-import Spinner from "../components/CenteredSpinner";
-import OrganizationCard from "../components/OrganizationCard";
-import { useRouter } from "next/router";
-import { withApollo } from "../lib/apollo";
-import gql from "graphql-tag";
+import Spinner from "@/components/CenteredSpinner";
+import Layout from "@/components/Layout";
+import OrganizationCard from "@/components/OrganizationCard";
+import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import Container from "react-bootstrap/Container";
 
 const OrganizationQuery = gql`
   query OrganizationQuery {
@@ -34,9 +33,11 @@ function Organizations() {
 
   return (
     <Layout>
-      <Container fluid style={{ paddingTop: 20 }}>
+      <Container fluid>
         {data.browseOrganizations.map((organization) => (
-          <OrganizationCard organization={organization} />
+          <div className="mt-3">
+            <OrganizationCard organization={organization} />
+          </div>
         ))}
       </Container>
     </Layout>

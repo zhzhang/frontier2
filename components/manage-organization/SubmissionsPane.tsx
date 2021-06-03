@@ -1,9 +1,9 @@
+import Error from "@/components/Error";
+import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Container from "react-bootstrap/Container";
-import Error from "../Error";
-import SubmissionCard from "./SubmissionCard";
 import Spinner from "react-bootstrap/Spinner";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import SubmissionCard from "./SubmissionCard";
 
 const OrganizationQuery = gql`
   query OrganizationQuery($id: String!) {
@@ -37,7 +37,7 @@ const SubmissionsPane = ({ id }) => {
   }
   if (error) {
     return (
-      <Container fluid style={{ paddingTop: 10 }}>
+      <Container fluid className="mt-3">
         <Error header="There was a problem retrieving this organization's submissions." />
       </Container>
     );

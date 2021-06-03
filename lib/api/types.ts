@@ -1,18 +1,7 @@
-import {
-  asNexusMethod,
-  makeSchema,
-  nonNull,
-  list,
-  nullable,
-  enumType,
-  objectType,
-  stringArg,
-  intArg,
-  booleanArg,
-} from "nexus";
-import prisma from "../prisma";
 import _ from "lodash";
+import { enumType, objectType } from "nexus";
 import { RoleEnum } from "../../lib/types";
+import prisma from "../prisma";
 import { isOrganizationAdmin } from "./utils";
 
 export const Role = enumType({
@@ -47,7 +36,7 @@ export const Article = objectType({
     t.model.anonymous();
     t.list.field("authors", {
       type: "User",
-      resolve: (parent) => {
+      resolve: (parent, _args, ctx) => {
         if (parent.anonymous) {
           return null;
         }

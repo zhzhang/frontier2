@@ -1,8 +1,9 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/storage";
-import { UploadTypeEnum } from "./types";
+import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
+import { UploadTypeEnum } from "./types";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,8 +13,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
-
-import { useState, useEffect } from "react";
 
 export function useAuth() {
   const [user, setUser] = useState(null);

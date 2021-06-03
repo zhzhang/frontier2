@@ -1,15 +1,8 @@
-import gql from "graphql-tag";
-import Spinner from "react-bootstrap/Spinner";
-import Card from "react-bootstrap/Card";
-import Accordion from "react-bootstrap/Accordion";
-import Form from "react-bootstrap/Form";
-import { ChevronUp, ChevronDown } from "react-bootstrap-icons";
+import Review from "@/components/Review";
 import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 import { useState } from "react";
-import Review from "../Review";
-
-// For demo only.
-import Markdown from "../Markdown";
+import Spinner from "react-bootstrap/Spinner";
 
 const ReviewsQuery = gql`
   query ReviewsQuery($articleId: String!) {
@@ -23,7 +16,6 @@ const ReviewsQuery = gql`
       reviewNumber
       rating
       canAccess
-      articleVersion
       organization {
         id
         logoRef
@@ -35,7 +27,6 @@ const ReviewsQuery = gql`
           id
           name
         }
-        articleVersion
         body
         highlights
         createdAt

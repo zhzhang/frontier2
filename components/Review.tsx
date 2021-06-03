@@ -1,14 +1,14 @@
-import Button from "react-bootstrap/Button";
-import Badge from "react-bootstrap/Badge";
-import Markdown from "./Markdown";
-import { withApollo } from "../lib/apollo";
-import gql from "graphql-tag";
+import Markdown from "@/components/Markdown";
+import UserBadge from "@/components/UserBadge";
+import { withApollo } from "@/lib/apollo";
 import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 import { useState } from "react";
+import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import Accordion from "react-bootstrap/Accordion";
+import Badge from "react-bootstrap/Badge";
+import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { ChevronUp, ChevronDown, PersonCircle } from "react-bootstrap-icons";
-import UserBadge from "../components/UserBadge";
 
 const UpdateReviewMutation = gql`
   mutation UpdateReviewMutation(
@@ -45,9 +45,8 @@ const Review = ({
 }) => {
   const { highlights } = review;
   const [body, setBody] = useState(review.body);
-  const [updateReview, { loading, error, data }] = useMutation(
-    UpdateReviewMutation
-  );
+  const [updateReview, { loading, error, data }] =
+    useMutation(UpdateReviewMutation);
   const [open, setOpen] = useState(startOpen && review.canAccess);
   const { threadMessages } = review;
   return (
