@@ -253,6 +253,7 @@ export const Decision = objectType({
     t.boolean("decision");
     t.field("author", { type: "User" });
     t.field("article", { type: "Article" });
+    t.field("organization", { type: "Organization" });
     t.list.field("citedReviews", { type: "Review" });
   },
 });

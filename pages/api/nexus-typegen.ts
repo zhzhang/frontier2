@@ -82,6 +82,7 @@ export interface NexusGenObjects {
     citedReviews?: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
     decision?: boolean | null; // Boolean
     id?: string | null; // String
+    organization?: NexusGenRootTypes['Organization'] | null; // Organization
   }
   Mutation: {};
   Organization: { // root type
@@ -166,6 +167,7 @@ export interface NexusGenFieldTypes {
     citedReviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
     decision: boolean | null; // Boolean
     id: string | null; // String
+    organization: NexusGenRootTypes['Organization'] | null; // Organization
   }
   Mutation: { // field return type
     assignReviewers: NexusGenRootTypes['Submission'] | null; // Submission
@@ -195,6 +197,7 @@ export interface NexusGenFieldTypes {
     articleVersions: Array<NexusGenRootTypes['ArticleVersion'] | null> | null; // [ArticleVersion]
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     browseOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
+    decisions: Array<NexusGenRootTypes['Decision'] | null> | null; // [Decision]
     organization: NexusGenRootTypes['Organization'] | null; // Organization
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
@@ -271,6 +274,7 @@ export interface NexusGenFieldTypeNames {
     citedReviews: 'Review'
     decision: 'Boolean'
     id: 'String'
+    organization: 'Organization'
   }
   Mutation: { // field return type name
     assignReviewers: 'Submission'
@@ -300,6 +304,7 @@ export interface NexusGenFieldTypeNames {
     articleVersions: 'ArticleVersion'
     articles: 'Article'
     browseOrganizations: 'Organization'
+    decisions: 'Decision'
     organization: 'Organization'
     reviewerAssignedSubmissions: 'Submission'
     reviews: 'Review'
@@ -414,6 +419,9 @@ export interface NexusGenArgTypes {
     }
     browseOrganizations: { // args
       tags?: Array<string | null> | null; // [String]
+    }
+    decisions: { // args
+      articleId: string; // String!
     }
     organization: { // args
       id: string; // String!

@@ -1,47 +1,46 @@
-import Review from "@/components/Review";
+import DecisionCard from "@/components/DecisionCard";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 
-const ReviewsQuery = gql`
-  query ReviewsQuery($articleId: String!) {
-    reviews(articleId: $articleId) {
+const DecisionsQuery = gql`
+  query DecisionsQuery($articleId: String!) {
+    decisions(articleId: $articleId) {
       id
       author {
         name
       }
       body
-      highlights
-      reviewNumber
-      rating
-      canAccess
+      decision
       organization {
         id
         logoRef
         abbreviation
       }
-      threadMessages {
-        id
+      citedReviews {
         author {
-          id
           name
         }
-        body
-        highlights
-        createdAt
+        reviewNumber
+        rating
+        canAccess
+        organization {
+          logoRef
+          abbreviation
+        }
       }
     }
   }
 `;
 
-const Reviews = ({
+const Decisions = ({
   articleId,
   highlights,
   updateArticleAndScroll,
   articleVersion,
 }) => {
-  const { loading, error, data } = useQuery(ReviewsQuery, {
+  const { loading, error, data } = useQuery(DecisionsQuery, {
     variables: { articleId },
   });
   const [body, setBody] = useState("Try me!");
@@ -52,13 +51,13 @@ const Reviews = ({
   if (error) {
     return <div>{error.message}</div>;
   }
-  const { reviews } = data;
+  const { decisions } = data;
   return (
     <>
-      {reviews.map((review) => (
-        <div style={{ paddingBottom: 10 }} key={review.id}>
-          <Review
-            review={review}
+      {decisions.map((decision) => (
+        <div style={{ paddingBottom: 10 }} key={decision.id}>
+          <DecisionCard
+            decision={decision}
             editing={false}
             startOpen={true}
             updateArticleAndScroll={updateArticleAndScroll}
@@ -66,44 +65,8 @@ const Reviews = ({
           />
         </div>
       ))}
-      {/* <Form.Control
-        as="textarea"
-        rows={4}
-        value={body}
-        onChange={({ target: { value } }) => {
-          setBody(value);
-        }}
-      />
-      {highlights.map((highlight) => (
-        <div>{highlight.id}</div>
-      ))}
-      <Accordion className="mb-2" activeKey={previewOpen ? "0" : null}>
-        <Card>
-          <Accordion.Toggle
-            as={Card.Header}
-            eventKey="0"
-            onClick={() => setPreviewOpen(!previewOpen)}
-          >
-            Preview
-            <span className="float-right">
-              {previewOpen ? <ChevronUp /> : <ChevronDown />}
-            </span>
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="0">
-            <div className="p-2">
-              <Markdown
-                highlights={highlights}
-                updateArticleAndScroll={updateArticleAndScroll}
-                articleVersion={articleVersion}
-              >
-                {body}
-              </Markdown>
-            </div>
-          </Accordion.Collapse>
-        </Card>
-      </Accordion> */}
     </>
   );
 };
 
-export default Reviews;
+export default Decisions;

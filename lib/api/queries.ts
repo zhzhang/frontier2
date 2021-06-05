@@ -135,20 +135,22 @@ export default objectType({
       type: "Decision",
       args: { articleId: nonNull(stringArg()) },
       resolve: async (_, { articleId }, ctx) => {
-        return await ctx.prisma.decision.findMany({
+        const tmp = await ctx.prisma.decision.findMany({
           where: {
             articleId,
           },
           include: {
             author: true,
             organization: true,
-            reviews: {
+            citedReviews: {
               include: {
                 author: true,
+                organization: true,
               },
             },
           },
         });
+        return tmp;
       },
     });
     t.field("organization", {

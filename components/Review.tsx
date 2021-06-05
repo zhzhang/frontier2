@@ -1,6 +1,5 @@
 import Markdown from "@/components/Markdown";
 import UserBadge from "@/components/UserBadge";
-import { withApollo } from "@/lib/apollo";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
@@ -163,4 +162,4 @@ const Review = ({
   );
 };
 
-export default withApollo(Review);
+export default Review;

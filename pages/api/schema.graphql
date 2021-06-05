@@ -36,6 +36,7 @@ type Decision {
   citedReviews: [Review]
   decision: Boolean
   id: String
+  organization: Organization
 }
 
 type Mutation {
@@ -73,6 +74,7 @@ type Query {
   articleVersions: [ArticleVersion]
   articles: [Article]
   browseOrganizations(tags: [String]): [Organization]
+  decisions(articleId: String!): [Decision]
   organization(id: String!): Organization
   reviewerAssignedSubmissions: [Submission]
   reviews(articleId: String!): [Review]

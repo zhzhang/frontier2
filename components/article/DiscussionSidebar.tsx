@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import Comments from "./Comments";
+import Decisions from "./Decisions";
 import Reviews from "./Reviews";
 
 const DiscussionSidebar = ({
@@ -32,7 +32,7 @@ const DiscussionSidebar = ({
       </Tab>
       <Tab eventKey="decisions" title="Decisions">
         <div className="mt-2">
-          <Reviews
+          <Decisions
             articleId={articleId}
             articleVersion={articleVersion}
             highlights={highlights}
