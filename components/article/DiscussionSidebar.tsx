@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useState } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Decisions from "./Decisions";
@@ -10,14 +10,12 @@ const DiscussionSidebar = ({
   updateArticleAndScroll,
   articleVersion,
 }) => {
-  const router = useRouter();
-  const view = router.query.view ? router.query.view : "reviews";
+  const [view, setView] = useState("reviews");
   return (
     <Tabs
       activeKey={view}
       onSelect={(newTabKey) => {
-        router.query.view = newTabKey;
-        router.push(router, undefined, { shallow: true });
+        setView(newTabKey);
       }}
     >
       <Tab eventKey="reviews" title="Reviews">

@@ -19,6 +19,8 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import SplitPane from "react-split-pane";
+import Pane from "react-split-pane/lib/Pane";
 
 const ArticleQuery = gql`
   query ArticleQuery($id: String!) {
@@ -97,17 +99,15 @@ function Article() {
 
   return (
     <Layout>
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            minWidth: 400,
-            flex: 4,
-            width: "auto",
-            overflowY: "scroll",
-            height: "calc(100vh - 55px)",
-          }}
-        >
-          <Container fluid style={{ paddingTop: 10 }}>
+      <SplitPane split="vertical" defaultSize={50}>
+        <Pane initialSize="40%" minSize="20%">
+          <Container
+            className="pt-3"
+            style={{
+              height: "calc(100vh - 55px)",
+              overflowY: "scroll",
+            }}
+          >
             <h5>{title}</h5>
             <span>
               {authors !== null ? (
@@ -167,7 +167,7 @@ function Article() {
               />
             </div>
           </Container>
-        </div>
+        </Pane>
         <PdfViewer
           fileRef={ref}
           highlights={highlights}
@@ -177,7 +177,7 @@ function Article() {
           setScrollTo={setScrollTo}
           editing={editing}
         />
-      </div>
+      </SplitPane>
     </Layout>
   );
 }

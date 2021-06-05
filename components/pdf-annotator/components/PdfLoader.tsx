@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import * as pdfjs from "../pdfjs";
+import { useEffect, useState } from "react";
 import CenteredSpinner from "../../CenteredSpinner";
+import * as pdfjs from "../pdfjs";
 
 const PDFLoader = ({ url, children }) => {
   const [document, setDocument] = useState(null);
@@ -15,7 +15,7 @@ const PDFLoader = ({ url, children }) => {
     setDocument(pdfDocument);
   });
   return (
-    <div style={{ flex: 6 }}>
+    <div>
       <CenteredSpinner />
     </div>
   );
