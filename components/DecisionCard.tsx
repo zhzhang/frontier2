@@ -27,17 +27,21 @@ const DecisionCard = ({ decision }) => {
           </span>
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-          <div className="p-2">
-            <Markdown>{decision.body}</Markdown>
-            Cited Reviews
-            {decision.citedReviews.map((review) => (
-              <div>
-                <a href={`/article/${router.query.id}?reviewId=${review.id}`}>
-                  Reviewer {review.reviewNumber} -{" "}
-                  {review.organization.abbreviation}
-                </a>
-              </div>
-            ))}
+          <div>
+            <div className="p-2">
+              <Markdown>{decision.body}</Markdown>
+            </div>
+            <Card.Header>
+              Citing
+              {decision.citedReviews.map((review) => (
+                <div>
+                  <a href={`/article/${router.query.id}?reviewId=${review.id}`}>
+                    Reviewer {review.reviewNumber} -{" "}
+                    {review.organization.abbreviation}
+                  </a>
+                </div>
+              ))}
+            </Card.Header>
           </div>
         </Accordion.Collapse>
       </Card>

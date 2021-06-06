@@ -1,6 +1,7 @@
 import Review from "@/components/Review";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -56,7 +57,7 @@ const LinkedReview = ({
   const { review } = data;
   return (
     <div style={{ paddingBottom: 10 }} key={review.id}>
-      <a href={`/article/${router.query.id}`}>Show all reviews</a>
+      <a href={`/article/${router.query.id}`}>View all reviews</a>
       <Review
         review={review}
         editing={false}
