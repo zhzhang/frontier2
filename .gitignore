@@ -113,5 +113,5 @@ yarn-debug.log*
 .next
 
 .env.local
-prisma/server-ca.pem
+prisma/*.pem
 prisma/client-identity.p12

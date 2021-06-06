@@ -1,6 +1,6 @@
 import ArticleCard from "@/components/ArticleCard";
-import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
+import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";

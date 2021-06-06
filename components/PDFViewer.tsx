@@ -6,11 +6,7 @@ const PdfViewer = ({ file, fileRef, ...props }) => {
   if (fileRef !== null && fileRef !== undefined) {
     file = useRef(fileRef);
     if (file === undefined) {
-      return (
-        <div>
-          <CenteredSpinner />
-        </div>
-      );
+      return <CenteredSpinner />;
     }
   }
   return (

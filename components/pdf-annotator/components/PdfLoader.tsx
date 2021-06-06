@@ -14,11 +14,7 @@ const PDFLoader = ({ url, children }) => {
   loadingTask.promise.then((pdfDocument) => {
     setDocument(pdfDocument);
   });
-  return (
-    <div>
-      <CenteredSpinner />
-    </div>
-  );
+  return <CenteredSpinner />;
 };
 
 export default PDFLoader;

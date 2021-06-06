@@ -1,5 +1,5 @@
-import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
+import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import ArticlesPane from "@/components/organization/ArticlesPane";
 import InfoPane from "@/components/organization/InfoPane";

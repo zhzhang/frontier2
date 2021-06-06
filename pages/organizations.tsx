@@ -1,4 +1,4 @@
-import Spinner from "@/components/CenteredSpinner";
+import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import OrganizationCard from "@/components/OrganizationCard";
 import { withApollo } from "@/lib/apollo";

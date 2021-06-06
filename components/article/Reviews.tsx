@@ -1,8 +1,8 @@
+import Spinner from "@/components/CenteredSpinner";
 import Review from "@/components/Review";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
-import Spinner from "react-bootstrap/Spinner";
 
 const ReviewsQuery = gql`
   query ReviewsQuery($articleId: String!) {
@@ -47,7 +47,11 @@ const Reviews = ({
   const [body, setBody] = useState("Try me!");
   const [previewOpen, setPreviewOpen] = useState(true);
   if (loading) {
-    return <Spinner animation="border" style={{ top: "50%", left: "50%" }} />;
+    return (
+      <div className="mt-3">
+        <Spinner />
+      </div>
+    );
   }
   if (error) {
     return <div>{error.message}</div>;

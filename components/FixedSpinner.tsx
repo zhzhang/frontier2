@@ -5,7 +5,7 @@ export default function CenteredSpinner(props) {
     <Spinner
       animation="border"
       style={{
-        position: "relative",
+        position: "absolute",
         top: "calc(50% - 16px)",
         left: "calc(50% - 16px)",
       }}
