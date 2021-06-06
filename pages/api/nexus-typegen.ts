@@ -199,6 +199,7 @@ export interface NexusGenFieldTypes {
     browseOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     decisions: Array<NexusGenRootTypes['Decision'] | null> | null; // [Decision]
     organization: NexusGenRootTypes['Organization'] | null; // Organization
+    review: NexusGenRootTypes['Review'] | null; // Review
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
     searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
@@ -306,6 +307,7 @@ export interface NexusGenFieldTypeNames {
     browseOrganizations: 'Organization'
     decisions: 'Decision'
     organization: 'Organization'
+    review: 'Review'
     reviewerAssignedSubmissions: 'Submission'
     reviews: 'Review'
     searchEditors: 'User'
@@ -425,6 +427,9 @@ export interface NexusGenArgTypes {
     }
     organization: { // args
       id: string; // String!
+    }
+    review: { // args
+      reviewId: string; // String!
     }
     reviews: { // args
       articleId: string; // String!

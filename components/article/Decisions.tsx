@@ -19,6 +19,7 @@ const DecisionsQuery = gql`
         abbreviation
       }
       citedReviews {
+        id
         author {
           name
         }
@@ -26,6 +27,7 @@ const DecisionsQuery = gql`
         rating
         canAccess
         organization {
+          id
           abbreviation
         }
       }

@@ -76,6 +76,7 @@ type Query {
   browseOrganizations(tags: [String]): [Organization]
   decisions(articleId: String!): [Decision]
   organization(id: String!): Organization
+  review(reviewId: String!): Review
   reviewerAssignedSubmissions: [Submission]
   reviews(articleId: String!): [Review]
   searchEditors(organizationId: String!, query: String): [User]

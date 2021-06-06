@@ -4,9 +4,9 @@ import gql from "graphql-tag";
 import { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 
-const ReviewsQuery = gql`
-  query ReviewsQuery($articleId: String!) {
-    reviews(articleId: $articleId) {
+const ReviewQuery = gql`
+  query ReviewQuery($reviewId: String!) {
+    review(reviewId: $reviewId) {
       id
       author {
         name
@@ -35,16 +35,16 @@ const ReviewsQuery = gql`
   }
 `;
 
-const Reviews = ({
-  articleId,
+const LinkedReview = ({
   highlights,
   updateArticleAndScroll,
   articleVersion,
   reviewId,
 }) => {
-  const { loading, error, data } = useQuery(ReviewsQuery, {
-    variables: { articleId },
+  const { loading, error, data } = useQuery(ReviewQuery, {
+    variables: { reviewId },
   });
+  const router = useRouter();
   const [body, setBody] = useState("Try me!");
   const [previewOpen, setPreviewOpen] = useState(true);
   if (loading) {
@@ -53,58 +53,19 @@ const Reviews = ({
   if (error) {
     return <div>{error.message}</div>;
   }
-  const { reviews } = data;
+  const { review } = data;
   return (
-    <>
-      {reviews.map((review) => (
-        <div style={{ paddingBottom: 10 }} key={review.id}>
-          <Review
-            review={review}
-            editing={false}
-            startOpen={true}
-            updateArticleAndScroll={updateArticleAndScroll}
-            articleMode
-          />
-        </div>
-      ))}
-      {/* <Form.Control
-        as="textarea"
-        rows={4}
-        value={body}
-        onChange={({ target: { value } }) => {
-          setBody(value);
-        }}
+    <div style={{ paddingBottom: 10 }} key={review.id}>
+      <a href={`/article/${router.query.id}`}>Show all reviews</a>
+      <Review
+        review={review}
+        editing={false}
+        startOpen={true}
+        updateArticleAndScroll={updateArticleAndScroll}
+        articleMode
       />
-      {highlights.map((highlight) => (
-        <div>{highlight.id}</div>
-      ))}
-      <Accordion className="mb-2" activeKey={previewOpen ? "0" : null}>
-        <Card>
-          <Accordion.Toggle
-            as={Card.Header}
-            eventKey="0"
-            onClick={() => setPreviewOpen(!previewOpen)}
-          >
-            Preview
-            <span className="float-right">
-              {previewOpen ? <ChevronUp /> : <ChevronDown />}
-            </span>
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="0">
-            <div className="p-2">
-              <Markdown
-                highlights={highlights}
-                updateArticleAndScroll={updateArticleAndScroll}
-                articleVersion={articleVersion}
-              >
-                {body}
-              </Markdown>
-            </div>
-          </Accordion.Collapse>
-        </Card>
-      </Accordion> */}
-    </>
+    </div>
   );
 };
 
-export default Reviews;
+export default LinkedReview;

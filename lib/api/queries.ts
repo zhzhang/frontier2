@@ -131,6 +131,26 @@ export default objectType({
         });
       },
     });
+    t.field("review", {
+      type: "Review",
+      args: { reviewId: nonNull(stringArg()) },
+      resolve: async (_, { reviewId }, ctx) => {
+        return await ctx.prisma.review.findUnique({
+          where: {
+            id: reviewId,
+          },
+          include: {
+            author: true,
+            organization: true,
+            threadMessages: {
+              include: {
+                author: true,
+              },
+            },
+          },
+        });
+      },
+    });
     t.list.field("decisions", {
       type: "Decision",
       args: { articleId: nonNull(stringArg()) },

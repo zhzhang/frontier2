@@ -1,5 +1,5 @@
-import Alert from "react-bootstrap/Alert";
 import { useState } from "react";
+import Alert from "react-bootstrap/Alert";
 
 const Error = ({ header, dismissible = true }) => {
   const [show, setShow] = useState(true);
@@ -11,10 +11,7 @@ const Error = ({ header, dismissible = true }) => {
         dismissible={dismissible}
       >
         <Alert.Heading>{header}</Alert.Heading>
-        <p>
-          Please refresh and try again. If the problem persists, please contact
-          the support team for assistance.
-        </p>
+        <p>Please refresh and try again.</p>
       </Alert>
     );
   }

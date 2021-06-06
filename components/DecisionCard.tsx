@@ -9,8 +9,6 @@ import Card from "react-bootstrap/Card";
 const DecisionCard = ({ decision }) => {
   const [open, setOpen] = useState(true);
   const router = useRouter();
-  console.log(router.pathname);
-  console.log(router.query);
 
   return (
     <Accordion activeKey={open ? "0" : null}>
@@ -34,7 +32,7 @@ const DecisionCard = ({ decision }) => {
             Cited Reviews
             {decision.citedReviews.map((review) => (
               <div>
-                <a href="www.google.com">
+                <a href={`/article/${router.query.id}?reviewId=${review.id}`}>
                   Reviewer {review.reviewNumber} -{" "}
                   {review.organization.abbreviation}
                 </a>
