@@ -6,23 +6,16 @@ const createMathComponent = (Component, { displayMode }) => {
   class MathComponent extends React.Component {
     constructor(props) {
       super(props);
-
-      this.usedProp = props.math ? 'math' : 'children';
-
-      this.state = this.createNewState(null, props);
+      this.state = MathComponent.createNewState(null, props);
     }
 
-    componentWillReceiveProps() {
-      this.setState(this.createNewState);
+    static getDerivedStateFromProps(props, state) {
+      return MathComponent.createNewState(state, props)
     }
 
-    shouldComponentUpdate(nextProps) {
-      return nextProps[this.usedProp] !== this.props[this.usedProp];
-    }
-
-    createNewState(prevState, props) {
+    static createNewState(prevState, props) {
       try {
-        const html = this.generateHtml(props);
+        const html = MathComponent.generateHtml(props);
 
         return { html, error: undefined };
       } catch (error) {
@@ -34,10 +27,11 @@ const createMathComponent = (Component, { displayMode }) => {
       }
     }
 
-    generateHtml(props) {
+    static generateHtml(props) {
       const { errorColor, renderError } = props;
+      const input = props.math ? props.math : props.children;
 
-      return KaTeX.renderToString(props[this.usedProp], {
+      return KaTeX.renderToString(input, {
         displayMode,
         errorColor,
         throwOnError: !!renderError

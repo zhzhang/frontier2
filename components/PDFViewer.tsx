@@ -1,11 +1,16 @@
-import { useRef } from "../lib/firebase";
-import { PdfLoader, PdfAnnotator } from "./pdf-annotator";
+import CenteredSpinner from "@/components/CenteredSpinner";
+import { useRef } from "@/lib/firebase";
+import { PdfAnnotator, PdfLoader } from "./pdf-annotator";
 
 const PdfViewer = ({ file, fileRef, ...props }) => {
   if (fileRef !== null && fileRef !== undefined) {
     file = useRef(fileRef);
     if (file === undefined) {
-      return "Loading...";
+      return (
+        <div>
+          <CenteredSpinner />
+        </div>
+      );
     }
   }
   return (

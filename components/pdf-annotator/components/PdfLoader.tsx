@@ -1,5 +1,5 @@
+import CenteredSpinner from "@/components/CenteredSpinner";
 import { useEffect, useState } from "react";
-import CenteredSpinner from "../../CenteredSpinner";
 import * as pdfjs from "../pdfjs";
 
 const PDFLoader = ({ url, children }) => {

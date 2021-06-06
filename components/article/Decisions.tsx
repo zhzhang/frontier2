@@ -26,7 +26,6 @@ const DecisionsQuery = gql`
         rating
         canAccess
         organization {
-          logoRef
           abbreviation
         }
       }

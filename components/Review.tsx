@@ -62,10 +62,7 @@ const Review = ({
           {`Reviewer ${review.reviewNumber} - ${review.organization.abbreviation}`}
           <span style={{ float: "right" }}>
             {review.canAccess ? (
-              <>
-                {getBadge(review.rating)}{" "}
-                {open ? <ChevronUp /> : <ChevronDown />}
-              </>
+              <>{open ? <ChevronUp /> : <ChevronDown />}</>
             ) : (
               <Badge variant="secondary">Private</Badge>
             )}
