@@ -9,7 +9,7 @@ type Article {
   id: String!
   reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, where: ArticleReviewsWhereInput): [Review!]!
   title: String!
-  versions: [ArticleVersion]
+  versions: [ArticleVersion!]!
 }
 
 input ArticleReviewsWhereInput {
@@ -17,17 +17,22 @@ input ArticleReviewsWhereInput {
 }
 
 type ArticleVersion {
-  abstract: String
-  createdAt: String
+  abstract: String!
+  createdAt: DateTime!
   id: String!
   ref: String
-  versionNumber: Int
+  versionNumber: Int!
 }
 
 input BoolFilter {
   equals: Boolean
   not: NestedBoolFilter
 }
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
 
 type Decision {
   article: Article
@@ -136,7 +141,7 @@ type User {
   articles: [Article]
   email: String!
   id: String!
-  name: String
+  name: String!
 }
 
 type Venue {

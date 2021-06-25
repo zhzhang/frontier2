@@ -59,6 +59,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  DateTime: any
   Upload: any
 }
 
@@ -69,11 +70,11 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   ArticleVersion: { // root type
-    abstract?: string | null; // String
-    createdAt?: string | null; // String
+    abstract: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // String!
     ref?: string | null; // String
-    versionNumber?: number | null; // Int
+    versionNumber: number; // Int!
   }
   Decision: { // root type
     article?: NexusGenRootTypes['Article'] | null; // Article
@@ -124,7 +125,7 @@ export interface NexusGenObjects {
   User: { // root type
     email: string; // String!
     id: string; // String!
-    name?: string | null; // String
+    name: string; // String!
   }
   Venue: { // root type
     abbreviation?: string | null; // String
@@ -151,14 +152,14 @@ export interface NexusGenFieldTypes {
     id: string; // String!
     reviews: NexusGenRootTypes['Review'][]; // [Review!]!
     title: string; // String!
-    versions: Array<NexusGenRootTypes['ArticleVersion'] | null> | null; // [ArticleVersion]
+    versions: NexusGenRootTypes['ArticleVersion'][]; // [ArticleVersion!]!
   }
   ArticleVersion: { // field return type
-    abstract: string | null; // String
-    createdAt: string | null; // String
+    abstract: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // String!
     ref: string | null; // String
-    versionNumber: number | null; // Int
+    versionNumber: number; // Int!
   }
   Decision: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
@@ -242,7 +243,7 @@ export interface NexusGenFieldTypes {
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     email: string; // String!
     id: string; // String!
-    name: string | null; // String
+    name: string; // String!
   }
   Venue: { // field return type
     abbreviation: string | null; // String
@@ -263,7 +264,7 @@ export interface NexusGenFieldTypeNames {
   }
   ArticleVersion: { // field return type name
     abstract: 'String'
-    createdAt: 'String'
+    createdAt: 'DateTime'
     id: 'String'
     ref: 'String'
     versionNumber: 'Int'

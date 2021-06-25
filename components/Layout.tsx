@@ -1,12 +1,24 @@
-import Navigation from "./Navigation";
-import Container from "react-bootstrap/Container";
+import { makeStyles } from "@material-ui/core/styles";
 import katex from "katex";
 import "katex/dist/katex.min.css";
+import Navigation from "./Navigation";
 
-const Layout = (props) => {
+const useStyles = makeStyles((theme) => ({
+  padded: {
+    padding: theme.spacing(2),
+  },
+}));
+
+const Layout = ({ children, padded }) => {
+  const classes = useStyles();
   if (typeof window !== "undefined") {
     window.katex = katex;
   }
+  const body = padded ? (
+    <div className={classes.padded}>{children}</div>
+  ) : (
+    children
+  );
   return (
     <>
       <link
@@ -20,7 +32,7 @@ const Layout = (props) => {
       />
 
       <Navigation />
-      <div style={{ paddingTop: 55 }}>{props.children}</div>
+      {body}
     </>
   );
 };

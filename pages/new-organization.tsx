@@ -1,24 +1,26 @@
-import Accordion from "react-bootstrap/Accordion";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import { ChevronUp, ChevronDown } from "react-bootstrap-icons";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Image from "react-bootstrap/Image";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Router from "next/router";
-
-import { useState } from "react";
-import Layout from "../components/Layout";
-import { withApollo } from "../lib/apollo";
-import { uploadFile } from "../lib/firebase";
-import { UploadTypeEnum } from "../lib/types";
-import gql from "graphql-tag";
+import Editor from "@/components/editor/Editor";
+import Layout from "@/components/Layout";
+import { withApollo } from "@/lib/apollo";
 import { useMutation } from "@apollo/react-hooks";
+import Container from "@material-ui/core/Container";
+import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import gql from "graphql-tag";
+import { DropzoneArea } from "material-ui-dropzone";
+import Router from "next/router";
+import { useState } from "react";
 
-import Markdown from "../components/Markdown";
-import Error from "../components/Error";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(1),
+      width: "25ch",
+    },
+  },
+}));
 
 const CreateOrganizationMutation = gql`
   mutation CreateOrganizationQuery(
@@ -39,6 +41,7 @@ const CreateOrganizationMutation = gql`
 `;
 
 const NewOrganization = () => {
+  const classes = useStyles();
   const [name, setName] = useState("");
   const [abbreviation, setAbbreviation] = useState(null);
   const [description, setDescription] = useState(
@@ -55,132 +58,30 @@ const NewOrganization = () => {
 
   return (
     <Layout>
-      <Container fluid="lg" className="mt-4">
-        <h3>Create Organization</h3>
-        <Form>
-          <Row>
-            <Col>
-              <Form.Group controlId="name">
-                <Form.Control
-                  type="text"
-                  placeholder="Organization Name"
-                  value={name}
-                  onChange={({ target: { value } }) => setName(value)}
-                />
-              </Form.Group>
-            </Col>
-            <Col sm={4}>
-              <Form.Group controlId="abbreviation">
-                <Form.Control
-                  type="text"
-                  placeholder="Abbreviation"
-                  value={abbreviation}
-                  onChange={({ target: { value } }) => setAbbreviation(value)}
-                />
-                <Form.Text className="text-muted">
-                  Optional. Ten Character Maximum.
-                </Form.Text>
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Form.Group controlId="description">
-            <Row>
-              <Col>
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  value={description}
-                  onChange={({ target: { value } }) => {
-                    setDescription(value);
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Accordion activeKey={previewOpen ? "0" : null}>
-                  <Card>
-                    <Accordion.Toggle
-                      as={Card.Header}
-                      eventKey="0"
-                      onClick={() => setPreviewOpen(!previewOpen)}
-                    >
-                      Preview
-                      <span className="float-right">
-                        {previewOpen ? <ChevronUp /> : <ChevronDown />}
-                      </span>
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
-                      <div className="p-2">
-                        <Markdown>{description}</Markdown>
-                      </div>
-                    </Accordion.Collapse>
-                  </Card>
-                </Accordion>
-              </Col>
-            </Row>
-          </Form.Group>
-
-          <Form.Group controlId="logo">
-            <Row>
-              <Col>
-                <Form.File
-                  id="custom-file"
-                  label="Logo (Optional)"
-                  onChange={(e) => {
-                    setLogoFile(e.target.files[0]);
-                  }}
-                />
-              </Col>
-              <Col>
-                {logoFile !== null && logoFile !== undefined ? (
-                  <Image src={URL.createObjectURL(logoFile)} />
-                ) : null}
-              </Col>
-            </Row>
-          </Form.Group>
-
-          <Button
-            variant="primary"
-            onClick={() => {
-              if (!logoFile) {
-                createOrganization({
-                  variables: {
-                    name,
-                    description,
-                    abbreviation,
-                  },
-                });
-                return;
-              }
-              const { uploadTask, refPath } = uploadFile(
-                logoFile,
-                UploadTypeEnum.LOGO
-              );
-              uploadTask.on(
-                "state_changed",
-                (snapshot) => {},
-                (error) => {},
-                () => {
-                  createOrganization({
-                    variables: {
-                      name,
-                      description,
-                      abbreviation,
-                      logoRef: refPath,
-                    },
-                  });
-                }
-              );
-            }}
-          >
-            Create
-          </Button>
-        </Form>
-        {error ? (
-          <Error header="There was a problem creating your organization." />
-        ) : null}
+      <Container>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Typography variant="h4">Create Organization</Typography>
+          </Grid>
+          <Grid item xs={9}>
+            <FormControl fullWidth>
+              <TextField required label="Name"></TextField>
+            </FormControl>
+          </Grid>
+          <Grid item xs={3}>
+            <FormControl>
+              <TextField label="Abbreviation"></TextField>
+            </FormControl>
+          </Grid>
+          <Grid item xs={3}>
+            Logo
+            <DropzoneArea />
+          </Grid>
+          <Grid item xs={9}>
+            Description
+            <Editor />
+          </Grid>
+        </Grid>
       </Container>
     </Layout>
   );

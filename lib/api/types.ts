@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { enumType, objectType } from "nexus";
 import { RoleEnum } from "../../lib/types";
 import prisma from "../prisma";
@@ -10,80 +9,6 @@ export const Role = enumType({
     ADMIN: "ADMIN",
     ACTION_EDITOR: "ACTION_EDITOR",
     NONE: "NONE",
-  },
-});
-
-export const User = objectType({
-  name: "User",
-  definition(t) {
-    t.model.id();
-    t.model.name();
-    t.model.email();
-    t.list.field("articles", {
-      type: "Article",
-      resolve: (parent) => {
-        return parent.articles;
-      },
-    });
-  },
-});
-
-export const Article = objectType({
-  name: "Article",
-  definition(t) {
-    t.model.id();
-    t.model.title();
-    t.model.anonymous();
-    t.list.field("authors", {
-      type: "User",
-      resolve: (parent, _args, ctx) => {
-        if (parent.anonymous) {
-          return null;
-        }
-        return _.sortBy(parent.authors, ["authorNumber"]).map(
-          (authorship) => authorship.user
-        );
-      },
-    });
-    // t.model.versions({ pagination: false });
-    t.list.field("versions", {
-      type: "ArticleVersion",
-      resolve: async (parent) => {
-        return _.orderBy(
-          await prisma.articleVersion.findMany({
-            where: {
-              articleId: parent.id,
-            },
-          }),
-          ["versionNumber"],
-          ["desc"]
-        );
-      },
-    });
-    t.model.reviews({ filtering: { published: true } });
-    t.list.field("acceptedOrganizations", {
-      type: "Organization",
-      resolve: async (parent) => {
-        const acceptances = await prisma.decision.findMany({
-          where: { articleId: parent.id, decision: true },
-          include: {
-            organization: true,
-          },
-        });
-        return acceptances.map((decision) => decision.organization);
-      },
-    });
-  },
-});
-
-export const ArticleVersion = objectType({
-  name: "ArticleVersion",
-  definition(t) {
-    t.model.id();
-    t.string("ref");
-    t.string("abstract");
-    t.string("createdAt");
-    t.int("versionNumber");
   },
 });
 

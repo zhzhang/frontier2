@@ -1,31 +1,29 @@
-import { ApolloServer } from "apollo-server-micro";
-import { applyMiddleware } from "graphql-middleware";
-import { rule, shield } from "graphql-shield";
-import { nexusPrisma } from "nexus-plugin-prisma";
-import { GraphQLUpload, FileUpload } from "graphql-upload";
-import { asNexusMethod, makeSchema } from "nexus";
-import jwt_decode from "jwt-decode";
-import path from "path";
-import _ from "lodash";
-import prisma from "../../lib/prisma";
-import Query from "../../lib/api/queries";
-import Mutation from "../../lib/api/mutations";
+import Mutation from "@/lib/api/mutations";
+import Query from "@/lib/api/queries";
 import {
-  Role,
-  User,
-  Article,
-  ArticleVersion,
-  Venue,
+  Decision,
   Organization,
   Review,
-  ThreadMessage,
-  Decision,
+  Role,
   Submission,
-} from "../../lib/api/types";
+  ThreadMessage,
+  Venue,
+} from "@/lib/api/types";
+import Article from "@/lib/api/types/article";
+import ArticleVersion from "@/lib/api/types/article-version";
+import User from "@/lib/api/types/user";
+import { GraphQLDateTime } from "@/lib/graphql-iso-date";
+import prisma from "@/lib/prisma";
+import { ApolloServer } from "apollo-server-micro";
+import { rule, shield } from "graphql-shield";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
+import jwt_decode from "jwt-decode";
+import { asNexusMethod, makeSchema } from "nexus";
+import { nexusPrisma } from "nexus-plugin-prisma";
+import path from "path";
 
 export type Upload = Promise<FileUpload>;
 export const Upload = asNexusMethod(GraphQLUpload!, "upload");
-
 
 // Build the schema.
 const rules = {
@@ -47,6 +45,7 @@ export const schema = makeSchema({
     }),
   ],
   types: [
+    GraphQLDateTime,
     Query,
     Mutation,
     User,
