@@ -1,44 +1,72 @@
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import gql from "graphql-tag";
 import { useState } from "react";
 
-const SearchUsers = gql`
+const SearchUsersQuery = gql`
   query SearchUsers($query: String!) {
     searchUsers(query: $query) {
       id
       name
-      email
+      profilePictureUrl
     }
   }
 `;
 
-// TODO: prevent this from firing a search with "" on init.
-const UserTypeahead = ({ id, selected, onChangeSelection }) => {
+export default function UserTypeahead({ className = "", multiple = false }) {
+  const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const { loading, error, data } = useQuery(SearchUsers, {
+  const [selected, setSelected] = useState([]);
+  const { loading, error, data } = useQuery(SearchUsersQuery, {
     variables: { query },
   });
-  var options = [];
-  if (data !== undefined) {
-    options = data.searchUsers;
-  }
+  const options = data ? data.searchUsers : [];
+  console.log(data);
 
   return (
-    <AsyncTypeahead
-      id={id}
+    <Autocomplete
+      className={className}
+      id="user-typeahead"
       multiple
-      isLoading={loading}
+      value={selected}
+      onChange={(event, newSelected) => {
+        setSelected(newSelected);
+      }}
+      inputValue={query}
+      onInputChange={(event, newQuery) => {
+        setQuery(newQuery);
+      }}
+      open={open}
+      onOpen={() => {
+        setOpen(true);
+      }}
+      onClose={() => {
+        setOpen(false);
+      }}
+      getOptionSelected={(option, value) => option.name === value.name}
+      getOptionLabel={(option) => option.name}
       options={options}
-      onSearch={(query) => setQuery(query)}
-      filterBy={(entry) => !selected.some((s) => s.id === entry.id)}
-      minLength={2}
-      labelKey="name"
-      placeholder="Search users."
-      selected={selected}
-      onChange={onChangeSelection}
+      loading={loading}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Asynchronous"
+          variant="outlined"
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <>
+                {loading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null}
+                {params.InputProps.endAdornment}
+              </>
+            ),
+          }}
+        />
+      )}
     />
   );
-};
-
-export default UserTypeahead;
+}

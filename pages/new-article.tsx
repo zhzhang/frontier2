@@ -1,5 +1,6 @@
 import Editor from "@/components/editor/Editor";
 import Layout from "@/components/Layout";
+import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
 import { useMutation } from "@apollo/react-hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -75,29 +76,7 @@ const NewArticle = () => {
           <FormControl fullWidth>
             <TextField required variant="outlined" label="Title"></TextField>
           </FormControl>
-          <Autocomplete
-            className={classes.formField}
-            multiple
-            options={[]}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Authors"
-                variant="outlined"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <>
-                      {loading ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </>
-                  ),
-                }}
-              />
-            )}
-          />
+          <UserTypeahead className={classes.formField} />
           <div className={classes.formField}>
             <Editor placeholder={"Write an abstract."} />
           </div>

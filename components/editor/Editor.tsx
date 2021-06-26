@@ -1,18 +1,15 @@
 import DraftEditor from "@draft-js-plugins/editor";
+import Code from "@material-ui/icons/Code";
+import FormatBold from "@material-ui/icons/FormatBold";
+import FormatItalic from "@material-ui/icons/FormatItalic";
+import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
+import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 import FormatQuote from "@material-ui/icons/FormatQuote";
+import FormatUnderlined from "@material-ui/icons/FormatUnderlined";
+import Title from "@material-ui/icons/Title";
 import { EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css";
 import React, { useState } from "react";
-import {
-  CodeSlash,
-  ListOl,
-  ListUl,
-  TypeBold,
-  TypeH1,
-  TypeH2,
-  TypeItalic,
-  TypeUnderline,
-} from "react-bootstrap-icons";
 import styles from "./Editor.module.css";
 import createMathPlugin from "./math";
 
@@ -44,12 +41,11 @@ const StyleButton = ({ icon, style, active, onToggle }) => {
 };
 
 const BLOCK_TYPES = [
-  { icon: <TypeH1 />, style: "header-one" },
-  { icon: <TypeH2 />, style: "header-two" },
+  { icon: <Title />, style: "header-one" },
   { icon: <FormatQuote />, style: "blockquote" },
-  { icon: <ListUl />, style: "unordered-list-item" },
-  { icon: <ListOl />, style: "ordered-list-item" },
-  { icon: <CodeSlash />, style: "code-block" },
+  { icon: <FormatListBulleted />, style: "unordered-list-item" },
+  { icon: <FormatListNumbered />, style: "ordered-list-item" },
+  { icon: <Code />, style: "code-block" },
 ];
 
 const BlockStyleControls = (props) => {
@@ -76,9 +72,9 @@ const BlockStyleControls = (props) => {
 };
 
 const INLINE_STYLES = [
-  { icon: <TypeBold />, style: "BOLD" },
-  { icon: <TypeItalic />, style: "ITALIC" },
-  { icon: <TypeUnderline />, style: "UNDERLINE" },
+  { icon: <FormatBold />, style: "BOLD" },
+  { icon: <FormatItalic />, style: "ITALIC" },
+  { icon: <FormatUnderlined />, style: "UNDERLINE" },
 ];
 
 const InlineStyleControls = ({ onToggle, editorState }) => {
@@ -106,6 +102,7 @@ function Editor({ placeholder }) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const [borderStyle, setBorderStyle] = useState(styles.RichEditorBorder);
 
   const toggleBlockType = (blockType) =>
     setEditorState(RichUtils.toggleBlockType(editorState, blockType));
@@ -113,7 +110,7 @@ function Editor({ placeholder }) {
     setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
 
   return (
-    <div className={styles.RichEditorRoot}>
+    <div className={`${styles.RichEditorRoot} ${borderStyle}`}>
       <div className={styles.RichEditorControls}>
         <BlockStyleControls
           editorState={editorState}
@@ -129,6 +126,8 @@ function Editor({ placeholder }) {
         onChange={setEditorState}
         plugins={plugins}
         placeholder={placeholder}
+        onFocus={() => setBorderStyle(styles.RichEditorFocusBorder)}
+        onBlur={() => setBorderStyle(styles.RichEditorBorder)}
       />
     </div>
   );

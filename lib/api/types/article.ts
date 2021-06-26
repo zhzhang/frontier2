@@ -19,7 +19,7 @@ const Article = objectType({
         );
       },
     });
-    t.model.versions({ pagination: false, filtering: { published: true } });
+    t.model.versions({ pagination: false });
     t.model.reviews({ filtering: { published: true } });
     t.list.field("acceptedOrganizations", {
       type: "Organization",
