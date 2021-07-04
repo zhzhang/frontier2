@@ -1,9 +1,9 @@
 import DraftEditor from "@draft-js-plugins/editor";
+import FormatQuote from "@material-ui/icons/FormatQuote";
 import { EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css";
 import React, { useState } from "react";
 import {
-  BlockquoteLeft,
   CodeSlash,
   ListOl,
   ListUl,
@@ -46,7 +46,7 @@ const StyleButton = ({ icon, style, active, onToggle }) => {
 const BLOCK_TYPES = [
   { icon: <TypeH1 />, style: "header-one" },
   { icon: <TypeH2 />, style: "header-two" },
-  { icon: <BlockquoteLeft />, style: "blockquote" },
+  { icon: <FormatQuote />, style: "blockquote" },
   { icon: <ListUl />, style: "unordered-list-item" },
   { icon: <ListOl />, style: "ordered-list-item" },
   { icon: <CodeSlash />, style: "code-block" },

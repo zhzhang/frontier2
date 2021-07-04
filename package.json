@@ -7,6 +7,7 @@
     "build": "next build",
     "certs": "node scripts/fetch-secrets.js",
     "start": "next start",
+    "sync:dev": "npm run generate && npm run migrate:dev",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
     "generate:nexus": "ts-node -r tsconfig-paths/register --transpile-only -P nexus.tsconfig.json pages/api",
