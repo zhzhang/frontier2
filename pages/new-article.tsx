@@ -76,7 +76,7 @@ const NewArticle = () => {
           <FormControl fullWidth>
             <TextField required variant="outlined" label="Title"></TextField>
           </FormControl>
-          <UserTypeahead className={classes.formField} />
+          <UserTypeahead className={classes.formField} label="Authors" />
           <div className={classes.formField}>
             <Editor placeholder={"Write an abstract."} />
           </div>

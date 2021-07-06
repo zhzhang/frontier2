@@ -96,8 +96,8 @@ model Submission {
 model Organization {
   id           String                   @id @default(cuid())
   name         String
-  description  String                   @db.MediumText
   abbreviation String?
+  description  String                   @db.MediumText
   logoRef      String?
   memberships  OrganizationMembership[]
   reviews      Review[]
@@ -116,12 +116,13 @@ model OrganizationMembership {
 }
 
 model Venue {
-  id             String       @id @default(cuid())
-  name           String
-  abbreviation   String?
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  date           DateTime
+  id                 String       @id @default(cuid())
+  name               String
+  abbreviation       String?
+  description        String
+  organization       Organization @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  submissionDeadline DateTime
 }
 
 model Review {
