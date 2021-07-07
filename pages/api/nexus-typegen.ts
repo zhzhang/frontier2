@@ -126,7 +126,6 @@ export interface NexusGenObjects {
     email: string; // String!
     id: string; // String!
     name: string; // String!
-    profilePictureUrl?: string | null; // String
   }
   Venue: { // root type
     abbreviation?: string | null; // String
@@ -245,7 +244,6 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     id: string; // String!
     name: string; // String!
-    profilePictureUrl: string | null; // String
   }
   Venue: { // field return type
     abbreviation: string | null; // String
@@ -354,7 +352,6 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     id: 'String'
     name: 'String'
-    profilePictureUrl: 'String'
   }
   Venue: { // field return type name
     abbreviation: 'String'

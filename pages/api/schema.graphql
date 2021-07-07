@@ -142,7 +142,6 @@ type User {
   email: String!
   id: String!
   name: String!
-  profilePictureUrl: String
 }
 
 type Venue {
