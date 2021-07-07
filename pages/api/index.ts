@@ -1,17 +1,15 @@
 import Mutation from "@/lib/api/mutations";
 import Query from "@/lib/api/queries";
-import {
-  Decision,
-  Organization,
-  Review,
-  Role,
-  Submission,
-  ThreadMessage,
-  Venue,
-} from "@/lib/api/types";
 import Article from "@/lib/api/types/article";
 import ArticleVersion from "@/lib/api/types/article-version";
+import Decision from "@/lib/api/types/decision";
+import Organization from "@/lib/api/types/organization";
+import Review from "@/lib/api/types/review";
+import Role from "@/lib/api/types/role";
+import Submission from "@/lib/api/types/submission";
+import ThreadMessage from "@/lib/api/types/thread_message";
 import User from "@/lib/api/types/user";
+import Venue from "@/lib/api/types/venue";
 import { GraphQLDateTime } from "@/lib/graphql-iso-date";
 import prisma from "@/lib/prisma";
 import { ApolloServer } from "apollo-server-micro";

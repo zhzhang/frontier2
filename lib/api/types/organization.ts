@@ -1,27 +1,10 @@
-import { enumType, objectType } from "nexus";
-import { RoleEnum } from "../../lib/types";
-import prisma from "../prisma";
-import { isOrganizationAdmin } from "./utils";
+import { isOrganizationAdmin } from "@/lib/api/utils";
+import prisma from "@/lib/prisma";
+import { RoleEnum } from "@/lib/types";
+import { objectType } from "nexus";
+import Role from "./role";
 
-export const Role = enumType({
-  name: "Role",
-  members: {
-    ADMIN: "ADMIN",
-    ACTION_EDITOR: "ACTION_EDITOR",
-    NONE: "NONE",
-  },
-});
-
-export const Venue = objectType({
-  name: "Venue",
-  definition(t) {
-    t.string("id");
-    t.string("name");
-    t.string("abbreviation");
-  },
-});
-
-export const Organization = objectType({
+const Organization = objectType({
   name: "Organization",
   definition(t) {
     t.string("id");
@@ -138,82 +121,4 @@ export const Organization = objectType({
   },
 });
 
-export const Review = objectType({
-  name: "Review",
-  definition(t) {
-    t.string("id");
-    t.string("body");
-    t.string("highlights");
-    t.int("rating");
-    t.int("reviewNumber");
-    t.int("articleVersion");
-    t.boolean("published");
-    t.boolean("canAccess");
-    t.field("author", { type: "User" });
-    t.field("submission", { type: "Submission" });
-    t.field("organization", { type: "Organization" });
-    t.list.field("threadMessages", {
-      type: "ThreadMessage",
-    });
-  },
-});
-
-export const ThreadMessage = objectType({
-  name: "ThreadMessage",
-  definition(t) {
-    t.string("id");
-    t.string("body");
-    t.string("highlights");
-    t.int("articleVersion");
-    t.field("author", { type: "User" });
-    t.string("createdAt");
-  },
-});
-
-export const Decision = objectType({
-  name: "Decision",
-  definition(t) {
-    t.string("id");
-    t.string("body");
-    t.boolean("decision");
-    t.field("author", { type: "User" });
-    t.field("article", { type: "Article" });
-    t.field("organization", { type: "Organization" });
-    t.list.field("citedReviews", { type: "Review" });
-  },
-});
-
-export const Submission = objectType({
-  name: "Submission",
-  definition(t) {
-    t.string("id");
-    t.string("organizationId");
-    t.string("articleId");
-    t.field("article", {
-      type: "Article",
-      resolve: (parent) => {
-        return parent.article;
-      },
-    });
-    t.field("organization", { type: "Organization" });
-    t.field("owner", {
-      type: "User",
-      resolve: async (parent) => {
-        if (parent.ownerId) {
-          return await prisma.user.findUnique({
-            where: {
-              id: parent.ownerId,
-            },
-          });
-        }
-        return null;
-      },
-    });
-    t.list.field("requestedReviewers", {
-      type: "User",
-      resolve: (parent) => {
-        return parent.requestedReviewers;
-      },
-    });
-  },
-});
+export default Organization;
