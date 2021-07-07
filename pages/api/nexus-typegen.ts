@@ -126,11 +126,16 @@ export interface NexusGenObjects {
     email: string; // String!
     id: string; // String!
     name: string; // String!
+    profilePictureUrl?: string | null; // String
   }
   Venue: { // root type
     abbreviation?: string | null; // String
-    id?: string | null; // String
-    name?: string | null; // String
+    description: string; // String!
+    id: string; // String!
+    logoRef?: string | null; // String
+    name: string; // String!
+    submissionDeadline?: NexusGenScalars['DateTime'] | null; // DateTime
+    venueDate?: NexusGenScalars['DateTime'] | null; // DateTime
   }
 }
 
@@ -204,7 +209,9 @@ export interface NexusGenFieldTypes {
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
     searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    searchOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    searchVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     user: NexusGenRootTypes['User'] | null; // User
     userArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
   }
@@ -244,11 +251,17 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     id: string; // String!
     name: string; // String!
+    profilePictureUrl: string | null; // String
   }
   Venue: { // field return type
     abbreviation: string | null; // String
-    id: string | null; // String
-    name: string | null; // String
+    description: string; // String!
+    id: string; // String!
+    logoRef: string | null; // String
+    name: string; // String!
+    organization: NexusGenRootTypes['Organization']; // Organization!
+    submissionDeadline: NexusGenScalars['DateTime'] | null; // DateTime
+    venueDate: NexusGenScalars['DateTime'] | null; // DateTime
   }
 }
 
@@ -312,7 +325,9 @@ export interface NexusGenFieldTypeNames {
     reviewerAssignedSubmissions: 'Submission'
     reviews: 'Review'
     searchEditors: 'User'
+    searchOrganizations: 'Organization'
     searchUsers: 'User'
+    searchVenues: 'Venue'
     user: 'User'
     userArticles: 'Article'
   }
@@ -352,11 +367,17 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     id: 'String'
     name: 'String'
+    profilePictureUrl: 'String'
   }
   Venue: { // field return type name
     abbreviation: 'String'
+    description: 'String'
     id: 'String'
+    logoRef: 'String'
     name: 'String'
+    organization: 'Organization'
+    submissionDeadline: 'DateTime'
+    venueDate: 'DateTime'
   }
 }
 
@@ -439,7 +460,13 @@ export interface NexusGenArgTypes {
       organizationId: string; // String!
       query?: string | null; // String
     }
+    searchOrganizations: { // args
+      query?: string | null; // String
+    }
     searchUsers: { // args
+      query?: string | null; // String
+    }
+    searchVenues: { // args
       query?: string | null; // String
     }
     user: { // args

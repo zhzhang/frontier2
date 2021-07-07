@@ -218,6 +218,45 @@ export default objectType({
         return memberships.map((membership) => membership.user);
       },
     });
+    t.list.field("searchOrganizations", {
+      type: "Organization",
+      args: { query: stringArg() },
+      resolve: async (_, { query }, ctx) => {
+        return await ctx.prisma.organization.findMany({
+          where: {
+            OR: {
+              name: {
+                contains: query,
+              },
+              abbreviation: {
+                contains: query,
+              },
+            },
+          },
+        });
+      },
+    });
+    t.list.field("searchVenues", {
+      type: "Venue",
+      args: { query: stringArg() },
+      resolve: async (_, { query }, ctx) => {
+        return await ctx.prisma.venue.findMany({
+          where: {
+            OR: {
+              name: {
+                contains: query,
+              },
+              abbreviation: {
+                contains: query,
+              },
+            },
+            submissionDeadline: {
+              gte: new Date(),
+            },
+          },
+        });
+      },
+    });
     t.list.field("reviewerAssignedSubmissions", {
       type: "Submission",
       resolve: async (_, _args, ctx) => {

@@ -232,10 +232,12 @@ async function main() {
 
   const venue = await prisma.venue.create({
     data: {
-      name: "57th Annual Meeting of the Association for Computational Linguistics",
-      abbreviation: "ACL 2019",
+      name: "Annual Meeting of the Association for Computational Linguistics",
+      abbreviation: "ACL",
+      description: "SubmissionTargetTypeahed",
       organizationId: organization.id,
-      date: "2019-06-05T10:00:00.000Z",
+      submissionDeadline: "2022-06-05T10:00:00.000Z",
+      venueDate: "2022-06-10T10:00:00.000Z",
     },
   });
 }

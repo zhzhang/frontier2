@@ -85,7 +85,9 @@ type Query {
   reviewerAssignedSubmissions: [Submission]
   reviews(articleId: String!): [Review]
   searchEditors(organizationId: String!, query: String): [User]
+  searchOrganizations(query: String): [Organization]
   searchUsers(query: String): [User]
+  searchVenues(query: String): [Venue]
   user(id: String!): User
   userArticles(id: String!): [Article]
 }
@@ -142,10 +144,16 @@ type User {
   email: String!
   id: String!
   name: String!
+  profilePictureUrl: String
 }
 
 type Venue {
   abbreviation: String
-  id: String
-  name: String
+  description: String!
+  id: String!
+  logoRef: String
+  name: String!
+  organization: Organization!
+  submissionDeadline: DateTime
+  venueDate: DateTime
 }

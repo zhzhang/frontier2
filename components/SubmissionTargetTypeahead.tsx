@@ -5,17 +5,25 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import gql from "graphql-tag";
 import { useState } from "react";
 
-const SearchUsersQuery = gql`
-  query SearchUsers($query: String!) {
-    searchUsers(query: $query) {
+const SearchQuery = gql`
+  query SearchSubmissionTargets($query: String!) {
+    searchOrganizations(query: $query) {
       id
       name
-      profilePictureUrl
+      abbreviation
+      logoRef
+    }
+    searchVenues(query: $query) {
+      id
+      name
+      abbreviation
+      logoRef
+      venueDate
     }
   }
 `;
 
-export default function UserTypeahead({
+export default function SubmissionTargetTypeahead({
   label = "Search users...",
   className = "",
   multiple = false,
@@ -23,10 +31,21 @@ export default function UserTypeahead({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState([]);
-  const { loading, error, data } = useQuery(SearchUsersQuery, {
+  const { loading, error, data } = useQuery(SearchQuery, {
     variables: { query },
   });
-  const options = data ? data.searchUsers : [];
+  const options = data
+    ? data.searchOrganizations
+        .map((org) => {
+          return { ...org, type: "Organization" };
+        })
+        .concat(
+          data.searchVenues.map((org) => {
+            return { ...org, type: "Venue" };
+          })
+        )
+    : [];
+  console.log(options);
 
   return (
     <Autocomplete
@@ -34,6 +53,7 @@ export default function UserTypeahead({
       id="user-typeahead"
       multiple={multiple}
       value={selected}
+      groupBy={(option) => option.type}
       onChange={(event, newSelected) => {
         setSelected(newSelected);
       }}

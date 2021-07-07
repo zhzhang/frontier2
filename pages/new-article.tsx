@@ -1,15 +1,14 @@
 import Editor from "@/components/editor/Editor";
 import Layout from "@/components/Layout";
+import SubmissionTargetTypeahed from "@/components/SubmissionTargetTypeahead";
 import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
 import { useMutation } from "@apollo/react-hooks";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import gql from "graphql-tag";
 import { DropzoneArea } from "material-ui-dropzone";
 import { useRouter } from "next/router";
@@ -80,28 +79,9 @@ const NewArticle = () => {
           <div className={classes.formField}>
             <Editor placeholder={"Write an abstract."} />
           </div>
-          <Autocomplete
+          <SubmissionTargetTypeahed
             className={classes.formField}
-            multiple
-            options={[]}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Submit to..."
-                variant="outlined"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <>
-                      {loading ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </>
-                  ),
-                }}
-              />
-            )}
+            label="Submit to..."
           />
         </Grid>
         <Grid item xs={7}>
