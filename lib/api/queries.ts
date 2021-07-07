@@ -222,6 +222,9 @@ export default objectType({
       type: "Organization",
       args: { query: stringArg() },
       resolve: async (_, { query }, ctx) => {
+        if (query === "") {
+          return [];
+        }
         return await ctx.prisma.organization.findMany({
           where: {
             OR: {
@@ -240,6 +243,9 @@ export default objectType({
       type: "Venue",
       args: { query: stringArg() },
       resolve: async (_, { query }, ctx) => {
+        if (query === "") {
+          return [];
+        }
         return await ctx.prisma.venue.findMany({
           where: {
             OR: {

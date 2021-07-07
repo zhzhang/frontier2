@@ -25,12 +25,10 @@ const SearchQuery = gql`
 
 export default function SubmissionTargetTypeahead({
   label = "Search users...",
-  className = "",
-  multiple = false,
+  ...rest
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState([]);
   const { loading, error, data } = useQuery(SearchQuery, {
     variables: { query },
   });
@@ -45,18 +43,12 @@ export default function SubmissionTargetTypeahead({
           })
         )
     : [];
-  console.log(options);
 
   return (
     <Autocomplete
-      className={className}
       id="user-typeahead"
-      multiple={multiple}
-      value={selected}
+      {...rest}
       groupBy={(option) => option.type}
-      onChange={(event, newSelected) => {
-        setSelected(newSelected);
-      }}
       inputValue={query}
       onInputChange={(event, newQuery) => {
         setQuery(newQuery);

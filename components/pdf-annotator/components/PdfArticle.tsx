@@ -1,23 +1,21 @@
-import React, { useEffect, useRef } from "react";
-import ReactDom from "react-dom";
+import _ from "lodash";
+import debounce from "lodash.debounce";
 import * as pdfjsWeb from "pdfjs-dist/web/pdf_viewer";
 import "pdfjs-dist/web/pdf_viewer.css";
-import styles from "./PdfAnnotator.module.css";
-import {
-  getWindow,
-  getPageFromRange,
-  findOrCreateContainerLayer,
-} from "../lib/pdfjs-dom";
-import getClientRects from "../lib/get-client-rects";
-import getBoundingRect from "../lib/get-bounding-rect";
+import React from "react";
+import ReactDom from "react-dom";
 import { scaledToViewport, viewportToScaled } from "../lib/coordinates";
-import debounce from "lodash.debounce";
-import shortid from "shortid";
-
+import getBoundingRect from "../lib/get-bounding-rect";
+import getClientRects from "../lib/get-client-rects";
+import {
+  findOrCreateContainerLayer,
+  getPageFromRange,
+  getWindow,
+} from "../lib/pdfjs-dom";
+import Highlight from "./Highlight";
+import styles from "./PdfAnnotator.module.css";
 import Tip from "./Tip";
 import TipContainer from "./TipContainer";
-import Highlight from "./Highlight";
-import _ from "lodash";
 
 export default class PdfArticle extends React.Component {
   viewer: null;
@@ -71,7 +69,9 @@ export default class PdfArticle extends React.Component {
     if (onRenderedCallback) {
       onRenderedCallback(this);
     }
-    setScrollTo(() => this.scrollTo);
+    if (setScrollTo) {
+      setScrollTo(() => this.scrollTo);
+    }
     this.renderHighlights();
   };
 

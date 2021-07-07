@@ -1,8 +1,8 @@
-.PdfAnnotator {
+/* .PdfAnnotator {
   position: relative;
   overflow: auto;
   height: calc(100vh - 55px);
-}
+} */
 
 .PdfAnnotatorHighlightLayer {
   position: absolute;

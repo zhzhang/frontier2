@@ -15,11 +15,7 @@ const SearchUsersQuery = gql`
   }
 `;
 
-export default function UserTypeahead({
-  label = "Search users...",
-  className = "",
-  multiple = false,
-}) {
+export default function UserTypeahead({ label = "Search users...", ...rest }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState([]);
@@ -30,13 +26,8 @@ export default function UserTypeahead({
 
   return (
     <Autocomplete
-      className={className}
+      {...rest}
       id="user-typeahead"
-      multiple={multiple}
-      value={selected}
-      onChange={(event, newSelected) => {
-        setSelected(newSelected);
-      }}
       inputValue={query}
       onInputChange={(event, newQuery) => {
         setQuery(newQuery);

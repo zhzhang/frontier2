@@ -7,11 +7,19 @@ import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 import FormatQuote from "@material-ui/icons/FormatQuote";
 import FormatUnderlined from "@material-ui/icons/FormatUnderlined";
 import Title from "@material-ui/icons/Title";
-import { EditorState, RichUtils } from "draft-js";
+import { convertToRaw, EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css";
 import React, { useState } from "react";
 import styles from "./Editor.module.css";
 import createMathPlugin from "./math";
+
+export function newEditorState(): EditorState {
+  return EditorState.createEmpty();
+}
+
+export function serialize(editorState: EditorState): String {
+  return JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+}
 
 const styleMap = {
   CODE: {
@@ -98,10 +106,7 @@ const InlineStyleControls = ({ onToggle, editorState }) => {
 const mathjaxPlugin = createMathPlugin();
 const plugins = [mathjaxPlugin];
 
-function Editor({ placeholder }) {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+function Editor({ placeholder, onChange, editorState }) {
   const [borderStyle, setBorderStyle] = useState(styles.RichEditorBorder);
 
   const toggleBlockType = (blockType) =>
@@ -123,7 +128,7 @@ function Editor({ placeholder }) {
       </div>
       <DraftEditor
         editorState={editorState}
-        onChange={setEditorState}
+        onChange={onChange}
         plugins={plugins}
         placeholder={placeholder}
         onFocus={() => setBorderStyle(styles.RichEditorFocusBorder)}
