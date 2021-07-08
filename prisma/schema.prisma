@@ -41,7 +41,7 @@ model Relation {
 
 model Article {
   id          String           @id @default(cuid())
-  title       String           @unique
+  title       String
   authors     ArticleAuthor[]
   reviews     Review[]
   versions    ArticleVersion[]

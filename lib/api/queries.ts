@@ -227,14 +227,18 @@ export default objectType({
         }
         return await ctx.prisma.organization.findMany({
           where: {
-            OR: {
-              name: {
-                contains: query,
+            OR: [
+              {
+                name: {
+                  contains: query,
+                },
               },
-              abbreviation: {
-                contains: query,
+              {
+                abbreviation: {
+                  contains: query,
+                },
               },
-            },
+            ],
           },
         });
       },
@@ -248,16 +252,22 @@ export default objectType({
         }
         return await ctx.prisma.venue.findMany({
           where: {
-            OR: {
-              name: {
-                contains: query,
+            OR: [
+              {
+                name: {
+                  contains: query,
+                },
               },
-              abbreviation: {
-                contains: query,
+              {
+                abbreviation: {
+                  contains: query,
+                },
               },
-            },
-            submissionDeadline: {
-              gte: new Date(),
+            ],
+            AND: {
+              submissionDeadline: {
+                gte: new Date(),
+              },
             },
           },
         });

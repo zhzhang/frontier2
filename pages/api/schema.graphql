@@ -47,7 +47,7 @@ type Decision {
 type Mutation {
   assignReviewers(reviewerIds: [String!]!, submissionId: String!): Submission
   assignSubmissionOwner(submissionId: String!, userId: String!): Submission
-  createArticle(abstract: String!, authorIds: [String!]!, organizationId: String, ref: String!, title: String!): Article
+  createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, organizationId: String, ref: String!, title: String!): Article
   createOrganization(abbreviation: String, description: String!, logoRef: String, name: String!): Organization
   createReview(articleId: String!, submissionId: String): Review
   updateOrganization(abbreviation: String, description: String, id: String!, logoRef: String, name: String): Organization

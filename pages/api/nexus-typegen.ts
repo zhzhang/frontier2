@@ -402,6 +402,7 @@ export interface NexusGenArgTypes {
     }
     createArticle: { // args
       abstract: string; // String!
+      anonymous: boolean; // Boolean!
       authorIds: string[]; // [String!]!
       organizationId?: string | null; // String
       ref: string; // String!

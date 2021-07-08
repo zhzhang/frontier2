@@ -1,20 +1,15 @@
 import {
-  asNexusMethod,
   arg,
-  nonNull,
+  booleanArg,
+  intArg,
   list,
+  nonNull,
   nullable,
-  enumType,
   objectType,
   stringArg,
-  intArg,
-  booleanArg,
 } from "nexus";
-import prisma from "../prisma";
-import _ from "lodash";
-import AWS from "aws-sdk";
-import { RoleEnum } from "../types";
 import stream from "stream";
+import { RoleEnum } from "../types";
 import { isOrganizationAdmin } from "./utils";
 
 function s3UploadFromStream(bucket, key) {
@@ -51,26 +46,34 @@ export default objectType({
         abstract: nonNull(stringArg()),
         authorIds: nonNull(list(nonNull(stringArg()))),
         ref: nonNull(stringArg()),
+        anonymous: nonNull(booleanArg()),
         organizationId: nullable(stringArg()),
       },
       resolve: async (
         _,
-        { title, abstract, authorIds, ref, organizationId },
+        { title, abstract, authorIds, anonymous, ref, organizationId },
         ctx
       ) => {
+        let authorCreationArgs = [];
+        for (const [index, authorId] of authorIds.entries()) {
+          authorCreationArgs.push({
+            userId: authorId,
+            authorNumber: index + 1,
+          });
+        }
         const input = {
           data: {
             title: title,
             authors: {
-              connect: authorIds.map((id) => ({
-                id: id,
-              })),
+              create: authorCreationArgs,
             },
+            anonymous,
             versions: {
               create: [
                 {
                   abstract: abstract,
                   ref: ref,
+                  versionNumber: 0,
                 },
               ],
             },

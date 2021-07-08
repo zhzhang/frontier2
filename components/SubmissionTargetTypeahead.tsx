@@ -32,6 +32,7 @@ export default function SubmissionTargetTypeahead({
   const { loading, error, data } = useQuery(SearchQuery, {
     variables: { query },
   });
+  console.log(data);
   const options = data
     ? data.searchOrganizations
         .map((org) => {
@@ -43,6 +44,9 @@ export default function SubmissionTargetTypeahead({
           })
         )
     : [];
+  console.log(options);
+  console.log(loading);
+  console.log("----------");
 
   return (
     <Autocomplete
