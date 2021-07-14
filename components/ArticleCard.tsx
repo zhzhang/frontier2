@@ -2,8 +2,9 @@ import Markdown from "@/components/Markdown";
 import OrganizationBadge from "@/components/OrganizationBadge";
 import UserBadge from "@/components/UserBadge";
 import { withApollo } from "@/lib/apollo";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import { useState } from "react";
-import Card from "react-bootstrap/Card";
 
 const ArticleCard = ({ article }) => {
   const { id, title, versions, authors, acceptedOrganizations } = article;
@@ -11,7 +12,7 @@ const ArticleCard = ({ article }) => {
   const [hover, setHover] = useState(false);
   return (
     <Card>
-      <Card.Body>
+      <CardContent>
         <a href={`/article/${id}`}>{title}</a>
         <div>
           Authors:{" "}
@@ -28,7 +29,7 @@ const ArticleCard = ({ article }) => {
           ))}
         </div>
         <Markdown>{abstract}</Markdown>
-      </Card.Body>
+      </CardContent>
     </Card>
   );
 };

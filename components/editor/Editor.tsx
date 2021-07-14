@@ -110,9 +110,10 @@ function Editor({ placeholder, onChange, editorState }) {
   const [borderStyle, setBorderStyle] = useState(styles.RichEditorBorder);
 
   const toggleBlockType = (blockType) =>
-    setEditorState(RichUtils.toggleBlockType(editorState, blockType));
+    onChange(RichUtils.toggleBlockType(editorState, blockType));
   const toggleInlineStyle = (inlineStyle) =>
-    setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
+    onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
+  console.log(serialize(editorState));
 
   return (
     <div className={`${styles.RichEditorRoot} ${borderStyle}`}>
