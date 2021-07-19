@@ -103,7 +103,7 @@ const NewArticle = () => {
   };
 
   return (
-    <Layout padded>
+    <Layout>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant="h4">New Article</Typography>

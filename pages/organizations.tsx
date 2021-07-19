@@ -1,10 +1,10 @@
+import ErrorPage from "@/components/ErrorPage";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import OrganizationCard from "@/components/OrganizationCard";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import Container from "react-bootstrap/Container";
 
 const OrganizationQuery = gql`
   query OrganizationQuery {
@@ -28,18 +28,20 @@ function Organizations() {
     );
   }
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <ErrorPage>
+        Unable to load organizations, please try again later.
+      </ErrorPage>
+    );
   }
 
   return (
     <Layout>
-      <Container fluid>
-        {data.browseOrganizations.map((organization) => (
-          <div className="mt-3">
-            <OrganizationCard organization={organization} />
-          </div>
-        ))}
-      </Container>
+      {data.browseOrganizations.map((organization) => (
+        <div className="mt-3">
+          <OrganizationCard organization={organization} />
+        </div>
+      ))}
     </Layout>
   );
 }

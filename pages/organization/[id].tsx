@@ -1,19 +1,18 @@
-import Error from "@/components/Error";
+import ErrorPage from "@/components/ErrorPage";
+import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import ArticlesPane from "@/components/organization/ArticlesPane";
 import InfoPane from "@/components/organization/InfoPane";
+import VenuesPane from "@/components/organization/VenuesPane";
 import { withApollo } from "@/lib/apollo";
-import { useRef } from "@/lib/firebase";
 import { useQuery } from "@apollo/react-hooks";
+import { makeStyles } from "@material-ui/core/styles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Image from "react-bootstrap/Image";
-import Row from "react-bootstrap/Row";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
 import "react-datepicker/dist/react-datepicker.css";
 
 const OrganizationQuery = gql`
@@ -28,15 +27,18 @@ const OrganizationQuery = gql`
   }
 `;
 
-function Header({ name, logoRef }) {
-  const url = useRef(logoRef);
-  return (
-    <>
-      <Image src={url} className="organization-logo" thumbnail />
-      <h1>{name}</h1>
-    </>
-  );
-}
+const useStyles = makeStyles((theme) => ({
+  header: {
+    display: "flex",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  logo: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+}));
 
 function Organization() {
   const router = useRouter();
@@ -45,50 +47,67 @@ function Organization() {
   const { loading, error, data } = useQuery(OrganizationQuery, {
     variables: { id },
   });
+  const classes = useStyles();
 
   if (loading) {
     return <Spinner animation="border" />;
   }
   if (error) {
-    return (
-      <div className="m-4">
-        <Error header={"Error loading this organization."} />
-      </div>
-    );
+    return <ErrorPage>Error loading this organization.</ErrorPage>;
   }
 
   const { name, description, role, logoRef } = data.organization;
+  const getTab = () => {
+    switch (view) {
+      case "venues":
+        return {
+          body: <VenuesPane id={id} />,
+          tab: 1,
+        };
+      case "accepted":
+        return {
+          body: <ArticlesPane id={id} />,
+          tab: 2,
+        };
+      default:
+        return {
+          body: <InfoPane id={id} description={description} role={role} />,
+          tab: 0,
+        };
+    }
+  };
+  const { tab, body } = getTab();
 
   return (
     <Layout>
-      <Container className="mt-4" fluid>
-        <Row className="mb-3">
-          <Col>
-            <Header name={name} logoRef={logoRef} />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Tabs
-              activeKey={view}
-              onSelect={(newTabKey) => {
-                router.query.view = newTabKey;
-                router.push(router, undefined, { shallow: true });
-              }}
-            >
-              <Tab eventKey="info" title="Info">
-                <InfoPane id={id} description={description} role={role} />
-              </Tab>
-              {/* <Tab eventKey="venues" title="Venues">
-                <VenuesPane id={id} />
-              </Tab> */}
-              <Tab eventKey="accepted" title="Accepted Articles">
-                <ArticlesPane id={id} />
-              </Tab>
-            </Tabs>
-          </Col>
-        </Row>
-      </Container>
+      <div className={classes.header}>
+        <FirebaseAvatar
+          storeRef={logoRef}
+          className={classes.logo}
+          variant="rounded"
+        />
+        <Typography variant="h4">{name}</Typography>
+      </div>
+      <Tabs
+        value={tab}
+        indicatorColor="primary"
+        textColor="primary"
+        onChange={(event, newIndex) => {
+          let newTabKey = "info";
+          if (newIndex === 1) {
+            newTabKey = "venues";
+          } else if (newIndex === 2) {
+            newTabKey = "accepted";
+          }
+          router.query.view = newTabKey;
+          router.push(router, undefined, { shallow: true });
+        }}
+      >
+        <Tab label="info" />
+        <Tab label="venues" />
+        <Tab label="accepted" />
+      </Tabs>
+      {body}
     </Layout>
   );
 }

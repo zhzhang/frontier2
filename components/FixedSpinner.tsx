@@ -1,13 +1,12 @@
-import Spinner from "react-bootstrap/Spinner";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function CenteredSpinner(props) {
   return (
-    <Spinner
-      animation="border"
+    <CircularProgress
       style={{
         position: "absolute",
-        top: "calc(50% - 16px)",
-        left: "calc(50% - 16px)",
+        top: "calc(50% - 25px)",
+        left: "calc(50% - 25px)",
       }}
       {...props}
     />

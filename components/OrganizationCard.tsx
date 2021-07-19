@@ -1,41 +1,48 @@
-import Markdown from "@/components/Markdown";
+import Editor, { deserialize } from "@/components/editor/Editor";
+import FirebaseAvatar from "@/components/FirebaseAvatar";
 import { withApollo } from "@/lib/apollo";
-import { useRef } from "@/lib/firebase";
-import Link from "next/link";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
-import Row from "react-bootstrap/Row";
+import Avatar from "@material-ui/core/Avatar";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Link from "@material-ui/core/Link";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { useState } from "react";
+
+const useStyles = makeStyles((theme) => ({
+  header: {
+    display: "flex",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  logo: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+}));
 
 const OrganizationCard = ({ organization }) => {
   const { id, name, description, logoRef } = organization;
-  const url =
-    logoRef !== null && logoRef !== undefined ? useRef(logoRef) : null;
+  const [desc, setDescription] = useState(deserialize(description));
+  const classes = useStyles();
   return (
     <Card>
-      <Card.Body>
-        <Row style={{ marginBottom: 10 }}>
-          <Col>
-            {url === null ? (
-              <Image
-                src="holder.js/171x180"
-                className="organization-logo"
-                rounded
-              />
-            ) : (
-              <Image src={url} className="organization-logo" thumbnail />
-            )}
-            <Link href="/organization/[id]" as={`/organization/${id}`}>
-              <h2>{name}</h2>
+      <CardContent>
+        <div className={classes.header}>
+          {logoRef === null ? (
+            <Avatar variant="rounded">T</Avatar>
+          ) : (
+            <FirebaseAvatar storeRef={logoRef} variant="rounded" />
+          )}
+          <Typography variant="h5">
+            <Link href={`/organization/${id}`} color="inherit">
+              {name}
             </Link>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Markdown>{description}</Markdown>
-          </Col>
-        </Row>
-      </Card.Body>
+          </Typography>
+        </div>
+        <Editor editorState={desc} onChange={setDescription} />
+      </CardContent>
     </Card>
   );
 };

@@ -59,7 +59,7 @@ const createMathPlugin = (config = {}) => {
       store.getReadOnly = getReadOnly;
       store.setReadOnly = setReadOnly;
       store.getEditorRef = getEditorRef;
-      store.completion = store.completion(getEditorState());
+      // store.completion = store.completion(getEditorState());
       // store.completion.mostUsedTeXCommands =
       //   getInitialMostUsedTeXCmds(getEditorState())
     },

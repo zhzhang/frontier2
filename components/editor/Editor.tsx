@@ -7,7 +7,7 @@ import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 import FormatQuote from "@material-ui/icons/FormatQuote";
 import FormatUnderlined from "@material-ui/icons/FormatUnderlined";
 import Title from "@material-ui/icons/Title";
-import { convertToRaw, EditorState, RichUtils } from "draft-js";
+import { convertFromRaw, convertToRaw, EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css";
 import React, { useState } from "react";
 import styles from "./Editor.module.css";
@@ -19,6 +19,10 @@ export function newEditorState(): EditorState {
 
 export function serialize(editorState: EditorState): String {
   return JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+}
+
+export function deserialize(serialized: string): EditorState {
+  return EditorState.createWithContent(convertFromRaw(JSON.parse(serialized)));
 }
 
 const styleMap = {
@@ -106,7 +110,7 @@ const InlineStyleControls = ({ onToggle, editorState }) => {
 const mathjaxPlugin = createMathPlugin();
 const plugins = [mathjaxPlugin];
 
-function Editor({ placeholder, onChange, editorState }) {
+function Editor({ onChange, editorState, placeholder = "", editing = false }) {
   const [borderStyle, setBorderStyle] = useState(styles.RichEditorBorder);
 
   const toggleBlockType = (blockType) =>
@@ -114,22 +118,26 @@ function Editor({ placeholder, onChange, editorState }) {
   const toggleInlineStyle = (inlineStyle) =>
     onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
   console.log(serialize(editorState));
+  const controls = () => (
+    <div className={styles.RichEditorControls}>
+      <BlockStyleControls
+        editorState={editorState}
+        onToggle={toggleBlockType}
+      />
+      <InlineStyleControls
+        editorState={editorState}
+        onToggle={toggleInlineStyle}
+      />
+    </div>
+  );
 
   return (
     <div className={`${styles.RichEditorRoot} ${borderStyle}`}>
-      <div className={styles.RichEditorControls}>
-        <BlockStyleControls
-          editorState={editorState}
-          onToggle={toggleBlockType}
-        />
-        <InlineStyleControls
-          editorState={editorState}
-          onToggle={toggleInlineStyle}
-        />
-      </div>
+      {editing && controls}
       <DraftEditor
         editorState={editorState}
         onChange={onChange}
+        readOnly={!editing}
         plugins={plugins}
         placeholder={placeholder}
         onFocus={() => setBorderStyle(styles.RichEditorFocusBorder)}

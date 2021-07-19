@@ -55,8 +55,7 @@ const NewOrganization = () => {
   const [name, setName] = useState("");
   const [abbreviation, setAbbreviation] = useState(null);
   const [description, setDescription] = useState(newEditorState());
-  const [logoFile, setLogoFile] = useState();
-  const [logoUrl, setLogoUrl] = useState();
+  const [logoUrl, setLogoUrl] = useState("");
   const [createOrganization, { loading, error, data }] = useMutation(
     CreateOrganizationMutation
   );
@@ -91,7 +90,7 @@ const NewOrganization = () => {
   };
 
   return (
-    <Layout padded>
+    <Layout>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant="h4">Create Organization</Typography>
@@ -116,7 +115,7 @@ const NewOrganization = () => {
           />
         </Grid>
         <Grid item xs={3}>
-          {logoFile ? (
+          {logoUrl ? (
             <ReactCrop
               src={logoUrl}
               crop={crop}
@@ -126,13 +125,7 @@ const NewOrganization = () => {
           ) : (
             <Dropzone
               onDrop={(acceptedFiles) => {
-                setLogoFile(acceptedFiles[0]);
                 setLogoUrl(URL.createObjectURL(acceptedFiles[0]));
-                // const reader = new FileReader();
-                // reader.readAsArrayBuffer(acceptedFiles[0]);
-                // reader.onload = () => {
-                //   setLogoFile(reader.result);
-                // };
               }}
               accept={["image/png", "image/jpeg"]}
             >
@@ -140,7 +133,7 @@ const NewOrganization = () => {
                 <div {...getRootProps()} className={classes.dropzone}>
                   <input {...getInputProps()} />
                   <p>
-                    Drag and drop a PDF file here, or click to select PDF file.
+                    Drag and drop a logo image here, or click to select file.
                   </p>
                 </div>
               )}
@@ -149,6 +142,7 @@ const NewOrganization = () => {
         </Grid>
         <Grid item xs={9}>
           <Editor
+            editing
             editorState={description}
             onChange={setDescription}
             placeholder="Write a description for your organization."

@@ -142,7 +142,7 @@ function mergeMacros(teXCmds, macros) {
   );
 }
 
-export default (status, macros) => (editorState) => ({
+const initCompletion = (status, macros) => (editorState) => ({
   status,
   teXCommandsAndMacros:
     status !== "none" ? mergeMacros(teXCommands, macros) : undefined,
@@ -164,3 +164,4 @@ export default (status, macros) => (editorState) => ({
     );
   },
 });
+export default initCompletion;

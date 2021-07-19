@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Layout = ({ children, padded }) => {
+const Layout = ({ children, padded = true }) => {
   const classes = useStyles();
   if (typeof window !== "undefined") {
     window.katex = katex;

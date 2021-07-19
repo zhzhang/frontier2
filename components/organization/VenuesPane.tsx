@@ -1,10 +1,9 @@
+import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Container from "react-bootstrap/Container";
-import AcceptedArticleCard from "../AcceptedArticleCard";
+import Spinner from "react-bootstrap/Spinner";
 import Error from "../Error";
 import VenueCard from "../VenueCard";
-import Spinner from "react-bootstrap/Spinner";
-import { useQuery, useMutation } from "@apollo/react-hooks";
 
 const OrganizationQuery = gql`
   query OrganizationQuery($id: String!) {
@@ -20,7 +19,7 @@ const OrganizationQuery = gql`
   }
 `;
 
-export default ({ id }) => {
+export default function VenuesPane({ id }) {
   const { loading, error, data } = useQuery(OrganizationQuery, {
     variables: { id },
   });
@@ -45,4 +44,4 @@ export default ({ id }) => {
         ))}
     </Container>
   );
-};
+}
