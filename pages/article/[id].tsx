@@ -1,10 +1,10 @@
 import DiscussionSidebar from "@/components/article/DiscussionSidebar";
+import AuthorPopover from "@/components/AuthorPopover";
 import Error from "@/components/Error";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import Markdown from "@/components/Markdown";
 import PdfViewer from "@/components/PDFViewer";
-import UserBadge from "@/components/UserBadge";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
 import dateFormat from "dateformat";
@@ -98,13 +98,14 @@ function Article() {
   };
 
   return (
-    <Layout>
+    <Layout padded={false}>
       <SplitPane split="vertical" defaultSize={50}>
         <Pane initialSize="40%" minSize="20%">
           <Container
             className="pt-3"
             style={{
-              height: "calc(100vh - 55px)",
+              height: "calc(100vh - 48px)",
+              marginTop: "48px",
               overflowY: "scroll",
             }}
           >
@@ -112,10 +113,10 @@ function Article() {
             <span>
               {authors !== null ? (
                 authors.map((author) => (
-                  <UserBadge user={author} key={author.id} />
+                  <AuthorPopover user={author} key={author.id} />
                 ))
               ) : (
-                <em>anonymized</em>
+                <em>Anonymized</em>
               )}
             </span>
             <div className="mt-2 mb-2">

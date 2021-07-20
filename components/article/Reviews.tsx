@@ -1,5 +1,4 @@
 import Spinner from "@/components/CenteredSpinner";
-import Editor from "@/components/editor/Editor";
 import Review from "@/components/Review";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
@@ -61,9 +60,6 @@ const Reviews = ({
   const { reviews } = data;
   return (
     <>
-      <div className="pb-5">
-        <Editor />
-      </div>
       {reviews.map((review) => (
         <div className="pb-2" key={review.id}>
           <Review

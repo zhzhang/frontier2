@@ -85,6 +85,7 @@ function Organization() {
           storeRef={logoRef}
           className={classes.logo}
           variant="rounded"
+          name={name}
         />
         <Typography variant="h4">{name}</Typography>
       </div>

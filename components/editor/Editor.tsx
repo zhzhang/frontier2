@@ -9,7 +9,7 @@ import FormatUnderlined from "@material-ui/icons/FormatUnderlined";
 import Title from "@material-ui/icons/Title";
 import { convertFromRaw, convertToRaw, EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Editor.module.css";
 import createMathPlugin from "./math";
 
@@ -110,15 +110,19 @@ const InlineStyleControls = ({ onToggle, editorState }) => {
 const mathjaxPlugin = createMathPlugin();
 const plugins = [mathjaxPlugin];
 
-function Editor({ onChange, editorState, placeholder = "", editing = false }) {
-  const [borderStyle, setBorderStyle] = useState(styles.RichEditorBorder);
-
+export default function Editor({
+  onChange,
+  editorState,
+  placeholder = "",
+  editing = false,
+  ...props
+}) {
   const toggleBlockType = (blockType) =>
     onChange(RichUtils.toggleBlockType(editorState, blockType));
   const toggleInlineStyle = (inlineStyle) =>
     onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
-  console.log(serialize(editorState));
-  const controls = () => (
+
+  const Controls = () => (
     <div className={styles.RichEditorControls}>
       <BlockStyleControls
         editorState={editorState}
@@ -132,19 +136,16 @@ function Editor({ onChange, editorState, placeholder = "", editing = false }) {
   );
 
   return (
-    <div className={`${styles.RichEditorRoot} ${borderStyle}`}>
-      {editing && controls}
+    <div>
+      {editing && <Controls />}
       <DraftEditor
         editorState={editorState}
         onChange={onChange}
         readOnly={!editing}
         plugins={plugins}
         placeholder={placeholder}
-        onFocus={() => setBorderStyle(styles.RichEditorFocusBorder)}
-        onBlur={() => setBorderStyle(styles.RichEditorBorder)}
+        {...props}
       />
     </div>
   );
 }
-
-export default Editor;

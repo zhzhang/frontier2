@@ -1,4 +1,5 @@
-import Editor, { newEditorState, serialize } from "@/components/editor/Editor";
+import { newEditorState, serialize } from "@/components/editor/Editor";
+import InputEditor from "@/components/editor/FormEditor";
 import Layout from "@/components/Layout";
 import PdfViewer from "@/components/PDFViewer";
 import SubmissionTargetTypeahed from "@/components/SubmissionTargetTypeahead";
@@ -7,9 +8,7 @@ import { withApollo } from "@/lib/apollo";
 import { useMutation } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
-import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -109,67 +108,64 @@ const NewArticle = () => {
           <Typography variant="h4">New Article</Typography>
         </Grid>
         <Grid item xs={5}>
-          <FormControl component="fieldset" className={classes.formControl}>
-            <FormGroup>
-              <TextField
-                required
-                fullWidth
-                variant="outlined"
-                label="Title"
-                onChange={(event) => setTitle(event.target.value)}
+          <TextField
+            required
+            fullWidth
+            variant="outlined"
+            label="Title"
+            onChange={(event) => setTitle(event.target.value)}
+          />
+          <UserTypeahead
+            className={classes.formField}
+            label="Authors"
+            multiple
+            value={authors}
+            onChange={(_, selected) => {
+              setAuthors(selected);
+            }}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={anonymized}
+                onChange={() => setAnonymized(!anonymized)}
+                name="anonymize"
               />
-              <UserTypeahead
-                className={classes.formField}
-                label="Authors"
-                multiple
-                value={authors}
-                onChange={(_, selected) => {
-                  setAuthors(selected);
-                }}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={anonymized}
-                    onChange={() => setAnonymized(!anonymized)}
-                    name="anonymize"
-                  />
-                }
-                label="Anonymize Authors"
-              />
-              {!anonymized && (
-                <div className={classes.alert}>
-                  <Alert severity="warning">
-                    Submitting without anonymization will disqualify this
-                    publication for review with many organizations and venues.
-                  </Alert>
-                </div>
-              )}
-              <Editor
-                placeholder={"Write an abstract."}
-                editorState={abstract}
-                onChange={(editorState) => setAbstract(editorState)}
-              />
-              <SubmissionTargetTypeahed
-                className={classes.formField}
-                label="Submit to..."
-                multiple
-                onChange={(_, selected) => {
-                  setSubmissionTargets(selected);
-                }}
-                value={submissionTargets}
-              />
-              <div className={classes.formField}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleSubmit()}
-                >
-                  Submit
-                </Button>
-              </div>
-            </FormGroup>
-          </FormControl>
+            }
+            label="Anonymize Authors"
+          />
+          {!anonymized && (
+            <div className={classes.alert}>
+              <Alert severity="warning">
+                Submitting without anonymization will disqualify this
+                publication for review with many organizations and venues.
+              </Alert>
+            </div>
+          )}
+          <InputEditor
+            placeholder={"Write an abstract."}
+            editing
+            editorState={abstract}
+            onChange={(editorState) => setAbstract(editorState)}
+          />
+          <SubmissionTargetTypeahed
+            className={classes.formField}
+            label="Submit to..."
+            multiple
+            onChange={(_, selected) => {
+              setSubmissionTargets(selected);
+            }}
+            value={submissionTargets}
+          />
+          <div className={classes.formField}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleSubmit()}
+            >
+              Submit
+            </Button>
+          </div>
         </Grid>
         <Grid item xs={7}>
           {file ? (

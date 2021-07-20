@@ -1,4 +1,5 @@
-import Editor, { newEditorState, serialize } from "@/components/editor/Editor";
+import { newEditorState, serialize } from "@/components/editor/Editor";
+import InputEditor from "@/components/editor/FormEditor";
 import Layout from "@/components/Layout";
 import { withApollo } from "@/lib/apollo";
 import { getCroppedImg } from "@/lib/crop";
@@ -141,7 +142,7 @@ const NewOrganization = () => {
           )}
         </Grid>
         <Grid item xs={9}>
-          <Editor
+          <InputEditor
             editing
             editorState={description}
             onChange={setDescription}

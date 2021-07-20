@@ -1,6 +1,6 @@
+import AuthorPopover from "@/components/AuthorPopover";
 import Markdown from "@/components/Markdown";
 import Review from "@/components/Review";
-import UserBadge from "@/components/UserBadge";
 import { withApollo } from "@/lib/apollo";
 import Router from "next/router";
 import { useState } from "react";
@@ -27,7 +27,7 @@ const AcceptedArticleCard = ({ decision }) => {
         <span>
           Authors:{" "}
           {authors !== null ? (
-            authors.map((author) => <UserBadge user={author} />)
+            authors.map((author) => <AuthorPopover user={author} />)
           ) : (
             <em>anonymized</em>
           )}
@@ -40,7 +40,7 @@ const AcceptedArticleCard = ({ decision }) => {
           onClick={() => setOpen(!open)}
         >
           <span>
-            Decision by: <UserBadge user={decision.author} />
+            Decision by: <AuthorPopover user={decision.author} />
           </span>
           <span style={{ float: "right" }}>
             {open ? <ChevronUp /> : <ChevronDown />}

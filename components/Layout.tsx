@@ -5,6 +5,7 @@ import Navigation from "./Navigation";
 
 const useStyles = makeStyles((theme) => ({
   padded: {
+    marginTop: "48px",
     padding: theme.spacing(2),
   },
 }));

@@ -1,5 +1,5 @@
+import AuthorPopover from "@/components/AuthorPopover";
 import Markdown from "@/components/Markdown";
-import UserBadge from "@/components/UserBadge";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
@@ -107,7 +107,7 @@ const Review = ({
                       className="p-2"
                     >
                       <div>
-                        <UserBadge user={message.author} />
+                        <AuthorPopover user={message.author} />
                       </div>
                       <Markdown
                         highlights={JSON.parse(message.highlights)}

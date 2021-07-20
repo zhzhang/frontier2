@@ -1,37 +1,52 @@
-import Markdown from "@/components/Markdown";
-import OrganizationBadge from "@/components/OrganizationBadge";
-import UserBadge from "@/components/UserBadge";
+import AuthorPopover from "@/components/AuthorPopover";
+import Editor, { deserialize } from "@/components/editor/Editor";
+import OrganizationPopover from "@/components/OrganizationPopover";
 import { withApollo } from "@/lib/apollo";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import { useState } from "react";
 
-const ArticleCard = ({ article }) => {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    chips: {
+      display: "flex",
+      flexWrap: "wrap",
+      "& > *": {
+        margin: theme.spacing(0.5),
+      },
+    },
+  })
+);
+
+function ArticleCard({ article }) {
   const { id, title, versions, authors, acceptedOrganizations } = article;
-  const abstract = versions[0].abstract;
-  const [hover, setHover] = useState(false);
+  const classes = useStyles();
+  const [abstract, setAbstract] = useState(deserialize(versions[0].abstract));
   return (
-    <Card>
-      <CardContent>
-        <a href={`/article/${id}`}>{title}</a>
-        <div>
-          Authors:{" "}
-          {authors !== null ? (
-            authors.map((author) => <UserBadge user={author} />)
-          ) : (
-            <em>anonymized</em>
-          )}
-        </div>
-        <div>
-          {acceptedOrganizations.length === 0 ? null : "Accepted by: "}
-          {acceptedOrganizations.map((org) => (
-            <OrganizationBadge organization={org} />
-          ))}
-        </div>
-        <Markdown>{abstract}</Markdown>
-      </CardContent>
-    </Card>
+    <>
+      <a href={`/article/${id}`}>{title}</a>
+      <div className={classes.chips}>
+        {authors !== null ? (
+          authors.map((author) => <AuthorPopover user={author} />)
+        ) : (
+          <Typography color="textSecondary">
+            <em>Anonymized</em>
+          </Typography>
+        )}
+      </div>
+      <Editor
+        placeholder={"Write an abstract."}
+        editorState={abstract}
+        onChange={(editorState) => setAbstract(editorState)}
+      />
+      <div>
+        {acceptedOrganizations.length === 0 ? null : "Accepted by: "}
+        {acceptedOrganizations.map((org) => (
+          <OrganizationPopover organization={org} />
+        ))}
+      </div>
+    </>
   );
-};
+}
 
 export default withApollo(ArticleCard);

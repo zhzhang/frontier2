@@ -86,7 +86,7 @@ const Navigation = () => {
     setAnchorEl(null);
   };
   return (
-    <AppBar position="static" elevation={0}>
+    <AppBar position="fixed" elevation={0}>
       <Toolbar variant="dense">
         <Typography variant="h6" className={classes.title}>
           Frontier

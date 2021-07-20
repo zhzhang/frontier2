@@ -33,7 +33,7 @@ const OrganizationCard = ({ organization }) => {
           {logoRef === null ? (
             <Avatar variant="rounded">T</Avatar>
           ) : (
-            <FirebaseAvatar storeRef={logoRef} variant="rounded" />
+            <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
           )}
           <Typography variant="h5">
             <Link href={`/organization/${id}`} color="inherit">
