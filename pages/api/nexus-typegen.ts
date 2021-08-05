@@ -106,7 +106,6 @@ export interface NexusGenObjects {
     rating?: number | null; // Int
     reviewNumber?: number | null; // Int
     submission?: NexusGenRootTypes['Submission'] | null; // Submission
-    threadMessages?: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
   }
   Submission: { // root type
     articleId?: string | null; // String
@@ -212,6 +211,7 @@ export interface NexusGenFieldTypes {
     searchOrganizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
+    threadMessages: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
     user: NexusGenRootTypes['User'] | null; // User
     userArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
   }
@@ -227,7 +227,6 @@ export interface NexusGenFieldTypes {
     rating: number | null; // Int
     reviewNumber: number | null; // Int
     submission: NexusGenRootTypes['Submission'] | null; // Submission
-    threadMessages: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
   }
   Submission: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
@@ -328,6 +327,7 @@ export interface NexusGenFieldTypeNames {
     searchOrganizations: 'Organization'
     searchUsers: 'User'
     searchVenues: 'Venue'
+    threadMessages: 'ThreadMessage'
     user: 'User'
     userArticles: 'Article'
   }
@@ -343,7 +343,6 @@ export interface NexusGenFieldTypeNames {
     rating: 'Int'
     reviewNumber: 'Int'
     submission: 'Submission'
-    threadMessages: 'ThreadMessage'
   }
   Submission: { // field return type name
     article: 'Article'
@@ -469,6 +468,10 @@ export interface NexusGenArgTypes {
     }
     searchVenues: { // args
       query?: string | null; // String
+    }
+    threadMessages: { // args
+      cursor?: string | null; // String
+      headId: string; // String!
     }
     user: { // args
       id: string; // String!

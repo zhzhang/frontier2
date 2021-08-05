@@ -1,13 +1,8 @@
-import AuthorPopover from "@/components/AuthorPopover";
-import Markdown from "@/components/Markdown";
+import Thread from "@/components/Thread";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
-import Accordion from "react-bootstrap/Accordion";
-import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+import Editor, { deserialize } from "./editor/Editor";
 
 const UpdateReviewMutation = gql`
   mutation UpdateReviewMutation(
@@ -22,16 +17,16 @@ const UpdateReviewMutation = gql`
   }
 `;
 
-function getBadge(rating) {
+function Rating({ rating }) {
   switch (rating) {
     case 0:
-      return <Badge variant="danger">Strong Reject</Badge>;
+      return <span>Strong Reject</span>;
     case 1:
-      return <Badge variant="danger">Reject</Badge>;
+      return <span>Reject</span>;
     case 2:
-      return <Badge variant="success">Accept</Badge>;
+      return <span>Accept</span>;
     case 3:
-      return <Badge variant="success">Strong Accept</Badge>;
+      return <span>Strong Accept</span>;
   }
 }
 
@@ -47,115 +42,13 @@ const Review = ({
   const [updateReview, { loading, error, data }] =
     useMutation(UpdateReviewMutation);
   const [open, setOpen] = useState(startOpen && review.canAccess);
-  const { threadMessages } = review;
   return (
-    <Accordion
-      activeKey={review.canAccess && open ? "0" : null}
-      className={open ? "review-accordion-open" : "review-accordion-closed"}
-    >
-      <Card style={{ border: "none" }}>
-        <Accordion.Toggle
-          as={Card.Header}
-          eventKey="0"
-          onClick={() => setOpen(!open)}
-        >
-          {`Reviewer ${review.reviewNumber} - ${review.organization.abbreviation}`}
-          <span style={{ float: "right" }}>
-            {review.canAccess ? (
-              <>{open ? <ChevronUp /> : <ChevronDown />}</>
-            ) : (
-              <Badge variant="secondary">Private</Badge>
-            )}
-          </span>
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="0">
-          <>
-            <div
-              style={{
-                border: "1px solid rgba(0,0,0,.125)",
-                borderBottomLeftRadius: ".25rem",
-                borderBottomRightRadius: ".25rem",
-              }}
-              className="p-2"
-            >
-              <Markdown
-                highlights={JSON.parse(highlights)}
-                updateArticleAndScroll={updateArticleAndScroll}
-                articleMode={articleMode}
-              >
-                {body}
-              </Markdown>
-            </div>
-            {threadMessages
-              ? threadMessages.map((message) => (
-                  <div
-                    style={{ display: "flex", marginTop: "10px" }}
-                    key={message.id}
-                  >
-                    <div
-                      style={{
-                        width: "10px",
-                        borderLeft: "1px solid rgba(0,0,0,.125)",
-                      }}
-                    />
-                    <div
-                      style={{
-                        flex: 1,
-                        border: "1px solid rgba(0,0,0,.125)",
-                        borderRadius: ".25rem",
-                      }}
-                      className="p-2"
-                    >
-                      <div>
-                        <AuthorPopover user={message.author} />
-                      </div>
-                      <Markdown
-                        highlights={JSON.parse(message.highlights)}
-                        updateArticleAndScroll={updateArticleAndScroll}
-                        articleMode={articleMode}
-                      >
-                        {message.body}
-                      </Markdown>
-                    </div>
-                  </div>
-                ))
-              : null}
-            {editing ? (
-              <>
-                <Button
-                  onClick={() =>
-                    updateReview({
-                      variables: {
-                        id: review.id,
-                        body,
-                        rating: review.rating,
-                        published: review.published,
-                      },
-                    })
-                  }
-                >
-                  Save
-                </Button>
-                <Button
-                  onClick={() =>
-                    updateReview({
-                      variables: {
-                        id: review.id,
-                        body,
-                        rating: review.rating,
-                        published: true,
-                      },
-                    })
-                  }
-                >
-                  Publish
-                </Button>
-              </>
-            ) : null}
-          </>
-        </Accordion.Collapse>
-      </Card>
-    </Accordion>
+    <div>
+      {`Reviewer ${review.reviewNumber} - ${review.organization.abbreviation}`}
+      {body && <Editor editorState={deserialize(body)} />}
+      <Rating rating={review.rating} />
+      <Thread headId={review.id} />
+    </div>
   );
 };
 

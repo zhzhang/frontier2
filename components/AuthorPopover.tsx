@@ -22,7 +22,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function AuthorPopover({ user }) {
+export default function AuthorPopover({
+  user,
+  color = "textSecondary",
+  variant = "span",
+}) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const { id, name, email, profilePictureUrl } = user;
@@ -33,13 +37,14 @@ export default function AuthorPopover({ user }) {
     setAnchorEl(null);
   };
   return (
-    <>
+    <span>
       <Typography
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-        color="textSecondary"
+        color={color}
+        variant={variant}
         onClick={() => Router.push(`/user/${id}`)}
       >
         {name}
@@ -69,6 +74,6 @@ export default function AuthorPopover({ user }) {
           </Typography>
         </div>
       </Popover>
-    </>
+    </span>
   );
 }

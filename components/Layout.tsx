@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "48px",
     padding: theme.spacing(2),
   },
+  unpadded: {
+    marginTop: "48px",
+  },
 }));
 
 const Layout = ({ children, padded = true }) => {
@@ -18,7 +21,7 @@ const Layout = ({ children, padded = true }) => {
   const body = padded ? (
     <div className={classes.padded}>{children}</div>
   ) : (
-    children
+    <div className={classes.unpadded}>{children}</div>
   );
   return (
     <>

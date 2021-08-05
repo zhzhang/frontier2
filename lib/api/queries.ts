@@ -122,11 +122,6 @@ export default objectType({
           include: {
             author: true,
             organization: true,
-            threadMessages: {
-              include: {
-                author: true,
-              },
-            },
           },
         });
       },
@@ -142,11 +137,6 @@ export default objectType({
           include: {
             author: true,
             organization: true,
-            threadMessages: {
-              include: {
-                author: true,
-              },
-            },
           },
         });
       },
@@ -171,6 +161,34 @@ export default objectType({
           },
         });
         return tmp;
+      },
+    });
+    t.list.field("threadMessages", {
+      type: "ThreadMessage",
+      args: { headId: nonNull(stringArg()), cursor: stringArg() },
+      resolve: async (_, { headId, cursor }, ctx) => {
+        let query = {
+          take: 1,
+          where: {
+            headId,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+          include: {
+            author: true,
+          },
+        };
+        if (cursor) {
+          query = {
+            ...query,
+            skip: 1,
+            cursor: {
+              id: cursor,
+            },
+          };
+        }
+        return await ctx.prisma.threadMessage.findMany(query);
       },
     });
     t.field("organization", {

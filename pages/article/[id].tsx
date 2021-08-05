@@ -1,24 +1,30 @@
 import DiscussionSidebar from "@/components/article/DiscussionSidebar";
-import AuthorPopover from "@/components/AuthorPopover";
+import Authors from "@/components/Authors";
+import Editor, { deserialize } from "@/components/editor/Editor";
 import Error from "@/components/Error";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
-import Markdown from "@/components/Markdown";
 import PdfViewer from "@/components/PDFViewer";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import MuiAccordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  withStyles,
+} from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import dateFormat from "dateformat";
 import gql from "graphql-tag";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
-import Accordion from "react-bootstrap/Accordion";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import SplitPane from "react-split-pane";
 import Pane from "react-split-pane/lib/Pane";
 
@@ -46,7 +52,58 @@ const ArticleQuery = gql`
   }
 `;
 
+const Accordion = withStyles({
+  root: {
+    border: "1px solid rgba(0, 0, 0, .125)",
+    boxShadow: "none",
+    "&:not(:last-child)": {
+      borderBottom: 0,
+    },
+    "&:before": {
+      display: "none",
+    },
+    "&$expanded": {
+      margin: "auto",
+    },
+  },
+  expanded: {},
+})(MuiAccordion);
+
+const AccordionSummary = withStyles({
+  root: {
+    backgroundColor: "rgba(0, 0, 0, .03)",
+    borderBottom: "1px solid rgba(0, 0, 0, .125)",
+    marginBottom: -1,
+    height: 38,
+    "&$expanded": {
+      height: 38,
+    },
+  },
+  content: {
+    "&$expanded": {
+      margin: "12px 0",
+    },
+  },
+  expanded: {},
+})(MuiAccordionSummary);
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    margin: {
+      marginTop: theme.spacing(1),
+    },
+    article: {
+      height: "calc(100vh - 50px)",
+      overflowY: "scroll",
+    },
+    sidebar: {
+      margin: theme.spacing(2),
+    },
+  })
+);
+
 function Article() {
+  const classes = useStyles();
   const { id, reviewId, version } = useRouter().query;
   const { loading, error, data } = useQuery(ArticleQuery, {
     variables: { id },
@@ -68,7 +125,7 @@ function Article() {
   if (error) {
     return (
       <Layout>
-        <Error header="Error fetching article." />
+        <Error>Error fetching article.</Error>
       </Layout>
     );
   }
@@ -100,84 +157,55 @@ function Article() {
   return (
     <Layout padded={false}>
       <SplitPane split="vertical" defaultSize={50}>
-        <Pane initialSize="40%" minSize="20%">
-          <Container
-            className="pt-3"
-            style={{
-              height: "calc(100vh - 48px)",
-              marginTop: "48px",
-              overflowY: "scroll",
-            }}
+        <Pane initialSize="40%" minSize="20%" className={classes.sidebar}>
+          <Typography variant="h6">{title}</Typography>
+          <Authors authors={authors} className={classes.margin} />
+          <Select
+            variant="outlined"
+            fullWidth
+            value={selectedVersion.versionNumber}
+            onChange={({ target }) => setVersionNumber(target.value)}
+            className={classes.margin}
           >
-            <h5>{title}</h5>
-            <span>
-              {authors !== null ? (
-                authors.map((author) => (
-                  <AuthorPopover user={author} key={author.id} />
-                ))
-              ) : (
-                <em>Anonymized</em>
-              )}
-            </span>
-            <div className="mt-2 mb-2">
-              <DropdownButton
-                title={`Version ${selectedVersion.versionNumber} - ${dateFormat(
-                  new Date(parseInt(selectedVersion.createdAt)),
-                  "mmm d, yyyy"
-                )}`}
-                as={ButtonGroup}
-                variant="secondary"
-                size="sm"
-                style={{ width: "100%" }}
-                onSelect={(versionNumber) => setVersionNumber(versionNumber)}
-              >
-                {versions.map((version) => (
-                  <Dropdown.Item
-                    eventKey={version.versionNumber}
-                    key={version.id}
-                  >{`Version ${version.versionNumber} - ${dateFormat(
-                    new Date(parseInt(version.createdAt)),
-                    "mmm d, yyyy"
-                  )}`}</Dropdown.Item>
-                ))}
-              </DropdownButton>
-            </div>
-            <Accordion activeKey={abstractOpen ? "0" : null}>
-              <Card>
-                <Accordion.Toggle
-                  as={Card.Header}
-                  eventKey="0"
-                  onClick={() => setAbstractOpen(!abstractOpen)}
-                >
-                  Abstract
-                  <span style={{ float: "right" }}>
-                    {abstractOpen ? <ChevronUp /> : <ChevronDown />}
-                  </span>
-                </Accordion.Toggle>
-                <Accordion.Collapse eventKey="0" className="m-2">
-                  <Markdown>{abstract}</Markdown>
-                </Accordion.Collapse>
-              </Card>
-            </Accordion>
-            <div className="mt-2">
-              <DiscussionSidebar
-                articleId={id}
-                articleVersion={selectedVersion.versionNumber}
-                highlights={highlights}
-                updateArticleAndScroll={updateArticleAndScroll}
-              />
-            </div>
-          </Container>
+            {versions.map((version) => (
+              <MenuItem value={version.versionNumber}>{`Version ${
+                version.versionNumber
+              } - ${dateFormat(
+                new Date(parseInt(version.createdAt)),
+                "mmm d, yyyy"
+              )}`}</MenuItem>
+            ))}
+          </Select>
+          <Accordion className={classes.margin}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>Abstract</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Editor editorState={deserialize(abstract)} />
+            </AccordionDetails>
+          </Accordion>
+          <DiscussionSidebar
+            articleId={id}
+            articleVersion={selectedVersion.versionNumber}
+            highlights={highlights}
+            updateArticleAndScroll={updateArticleAndScroll}
+          />
         </Pane>
-        <PdfViewer
-          fileRef={ref}
-          highlights={highlights}
-          setHighlights={setHighlights}
-          articleVersion={selectedVersion.versionNumber}
-          onRenderedCallback={onRenderedCallback}
-          setScrollTo={setScrollTo}
-          editing={editing}
-        />
+        <div className={classes.article}>
+          <PdfViewer
+            fileRef={ref}
+            highlights={highlights}
+            setHighlights={setHighlights}
+            articleVersion={selectedVersion.versionNumber}
+            onRenderedCallback={onRenderedCallback}
+            setScrollTo={setScrollTo}
+            editing={editing}
+          />
+        </div>
       </SplitPane>
     </Layout>
   );

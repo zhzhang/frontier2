@@ -14,9 +14,6 @@ const Review = objectType({
     t.field("author", { type: "User" });
     t.field("submission", { type: "Submission" });
     t.field("organization", { type: "Organization" });
-    t.list.field("threadMessages", {
-      type: "ThreadMessage",
-    });
   },
 });
 

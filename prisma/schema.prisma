@@ -72,9 +72,8 @@ model ArticleVersion {
 model ThreadMessage {
   id         String   @id @default(cuid())
   body       String   @db.MediumText
-  reviewId   String
+  headId     String
   userId     String
-  review     Review   @relation(fields: [reviewId], references: [id])
   author     User     @relation(fields: [userId], references: [id])
   highlights String   @db.MediumText
   createdAt  DateTime @default(now())
@@ -128,20 +127,19 @@ model Venue {
 }
 
 model Review {
-  id             String          @id @default(cuid())
-  body           String          @db.MediumText
-  rating         Int             @default(0)
-  article        Article         @relation(fields: [articleId], references: [id])
-  author         User            @relation(fields: [authorId], references: [id])
-  highlights     String          @db.MediumText
+  id             String        @id @default(cuid())
+  body           String        @db.MediumText
+  rating         Int           @default(0)
+  article        Article       @relation(fields: [articleId], references: [id])
+  author         User          @relation(fields: [authorId], references: [id])
+  highlights     String        @db.MediumText
   articleId      String
   authorId       String
-  organization   Organization?   @relation(fields: [organizationId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId String?
   reviewNumber   Int
-  published      Boolean         @default(false)
-  canAccess      Boolean         @default(true)
-  threadMessages ThreadMessage[]
+  published      Boolean       @default(false)
+  canAccess      Boolean       @default(true)
   decisions      Decision[]
 }
 

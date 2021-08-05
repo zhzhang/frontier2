@@ -88,6 +88,7 @@ type Query {
   searchOrganizations(query: String): [Organization]
   searchUsers(query: String): [User]
   searchVenues(query: String): [Venue]
+  threadMessages(cursor: String, headId: String!): [ThreadMessage]
   user(id: String!): User
   userArticles(id: String!): [Article]
 }
@@ -104,7 +105,6 @@ type Review {
   rating: Int
   reviewNumber: Int
   submission: Submission
-  threadMessages: [ThreadMessage]
 }
 
 input ReviewWhereUniqueInput {

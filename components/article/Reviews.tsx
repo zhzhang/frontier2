@@ -21,16 +21,6 @@ const ReviewsQuery = gql`
         logoRef
         abbreviation
       }
-      threadMessages {
-        id
-        author {
-          id
-          name
-        }
-        body
-        highlights
-        createdAt
-      }
     }
   }
 `;
