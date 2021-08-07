@@ -1,11 +1,11 @@
 import AuthorPopover from "@/components/AuthorPopover";
 import CenteredSpinner from "@/components/CenteredSpinner";
-import Editor, { deserialize } from "@/components/editor/Editor";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import { useQuery } from "@apollo/react-hooks";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
+import Markdown from "./Markdown";
 
 const ThreadMessagesQuery = gql`
   query ThreadMessagesQuery($headId: String!, $cursor: String) {
@@ -57,7 +57,7 @@ export default function Thread({ headId }) {
           </div>
           <div>
             <AuthorPopover user={message.author} />
-            <Editor editorState={deserialize(message.body)} />
+            <Markdown>{message.body}</Markdown>
           </div>
         </div>
       ))}

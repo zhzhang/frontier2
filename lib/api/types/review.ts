@@ -10,7 +10,6 @@ const Review = objectType({
     t.int("reviewNumber");
     t.int("articleVersion");
     t.boolean("published");
-    t.boolean("canAccess");
     t.field("author", { type: "User" });
     t.field("submission", { type: "Submission" });
     t.field("organization", { type: "Organization" });

@@ -1,6 +1,6 @@
-import { newEditorState, serialize } from "@/components/editor/Editor";
-import InputEditor from "@/components/editor/FormEditor";
+import { serialize } from "@/components/editor/Editor";
 import Layout from "@/components/Layout";
+import MarkdownEditor from "@/components/MarkdownEditor";
 import PdfViewer from "@/components/PDFViewer";
 import SubmissionTargetTypeahed from "@/components/SubmissionTargetTypeahead";
 import UserTypeahead from "@/components/UserTypeahead";
@@ -66,7 +66,7 @@ const NewArticle = () => {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [submissionTargets, setSubmissionTargets] = useState([]);
-  const [abstract, setAbstract] = useState(newEditorState());
+  const [abstract, setAbstract] = useState("");
   const [authors, setAuthors] = useState([]);
   const [anonymized, setAnonymized] = useState(true);
   const [createArticle, { loading, error, data }] = useMutation(
@@ -142,11 +142,11 @@ const NewArticle = () => {
               </Alert>
             </div>
           )}
-          <InputEditor
-            placeholder={"Write an abstract."}
-            editing
-            editorState={abstract}
-            onChange={(editorState) => setAbstract(editorState)}
+          <MarkdownEditor
+            body={abstract}
+            onChange={(abstract) => setAbstract(abstract)}
+            label="Abstract"
+            placeholder="Write an abstract."
           />
           <SubmissionTargetTypeahed
             className={classes.formField}

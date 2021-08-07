@@ -16,7 +16,6 @@ const ReviewsQuery = gql`
       highlights
       reviewNumber
       rating
-      canAccess
       organization {
         id
         logoRef

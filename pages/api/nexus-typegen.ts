@@ -98,7 +98,6 @@ export interface NexusGenObjects {
     articleVersion?: number | null; // Int
     author?: NexusGenRootTypes['User'] | null; // User
     body?: string | null; // String
-    canAccess?: boolean | null; // Boolean
     highlights?: string | null; // String
     id?: string | null; // String
     organization?: NexusGenRootTypes['Organization'] | null; // Organization
@@ -219,7 +218,6 @@ export interface NexusGenFieldTypes {
     articleVersion: number | null; // Int
     author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
-    canAccess: boolean | null; // Boolean
     highlights: string | null; // String
     id: string | null; // String
     organization: NexusGenRootTypes['Organization'] | null; // Organization
@@ -335,7 +333,6 @@ export interface NexusGenFieldTypeNames {
     articleVersion: 'Int'
     author: 'User'
     body: 'String'
-    canAccess: 'Boolean'
     highlights: 'String'
     id: 'String'
     organization: 'Organization'

@@ -2,10 +2,8 @@ import React from 'react';
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 
-export default function TeXBlockEditor(props) {
-  const { children } = props;
-  const { text } = children.props.block;
-
+export default function TeXBlockEditor({block}) {
+  const text = block.getText() 
   const rendered = <BlockMath>{text}</BlockMath>;
 
   return (
@@ -19,7 +17,7 @@ export default function TeXBlockEditor(props) {
         minHeight: '1.2em',
       }}
     >
-      {children}
+      {text}
       {rendered}
     </div>
   );

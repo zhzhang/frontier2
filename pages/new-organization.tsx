@@ -1,6 +1,6 @@
-import { newEditorState, serialize } from "@/components/editor/Editor";
-import InputEditor from "@/components/editor/FormEditor";
+import { serialize } from "@/components/editor/Editor";
 import Layout from "@/components/Layout";
+import MarkdownEditor from "@/components/MarkdownEditor";
 import { withApollo } from "@/lib/apollo";
 import { getCroppedImg } from "@/lib/crop";
 import { uploadFile } from "@/lib/firebase";
@@ -55,7 +55,7 @@ const NewOrganization = () => {
   const classes = useStyles();
   const [name, setName] = useState("");
   const [abbreviation, setAbbreviation] = useState(null);
-  const [description, setDescription] = useState(newEditorState());
+  const [description, setDescription] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [createOrganization, { loading, error, data }] = useMutation(
     CreateOrganizationMutation
@@ -142,11 +142,11 @@ const NewOrganization = () => {
           )}
         </Grid>
         <Grid item xs={9}>
-          <InputEditor
-            editing
-            editorState={description}
-            onChange={setDescription}
-            placeholder="Write a description for your organization."
+          <MarkdownEditor
+            body={description}
+            onChange={(description) => setDescription(description)}
+            label="Description"
+            placeholder="Write a description."
           />
         </Grid>
         <Grid item xs={12}>

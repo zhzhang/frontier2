@@ -32,14 +32,17 @@ const createMathPlugin = (config = {}) => {
   };
 
   const blockRendererFn = (block) => {
-    const readOnly = store.getReadOnly();
     if (
-      readOnly &&
-      block.getType() === "atomic" &&
-      block.getData().get("math")
+      block.getType() === "math"
     ) {
+      if (store.getReadOnly()) {
+        return {
+          component: TeXBlock,
+          props: { getStore: () => store },
+        };
+      }
       return {
-        component: TeXBlock,
+        component: TeXBlockEditor,
         props: { getStore: () => store },
       };
     }
@@ -73,17 +76,6 @@ const createMathPlugin = (config = {}) => {
       },
     ],
     blockRendererFn,
-    blockRenderMap:
-      store.getReadOnly !== undefined && store.getReadOnly()
-        ? Map({
-            atomic: {
-              element: TeXBlockEditor,
-              props: {
-                getStore: () => store,
-              },
-            },
-          })
-        : Map(),
   };
 };
 

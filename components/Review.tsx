@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/react-hooks";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
-import Editor, { deserialize } from "./editor/Editor";
+import Markdown from "./Markdown";
 import ProfilePicturePopover from "./ProfilePicturePopover";
 
 const UpdateReviewMutation = gql`
@@ -67,7 +67,7 @@ const Review = ({
         </div>
         <div>
           <AuthorPopover user={review.author} />
-          <Editor editorState={deserialize(body)} />
+          <Markdown>{body}</Markdown>
         </div>
       </div>
       <Thread headId={review.id} />

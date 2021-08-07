@@ -6,12 +6,14 @@ import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
 import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 import FormatQuote from "@material-ui/icons/FormatQuote";
 import FormatUnderlined from "@material-ui/icons/FormatUnderlined";
+import Functions from "@material-ui/icons/Functions";
 import Title from "@material-ui/icons/Title";
 import { convertFromRaw, convertToRaw, EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css";
 import React from "react";
 import styles from "./Editor.module.css";
 import createMathPlugin from "./math";
+import createReferencePlugin from "./reference";
 
 export function newEditorState(): EditorState {
   return EditorState.createEmpty();
@@ -58,6 +60,7 @@ const BLOCK_TYPES = [
   { icon: <FormatListBulleted />, style: "unordered-list-item" },
   { icon: <FormatListNumbered />, style: "ordered-list-item" },
   { icon: <Code />, style: "code-block" },
+  { icon: <Functions />, style: "math" },
 ];
 
 const BlockStyleControls = (props) => {
@@ -108,7 +111,8 @@ const InlineStyleControls = ({ onToggle, editorState }) => {
 };
 
 const mathjaxPlugin = createMathPlugin();
-const plugins = [mathjaxPlugin];
+const referencePlugin = createReferencePlugin();
+const plugins = [mathjaxPlugin, referencePlugin];
 
 export default function Editor({
   onChange,
@@ -121,6 +125,7 @@ export default function Editor({
     onChange(RichUtils.toggleBlockType(editorState, blockType));
   const toggleInlineStyle = (inlineStyle) =>
     onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
+  console.log(serialize(editorState));
 
   const Controls = () => (
     <div className={styles.RichEditorControls}>

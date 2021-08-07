@@ -1,9 +1,9 @@
 import DiscussionSidebar from "@/components/article/DiscussionSidebar";
 import Authors from "@/components/Authors";
-import Editor, { deserialize } from "@/components/editor/Editor";
 import Error from "@/components/Error";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
+import Markdown from "@/components/Markdown";
 import PdfViewer from "@/components/PDFViewer";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
@@ -188,7 +188,7 @@ function Article() {
                 <Typography>Abstract</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Editor editorState={deserialize(abstract)} />
+                <Markdown>{abstract}</Markdown>
               </AccordionDetails>
             </Accordion>
             <DiscussionSidebar

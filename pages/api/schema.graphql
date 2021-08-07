@@ -97,7 +97,6 @@ type Review {
   articleVersion: Int
   author: User
   body: String
-  canAccess: Boolean
   highlights: String
   id: String
   organization: Organization
