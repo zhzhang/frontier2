@@ -157,9 +157,9 @@ async function main() {
       published: true,
       organizationId: organization.id,
       rating: 1,
-      canAccess: false,
+      anonymized: false,
       highlights: "[]",
-      body: "",
+      body: createEditorState("Test review!!!"),
     },
   });
   const review2 = await prisma.review.create({

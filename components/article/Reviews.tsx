@@ -9,6 +9,7 @@ const ReviewsQuery = gql`
     reviews(articleId: $articleId) {
       id
       author {
+        id
         name
       }
       body

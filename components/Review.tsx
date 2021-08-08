@@ -1,8 +1,11 @@
+import AuthorPopover from "@/components/AuthorPopover";
 import Thread from "@/components/Thread";
 import { useMutation } from "@apollo/react-hooks";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
 import Editor, { deserialize } from "./editor/Editor";
+import ProfilePicturePopover from "./ProfilePicturePopover";
 
 const UpdateReviewMutation = gql`
   mutation UpdateReviewMutation(
@@ -16,6 +19,20 @@ const UpdateReviewMutation = gql`
     }
   }
 `;
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    typography: {
+      padding: theme.spacing(2),
+    },
+    review: {
+      display: "flex",
+    },
+    picture: {
+      margin: theme.spacing(1),
+    },
+  })
+);
 
 function Rating({ rating }) {
   switch (rating) {
@@ -37,18 +54,24 @@ const Review = ({
   updateArticleAndScroll,
   articleMode,
 }) => {
+  const classes = useStyles();
   const { highlights } = review;
   const [body, setBody] = useState(review.body);
   const [updateReview, { loading, error, data }] =
     useMutation(UpdateReviewMutation);
-  const [open, setOpen] = useState(startOpen && review.canAccess);
   return (
-    <div>
-      {`Reviewer ${review.reviewNumber} - ${review.organization.abbreviation}`}
-      {body && <Editor editorState={deserialize(body)} />}
-      <Rating rating={review.rating} />
+    <>
+      <div className={classes.review}>
+        <div className={classes.picture}>
+          <ProfilePicturePopover user={review.author} />
+        </div>
+        <div>
+          <AuthorPopover user={review.author} />
+          <Editor editorState={deserialize(body)} />
+        </div>
+      </div>
       <Thread headId={review.id} />
-    </div>
+    </>
   );
 };
 

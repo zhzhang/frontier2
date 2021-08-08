@@ -139,7 +139,7 @@ model Review {
   organizationId String?
   reviewNumber   Int
   published      Boolean       @default(false)
-  canAccess      Boolean       @default(true)
+  anonymized     Boolean       @default(true)
   decisions      Decision[]
 }
 

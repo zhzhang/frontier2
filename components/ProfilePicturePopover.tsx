@@ -22,15 +22,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function AuthorPopover({
-  user,
-  color = "textSecondary",
-  variant = "span",
-}) {
+export default function ProfilePicturePopover({ user }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const { id, name, profilePictureUrl } = user;
-  const anonymized = id === "anonymous";
+  const anonymous = id === "anonymous";
   const handleEnter = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -38,30 +34,30 @@ export default function AuthorPopover({
     setAnchorEl(null);
   };
   const handleClick = () => {
-    if (!anonymized) {
+    if (!anonymous) {
       Router.push(`/user/${id}`);
     }
   };
   return (
-    <span>
-      <Typography
-        aria-owns={open ? "mouse-over-popover" : undefined}
-        aria-haspopup="true"
+    <>
+      <div
+        onClick={handleClick}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-        color={color}
-        variant={variant}
-        onClick={handleClick}
       >
-        {name}
-      </Typography>
+        <FirebaseAvatar
+          storeRef={profilePictureUrl}
+          anonymous={anonymous}
+          name={name}
+        />
+      </div>
       <Popover
         id={id}
         className={classes.popover}
         classes={{
           paper: classes.paper,
         }}
-        open={Boolean(anchorEl) && !anonymized}
+        open={Boolean(anchorEl) && !anonymous}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",
@@ -80,6 +76,6 @@ export default function AuthorPopover({
           </Typography>
         </div>
       </Popover>
-    </span>
+    </>
   );
 }

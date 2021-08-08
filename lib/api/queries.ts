@@ -115,7 +115,7 @@ export default objectType({
       type: "Review",
       args: { articleId: nonNull(stringArg()) },
       resolve: async (_, { articleId }, ctx) => {
-        return await ctx.prisma.review.findMany({
+        const reviews = await ctx.prisma.review.findMany({
           where: {
             articleId,
           },
@@ -123,6 +123,17 @@ export default objectType({
             author: true,
             organization: true,
           },
+        });
+        return reviews.map((review) => {
+          return {
+            ...review,
+            author: review.anonymized
+              ? review.author
+              : {
+                  id: "anonymous",
+                  name: `Reviewer ${review.reviewNumber}`,
+                },
+          };
         });
       },
     });

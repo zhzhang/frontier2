@@ -1,7 +1,9 @@
 import AuthorPopover from "@/components/AuthorPopover";
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Editor, { deserialize } from "@/components/editor/Editor";
+import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import { useQuery } from "@apollo/react-hooks";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
 
@@ -18,7 +20,26 @@ const ThreadMessagesQuery = gql`
   }
 `;
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    typography: {
+      padding: theme.spacing(2),
+    },
+    message: {
+      display: "flex",
+      marginTop: theme.spacing(1),
+      marginLeft: 28, // Centers to the profile picture.
+      paddingLeft: 20,
+      borderLeft: "1px solid rgba(0,0,0,.125)",
+    },
+    picture: {
+      margin: theme.spacing(1),
+    },
+  })
+);
+
 export default function Thread({ headId }) {
+  const classes = useStyles();
   const [cursor, setCursor] = useState(null);
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
     variables: { headId, cursor },
@@ -26,30 +47,17 @@ export default function Thread({ headId }) {
   if (loading) {
     return <CenteredSpinner />;
   }
-  console.log(data);
   const { threadMessages } = data;
   return (
     <div>
       {threadMessages.map((message) => (
-        <div style={{ display: "flex", marginTop: "10px" }} key={message.id}>
-          <div
-            style={{
-              width: "10px",
-              borderLeft: "1px solid rgba(0,0,0,.125)",
-            }}
-          />
-          <div
-            style={{
-              flex: 1,
-              border: "1px solid rgba(0,0,0,.125)",
-              borderRadius: ".25rem",
-            }}
-            className="p-2"
-          >
-            <div>
-              <AuthorPopover user={message.author} />
-            </div>
-            {message.body && <Editor editorState={deserialize(message.body)} />}
+        <div className={classes.message}>
+          <div className={classes.picture}>
+            <ProfilePicturePopover user={message.author} />
+          </div>
+          <div>
+            <AuthorPopover user={message.author} />
+            <Editor editorState={deserialize(message.body)} />
           </div>
         </div>
       ))}

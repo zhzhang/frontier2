@@ -92,12 +92,14 @@ const useStyles = makeStyles((theme: Theme) =>
     margin: {
       marginTop: theme.spacing(1),
     },
-    article: {
+    discussionPane: {
       height: "calc(100vh - 50px)",
       overflowY: "scroll",
+      padding: theme.spacing(2),
     },
-    sidebar: {
-      margin: theme.spacing(2),
+    articlePane: {
+      height: "calc(100vh - 50px)",
+      overflowY: "scroll",
     },
   })
 );
@@ -158,44 +160,46 @@ function Article() {
     <Layout padded={false}>
       <SplitPane split="vertical" defaultSize={50}>
         <Pane initialSize="40%" minSize="20%" className={classes.sidebar}>
-          <Typography variant="h6">{title}</Typography>
-          <Authors authors={authors} className={classes.margin} />
-          <Select
-            variant="outlined"
-            fullWidth
-            value={selectedVersion.versionNumber}
-            onChange={({ target }) => setVersionNumber(target.value)}
-            className={classes.margin}
-          >
-            {versions.map((version) => (
-              <MenuItem value={version.versionNumber}>{`Version ${
-                version.versionNumber
-              } - ${dateFormat(
-                new Date(parseInt(version.createdAt)),
-                "mmm d, yyyy"
-              )}`}</MenuItem>
-            ))}
-          </Select>
-          <Accordion className={classes.margin}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
+          <div className={classes.discussionPane}>
+            <Typography variant="h6">{title}</Typography>
+            <Authors authors={authors} className={classes.margin} />
+            <Select
+              variant="outlined"
+              fullWidth
+              value={selectedVersion.versionNumber}
+              onChange={({ target }) => setVersionNumber(target.value)}
+              className={classes.margin}
             >
-              <Typography>Abstract</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Editor editorState={deserialize(abstract)} />
-            </AccordionDetails>
-          </Accordion>
-          <DiscussionSidebar
-            articleId={id}
-            articleVersion={selectedVersion.versionNumber}
-            highlights={highlights}
-            updateArticleAndScroll={updateArticleAndScroll}
-          />
+              {versions.map((version) => (
+                <MenuItem value={version.versionNumber}>{`Version ${
+                  version.versionNumber
+                } - ${dateFormat(
+                  new Date(parseInt(version.createdAt)),
+                  "mmm d, yyyy"
+                )}`}</MenuItem>
+              ))}
+            </Select>
+            <Accordion className={classes.margin}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Abstract</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Editor editorState={deserialize(abstract)} />
+              </AccordionDetails>
+            </Accordion>
+            <DiscussionSidebar
+              articleId={id}
+              articleVersion={selectedVersion.versionNumber}
+              highlights={highlights}
+              updateArticleAndScroll={updateArticleAndScroll}
+            />
+          </div>
         </Pane>
-        <div className={classes.article}>
+        <div className={classes.articlePane}>
           <PdfViewer
             fileRef={ref}
             highlights={highlights}
