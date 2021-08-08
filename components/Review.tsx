@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
     },
     picture: {
-      margin: theme.spacing(1),
+      marginRight: theme.spacing(1),
     },
   })
 );

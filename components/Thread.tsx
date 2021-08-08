@@ -27,13 +27,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     message: {
       display: "flex",
-      marginTop: theme.spacing(1),
-      marginLeft: 28, // Centers to the profile picture.
+      marginTop: theme.spacing(2),
+      marginLeft: 20, // Centers to the profile picture.
       paddingLeft: 20,
       borderLeft: "1px solid rgba(0,0,0,.125)",
     },
     picture: {
-      margin: theme.spacing(1),
+      marginRight: theme.spacing(1),
     },
   })
 );

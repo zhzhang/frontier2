@@ -3,7 +3,7 @@ import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Decisions from "./Decisions";
+import Comments from "./Comments";
 import Reviews from "./Reviews";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -23,7 +23,7 @@ const DiscussionSidebar = ({
   const classes = useStyles();
   const router = useRouter();
   const reviewId = router.query.reviewId;
-  const [view, setView] = useState(0);
+  const [view, setView] = useState(1);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setView(newValue);
@@ -32,14 +32,7 @@ const DiscussionSidebar = ({
   const Body = () => {
     switch (view) {
       case 1:
-        return (
-          <Decisions
-            articleId={articleId}
-            articleVersion={articleVersion}
-            highlights={highlights}
-            updateArticleAndScroll={updateArticleAndScroll}
-          />
-        );
+        return <Comments />;
       default:
         return (
           <Reviews
