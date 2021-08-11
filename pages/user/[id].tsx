@@ -1,18 +1,14 @@
-import { useState } from "react";
-import Layout from "../../components/Layout";
-import { useRouter } from "next/router";
-import { withApollo } from "../../lib/apollo";
+import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import Spinner from "../../components/CenteredSpinner";
-import ArticleCard from "../../components/ArticleCard";
-
+import { useRouter } from "next/router";
 import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
-import Row from "react-bootstrap/Row";
+import Tabs from "react-bootstrap/Tabs";
 import "react-datepicker/dist/react-datepicker.css";
+import ArticleCard from "../../components/ArticleCard";
+import Spinner from "../../components/CenteredSpinner";
+import Layout from "../../components/Layout";
+import { withApollo } from "../../lib/apollo";
 
 const UserQuery = gql`
   query UserQuery($id: String!) {
@@ -84,30 +80,20 @@ function User() {
 
   return (
     <Layout>
-      <Container style={{ paddingTop: 20 }} fluid>
-        <Row style={{ paddingBottom: 20 }}>
-          <Col>
-            <h1>{name}</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Tabs>
-              <Tab eventKey="articles" title="Articles">
-                <Container fluid style={{ margin: 10 }}>
-                  {articlesResult.loading ? (
-                    <Spinner />
-                  ) : (
-                    articlesResult.data.userArticles.map((article) => (
-                      <ArticleCard article={article} />
-                    ))
-                  )}
-                </Container>
-              </Tab>
-            </Tabs>
-          </Col>
-        </Row>
-      </Container>
+      <h1>{name}</h1>
+      <Tabs>
+        <Tab eventKey="articles" title="Articles">
+          <Container fluid style={{ margin: 10 }}>
+            {articlesResult.loading ? (
+              <Spinner />
+            ) : (
+              articlesResult.data.userArticles.map((article) => (
+                <ArticleCard article={article} />
+              ))
+            )}
+          </Container>
+        </Tab>
+      </Tabs>
     </Layout>
   );
 }

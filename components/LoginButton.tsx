@@ -1,9 +1,9 @@
+import { Auth } from "@/components/Auth";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import { useState } from "react";
-import { Auth } from "../components/Auth";
 
-const LoginButton = () => {
+export default function LoginButton() {
   const [open, toggleOpen] = useState(false);
   return (
     <>
@@ -15,6 +15,4 @@ const LoginButton = () => {
       </Dialog>
     </>
   );
-};
-
-export default LoginButton;
+}

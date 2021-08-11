@@ -1,10 +1,9 @@
 import AuthorPopover from "@/components/AuthorPopover";
-import Editor, { deserialize } from "@/components/editor/Editor";
+import Markdown from "@/components/Markdown";
 import OrganizationPopover from "@/components/OrganizationPopover";
 import { withApollo } from "@/lib/apollo";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
 function ArticleCard({ article }) {
   const { id, title, versions, authors, acceptedOrganizations } = article;
   const classes = useStyles();
-  const [abstract, setAbstract] = useState(deserialize(versions[0].abstract));
   return (
     <>
       <a href={`/article/${id}`}>{title}</a>
@@ -34,11 +32,7 @@ function ArticleCard({ article }) {
           </Typography>
         )}
       </div>
-      <Editor
-        placeholder={"Write an abstract."}
-        editorState={abstract}
-        onChange={(editorState) => setAbstract(editorState)}
-      />
+      <Markdown>{versions[0].abstract}</Markdown>
       <div>
         {acceptedOrganizations.length === 0 ? null : "Accepted by: "}
         {acceptedOrganizations.map((org) => (

@@ -71,6 +71,17 @@ const NewOrganization = () => {
   }, []);
 
   const handleSubmit = async () => {
+    if (!imgRef) {
+      await createOrganization({
+        variables: {
+          name,
+          abbreviation,
+          description: serialize(description),
+        },
+      });
+      console.log("DONE");
+      return;
+    }
     const img = await getCroppedImg(imgRef.current, crop, "hello");
     const { uploadTask, refPath } = uploadFile(img, UploadTypeEnum.LOGO);
     uploadTask.on(
@@ -134,7 +145,8 @@ const NewOrganization = () => {
                 <div {...getRootProps()} className={classes.dropzone}>
                   <input {...getInputProps()} />
                   <p>
-                    Drag and drop a logo image here, or click to select file.
+                    (Optional) Drag and drop a logo image here, or click to
+                    select file.
                   </p>
                 </div>
               )}

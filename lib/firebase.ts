@@ -54,6 +54,10 @@ export function useRef(ref) {
   return url;
 }
 
+export async function signOut() {
+  await firebase.auth().signOut();
+}
+
 export const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: "popup",

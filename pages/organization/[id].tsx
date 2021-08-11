@@ -64,7 +64,7 @@ function Organization() {
           body: <VenuesPane id={id} />,
           tab: 1,
         };
-      case "accepted":
+      case "articles":
         return {
           body: <ArticlesPane id={id} />,
           tab: 2,
@@ -98,7 +98,7 @@ function Organization() {
           if (newIndex === 1) {
             newTabKey = "venues";
           } else if (newIndex === 2) {
-            newTabKey = "accepted";
+            newTabKey = "articles";
           }
           router.query.view = newTabKey;
           router.push(router, undefined, { shallow: true });
@@ -106,7 +106,7 @@ function Organization() {
       >
         <Tab label="info" />
         <Tab label="venues" />
-        <Tab label="accepted" />
+        <Tab label="articles" />
       </Tabs>
       {body}
     </Layout>

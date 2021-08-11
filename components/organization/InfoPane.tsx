@@ -1,4 +1,4 @@
-import Editor, { deserialize } from "@/components/editor/Editor";
+import Markdown from "@/components/Markdown";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
@@ -20,10 +20,9 @@ const InfoPane = ({ id, description, role }) => {
   const [updateOrganization, { loading, error, data }] = useMutation(
     UpdateOrganizationMutation
   );
-  const [desc, setDescription] = useState(deserialize(description));
   return (
     <div className="mt-2">
-      <Editor editorState={desc} onChange={setDescription} />
+      <Markdown>{description}</Markdown>
       {role === RoleEnum.ADMIN ? (
         editing ? (
           <>

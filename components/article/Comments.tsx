@@ -1,25 +1,23 @@
-import Editor, { newEditorState } from "@/components/editor/Editor";
-import { Button } from "@material-ui/core";
+import ArticleMarkdownEditor from "@/components/ArticleMarkdownEditor";
 import { useState } from "react";
 
 export default function Comments({
   articleId,
   highlights,
   updateArticleAndScroll,
-  articleVersion,
 }) {
-  const [body, setBody] = useState(newEditorState());
+  const [body, setBody] = useState("");
   const [editing, toggleEditing] = useState(true);
 
   return (
     <>
-      <Editor
-        editing={editing}
-        placeholder={"Write a comment!"}
-        editorState={body}
-        onChange={(newEditorState) => setBody(newEditorState)}
+      <ArticleMarkdownEditor
+        body={body}
+        highlights={highlights}
+        onChange={(body) => setBody(body)}
+        updateArticleAndScroll={updateArticleAndScroll}
+        placeholder="Write a comment!"
       />
-      <Button onClick={() => toggleEditing(!editing)}>Toggle</Button>
     </>
   );
 }

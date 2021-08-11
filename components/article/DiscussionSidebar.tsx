@@ -32,7 +32,14 @@ const DiscussionSidebar = ({
   const Body = () => {
     switch (view) {
       case 1:
-        return <Comments />;
+        return (
+          <Comments
+            articleId={articleId}
+            articleVersion={articleVersion}
+            highlights={highlights}
+            updateArticleAndScroll={updateArticleAndScroll}
+          />
+        );
       default:
         return (
           <Reviews

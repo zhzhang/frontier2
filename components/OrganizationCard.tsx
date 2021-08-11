@@ -1,5 +1,5 @@
-import Editor, { deserialize } from "@/components/editor/Editor";
 import FirebaseAvatar from "@/components/FirebaseAvatar";
+import Markdown from "@/components/Markdown";
 import { withApollo } from "@/lib/apollo";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -7,7 +7,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
 const OrganizationCard = ({ organization }) => {
   const { id, name, description, logoRef } = organization;
-  const [desc, setDescription] = useState(deserialize(description));
   const classes = useStyles();
   return (
     <Card>
@@ -41,7 +39,7 @@ const OrganizationCard = ({ organization }) => {
             </Link>
           </Typography>
         </div>
-        <Editor editorState={desc} onChange={setDescription} />
+        <Markdown>{description}</Markdown>
       </CardContent>
     </Card>
   );

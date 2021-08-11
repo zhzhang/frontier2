@@ -1,8 +1,8 @@
-import { useAuth } from "@/lib/firebase";
+import LoginButton from "@/components/LoginButton";
+import { signOut, useAuth } from "@/lib/firebase";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -15,8 +15,7 @@ import {
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -77,6 +76,7 @@ const StyledMenuItem = withStyles((theme) => ({
 const Navigation = () => {
   const { user, loading } = useAuth();
   const classes = useStyles();
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -110,7 +110,7 @@ const Navigation = () => {
             Submit
           </Button>
         </div>
-        {user && (
+        {user ? (
           <div>
             <IconButton
               aria-label="account of current user"
@@ -128,23 +128,25 @@ const Navigation = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <StyledMenuItem>
-                <ListItemText primary="Sent mail" />
+              <StyledMenuItem
+                onClick={async () => {
+                  router.push(`user/${user.uid}`);
+                }}
+              >
+                <ListItemText primary="Profile" />
               </StyledMenuItem>
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <DraftsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Drafts" />
-              </StyledMenuItem>
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <InboxIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Inbox" />
+              <StyledMenuItem
+                onClick={async () => {
+                  await signOut();
+                  router.reload(window.location.pathname);
+                }}
+              >
+                <ListItemText primary="Logout" />
               </StyledMenuItem>
             </StyledMenu>
           </div>
+        ) : (
+          <LoginButton />
         )}
       </Toolbar>
     </AppBar>
