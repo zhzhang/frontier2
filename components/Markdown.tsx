@@ -92,10 +92,10 @@ const highlightPlugin = () => {
 };
 
 const Markdown = ({
-  highlights,
-  updateArticleAndScroll,
   children,
-  articleMode,
+  updateArticleAndScroll = null,
+  articleMode = true,
+  highlights = [],
 }) => {
   const renderers = {
     math: ({ value }) => <BlockMath math={value} />,

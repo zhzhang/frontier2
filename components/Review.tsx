@@ -67,7 +67,12 @@ const Review = ({
         </div>
         <div>
           <AuthorPopover user={review.author} />
-          <Markdown>{body}</Markdown>
+          <Markdown
+            highlights={JSON.parse(highlights)}
+            updateArticleAndScroll={updateArticleAndScroll}
+          >
+            {body}
+          </Markdown>
         </div>
       </div>
       <Thread headId={review.id} />

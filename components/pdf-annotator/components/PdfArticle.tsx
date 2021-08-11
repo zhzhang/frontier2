@@ -293,6 +293,8 @@ export default class PdfArticle extends React.Component {
       ],
     });
 
+    this.viewer.scrollPageIntoView({ pageNumber: 2 });
+
     this.setState(
       {
         scrolledToHighlightId: id,

@@ -125,7 +125,6 @@ export default function Editor({
     onChange(RichUtils.toggleBlockType(editorState, blockType));
   const toggleInlineStyle = (inlineStyle) =>
     onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
-  console.log(serialize(editorState));
 
   const Controls = () => (
     <div className={styles.RichEditorControls}>
