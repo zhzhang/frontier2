@@ -277,7 +277,7 @@ export default class PdfArticle extends React.Component {
 
     const pageViewport = this.viewer.getPageView(pageNumber - 1).viewport;
 
-    const scrollMargin = 150;
+    const scrollMargin = 200;
 
     this.viewer.scrollPageIntoView({
       pageNumber,
@@ -292,8 +292,6 @@ export default class PdfArticle extends React.Component {
         0,
       ],
     });
-
-    this.viewer.scrollPageIntoView({ pageNumber: 2 });
 
     this.setState(
       {

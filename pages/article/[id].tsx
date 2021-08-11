@@ -111,9 +111,11 @@ function Article() {
     variables: { id },
   });
   const [selectedVersionNumber, setVersionNumber] = useState(-1);
-  const [abstractOpen, setAbstractOpen] = useState(false);
   const [editing, setEditing] = useState(true);
   const [highlights, setHighlights] = useState([]);
+  const tmp = JSON.stringify(highlights, function (key, val) {
+    return val.toFixed ? Number(val.toFixed(1)) : val;
+  });
   const [onRenderedCallback, setRenderedCallback] = useState();
   const [scrollTo, setScrollTo] = useState();
 
@@ -199,17 +201,15 @@ function Article() {
             />
           </div>
         </Pane>
-        <div className={classes.articlePane}>
-          <PdfViewer
-            fileRef={ref}
-            highlights={highlights}
-            setHighlights={setHighlights}
-            articleVersion={selectedVersion.versionNumber}
-            onRenderedCallback={onRenderedCallback}
-            setScrollTo={setScrollTo}
-            editing={editing}
-          />
-        </div>
+        <PdfViewer
+          fileRef={ref}
+          highlights={JSON.parse(tmp)}
+          setHighlights={setHighlights}
+          articleVersion={selectedVersion.versionNumber}
+          onRenderedCallback={onRenderedCallback}
+          setScrollTo={setScrollTo}
+          editing={editing}
+        />
       </SplitPane>
     </Layout>
   );
