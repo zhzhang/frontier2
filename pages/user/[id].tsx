@@ -1,11 +1,11 @@
+import FirebaseAvatar from "@/components/FirebaseAvatar";
 import { useQuery } from "@apollo/react-hooks";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import Container from "react-bootstrap/Container";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
 import "react-datepicker/dist/react-datepicker.css";
-import ArticleCard from "../../components/ArticleCard";
 import Spinner from "../../components/CenteredSpinner";
 import Layout from "../../components/Layout";
 import { withApollo } from "../../lib/apollo";
@@ -59,8 +59,19 @@ const UserArticlesQuery = gql`
   }
 `;
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    display: "flex",
+  },
+  editButton: {
+    marginLeft: "auto",
+  },
+}));
+
 function User() {
-  const id = useRouter().query.id;
+  const classes = useStyles();
+  const router = useRouter();
+  const id = router.query.id;
   const { loading, error, data } = useQuery(UserQuery, {
     variables: { id },
   });
@@ -75,25 +86,24 @@ function User() {
     return <div>Error: {error.message}</div>;
   }
 
-  const { name, email, articles } = data.user;
+  const { name, email, articles, profilePictureUrl } = data.user;
   const tabKey = "articles";
 
   return (
     <Layout>
-      <h1>{name}</h1>
-      <Tabs>
-        <Tab eventKey="articles" title="Articles">
-          <Container fluid style={{ margin: 10 }}>
-            {articlesResult.loading ? (
-              <Spinner />
-            ) : (
-              articlesResult.data.userArticles.map((article) => (
-                <ArticleCard article={article} />
-              ))
-            )}
-          </Container>
-        </Tab>
-      </Tabs>
+      <div className={classes.header}>
+        <FirebaseAvatar storeRef={profilePictureUrl} name={name} />
+        <Typography variant="h5">{name}</Typography>
+        <div className={classes.editButton}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => router.push("/edit-profile")}
+          >
+            Edit
+          </Button>
+        </div>
+      </div>
     </Layout>
   );
 }

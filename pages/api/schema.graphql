@@ -140,6 +140,7 @@ scalar Upload
 
 type User {
   articles: [Article]
+  bio: String!
   email: String!
   id: String!
   name: String!

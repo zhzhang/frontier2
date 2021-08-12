@@ -1,4 +1,3 @@
-import { serialize } from "@/components/editor/Editor";
 import Layout from "@/components/Layout";
 import MarkdownEditor from "@/components/MarkdownEditor";
 import PdfViewer from "@/components/PDFViewer";
@@ -78,7 +77,7 @@ const NewArticle = () => {
     createArticle({
       variables: {
         title,
-        abstract: serialize(abstract),
+        abstract,
         ref: refPath,
         authorIds: authors.map((a) => a.id),
       },

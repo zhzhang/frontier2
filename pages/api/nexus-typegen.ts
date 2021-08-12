@@ -121,6 +121,7 @@ export interface NexusGenObjects {
     id?: string | null; // String
   }
   User: { // root type
+    bio: string; // String!
     email: string; // String!
     id: string; // String!
     name: string; // String!
@@ -245,6 +246,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
+    bio: string; // String!
     email: string; // String!
     id: string; // String!
     name: string; // String!
@@ -360,6 +362,7 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     articles: 'Article'
+    bio: 'String'
     email: 'String'
     id: 'String'
     name: 'String'
