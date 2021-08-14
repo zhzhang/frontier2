@@ -222,6 +222,9 @@ export default objectType({
       type: "User",
       args: { query: stringArg() },
       resolve: async (_, { query }, ctx) => {
+        if (query.length < 2) {
+          return [];
+        }
         return await ctx.prisma.user.findMany({
           where: {
             name: {

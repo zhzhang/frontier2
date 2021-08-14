@@ -39,6 +39,18 @@ function readStreamData(stream) {
 export default objectType({
   name: "Mutation",
   definition(t) {
+    t.field("updateUser", {
+      type: "User",
+      args: {
+        id: nonNull(stringArg()),
+        name: nullable(stringArg()),
+        bio: nullable(stringArg()),
+        profilePictureUrl: nullable(stringArg()),
+      },
+      resolve: async (_, { id, name, bio, profilePictureUrl }, ctx) => {
+        ctx.prisma.update({});
+      },
+    });
     t.field("createArticle", {
       type: "Article",
       args: {
@@ -286,6 +298,25 @@ export default objectType({
           });
         }
         return null;
+      },
+    });
+    t.field("addRelation", {
+      type: "Relation",
+      args: {
+        userId: nonNull(stringArg()),
+        targetId: stringArg(),
+        endYear: nonNull(stringArg()),
+        relation: nonNull(arg({ type: "RelationType" })),
+      },
+      resolve: async (_, { userId, targetId, relation, endYear }, ctx) => {
+        return await ctx.prisma.relation.create({
+          data: {
+            userId,
+            targetId,
+            relation,
+            endYear,
+          },
+        });
       },
     });
   },

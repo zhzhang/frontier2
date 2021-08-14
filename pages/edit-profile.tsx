@@ -1,11 +1,23 @@
 import Spinner from "@/components/CenteredSpinner";
 import ErrorPage from "@/components/ErrorPage";
 import Layout from "@/components/Layout";
+import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
-import { useQuery } from "@apollo/react-hooks";
+import { RelationEnum } from "@/lib/types";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
@@ -20,23 +32,40 @@ const UserQuery = gql`
       name
       email
       bio
-      articles {
-        id
-        authors {
+      relations {
+        target {
           id
           name
+          email
         }
-        title
-        versions {
-          id
-          versionNumber
-          abstract
-        }
-        acceptedOrganizations {
-          id
-          name
-        }
+        relation
+        endYear
       }
+    }
+  }
+`;
+
+const AddRelationMutation = gql`
+  mutation AddRelation(
+    $userId: String!
+    $targetId: String!
+    $relation: RelationType!
+    $endYear: String!
+  ) {
+    addRelation(
+      userId: $userId
+      targetId: $targetId
+      relation: $relation
+      endYear: $endYear
+    ) {
+      id
+      target {
+        id
+        name
+        email
+      }
+      relation
+      endYear
     }
   }
 `;
@@ -53,9 +82,102 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "4px",
     borderStyle: "dashed",
     padding: theme.spacing(1),
-    height: "302px",
+    height: "150px",
   },
 }));
+
+function Relations({ userId, relations }) {
+  const [target, setTarget] = useState();
+  const [endYear, setEndYear] = useState("");
+  const [relationType, setRelationType] = useState("");
+  const [addRelation, result] = useMutation(AddRelationMutation);
+  const handleAddRelation = () => {
+    addRelation({
+      variables: {
+        userId,
+        targetId: target.id,
+        relation: relationType,
+        endYear,
+      },
+    });
+  };
+  const relationMenuItems = [];
+  const handleRelationTypeChange = (event) => {
+    setRelationType(event.target.value);
+  };
+  for (let rel in RelationEnum) {
+    relationMenuItems.push(
+      <MenuItem key={rel} value={rel}>
+        {rel.charAt(0) + rel.slice(1).toLowerCase()}
+      </MenuItem>
+    );
+  }
+  return (
+    <Grid item xs={12}>
+      <TableContainer>
+        <Table aria-label="simple table">
+          <colgroup>
+            <col style={{ width: "50%" }} />
+            <col style={{ width: "25%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "10%" }} />
+          </colgroup>
+          <TableBody>
+            {relations.map(({ id, target, endYear, relation }) => (
+              <TableRow key={id}>
+                <TableCell component="th" scope="row">
+                  {target.name}
+                </TableCell>
+                <TableCell>
+                  {relation.charAt(0) + relation.slice(1).toLowerCase()}
+                </TableCell>
+                <TableCell>{endYear}</TableCell>
+                <TableCell>
+                  <Button>Remove</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+            <TableRow key="new">
+              <TableCell>
+                <UserTypeahead
+                  id="add-relation-typeahead"
+                  selected={target}
+                  onChange={(_, selected) => {
+                    setTarget(selected);
+                  }}
+                />
+              </TableCell>
+              <TableCell>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="demo-controlled-open-select-label">
+                    Relationship
+                  </InputLabel>
+                  <Select
+                    value={relationType}
+                    onChange={handleRelationTypeChange}
+                  >
+                    {relationMenuItems}
+                  </Select>
+                </FormControl>
+              </TableCell>
+              <TableCell>
+                <TextField
+                  value={endYear}
+                  variant="outlined"
+                  label="End Year"
+                  onChange={(event) => setEndYear(event.target.value)}
+                />
+              </TableCell>
+              <TableCell>
+                <Button onClick={handleAddRelation}>Save</Button>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Grid>
+  );
+}
 
 function Editor({ user }) {
   // const { name, email, articles, profilePictureUrl } = data.user;
@@ -65,10 +187,12 @@ function Editor({ user }) {
   const [logoUrl, setLogoUrl] = useState("");
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
   const imgRef = useRef(null);
+  console.log(user);
 
   const onLoad = useCallback((img) => {
     imgRef.current = img;
   }, []);
+
   return (
     <Layout>
       <Grid container spacing={3}>
@@ -122,6 +246,14 @@ function Editor({ user }) {
             onChange={(event) => setBio(event.target.value)}
           />
         </Grid>
+        <Grid item xs={12}>
+          <Button>Save</Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h5">Relations</Typography>
+        </Grid>
+
+        <Relations userId={user.id} relations={user.relations} />
       </Grid>
     </Layout>
   );
@@ -137,6 +269,8 @@ function EditProfile({ id }) {
         <Spinner />
       </Layout>
     );
+  } else if (error) {
+    return null;
   }
   return <Editor user={data.user} />;
 }

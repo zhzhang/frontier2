@@ -45,6 +45,7 @@ type Decision {
 }
 
 type Mutation {
+  addRelation(endYear: String!, relation: RelationType!, targetId: String, userId: String!): Relation
   assignReviewers(reviewerIds: [String!]!, submissionId: String!): Submission
   assignSubmissionOwner(submissionId: String!, userId: String!): Submission
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, organizationId: String, ref: String!, title: String!): Article
@@ -91,6 +92,22 @@ type Query {
   threadMessages(cursor: String, headId: String!): [ThreadMessage]
   user(id: String!): User
   userArticles(id: String!): [Article]
+}
+
+type Relation {
+  endYear: String!
+  id: String!
+  relation: RelationType!
+  target: User!
+}
+
+enum RelationType {
+  ADVISEE
+  ADVISOR
+  COAUTHOR
+  COWORKER
+  FAMILY
+  SOCIAL
 }
 
 type Review {
@@ -145,6 +162,7 @@ type User {
   id: String!
   name: String!
   profilePictureUrl: String
+  relations: [Relation]
 }
 
 type Venue {

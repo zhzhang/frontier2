@@ -4,6 +4,15 @@ export enum RoleEnum {
   NONE = "NONE",
 }
 
+export enum RelationEnum {
+  ADVISOR = "ADVISOR",
+  ADVISEE = "ADVISEE",
+  COAUTHOR = "COAUTHOR",
+  COWORKER = "COWORKER",
+  FAMILY = "FAMILY",
+  SOCIAL = "SOCIAL",
+}
+
 export enum UploadTypeEnum {
   ARTICLE,
   LOGO,

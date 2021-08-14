@@ -50,6 +50,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  RelationType: "ADVISEE" | "ADVISOR" | "COAUTHOR" | "COWORKER" | "FAMILY" | "SOCIAL"
   Role: "ACTION_EDITOR" | "ADMIN" | "NONE"
 }
 
@@ -94,6 +95,11 @@ export interface NexusGenObjects {
     name?: string | null; // String
   }
   Query: {};
+  Relation: { // root type
+    endYear: string; // String!
+    id: string; // String!
+    relation: NexusGenEnums['RelationType']; // RelationType!
+  }
   Review: { // root type
     articleVersion?: number | null; // Int
     author?: NexusGenRootTypes['User'] | null; // User
@@ -175,6 +181,7 @@ export interface NexusGenFieldTypes {
     organization: NexusGenRootTypes['Organization'] | null; // Organization
   }
   Mutation: { // field return type
+    addRelation: NexusGenRootTypes['Relation'] | null; // Relation
     assignReviewers: NexusGenRootTypes['Submission'] | null; // Submission
     assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
@@ -215,6 +222,12 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User'] | null; // User
     userArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
   }
+  Relation: { // field return type
+    endYear: string; // String!
+    id: string; // String!
+    relation: NexusGenEnums['RelationType']; // RelationType!
+    target: NexusGenRootTypes['User']; // User!
+  }
   Review: { // field return type
     articleVersion: number | null; // Int
     author: NexusGenRootTypes['User'] | null; // User
@@ -251,6 +264,7 @@ export interface NexusGenFieldTypes {
     id: string; // String!
     name: string; // String!
     profilePictureUrl: string | null; // String
+    relations: Array<NexusGenRootTypes['Relation'] | null> | null; // [Relation]
   }
   Venue: { // field return type
     abbreviation: string | null; // String
@@ -291,6 +305,7 @@ export interface NexusGenFieldTypeNames {
     organization: 'Organization'
   }
   Mutation: { // field return type name
+    addRelation: 'Relation'
     assignReviewers: 'Submission'
     assignSubmissionOwner: 'Submission'
     createArticle: 'Article'
@@ -331,6 +346,12 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
     userArticles: 'Article'
   }
+  Relation: { // field return type name
+    endYear: 'String'
+    id: 'String'
+    relation: 'RelationType'
+    target: 'User'
+  }
   Review: { // field return type name
     articleVersion: 'Int'
     author: 'User'
@@ -367,6 +388,7 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     name: 'String'
     profilePictureUrl: 'String'
+    relations: 'Relation'
   }
   Venue: { // field return type name
     abbreviation: 'String'
@@ -391,6 +413,12 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
+    addRelation: { // args
+      endYear: string; // String!
+      relation: NexusGenEnums['RelationType']; // RelationType!
+      targetId?: string | null; // String
+      userId: string; // String!
+    }
     assignReviewers: { // args
       reviewerIds: string[]; // [String!]!
       submissionId: string; // String!

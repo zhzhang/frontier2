@@ -32,10 +32,10 @@ enum RelationType {
 }
 
 model Relation {
-  id       String       @id
-  target   User         @relation(fields: [userId], references: [id])
+  id       String       @id @default(cuid())
+  target   User         @relation(fields: [targetId], references: [id])
   relation RelationType
-  comment  String
+  endYear  String
   userId   String
   targetId String
 }

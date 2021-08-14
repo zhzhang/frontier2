@@ -18,7 +18,6 @@ const SearchUsersQuery = gql`
 export default function UserTypeahead({ label = "Search users...", ...rest }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState([]);
   const { loading, error, data } = useQuery(SearchUsersQuery, {
     variables: { query },
   });
