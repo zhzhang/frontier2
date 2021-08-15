@@ -26,13 +26,14 @@ import Dropzone from "react-dropzone";
 import ReactCrop from "react-image-crop";
 
 const UserQuery = gql`
-  query UserQuery($id: String!) {
-    user(id: $id) {
+  query UserQuery($where: UserWhereUniqueInput!) {
+    user(where: $where) {
       id
       name
       email
       bio
       relations {
+        id
         target {
           id
           name
@@ -45,19 +46,27 @@ const UserQuery = gql`
   }
 `;
 
-const AddRelationMutation = gql`
-  mutation AddRelation(
-    $userId: String!
-    $targetId: String!
-    $relation: RelationType!
-    $endYear: String!
+const UpdateUserMutation = gql`
+  mutation UpdateUser(
+    $id: String!
+    $name: String
+    $bio: String
+    $profilePictureUrl: String
   ) {
-    addRelation(
-      userId: $userId
-      targetId: $targetId
-      relation: $relation
-      endYear: $endYear
+    updateUser(
+      id: $id
+      name: $name
+      bio: $bio
+      profilePictureUrl: $profilePictureUrl
     ) {
+      id
+    }
+  }
+`;
+
+const CreateRelationMutation = gql`
+  mutation CreateRelation($data: RelationCreateInput!) {
+    createOneRelation(data: $data) {
       id
       target {
         id
@@ -66,6 +75,14 @@ const AddRelationMutation = gql`
       }
       relation
       endYear
+    }
+  }
+`;
+
+const DeleteRelationMutation = gql`
+  mutation DeleteRelation($where: RelationWhereUniqueInput!) {
+    deleteOneRelation(where: $where) {
+      id
     }
   }
 `;
@@ -90,14 +107,34 @@ function Relations({ userId, relations }) {
   const [target, setTarget] = useState();
   const [endYear, setEndYear] = useState("");
   const [relationType, setRelationType] = useState("");
-  const [addRelation, result] = useMutation(AddRelationMutation);
+  const [addRelation, result] = useMutation(CreateRelationMutation, {
+    update(cache, { data: { createOneRelation } }) {
+      cache.modify({
+        fields: {
+          user(prev) {
+            return {
+              ...prev,
+              relations: [...prev.relations, createOneRelation],
+            };
+          },
+        },
+      });
+    },
+  });
+  const [deleteRelation, _] = useMutation(DeleteRelationMutation);
   const handleAddRelation = () => {
     addRelation({
       variables: {
-        userId,
-        targetId: target.id,
-        relation: relationType,
-        endYear,
+        data: {
+          userId,
+          relation: relationType,
+          endYear,
+          target: {
+            connect: {
+              id: target.id,
+            },
+          },
+        },
       },
     });
   };
@@ -133,7 +170,16 @@ function Relations({ userId, relations }) {
                 </TableCell>
                 <TableCell>{endYear}</TableCell>
                 <TableCell>
-                  <Button>Remove</Button>
+                  <Button
+                    color="secondary"
+                    onClick={() =>
+                      deleteRelation({
+                        variables: { where: { id } },
+                      })
+                    }
+                  >
+                    Remove
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -169,7 +215,7 @@ function Relations({ userId, relations }) {
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={handleAddRelation}>Save</Button>
+                <Button onClick={handleAddRelation}>Add</Button>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -187,7 +233,16 @@ function Editor({ user }) {
   const [logoUrl, setLogoUrl] = useState("");
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
   const imgRef = useRef(null);
-  console.log(user);
+  const [updateUser, result] = useMutation(UpdateUserMutation);
+  const handleUpdateUser = async () => {
+    await updateUser({
+      variables: {
+        id: user.id,
+        name,
+        bio,
+      },
+    });
+  };
 
   const onLoad = useCallback((img) => {
     imgRef.current = img;
@@ -209,6 +264,18 @@ function Editor({ user }) {
             onChange={(event) => setName(event.target.value)}
           />
         </Grid>
+        <Grid item xs={7} />
+        <Grid item xs={5}>
+          <TextField
+            value={bio}
+            fullWidth
+            multiline
+            variant="outlined"
+            label="Bio"
+            onChange={(event) => setBio(event.target.value)}
+          />
+        </Grid>
+        <Grid item xs={7} />
         <Grid item xs={3}>
           {logoUrl ? (
             <ReactCrop
@@ -236,18 +303,15 @@ function Editor({ user }) {
             </Dropzone>
           )}
         </Grid>
+
         <Grid item xs={12}>
-          <TextField
-            value={bio}
-            fullWidth
-            multiline
-            variant="outlined"
-            label="Bio"
-            onChange={(event) => setBio(event.target.value)}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button>Save</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleUpdateUser}
+          >
+            Save
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h5">Relations</Typography>
@@ -261,7 +325,7 @@ function Editor({ user }) {
 
 function EditProfile({ id }) {
   const { loading, error, data } = useQuery(UserQuery, {
-    variables: { id },
+    variables: { where: { id } },
   });
   if (loading) {
     return (

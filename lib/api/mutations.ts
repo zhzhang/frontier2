@@ -47,8 +47,18 @@ export default objectType({
         bio: nullable(stringArg()),
         profilePictureUrl: nullable(stringArg()),
       },
+      authorize: (_, { id }, ctx) => id === ctx.user.id,
       resolve: async (_, { id, name, bio, profilePictureUrl }, ctx) => {
-        ctx.prisma.update({});
+        return await ctx.prisma.user.update({
+          where: {
+            id,
+          },
+          data: {
+            name,
+            bio,
+            profilePictureUrl,
+          },
+        });
       },
     });
     t.field("createArticle", {
@@ -300,23 +310,17 @@ export default objectType({
         return null;
       },
     });
-    t.field("addRelation", {
-      type: "Relation",
-      args: {
-        userId: nonNull(stringArg()),
-        targetId: stringArg(),
-        endYear: nonNull(stringArg()),
-        relation: nonNull(arg({ type: "RelationType" })),
-      },
-      resolve: async (_, { userId, targetId, relation, endYear }, ctx) => {
-        return await ctx.prisma.relation.create({
-          data: {
-            userId,
-            targetId,
-            relation,
-            endYear,
+    t.crud.createOneRelation({
+      authorize: (_, { data: { userId } }, ctx) => userId === ctx.user.id,
+    });
+    t.crud.deleteOneRelation({
+      authorize: async (_, { where: { id } }, ctx) => {
+        const relation = await ctx.prisma.relation.findUnique({
+          where: {
+            id,
           },
         });
+        return relation.userId === ctx.user.id;
       },
     });
   },

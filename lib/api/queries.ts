@@ -6,33 +6,7 @@ import { RoleEnum } from "../types";
 export default objectType({
   name: "Query",
   definition(t) {
-    t.field("user", {
-      type: "User",
-      args: {
-        id: nonNull(stringArg()),
-      },
-      resolve: (_, { id }, ctx) => {
-        return ctx.prisma.user.findUnique({
-          where: { id },
-          include: {
-            authorships: {
-              include: {
-                article: {
-                  include: {
-                    authors: {
-                      include: {
-                        user: true,
-                      },
-                    },
-                    versions: true,
-                  },
-                },
-              },
-            },
-          },
-        });
-      },
-    });
+    t.crud.user();
     t.list.field("userArticles", {
       type: "Article",
       args: {

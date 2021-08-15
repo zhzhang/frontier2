@@ -17,7 +17,7 @@ import { ApolloServer } from "apollo-server-micro";
 import { rule, shield } from "graphql-shield";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
 import jwt_decode from "jwt-decode";
-import { asNexusMethod, makeSchema } from "nexus";
+import { asNexusMethod, fieldAuthorizePlugin, makeSchema } from "nexus";
 import { nexusPrisma } from "nexus-plugin-prisma";
 import path from "path";
 
@@ -42,6 +42,7 @@ export const schema = makeSchema({
     nexusPrisma({
       experimentalCRUD: true,
     }),
+    fieldAuthorizePlugin(),
   ],
   types: [
     GraphQLDateTime,

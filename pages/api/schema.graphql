@@ -12,6 +12,150 @@ type Article {
   versions: [ArticleVersion!]!
 }
 
+input ArticleAuthorCreateManyArticleInput {
+  authorNumber: Int!
+  id: Int
+  userId: String!
+}
+
+input ArticleAuthorCreateManyArticleInputEnvelope {
+  data: [ArticleAuthorCreateManyArticleInput!]
+  skipDuplicates: Boolean
+}
+
+input ArticleAuthorCreateManyUserInput {
+  articleId: String!
+  authorNumber: Int!
+  id: Int
+}
+
+input ArticleAuthorCreateManyUserInputEnvelope {
+  data: [ArticleAuthorCreateManyUserInput!]
+  skipDuplicates: Boolean
+}
+
+input ArticleAuthorCreateNestedManyWithoutArticleInput {
+  connect: [ArticleAuthorWhereUniqueInput!]
+  connectOrCreate: [ArticleAuthorCreateOrConnectWithoutArticleInput!]
+  create: [ArticleAuthorCreateWithoutArticleInput!]
+  createMany: ArticleAuthorCreateManyArticleInputEnvelope
+}
+
+input ArticleAuthorCreateNestedManyWithoutUserInput {
+  connect: [ArticleAuthorWhereUniqueInput!]
+  connectOrCreate: [ArticleAuthorCreateOrConnectWithoutUserInput!]
+  create: [ArticleAuthorCreateWithoutUserInput!]
+  createMany: ArticleAuthorCreateManyUserInputEnvelope
+}
+
+input ArticleAuthorCreateOrConnectWithoutArticleInput {
+  create: ArticleAuthorCreateWithoutArticleInput!
+  where: ArticleAuthorWhereUniqueInput!
+}
+
+input ArticleAuthorCreateOrConnectWithoutUserInput {
+  create: ArticleAuthorCreateWithoutUserInput!
+  where: ArticleAuthorWhereUniqueInput!
+}
+
+input ArticleAuthorCreateWithoutArticleInput {
+  authorNumber: Int!
+  user: UserCreateNestedOneWithoutAuthorshipsInput!
+}
+
+input ArticleAuthorCreateWithoutUserInput {
+  article: ArticleCreateNestedOneWithoutAuthorsInput!
+  authorNumber: Int!
+}
+
+input ArticleAuthorWhereUniqueInput {
+  id: Int
+}
+
+input ArticleCreateNestedOneWithoutAuthorsInput {
+  connect: ArticleWhereUniqueInput
+  connectOrCreate: ArticleCreateOrConnectWithoutAuthorsInput
+  create: ArticleCreateWithoutAuthorsInput
+}
+
+input ArticleCreateNestedOneWithoutDecisionsInput {
+  connect: ArticleWhereUniqueInput
+  connectOrCreate: ArticleCreateOrConnectWithoutDecisionsInput
+  create: ArticleCreateWithoutDecisionsInput
+}
+
+input ArticleCreateNestedOneWithoutReviewsInput {
+  connect: ArticleWhereUniqueInput
+  connectOrCreate: ArticleCreateOrConnectWithoutReviewsInput
+  create: ArticleCreateWithoutReviewsInput
+}
+
+input ArticleCreateNestedOneWithoutSubmissionsInput {
+  connect: ArticleWhereUniqueInput
+  connectOrCreate: ArticleCreateOrConnectWithoutSubmissionsInput
+  create: ArticleCreateWithoutSubmissionsInput
+}
+
+input ArticleCreateOrConnectWithoutAuthorsInput {
+  create: ArticleCreateWithoutAuthorsInput!
+  where: ArticleWhereUniqueInput!
+}
+
+input ArticleCreateOrConnectWithoutDecisionsInput {
+  create: ArticleCreateWithoutDecisionsInput!
+  where: ArticleWhereUniqueInput!
+}
+
+input ArticleCreateOrConnectWithoutReviewsInput {
+  create: ArticleCreateWithoutReviewsInput!
+  where: ArticleWhereUniqueInput!
+}
+
+input ArticleCreateOrConnectWithoutSubmissionsInput {
+  create: ArticleCreateWithoutSubmissionsInput!
+  where: ArticleWhereUniqueInput!
+}
+
+input ArticleCreateWithoutAuthorsInput {
+  anonymous: Boolean
+  decisions: DecisionCreateNestedManyWithoutArticleInput
+  id: String
+  reviews: ReviewCreateNestedManyWithoutArticleInput
+  submissions: SubmissionCreateNestedManyWithoutArticleInput
+  title: String!
+  versions: ArticleVersionCreateNestedManyWithoutArticleInput
+}
+
+input ArticleCreateWithoutDecisionsInput {
+  anonymous: Boolean
+  authors: ArticleAuthorCreateNestedManyWithoutArticleInput
+  id: String
+  reviews: ReviewCreateNestedManyWithoutArticleInput
+  submissions: SubmissionCreateNestedManyWithoutArticleInput
+  title: String!
+  versions: ArticleVersionCreateNestedManyWithoutArticleInput
+}
+
+input ArticleCreateWithoutReviewsInput {
+  anonymous: Boolean
+  authors: ArticleAuthorCreateNestedManyWithoutArticleInput
+  decisions: DecisionCreateNestedManyWithoutArticleInput
+  id: String
+  submissions: SubmissionCreateNestedManyWithoutArticleInput
+  title: String!
+  versions: ArticleVersionCreateNestedManyWithoutArticleInput
+}
+
+input ArticleCreateWithoutSubmissionsInput {
+  anonymous: Boolean
+  authors: ArticleAuthorCreateNestedManyWithoutArticleInput
+  decisions: DecisionCreateNestedManyWithoutArticleInput
+  id: String
+  reviews: ReviewCreateNestedManyWithoutArticleInput
+  title: String!
+  versions: ArticleVersionCreateNestedManyWithoutArticleInput
+}
+
 input ArticleReviewsWhereInput {
   published: BoolFilter
 }
@@ -22,6 +166,47 @@ type ArticleVersion {
   id: String!
   ref: String
   versionNumber: Int!
+}
+
+input ArticleVersionCreateManyArticleInput {
+  abstract: String!
+  createdAt: DateTime
+  id: String
+  ref: String
+  versionNumber: Int!
+}
+
+input ArticleVersionCreateManyArticleInputEnvelope {
+  data: [ArticleVersionCreateManyArticleInput!]
+  skipDuplicates: Boolean
+}
+
+input ArticleVersionCreateNestedManyWithoutArticleInput {
+  connect: [ArticleVersionWhereUniqueInput!]
+  connectOrCreate: [ArticleVersionCreateOrConnectWithoutArticleInput!]
+  create: [ArticleVersionCreateWithoutArticleInput!]
+  createMany: ArticleVersionCreateManyArticleInputEnvelope
+}
+
+input ArticleVersionCreateOrConnectWithoutArticleInput {
+  create: ArticleVersionCreateWithoutArticleInput!
+  where: ArticleVersionWhereUniqueInput!
+}
+
+input ArticleVersionCreateWithoutArticleInput {
+  abstract: String!
+  createdAt: DateTime
+  id: String
+  ref: String
+  versionNumber: Int!
+}
+
+input ArticleVersionWhereUniqueInput {
+  id: String
+}
+
+input ArticleWhereUniqueInput {
+  id: String
 }
 
 input BoolFilter {
@@ -44,16 +229,185 @@ type Decision {
   organization: Organization
 }
 
+input DecisionCreateManyArticleInput {
+  authorId: String!
+  body: String!
+  decision: Boolean
+  highlights: String!
+  id: String
+  organizationId: String
+  published: Boolean
+}
+
+input DecisionCreateManyArticleInputEnvelope {
+  data: [DecisionCreateManyArticleInput!]
+  skipDuplicates: Boolean
+}
+
+input DecisionCreateManyAuthorInput {
+  articleId: String!
+  body: String!
+  decision: Boolean
+  highlights: String!
+  id: String
+  organizationId: String
+  published: Boolean
+}
+
+input DecisionCreateManyAuthorInputEnvelope {
+  data: [DecisionCreateManyAuthorInput!]
+  skipDuplicates: Boolean
+}
+
+input DecisionCreateManyOrganizationInput {
+  articleId: String!
+  authorId: String!
+  body: String!
+  decision: Boolean
+  highlights: String!
+  id: String
+  published: Boolean
+}
+
+input DecisionCreateManyOrganizationInputEnvelope {
+  data: [DecisionCreateManyOrganizationInput!]
+  skipDuplicates: Boolean
+}
+
+input DecisionCreateNestedManyWithoutArticleInput {
+  connect: [DecisionWhereUniqueInput!]
+  connectOrCreate: [DecisionCreateOrConnectWithoutArticleInput!]
+  create: [DecisionCreateWithoutArticleInput!]
+  createMany: DecisionCreateManyArticleInputEnvelope
+}
+
+input DecisionCreateNestedManyWithoutAuthorInput {
+  connect: [DecisionWhereUniqueInput!]
+  connectOrCreate: [DecisionCreateOrConnectWithoutAuthorInput!]
+  create: [DecisionCreateWithoutAuthorInput!]
+  createMany: DecisionCreateManyAuthorInputEnvelope
+}
+
+input DecisionCreateNestedManyWithoutCitedReviewsInput {
+  connect: [DecisionWhereUniqueInput!]
+  connectOrCreate: [DecisionCreateOrConnectWithoutCitedReviewsInput!]
+  create: [DecisionCreateWithoutCitedReviewsInput!]
+}
+
+input DecisionCreateNestedManyWithoutOrganizationInput {
+  connect: [DecisionWhereUniqueInput!]
+  connectOrCreate: [DecisionCreateOrConnectWithoutOrganizationInput!]
+  create: [DecisionCreateWithoutOrganizationInput!]
+  createMany: DecisionCreateManyOrganizationInputEnvelope
+}
+
+input DecisionCreateNestedOneWithoutSubmissionInput {
+  connect: DecisionWhereUniqueInput
+  connectOrCreate: DecisionCreateOrConnectWithoutSubmissionInput
+  create: DecisionCreateWithoutSubmissionInput
+}
+
+input DecisionCreateOrConnectWithoutArticleInput {
+  create: DecisionCreateWithoutArticleInput!
+  where: DecisionWhereUniqueInput!
+}
+
+input DecisionCreateOrConnectWithoutAuthorInput {
+  create: DecisionCreateWithoutAuthorInput!
+  where: DecisionWhereUniqueInput!
+}
+
+input DecisionCreateOrConnectWithoutCitedReviewsInput {
+  create: DecisionCreateWithoutCitedReviewsInput!
+  where: DecisionWhereUniqueInput!
+}
+
+input DecisionCreateOrConnectWithoutOrganizationInput {
+  create: DecisionCreateWithoutOrganizationInput!
+  where: DecisionWhereUniqueInput!
+}
+
+input DecisionCreateOrConnectWithoutSubmissionInput {
+  create: DecisionCreateWithoutSubmissionInput!
+  where: DecisionWhereUniqueInput!
+}
+
+input DecisionCreateWithoutArticleInput {
+  author: UserCreateNestedOneWithoutDecisionsInput!
+  body: String!
+  citedReviews: ReviewCreateNestedManyWithoutDecisionsInput
+  decision: Boolean
+  highlights: String!
+  id: String
+  organization: OrganizationCreateNestedOneWithoutDecisionsInput
+  published: Boolean
+  submission: SubmissionCreateNestedOneWithoutDecisionInput
+}
+
+input DecisionCreateWithoutAuthorInput {
+  article: ArticleCreateNestedOneWithoutDecisionsInput!
+  body: String!
+  citedReviews: ReviewCreateNestedManyWithoutDecisionsInput
+  decision: Boolean
+  highlights: String!
+  id: String
+  organization: OrganizationCreateNestedOneWithoutDecisionsInput
+  published: Boolean
+  submission: SubmissionCreateNestedOneWithoutDecisionInput
+}
+
+input DecisionCreateWithoutCitedReviewsInput {
+  article: ArticleCreateNestedOneWithoutDecisionsInput!
+  author: UserCreateNestedOneWithoutDecisionsInput!
+  body: String!
+  decision: Boolean
+  highlights: String!
+  id: String
+  organization: OrganizationCreateNestedOneWithoutDecisionsInput
+  published: Boolean
+  submission: SubmissionCreateNestedOneWithoutDecisionInput
+}
+
+input DecisionCreateWithoutOrganizationInput {
+  article: ArticleCreateNestedOneWithoutDecisionsInput!
+  author: UserCreateNestedOneWithoutDecisionsInput!
+  body: String!
+  citedReviews: ReviewCreateNestedManyWithoutDecisionsInput
+  decision: Boolean
+  highlights: String!
+  id: String
+  published: Boolean
+  submission: SubmissionCreateNestedOneWithoutDecisionInput
+}
+
+input DecisionCreateWithoutSubmissionInput {
+  article: ArticleCreateNestedOneWithoutDecisionsInput!
+  author: UserCreateNestedOneWithoutDecisionsInput!
+  body: String!
+  citedReviews: ReviewCreateNestedManyWithoutDecisionsInput
+  decision: Boolean
+  highlights: String!
+  id: String
+  organization: OrganizationCreateNestedOneWithoutDecisionsInput
+  published: Boolean
+}
+
+input DecisionWhereUniqueInput {
+  id: String
+}
+
 type Mutation {
-  addRelation(endYear: String!, relation: RelationType!, targetId: String, userId: String!): Relation
   assignReviewers(reviewerIds: [String!]!, submissionId: String!): Submission
   assignSubmissionOwner(submissionId: String!, userId: String!): Submission
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, organizationId: String, ref: String!, title: String!): Article
+  createOneRelation(data: RelationCreateInput!): Relation!
   createOrganization(abbreviation: String, description: String!, logoRef: String, name: String!): Organization
   createReview(articleId: String!, submissionId: String): Review
+  deleteOneRelation(where: RelationWhereUniqueInput!): Relation
   updateOrganization(abbreviation: String, description: String, id: String!, logoRef: String, name: String): Organization
   updateOrganizationMembership(action: String!, organizationId: String!, role: Role!, userId: String!): Organization
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
+  updateUser(bio: String, id: String!, name: String, profilePictureUrl: String): User
 }
 
 input NestedBoolFilter {
@@ -75,6 +429,162 @@ type Organization {
   venues: [Venue]
 }
 
+input OrganizationCreateNestedOneWithoutDecisionsInput {
+  connect: OrganizationWhereUniqueInput
+  connectOrCreate: OrganizationCreateOrConnectWithoutDecisionsInput
+  create: OrganizationCreateWithoutDecisionsInput
+}
+
+input OrganizationCreateNestedOneWithoutMembershipsInput {
+  connect: OrganizationWhereUniqueInput
+  connectOrCreate: OrganizationCreateOrConnectWithoutMembershipsInput
+  create: OrganizationCreateWithoutMembershipsInput
+}
+
+input OrganizationCreateNestedOneWithoutReviewsInput {
+  connect: OrganizationWhereUniqueInput
+  connectOrCreate: OrganizationCreateOrConnectWithoutReviewsInput
+  create: OrganizationCreateWithoutReviewsInput
+}
+
+input OrganizationCreateNestedOneWithoutSubmissionsInput {
+  connect: OrganizationWhereUniqueInput
+  connectOrCreate: OrganizationCreateOrConnectWithoutSubmissionsInput
+  create: OrganizationCreateWithoutSubmissionsInput
+}
+
+input OrganizationCreateOrConnectWithoutDecisionsInput {
+  create: OrganizationCreateWithoutDecisionsInput!
+  where: OrganizationWhereUniqueInput!
+}
+
+input OrganizationCreateOrConnectWithoutMembershipsInput {
+  create: OrganizationCreateWithoutMembershipsInput!
+  where: OrganizationWhereUniqueInput!
+}
+
+input OrganizationCreateOrConnectWithoutReviewsInput {
+  create: OrganizationCreateWithoutReviewsInput!
+  where: OrganizationWhereUniqueInput!
+}
+
+input OrganizationCreateOrConnectWithoutSubmissionsInput {
+  create: OrganizationCreateWithoutSubmissionsInput!
+  where: OrganizationWhereUniqueInput!
+}
+
+input OrganizationCreateWithoutDecisionsInput {
+  abbreviation: String
+  description: String!
+  id: String
+  logoRef: String
+  memberships: OrganizationMembershipCreateNestedManyWithoutOrganizationInput
+  name: String!
+  reviews: ReviewCreateNestedManyWithoutOrganizationInput
+  submissions: SubmissionCreateNestedManyWithoutOrganizationInput
+  venues: VenueCreateNestedManyWithoutOrganizationInput
+}
+
+input OrganizationCreateWithoutMembershipsInput {
+  abbreviation: String
+  decisions: DecisionCreateNestedManyWithoutOrganizationInput
+  description: String!
+  id: String
+  logoRef: String
+  name: String!
+  reviews: ReviewCreateNestedManyWithoutOrganizationInput
+  submissions: SubmissionCreateNestedManyWithoutOrganizationInput
+  venues: VenueCreateNestedManyWithoutOrganizationInput
+}
+
+input OrganizationCreateWithoutReviewsInput {
+  abbreviation: String
+  decisions: DecisionCreateNestedManyWithoutOrganizationInput
+  description: String!
+  id: String
+  logoRef: String
+  memberships: OrganizationMembershipCreateNestedManyWithoutOrganizationInput
+  name: String!
+  submissions: SubmissionCreateNestedManyWithoutOrganizationInput
+  venues: VenueCreateNestedManyWithoutOrganizationInput
+}
+
+input OrganizationCreateWithoutSubmissionsInput {
+  abbreviation: String
+  decisions: DecisionCreateNestedManyWithoutOrganizationInput
+  description: String!
+  id: String
+  logoRef: String
+  memberships: OrganizationMembershipCreateNestedManyWithoutOrganizationInput
+  name: String!
+  reviews: ReviewCreateNestedManyWithoutOrganizationInput
+  venues: VenueCreateNestedManyWithoutOrganizationInput
+}
+
+input OrganizationMembershipCreateManyOrganizationInput {
+  id: Int
+  role: String!
+  userId: String!
+}
+
+input OrganizationMembershipCreateManyOrganizationInputEnvelope {
+  data: [OrganizationMembershipCreateManyOrganizationInput!]
+  skipDuplicates: Boolean
+}
+
+input OrganizationMembershipCreateManyUserInput {
+  id: Int
+  organizationId: String!
+  role: String!
+}
+
+input OrganizationMembershipCreateManyUserInputEnvelope {
+  data: [OrganizationMembershipCreateManyUserInput!]
+  skipDuplicates: Boolean
+}
+
+input OrganizationMembershipCreateNestedManyWithoutOrganizationInput {
+  connect: [OrganizationMembershipWhereUniqueInput!]
+  connectOrCreate: [OrganizationMembershipCreateOrConnectWithoutOrganizationInput!]
+  create: [OrganizationMembershipCreateWithoutOrganizationInput!]
+  createMany: OrganizationMembershipCreateManyOrganizationInputEnvelope
+}
+
+input OrganizationMembershipCreateNestedManyWithoutUserInput {
+  connect: [OrganizationMembershipWhereUniqueInput!]
+  connectOrCreate: [OrganizationMembershipCreateOrConnectWithoutUserInput!]
+  create: [OrganizationMembershipCreateWithoutUserInput!]
+  createMany: OrganizationMembershipCreateManyUserInputEnvelope
+}
+
+input OrganizationMembershipCreateOrConnectWithoutOrganizationInput {
+  create: OrganizationMembershipCreateWithoutOrganizationInput!
+  where: OrganizationMembershipWhereUniqueInput!
+}
+
+input OrganizationMembershipCreateOrConnectWithoutUserInput {
+  create: OrganizationMembershipCreateWithoutUserInput!
+  where: OrganizationMembershipWhereUniqueInput!
+}
+
+input OrganizationMembershipCreateWithoutOrganizationInput {
+  role: String!
+  user: UserCreateNestedOneWithoutOrganizationMembershipsInput!
+}
+
+input OrganizationMembershipCreateWithoutUserInput {
+  organization: OrganizationCreateNestedOneWithoutMembershipsInput!
+  role: String!
+}
+
+input OrganizationMembershipWhereUniqueInput {
+  id: Int
+}
+
+input OrganizationWhereUniqueInput {
+  id: String
+}
+
 type Query {
   article(id: String!): Article
   articleVersions: [ArticleVersion]
@@ -90,7 +600,7 @@ type Query {
   searchUsers(query: String): [User]
   searchVenues(query: String): [Venue]
   threadMessages(cursor: String, headId: String!): [ThreadMessage]
-  user(id: String!): User
+  user(where: UserWhereUniqueInput!): User
   userArticles(id: String!): [Article]
 }
 
@@ -101,6 +611,45 @@ type Relation {
   target: User!
 }
 
+input RelationCreateInput {
+  endYear: String!
+  id: String
+  relation: RelationType!
+  target: UserCreateNestedOneWithoutRelationsInput!
+  userId: String!
+}
+
+input RelationCreateManyTargetInput {
+  endYear: String!
+  id: String
+  relation: RelationType!
+  userId: String!
+}
+
+input RelationCreateManyTargetInputEnvelope {
+  data: [RelationCreateManyTargetInput!]
+  skipDuplicates: Boolean
+}
+
+input RelationCreateNestedManyWithoutTargetInput {
+  connect: [RelationWhereUniqueInput!]
+  connectOrCreate: [RelationCreateOrConnectWithoutTargetInput!]
+  create: [RelationCreateWithoutTargetInput!]
+  createMany: RelationCreateManyTargetInputEnvelope
+}
+
+input RelationCreateOrConnectWithoutTargetInput {
+  create: RelationCreateWithoutTargetInput!
+  where: RelationWhereUniqueInput!
+}
+
+input RelationCreateWithoutTargetInput {
+  endYear: String!
+  id: String
+  relation: RelationType!
+  userId: String!
+}
+
 enum RelationType {
   ADVISEE
   ADVISOR
@@ -108,6 +657,10 @@ enum RelationType {
   COWORKER
   FAMILY
   SOCIAL
+}
+
+input RelationWhereUniqueInput {
+  id: String
 }
 
 type Review {
@@ -121,6 +674,156 @@ type Review {
   rating: Int
   reviewNumber: Int
   submission: Submission
+}
+
+input ReviewCreateManyArticleInput {
+  anonymized: Boolean
+  authorId: String!
+  body: String!
+  highlights: String!
+  id: String
+  organizationId: String
+  published: Boolean
+  rating: Int
+  reviewNumber: Int!
+}
+
+input ReviewCreateManyArticleInputEnvelope {
+  data: [ReviewCreateManyArticleInput!]
+  skipDuplicates: Boolean
+}
+
+input ReviewCreateManyAuthorInput {
+  anonymized: Boolean
+  articleId: String!
+  body: String!
+  highlights: String!
+  id: String
+  organizationId: String
+  published: Boolean
+  rating: Int
+  reviewNumber: Int!
+}
+
+input ReviewCreateManyAuthorInputEnvelope {
+  data: [ReviewCreateManyAuthorInput!]
+  skipDuplicates: Boolean
+}
+
+input ReviewCreateManyOrganizationInput {
+  anonymized: Boolean
+  articleId: String!
+  authorId: String!
+  body: String!
+  highlights: String!
+  id: String
+  published: Boolean
+  rating: Int
+  reviewNumber: Int!
+}
+
+input ReviewCreateManyOrganizationInputEnvelope {
+  data: [ReviewCreateManyOrganizationInput!]
+  skipDuplicates: Boolean
+}
+
+input ReviewCreateNestedManyWithoutArticleInput {
+  connect: [ReviewWhereUniqueInput!]
+  connectOrCreate: [ReviewCreateOrConnectWithoutArticleInput!]
+  create: [ReviewCreateWithoutArticleInput!]
+  createMany: ReviewCreateManyArticleInputEnvelope
+}
+
+input ReviewCreateNestedManyWithoutAuthorInput {
+  connect: [ReviewWhereUniqueInput!]
+  connectOrCreate: [ReviewCreateOrConnectWithoutAuthorInput!]
+  create: [ReviewCreateWithoutAuthorInput!]
+  createMany: ReviewCreateManyAuthorInputEnvelope
+}
+
+input ReviewCreateNestedManyWithoutDecisionsInput {
+  connect: [ReviewWhereUniqueInput!]
+  connectOrCreate: [ReviewCreateOrConnectWithoutDecisionsInput!]
+  create: [ReviewCreateWithoutDecisionsInput!]
+}
+
+input ReviewCreateNestedManyWithoutOrganizationInput {
+  connect: [ReviewWhereUniqueInput!]
+  connectOrCreate: [ReviewCreateOrConnectWithoutOrganizationInput!]
+  create: [ReviewCreateWithoutOrganizationInput!]
+  createMany: ReviewCreateManyOrganizationInputEnvelope
+}
+
+input ReviewCreateOrConnectWithoutArticleInput {
+  create: ReviewCreateWithoutArticleInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewCreateOrConnectWithoutAuthorInput {
+  create: ReviewCreateWithoutAuthorInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewCreateOrConnectWithoutDecisionsInput {
+  create: ReviewCreateWithoutDecisionsInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewCreateOrConnectWithoutOrganizationInput {
+  create: ReviewCreateWithoutOrganizationInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewCreateWithoutArticleInput {
+  anonymized: Boolean
+  author: UserCreateNestedOneWithoutReviewsInput!
+  body: String!
+  decisions: DecisionCreateNestedManyWithoutCitedReviewsInput
+  highlights: String!
+  id: String
+  organization: OrganizationCreateNestedOneWithoutReviewsInput
+  published: Boolean
+  rating: Int
+  reviewNumber: Int!
+}
+
+input ReviewCreateWithoutAuthorInput {
+  anonymized: Boolean
+  article: ArticleCreateNestedOneWithoutReviewsInput!
+  body: String!
+  decisions: DecisionCreateNestedManyWithoutCitedReviewsInput
+  highlights: String!
+  id: String
+  organization: OrganizationCreateNestedOneWithoutReviewsInput
+  published: Boolean
+  rating: Int
+  reviewNumber: Int!
+}
+
+input ReviewCreateWithoutDecisionsInput {
+  anonymized: Boolean
+  article: ArticleCreateNestedOneWithoutReviewsInput!
+  author: UserCreateNestedOneWithoutReviewsInput!
+  body: String!
+  highlights: String!
+  id: String
+  organization: OrganizationCreateNestedOneWithoutReviewsInput
+  published: Boolean
+  rating: Int
+  reviewNumber: Int!
+}
+
+input ReviewCreateWithoutOrganizationInput {
+  anonymized: Boolean
+  article: ArticleCreateNestedOneWithoutReviewsInput!
+  author: UserCreateNestedOneWithoutReviewsInput!
+  body: String!
+  decisions: DecisionCreateNestedManyWithoutCitedReviewsInput
+  highlights: String!
+  id: String
+  published: Boolean
+  rating: Int
+  reviewNumber: Int!
 }
 
 input ReviewWhereUniqueInput {
@@ -143,12 +846,171 @@ type Submission {
   requestedReviewers: [User]
 }
 
+input SubmissionCreateManyArticleInput {
+  createdAt: DateTime
+  decisionId: String
+  id: String
+  organizationId: String!
+  ownerId: String
+}
+
+input SubmissionCreateManyArticleInputEnvelope {
+  data: [SubmissionCreateManyArticleInput!]
+  skipDuplicates: Boolean
+}
+
+input SubmissionCreateManyOrganizationInput {
+  articleId: String!
+  createdAt: DateTime
+  decisionId: String
+  id: String
+  ownerId: String
+}
+
+input SubmissionCreateManyOrganizationInputEnvelope {
+  data: [SubmissionCreateManyOrganizationInput!]
+  skipDuplicates: Boolean
+}
+
+input SubmissionCreateManyOwnerInput {
+  articleId: String!
+  createdAt: DateTime
+  decisionId: String
+  id: String
+  organizationId: String!
+}
+
+input SubmissionCreateManyOwnerInputEnvelope {
+  data: [SubmissionCreateManyOwnerInput!]
+  skipDuplicates: Boolean
+}
+
+input SubmissionCreateNestedManyWithoutArticleInput {
+  connect: [SubmissionWhereUniqueInput!]
+  connectOrCreate: [SubmissionCreateOrConnectWithoutArticleInput!]
+  create: [SubmissionCreateWithoutArticleInput!]
+  createMany: SubmissionCreateManyArticleInputEnvelope
+}
+
+input SubmissionCreateNestedManyWithoutOrganizationInput {
+  connect: [SubmissionWhereUniqueInput!]
+  connectOrCreate: [SubmissionCreateOrConnectWithoutOrganizationInput!]
+  create: [SubmissionCreateWithoutOrganizationInput!]
+  createMany: SubmissionCreateManyOrganizationInputEnvelope
+}
+
+input SubmissionCreateNestedManyWithoutOwnerInput {
+  connect: [SubmissionWhereUniqueInput!]
+  connectOrCreate: [SubmissionCreateOrConnectWithoutOwnerInput!]
+  create: [SubmissionCreateWithoutOwnerInput!]
+  createMany: SubmissionCreateManyOwnerInputEnvelope
+}
+
+input SubmissionCreateNestedOneWithoutDecisionInput {
+  connect: SubmissionWhereUniqueInput
+  connectOrCreate: SubmissionCreateOrConnectWithoutDecisionInput
+  create: SubmissionCreateWithoutDecisionInput
+}
+
+input SubmissionCreateOrConnectWithoutArticleInput {
+  create: SubmissionCreateWithoutArticleInput!
+  where: SubmissionWhereUniqueInput!
+}
+
+input SubmissionCreateOrConnectWithoutDecisionInput {
+  create: SubmissionCreateWithoutDecisionInput!
+  where: SubmissionWhereUniqueInput!
+}
+
+input SubmissionCreateOrConnectWithoutOrganizationInput {
+  create: SubmissionCreateWithoutOrganizationInput!
+  where: SubmissionWhereUniqueInput!
+}
+
+input SubmissionCreateOrConnectWithoutOwnerInput {
+  create: SubmissionCreateWithoutOwnerInput!
+  where: SubmissionWhereUniqueInput!
+}
+
+input SubmissionCreateWithoutArticleInput {
+  createdAt: DateTime
+  decision: DecisionCreateNestedOneWithoutSubmissionInput
+  id: String
+  organization: OrganizationCreateNestedOneWithoutSubmissionsInput!
+  owner: UserCreateNestedOneWithoutChairSubmissionsInput
+}
+
+input SubmissionCreateWithoutDecisionInput {
+  article: ArticleCreateNestedOneWithoutSubmissionsInput!
+  createdAt: DateTime
+  id: String
+  organization: OrganizationCreateNestedOneWithoutSubmissionsInput!
+  owner: UserCreateNestedOneWithoutChairSubmissionsInput
+}
+
+input SubmissionCreateWithoutOrganizationInput {
+  article: ArticleCreateNestedOneWithoutSubmissionsInput!
+  createdAt: DateTime
+  decision: DecisionCreateNestedOneWithoutSubmissionInput
+  id: String
+  owner: UserCreateNestedOneWithoutChairSubmissionsInput
+}
+
+input SubmissionCreateWithoutOwnerInput {
+  article: ArticleCreateNestedOneWithoutSubmissionsInput!
+  createdAt: DateTime
+  decision: DecisionCreateNestedOneWithoutSubmissionInput
+  id: String
+  organization: OrganizationCreateNestedOneWithoutSubmissionsInput!
+}
+
+input SubmissionWhereUniqueInput {
+  id: String
+}
+
 type ThreadMessage {
   articleVersion: Int
   author: User
   body: String
   createdAt: String
   highlights: String
+  id: String
+}
+
+input ThreadMessageCreateManyAuthorInput {
+  body: String!
+  createdAt: DateTime
+  headId: String!
+  highlights: String!
+  id: String
+}
+
+input ThreadMessageCreateManyAuthorInputEnvelope {
+  data: [ThreadMessageCreateManyAuthorInput!]
+  skipDuplicates: Boolean
+}
+
+input ThreadMessageCreateNestedManyWithoutAuthorInput {
+  connect: [ThreadMessageWhereUniqueInput!]
+  connectOrCreate: [ThreadMessageCreateOrConnectWithoutAuthorInput!]
+  create: [ThreadMessageCreateWithoutAuthorInput!]
+  createMany: ThreadMessageCreateManyAuthorInputEnvelope
+}
+
+input ThreadMessageCreateOrConnectWithoutAuthorInput {
+  create: ThreadMessageCreateWithoutAuthorInput!
+  where: ThreadMessageWhereUniqueInput!
+}
+
+input ThreadMessageCreateWithoutAuthorInput {
+  body: String!
+  createdAt: DateTime
+  headId: String!
+  highlights: String!
+  id: String
+}
+
+input ThreadMessageWhereUniqueInput {
   id: String
 }
 
@@ -162,7 +1024,162 @@ type User {
   id: String!
   name: String!
   profilePictureUrl: String
-  relations: [Relation]
+  relations(after: RelationWhereUniqueInput, before: RelationWhereUniqueInput, first: Int, last: Int): [Relation!]!
+}
+
+input UserCreateNestedOneWithoutAuthorshipsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutAuthorshipsInput
+  create: UserCreateWithoutAuthorshipsInput
+}
+
+input UserCreateNestedOneWithoutChairSubmissionsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutChairSubmissionsInput
+  create: UserCreateWithoutChairSubmissionsInput
+}
+
+input UserCreateNestedOneWithoutDecisionsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutDecisionsInput
+  create: UserCreateWithoutDecisionsInput
+}
+
+input UserCreateNestedOneWithoutOrganizationMembershipsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutOrganizationMembershipsInput
+  create: UserCreateWithoutOrganizationMembershipsInput
+}
+
+input UserCreateNestedOneWithoutRelationsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutRelationsInput
+  create: UserCreateWithoutRelationsInput
+}
+
+input UserCreateNestedOneWithoutReviewsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutReviewsInput
+  create: UserCreateWithoutReviewsInput
+}
+
+input UserCreateOrConnectWithoutAuthorshipsInput {
+  create: UserCreateWithoutAuthorshipsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutChairSubmissionsInput {
+  create: UserCreateWithoutChairSubmissionsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutDecisionsInput {
+  create: UserCreateWithoutDecisionsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutOrganizationMembershipsInput {
+  create: UserCreateWithoutOrganizationMembershipsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutRelationsInput {
+  create: UserCreateWithoutRelationsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutReviewsInput {
+  create: UserCreateWithoutReviewsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateWithoutAuthorshipsInput {
+  bio: String
+  chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
+  decisions: DecisionCreateNestedManyWithoutAuthorInput
+  email: String!
+  id: String!
+  name: String!
+  organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
+  profilePictureUrl: String
+  relations: RelationCreateNestedManyWithoutTargetInput
+  reviews: ReviewCreateNestedManyWithoutAuthorInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+}
+
+input UserCreateWithoutChairSubmissionsInput {
+  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  bio: String
+  decisions: DecisionCreateNestedManyWithoutAuthorInput
+  email: String!
+  id: String!
+  name: String!
+  organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
+  profilePictureUrl: String
+  relations: RelationCreateNestedManyWithoutTargetInput
+  reviews: ReviewCreateNestedManyWithoutAuthorInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+}
+
+input UserCreateWithoutDecisionsInput {
+  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  bio: String
+  chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
+  email: String!
+  id: String!
+  name: String!
+  organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
+  profilePictureUrl: String
+  relations: RelationCreateNestedManyWithoutTargetInput
+  reviews: ReviewCreateNestedManyWithoutAuthorInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+}
+
+input UserCreateWithoutOrganizationMembershipsInput {
+  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  bio: String
+  chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
+  decisions: DecisionCreateNestedManyWithoutAuthorInput
+  email: String!
+  id: String!
+  name: String!
+  profilePictureUrl: String
+  relations: RelationCreateNestedManyWithoutTargetInput
+  reviews: ReviewCreateNestedManyWithoutAuthorInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+}
+
+input UserCreateWithoutRelationsInput {
+  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  bio: String
+  chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
+  decisions: DecisionCreateNestedManyWithoutAuthorInput
+  email: String!
+  id: String!
+  name: String!
+  organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
+  profilePictureUrl: String
+  reviews: ReviewCreateNestedManyWithoutAuthorInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+}
+
+input UserCreateWithoutReviewsInput {
+  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  bio: String
+  chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
+  decisions: DecisionCreateNestedManyWithoutAuthorInput
+  email: String!
+  id: String!
+  name: String!
+  organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
+  profilePictureUrl: String
+  relations: RelationCreateNestedManyWithoutTargetInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+}
+
+input UserWhereUniqueInput {
+  email: String
+  id: String
 }
 
 type Venue {
@@ -174,4 +1191,45 @@ type Venue {
   organization: Organization!
   submissionDeadline: DateTime
   venueDate: DateTime
+}
+
+input VenueCreateManyOrganizationInput {
+  abbreviation: String
+  description: String!
+  id: String
+  logoRef: String
+  name: String!
+  submissionDeadline: DateTime
+  venueDate: DateTime
+}
+
+input VenueCreateManyOrganizationInputEnvelope {
+  data: [VenueCreateManyOrganizationInput!]
+  skipDuplicates: Boolean
+}
+
+input VenueCreateNestedManyWithoutOrganizationInput {
+  connect: [VenueWhereUniqueInput!]
+  connectOrCreate: [VenueCreateOrConnectWithoutOrganizationInput!]
+  create: [VenueCreateWithoutOrganizationInput!]
+  createMany: VenueCreateManyOrganizationInputEnvelope
+}
+
+input VenueCreateOrConnectWithoutOrganizationInput {
+  create: VenueCreateWithoutOrganizationInput!
+  where: VenueWhereUniqueInput!
+}
+
+input VenueCreateWithoutOrganizationInput {
+  abbreviation: String
+  description: String!
+  id: String
+  logoRef: String
+  name: String!
+  submissionDeadline: DateTime
+  venueDate: DateTime
+}
+
+input VenueWhereUniqueInput {
+  id: String
 }
