@@ -14,9 +14,21 @@ const User = objectType({
         return parent.articles;
       },
     });
-    t.model.relations({
-      authorize: (root, _, ctx) => root.id === ctx.user.id,
-    });
+    t.model.relations();
+    t.model.relationsAsTarget();
+    // t.list.field("relations", {
+    //   type: "Relation",
+    //   resolve: async (parent, _, ctx) => {
+    //     if (ctx.user.id !== parent.id) {
+    //       return [];
+    //     }
+    //     return await ctx.prisma.relation.findMany({
+    //       where: {
+    //         userId: parent.id,
+    //       },
+    //     });
+    //   },
+    // });
   },
 });
 

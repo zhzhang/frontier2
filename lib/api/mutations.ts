@@ -311,7 +311,8 @@ export default objectType({
       },
     });
     t.crud.createOneRelation({
-      authorize: (_, { data: { userId } }, ctx) => userId === ctx.user.id,
+      authorize: (_, { data: { user } }, ctx) =>
+        user.connect.id === ctx.user.id,
     });
     t.crud.deleteOneRelation({
       authorize: async (_, { where: { id } }, ctx) => {

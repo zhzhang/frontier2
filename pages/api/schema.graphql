@@ -613,21 +613,33 @@ type Relation {
 
 input RelationCreateInput {
   endYear: String!
-  id: String
+  id: String!
   relation: RelationType!
-  target: UserCreateNestedOneWithoutRelationsInput!
-  userId: String!
+  target: UserCreateNestedOneWithoutRelationsAsTargetInput!
+  user: UserCreateNestedOneWithoutRelationsInput!
 }
 
 input RelationCreateManyTargetInput {
   endYear: String!
-  id: String
+  id: String!
   relation: RelationType!
   userId: String!
 }
 
 input RelationCreateManyTargetInputEnvelope {
   data: [RelationCreateManyTargetInput!]
+  skipDuplicates: Boolean
+}
+
+input RelationCreateManyUserInput {
+  endYear: String!
+  id: String!
+  relation: RelationType!
+  targetId: String!
+}
+
+input RelationCreateManyUserInputEnvelope {
+  data: [RelationCreateManyUserInput!]
   skipDuplicates: Boolean
 }
 
@@ -638,16 +650,35 @@ input RelationCreateNestedManyWithoutTargetInput {
   createMany: RelationCreateManyTargetInputEnvelope
 }
 
+input RelationCreateNestedManyWithoutUserInput {
+  connect: [RelationWhereUniqueInput!]
+  connectOrCreate: [RelationCreateOrConnectWithoutUserInput!]
+  create: [RelationCreateWithoutUserInput!]
+  createMany: RelationCreateManyUserInputEnvelope
+}
+
 input RelationCreateOrConnectWithoutTargetInput {
   create: RelationCreateWithoutTargetInput!
   where: RelationWhereUniqueInput!
 }
 
+input RelationCreateOrConnectWithoutUserInput {
+  create: RelationCreateWithoutUserInput!
+  where: RelationWhereUniqueInput!
+}
+
 input RelationCreateWithoutTargetInput {
   endYear: String!
-  id: String
+  id: String!
   relation: RelationType!
-  userId: String!
+  user: UserCreateNestedOneWithoutRelationsInput!
+}
+
+input RelationCreateWithoutUserInput {
+  endYear: String!
+  id: String!
+  relation: RelationType!
+  target: UserCreateNestedOneWithoutRelationsAsTargetInput!
 }
 
 enum RelationType {
@@ -1025,6 +1056,7 @@ type User {
   name: String!
   profilePictureUrl: String
   relations(after: RelationWhereUniqueInput, before: RelationWhereUniqueInput, first: Int, last: Int): [Relation!]!
+  relationsAsTarget(after: RelationWhereUniqueInput, before: RelationWhereUniqueInput, first: Int, last: Int): [Relation!]!
 }
 
 input UserCreateNestedOneWithoutAuthorshipsInput {
@@ -1049,6 +1081,12 @@ input UserCreateNestedOneWithoutOrganizationMembershipsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutOrganizationMembershipsInput
   create: UserCreateWithoutOrganizationMembershipsInput
+}
+
+input UserCreateNestedOneWithoutRelationsAsTargetInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutRelationsAsTargetInput
+  create: UserCreateWithoutRelationsAsTargetInput
 }
 
 input UserCreateNestedOneWithoutRelationsInput {
@@ -1083,6 +1121,11 @@ input UserCreateOrConnectWithoutOrganizationMembershipsInput {
   where: UserWhereUniqueInput!
 }
 
+input UserCreateOrConnectWithoutRelationsAsTargetInput {
+  create: UserCreateWithoutRelationsAsTargetInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateOrConnectWithoutRelationsInput {
   create: UserCreateWithoutRelationsInput!
   where: UserWhereUniqueInput!
@@ -1102,7 +1145,8 @@ input UserCreateWithoutAuthorshipsInput {
   name: String!
   organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
   profilePictureUrl: String
-  relations: RelationCreateNestedManyWithoutTargetInput
+  relations: RelationCreateNestedManyWithoutUserInput
+  relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
 }
@@ -1116,7 +1160,8 @@ input UserCreateWithoutChairSubmissionsInput {
   name: String!
   organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
   profilePictureUrl: String
-  relations: RelationCreateNestedManyWithoutTargetInput
+  relations: RelationCreateNestedManyWithoutUserInput
+  relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
 }
@@ -1130,7 +1175,8 @@ input UserCreateWithoutDecisionsInput {
   name: String!
   organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
   profilePictureUrl: String
-  relations: RelationCreateNestedManyWithoutTargetInput
+  relations: RelationCreateNestedManyWithoutUserInput
+  relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
 }
@@ -1144,7 +1190,23 @@ input UserCreateWithoutOrganizationMembershipsInput {
   id: String!
   name: String!
   profilePictureUrl: String
-  relations: RelationCreateNestedManyWithoutTargetInput
+  relations: RelationCreateNestedManyWithoutUserInput
+  relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
+  reviews: ReviewCreateNestedManyWithoutAuthorInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+}
+
+input UserCreateWithoutRelationsAsTargetInput {
+  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  bio: String
+  chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
+  decisions: DecisionCreateNestedManyWithoutAuthorInput
+  email: String!
+  id: String!
+  name: String!
+  organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
+  profilePictureUrl: String
+  relations: RelationCreateNestedManyWithoutUserInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
 }
@@ -1159,6 +1221,7 @@ input UserCreateWithoutRelationsInput {
   name: String!
   organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
   profilePictureUrl: String
+  relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
 }
@@ -1173,7 +1236,8 @@ input UserCreateWithoutReviewsInput {
   name: String!
   organizationMemberships: OrganizationMembershipCreateNestedManyWithoutUserInput
   profilePictureUrl: String
-  relations: RelationCreateNestedManyWithoutTargetInput
+  relations: RelationCreateNestedManyWithoutUserInput
+  relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
 }
 

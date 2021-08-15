@@ -112,6 +112,7 @@ function Relations({ userId, relations }) {
       cache.modify({
         fields: {
           user(prev) {
+            console.log(prev);
             return {
               ...prev,
               relations: [...prev.relations, createOneRelation],
@@ -126,7 +127,12 @@ function Relations({ userId, relations }) {
     addRelation({
       variables: {
         data: {
-          userId,
+          id: userId + target.id,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
           relation: relationType,
           endYear,
           target: {

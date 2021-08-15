@@ -479,19 +479,29 @@ export interface NexusGenInputs {
   }
   RelationCreateInput: { // input type
     endYear: string; // String!
-    id?: string | null; // String
+    id: string; // String!
     relation: NexusGenEnums['RelationType']; // RelationType!
-    target: NexusGenInputs['UserCreateNestedOneWithoutRelationsInput']; // UserCreateNestedOneWithoutRelationsInput!
-    userId: string; // String!
+    target: NexusGenInputs['UserCreateNestedOneWithoutRelationsAsTargetInput']; // UserCreateNestedOneWithoutRelationsAsTargetInput!
+    user: NexusGenInputs['UserCreateNestedOneWithoutRelationsInput']; // UserCreateNestedOneWithoutRelationsInput!
   }
   RelationCreateManyTargetInput: { // input type
     endYear: string; // String!
-    id?: string | null; // String
+    id: string; // String!
     relation: NexusGenEnums['RelationType']; // RelationType!
     userId: string; // String!
   }
   RelationCreateManyTargetInputEnvelope: { // input type
     data?: NexusGenInputs['RelationCreateManyTargetInput'][] | null; // [RelationCreateManyTargetInput!]
+    skipDuplicates?: boolean | null; // Boolean
+  }
+  RelationCreateManyUserInput: { // input type
+    endYear: string; // String!
+    id: string; // String!
+    relation: NexusGenEnums['RelationType']; // RelationType!
+    targetId: string; // String!
+  }
+  RelationCreateManyUserInputEnvelope: { // input type
+    data?: NexusGenInputs['RelationCreateManyUserInput'][] | null; // [RelationCreateManyUserInput!]
     skipDuplicates?: boolean | null; // Boolean
   }
   RelationCreateNestedManyWithoutTargetInput: { // input type
@@ -500,15 +510,31 @@ export interface NexusGenInputs {
     create?: NexusGenInputs['RelationCreateWithoutTargetInput'][] | null; // [RelationCreateWithoutTargetInput!]
     createMany?: NexusGenInputs['RelationCreateManyTargetInputEnvelope'] | null; // RelationCreateManyTargetInputEnvelope
   }
+  RelationCreateNestedManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['RelationWhereUniqueInput'][] | null; // [RelationWhereUniqueInput!]
+    connectOrCreate?: NexusGenInputs['RelationCreateOrConnectWithoutUserInput'][] | null; // [RelationCreateOrConnectWithoutUserInput!]
+    create?: NexusGenInputs['RelationCreateWithoutUserInput'][] | null; // [RelationCreateWithoutUserInput!]
+    createMany?: NexusGenInputs['RelationCreateManyUserInputEnvelope'] | null; // RelationCreateManyUserInputEnvelope
+  }
   RelationCreateOrConnectWithoutTargetInput: { // input type
     create: NexusGenInputs['RelationCreateWithoutTargetInput']; // RelationCreateWithoutTargetInput!
     where: NexusGenInputs['RelationWhereUniqueInput']; // RelationWhereUniqueInput!
   }
+  RelationCreateOrConnectWithoutUserInput: { // input type
+    create: NexusGenInputs['RelationCreateWithoutUserInput']; // RelationCreateWithoutUserInput!
+    where: NexusGenInputs['RelationWhereUniqueInput']; // RelationWhereUniqueInput!
+  }
   RelationCreateWithoutTargetInput: { // input type
     endYear: string; // String!
-    id?: string | null; // String
+    id: string; // String!
     relation: NexusGenEnums['RelationType']; // RelationType!
-    userId: string; // String!
+    user: NexusGenInputs['UserCreateNestedOneWithoutRelationsInput']; // UserCreateNestedOneWithoutRelationsInput!
+  }
+  RelationCreateWithoutUserInput: { // input type
+    endYear: string; // String!
+    id: string; // String!
+    relation: NexusGenEnums['RelationType']; // RelationType!
+    target: NexusGenInputs['UserCreateNestedOneWithoutRelationsAsTargetInput']; // UserCreateNestedOneWithoutRelationsAsTargetInput!
   }
   RelationWhereUniqueInput: { // input type
     id?: string | null; // String
@@ -802,6 +828,11 @@ export interface NexusGenInputs {
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutOrganizationMembershipsInput'] | null; // UserCreateOrConnectWithoutOrganizationMembershipsInput
     create?: NexusGenInputs['UserCreateWithoutOrganizationMembershipsInput'] | null; // UserCreateWithoutOrganizationMembershipsInput
   }
+  UserCreateNestedOneWithoutRelationsAsTargetInput: { // input type
+    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutRelationsAsTargetInput'] | null; // UserCreateOrConnectWithoutRelationsAsTargetInput
+    create?: NexusGenInputs['UserCreateWithoutRelationsAsTargetInput'] | null; // UserCreateWithoutRelationsAsTargetInput
+  }
   UserCreateNestedOneWithoutRelationsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutRelationsInput'] | null; // UserCreateOrConnectWithoutRelationsInput
@@ -828,6 +859,10 @@ export interface NexusGenInputs {
     create: NexusGenInputs['UserCreateWithoutOrganizationMembershipsInput']; // UserCreateWithoutOrganizationMembershipsInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
+  UserCreateOrConnectWithoutRelationsAsTargetInput: { // input type
+    create: NexusGenInputs['UserCreateWithoutRelationsAsTargetInput']; // UserCreateWithoutRelationsAsTargetInput!
+    where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
+  }
   UserCreateOrConnectWithoutRelationsInput: { // input type
     create: NexusGenInputs['UserCreateWithoutRelationsInput']; // UserCreateWithoutRelationsInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
@@ -845,7 +880,8 @@ export interface NexusGenInputs {
     name: string; // String!
     organizationMemberships?: NexusGenInputs['OrganizationMembershipCreateNestedManyWithoutUserInput'] | null; // OrganizationMembershipCreateNestedManyWithoutUserInput
     profilePictureUrl?: string | null; // String
-    relations?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
+    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
   }
@@ -858,7 +894,8 @@ export interface NexusGenInputs {
     name: string; // String!
     organizationMemberships?: NexusGenInputs['OrganizationMembershipCreateNestedManyWithoutUserInput'] | null; // OrganizationMembershipCreateNestedManyWithoutUserInput
     profilePictureUrl?: string | null; // String
-    relations?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
+    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
   }
@@ -871,7 +908,8 @@ export interface NexusGenInputs {
     name: string; // String!
     organizationMemberships?: NexusGenInputs['OrganizationMembershipCreateNestedManyWithoutUserInput'] | null; // OrganizationMembershipCreateNestedManyWithoutUserInput
     profilePictureUrl?: string | null; // String
-    relations?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
+    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
   }
@@ -884,7 +922,22 @@ export interface NexusGenInputs {
     id: string; // String!
     name: string; // String!
     profilePictureUrl?: string | null; // String
-    relations?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
+    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
+    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
+  }
+  UserCreateWithoutRelationsAsTargetInput: { // input type
+    authorships?: NexusGenInputs['ArticleAuthorCreateNestedManyWithoutUserInput'] | null; // ArticleAuthorCreateNestedManyWithoutUserInput
+    bio?: string | null; // String
+    chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
+    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
+    email: string; // String!
+    id: string; // String!
+    name: string; // String!
+    organizationMemberships?: NexusGenInputs['OrganizationMembershipCreateNestedManyWithoutUserInput'] | null; // OrganizationMembershipCreateNestedManyWithoutUserInput
+    profilePictureUrl?: string | null; // String
+    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
   }
@@ -898,6 +951,7 @@ export interface NexusGenInputs {
     name: string; // String!
     organizationMemberships?: NexusGenInputs['OrganizationMembershipCreateNestedManyWithoutUserInput'] | null; // OrganizationMembershipCreateNestedManyWithoutUserInput
     profilePictureUrl?: string | null; // String
+    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
   }
@@ -911,7 +965,8 @@ export interface NexusGenInputs {
     name: string; // String!
     organizationMemberships?: NexusGenInputs['OrganizationMembershipCreateNestedManyWithoutUserInput'] | null; // OrganizationMembershipCreateNestedManyWithoutUserInput
     profilePictureUrl?: string | null; // String
-    relations?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
+    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
   }
   UserWhereUniqueInput: { // input type
@@ -1173,6 +1228,7 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     profilePictureUrl: string | null; // String
     relations: NexusGenRootTypes['Relation'][]; // [Relation!]!
+    relationsAsTarget: NexusGenRootTypes['Relation'][]; // [Relation!]!
   }
   Venue: { // field return type
     abbreviation: string | null; // String
@@ -1299,6 +1355,7 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     profilePictureUrl: 'String'
     relations: 'Relation'
+    relationsAsTarget: 'Relation'
   }
   Venue: { // field return type name
     abbreviation: 'String'
@@ -1426,6 +1483,12 @@ export interface NexusGenArgTypes {
   }
   User: {
     relations: { // args
+      after?: NexusGenInputs['RelationWhereUniqueInput'] | null; // RelationWhereUniqueInput
+      before?: NexusGenInputs['RelationWhereUniqueInput'] | null; // RelationWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+    relationsAsTarget: { // args
       after?: NexusGenInputs['RelationWhereUniqueInput'] | null; // RelationWhereUniqueInput
       before?: NexusGenInputs['RelationWhereUniqueInput'] | null; // RelationWhereUniqueInput
       first?: number | null; // Int

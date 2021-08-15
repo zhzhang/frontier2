@@ -20,6 +20,7 @@ model User {
   authorships             ArticleAuthor[]
   chairSubmissions        Submission[]
   relations               Relation[]
+  relationsAsTarget       Relation[]               @relation("target")
 }
 
 enum RelationType {
@@ -32,8 +33,9 @@ enum RelationType {
 }
 
 model Relation {
-  id       String       @id @default(cuid())
-  target   User         @relation(fields: [targetId], references: [id])
+  id       String       @id
+  user     User         @relation(fields: [userId], references: [id])
+  target   User         @relation(name: "target", fields: [targetId], references: [id])
   relation RelationType
   endYear  String
   userId   String
