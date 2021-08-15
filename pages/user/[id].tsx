@@ -11,11 +11,12 @@ import Layout from "../../components/Layout";
 import { withApollo } from "../../lib/apollo";
 
 const UserQuery = gql`
-  query UserQuery($id: String!) {
-    user(id: $id) {
+  query UserQuery($where: UserWhereUniqueInput!) {
+    user(where: $where) {
       id
       name
       email
+      profilePictureUrl
       articles {
         id
         authors {
@@ -73,11 +74,11 @@ function User() {
   const router = useRouter();
   const id = router.query.id;
   const { loading, error, data } = useQuery(UserQuery, {
-    variables: { id },
+    variables: { where: { id } },
   });
-  const articlesResult = useQuery(UserArticlesQuery, {
-    variables: { id },
-  });
+  // const articlesResult = useQuery(UserArticlesQuery, {
+  //   variables: { id },
+  // });
 
   if (loading) {
     return <Spinner animation="border" />;
@@ -87,6 +88,7 @@ function User() {
   }
 
   const { name, email, articles, profilePictureUrl } = data.user;
+  console.log(profilePictureUrl);
   const tabKey = "articles";
 
   return (

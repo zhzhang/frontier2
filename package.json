@@ -17,6 +17,7 @@
   "keywords": [],
   "author": "",
   "dependencies": {
+    "@apollo/client": "^3.3.19",
     "@apollo/react-hooks": "4.0.0",
     "@apollo/react-ssr": "4.0.0",
     "@draft-js-plugins/editor": "^4.1.0",
@@ -24,7 +25,6 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@prisma/client": "^2.23.0",
-    "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-schema": "1.2.5",
     "apollo-server-micro": "^2.25.0",

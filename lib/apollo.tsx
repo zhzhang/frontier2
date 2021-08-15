@@ -1,8 +1,8 @@
 import Spinner from "@/components/FixedSpinner";
 import { auth, useAuth } from "@/lib/firebase";
+import { InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
 import { createUploadLink } from "apollo-upload-client";
 import React from "react";

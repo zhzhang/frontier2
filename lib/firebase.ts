@@ -40,6 +40,9 @@ export function uploadFile(file, type: UploadTypeEnum) {
     case UploadTypeEnum.LOGO:
       refPath = `logos/${uuid()}`;
       break;
+    case UploadTypeEnum.PROFILE_IMAGE:
+      refPath = `profile-images/${uuid()}`;
+      break;
   }
   const ref = storageRef.child(refPath);
   const uploadTask = ref.put(file);

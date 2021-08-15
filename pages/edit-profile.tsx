@@ -3,8 +3,9 @@ import ErrorPage from "@/components/ErrorPage";
 import Layout from "@/components/Layout";
 import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
-import { useAuth } from "@/lib/firebase";
-import { RelationEnum } from "@/lib/types";
+import { getCroppedImg } from "@/lib/crop";
+import { uploadFile, useAuth } from "@/lib/firebase";
+import { RelationEnum, UploadTypeEnum } from "@/lib/types";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
@@ -109,20 +110,44 @@ function Relations({ userId, relations }) {
   const [relationType, setRelationType] = useState("");
   const [addRelation, result] = useMutation(CreateRelationMutation, {
     update(cache, { data: { createOneRelation } }) {
-      cache.modify({
-        fields: {
-          user(prev) {
-            console.log(prev);
-            return {
-              ...prev,
-              relations: [...prev.relations, createOneRelation],
-            };
+      const variables = { where: { id: userId } };
+      const { user } = cache.readQuery({
+        query: UserQuery,
+        variables,
+      });
+      cache.writeQuery({
+        query: UserQuery,
+        variables,
+        data: {
+          user: {
+            ...user,
+            relations: [...user.relations, createOneRelation],
           },
         },
       });
     },
   });
-  const [deleteRelation, _] = useMutation(DeleteRelationMutation);
+  const [deleteRelation, _] = useMutation(DeleteRelationMutation, {
+    update(cache, { data: { deleteOneRelation } }) {
+      const variables = { where: { id: userId } };
+      const { user } = cache.readQuery({
+        query: UserQuery,
+        variables,
+      });
+      cache.writeQuery({
+        query: UserQuery,
+        variables,
+        data: {
+          user: {
+            ...user,
+            relations: user.relations.filter(
+              (relation) => relation.id !== deleteOneRelation.id
+            ),
+          },
+        },
+      });
+    },
+  });
   const handleAddRelation = () => {
     addRelation({
       variables: {
@@ -241,13 +266,36 @@ function Editor({ user }) {
   const imgRef = useRef(null);
   const [updateUser, result] = useMutation(UpdateUserMutation);
   const handleUpdateUser = async () => {
-    await updateUser({
-      variables: {
-        id: user.id,
-        name,
-        bio,
-      },
-    });
+    if (!imgRef) {
+      await updateUser({
+        variables: {
+          id: user.id,
+          name,
+          bio,
+        },
+      });
+      return;
+    }
+    const img = await getCroppedImg(imgRef.current, crop, "hello");
+    const { uploadTask, refPath } = uploadFile(
+      img,
+      UploadTypeEnum.PROFILE_IMAGE
+    );
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {},
+      () => {
+        updateUser({
+          variables: {
+            id: user.id,
+            name,
+            bio,
+            profilePictureUrl: refPath,
+          },
+        });
+      }
+    );
   };
 
   const onLoad = useCallback((img) => {
