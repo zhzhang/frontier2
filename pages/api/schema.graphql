@@ -68,6 +68,24 @@ input ArticleAuthorCreateWithoutUserInput {
   authorNumber: Int!
 }
 
+input ArticleAuthorListRelationFilter {
+  every: ArticleAuthorWhereInput
+  none: ArticleAuthorWhereInput
+  some: ArticleAuthorWhereInput
+}
+
+input ArticleAuthorWhereInput {
+  AND: [ArticleAuthorWhereInput!]
+  NOT: [ArticleAuthorWhereInput!]
+  OR: [ArticleAuthorWhereInput!]
+  article: ArticleWhereInput
+  articleId: StringFilter
+  authorNumber: IntFilter
+  id: IntFilter
+  user: UserWhereInput
+  userId: StringFilter
+}
+
 input ArticleAuthorWhereUniqueInput {
   id: Int
 }
@@ -201,8 +219,41 @@ input ArticleVersionCreateWithoutArticleInput {
   versionNumber: Int!
 }
 
+input ArticleVersionListRelationFilter {
+  every: ArticleVersionWhereInput
+  none: ArticleVersionWhereInput
+  some: ArticleVersionWhereInput
+}
+
+input ArticleVersionWhereInput {
+  AND: [ArticleVersionWhereInput!]
+  NOT: [ArticleVersionWhereInput!]
+  OR: [ArticleVersionWhereInput!]
+  abstract: StringFilter
+  article: ArticleWhereInput
+  articleId: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  ref: StringNullableFilter
+  versionNumber: IntFilter
+}
+
 input ArticleVersionWhereUniqueInput {
   id: String
+}
+
+input ArticleWhereInput {
+  AND: [ArticleWhereInput!]
+  NOT: [ArticleWhereInput!]
+  OR: [ArticleWhereInput!]
+  anonymous: BoolFilter
+  authors: ArticleAuthorListRelationFilter
+  decisions: DecisionListRelationFilter
+  id: StringFilter
+  reviews: ReviewListRelationFilter
+  submissions: SubmissionListRelationFilter
+  title: StringFilter
+  versions: ArticleVersionListRelationFilter
 }
 
 input ArticleWhereUniqueInput {
@@ -218,6 +269,28 @@ input BoolFilter {
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
 
 type Decision {
   article: Article
@@ -392,8 +465,51 @@ input DecisionCreateWithoutSubmissionInput {
   published: Boolean
 }
 
+input DecisionListRelationFilter {
+  every: DecisionWhereInput
+  none: DecisionWhereInput
+  some: DecisionWhereInput
+}
+
+input DecisionWhereInput {
+  AND: [DecisionWhereInput!]
+  NOT: [DecisionWhereInput!]
+  OR: [DecisionWhereInput!]
+  article: ArticleWhereInput
+  articleId: StringFilter
+  author: UserWhereInput
+  authorId: StringFilter
+  body: StringFilter
+  citedReviews: ReviewListRelationFilter
+  decision: BoolFilter
+  highlights: StringFilter
+  id: StringFilter
+  organization: OrganizationWhereInput
+  organizationId: StringNullableFilter
+  published: BoolFilter
+  submission: SubmissionWhereInput
+}
+
 input DecisionWhereUniqueInput {
   id: String
+}
+
+input EnumRelationTypeFilter {
+  equals: RelationType
+  in: [RelationType!]
+  not: NestedEnumRelationTypeFilter
+  notIn: [RelationType!]
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
 }
 
 type Mutation {
@@ -415,18 +531,86 @@ input NestedBoolFilter {
   not: NestedBoolFilter
 }
 
+input NestedDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+input NestedEnumRelationTypeFilter {
+  equals: RelationType
+  in: [RelationType!]
+  not: NestedEnumRelationTypeFilter
+  notIn: [RelationType!]
+}
+
+input NestedIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input NestedStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
 type Organization {
   abbreviation: String
   accepted: [Decision]
   admins: [User]
-  description: String
+  description: String!
   editors: [User]
-  id: String
+  id: String!
   logoRef: String
-  name: String
+  name: String!
   role: Role
   submissions: [Submission]
-  venues: [Venue]
+  venues(after: VenueWhereUniqueInput, before: VenueWhereUniqueInput, first: Int, last: Int): [Venue!]!
 }
 
 input OrganizationCreateNestedOneWithoutDecisionsInput {
@@ -577,8 +761,42 @@ input OrganizationMembershipCreateWithoutUserInput {
   role: String!
 }
 
+input OrganizationMembershipListRelationFilter {
+  every: OrganizationMembershipWhereInput
+  none: OrganizationMembershipWhereInput
+  some: OrganizationMembershipWhereInput
+}
+
+input OrganizationMembershipWhereInput {
+  AND: [OrganizationMembershipWhereInput!]
+  NOT: [OrganizationMembershipWhereInput!]
+  OR: [OrganizationMembershipWhereInput!]
+  id: IntFilter
+  organization: OrganizationWhereInput
+  organizationId: StringFilter
+  role: StringFilter
+  user: UserWhereInput
+  userId: StringFilter
+}
+
 input OrganizationMembershipWhereUniqueInput {
   id: Int
+}
+
+input OrganizationWhereInput {
+  AND: [OrganizationWhereInput!]
+  NOT: [OrganizationWhereInput!]
+  OR: [OrganizationWhereInput!]
+  abbreviation: StringNullableFilter
+  decisions: DecisionListRelationFilter
+  description: StringFilter
+  id: StringFilter
+  logoRef: StringNullableFilter
+  memberships: OrganizationMembershipListRelationFilter
+  name: StringFilter
+  reviews: ReviewListRelationFilter
+  submissions: SubmissionListRelationFilter
+  venues: VenueListRelationFilter
 }
 
 input OrganizationWhereUniqueInput {
@@ -591,17 +809,18 @@ type Query {
   articles: [Article]
   browseOrganizations(tags: [String]): [Organization]
   decisions(articleId: String!): [Decision]
-  organization(id: String!): Organization
+  organization(where: OrganizationWhereUniqueInput!): Organization
+  organizations(after: OrganizationWhereUniqueInput, before: OrganizationWhereUniqueInput, first: Int, last: Int): [Organization!]!
   review(reviewId: String!): Review
   reviewerAssignedSubmissions: [Submission]
   reviews(articleId: String!): [Review]
   searchEditors(organizationId: String!, query: String): [User]
-  searchOrganizations(query: String): [Organization]
   searchUsers(query: String): [User]
-  searchVenues(query: String): [Venue]
   threadMessages(cursor: String, headId: String!): [ThreadMessage]
   user(where: UserWhereUniqueInput!): User
   userArticles(id: String!): [Article]
+  venue(where: VenueWhereUniqueInput!): Venue
+  venues(after: VenueWhereUniqueInput, before: VenueWhereUniqueInput, first: Int, last: Int, where: VenueWhereInput): [Venue!]!
 }
 
 type Relation {
@@ -681,6 +900,12 @@ input RelationCreateWithoutUserInput {
   target: UserCreateNestedOneWithoutRelationsAsTargetInput!
 }
 
+input RelationListRelationFilter {
+  every: RelationWhereInput
+  none: RelationWhereInput
+  some: RelationWhereInput
+}
+
 enum RelationType {
   ADVISEE
   ADVISOR
@@ -688,6 +913,19 @@ enum RelationType {
   COWORKER
   FAMILY
   SOCIAL
+}
+
+input RelationWhereInput {
+  AND: [RelationWhereInput!]
+  NOT: [RelationWhereInput!]
+  OR: [RelationWhereInput!]
+  endYear: StringFilter
+  id: StringFilter
+  relation: EnumRelationTypeFilter
+  target: UserWhereInput
+  targetId: StringFilter
+  user: UserWhereInput
+  userId: StringFilter
 }
 
 input RelationWhereUniqueInput {
@@ -857,6 +1095,32 @@ input ReviewCreateWithoutOrganizationInput {
   reviewNumber: Int!
 }
 
+input ReviewListRelationFilter {
+  every: ReviewWhereInput
+  none: ReviewWhereInput
+  some: ReviewWhereInput
+}
+
+input ReviewWhereInput {
+  AND: [ReviewWhereInput!]
+  NOT: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  anonymized: BoolFilter
+  article: ArticleWhereInput
+  articleId: StringFilter
+  author: UserWhereInput
+  authorId: StringFilter
+  body: StringFilter
+  decisions: DecisionListRelationFilter
+  highlights: StringFilter
+  id: StringFilter
+  organization: OrganizationWhereInput
+  organizationId: StringNullableFilter
+  published: BoolFilter
+  rating: IntFilter
+  reviewNumber: IntFilter
+}
+
 input ReviewWhereUniqueInput {
   id: String
 }
@@ -865,6 +1129,34 @@ enum Role {
   ACTION_EDITOR
   ADMIN
   NONE
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
 }
 
 type Submission {
@@ -995,6 +1287,28 @@ input SubmissionCreateWithoutOwnerInput {
   organization: OrganizationCreateNestedOneWithoutSubmissionsInput!
 }
 
+input SubmissionListRelationFilter {
+  every: SubmissionWhereInput
+  none: SubmissionWhereInput
+  some: SubmissionWhereInput
+}
+
+input SubmissionWhereInput {
+  AND: [SubmissionWhereInput!]
+  NOT: [SubmissionWhereInput!]
+  OR: [SubmissionWhereInput!]
+  article: ArticleWhereInput
+  articleId: StringFilter
+  createdAt: DateTimeFilter
+  decision: DecisionWhereInput
+  decisionId: StringNullableFilter
+  id: StringFilter
+  organization: OrganizationWhereInput
+  organizationId: StringFilter
+  owner: UserWhereInput
+  ownerId: StringNullableFilter
+}
+
 input SubmissionWhereUniqueInput {
   id: String
 }
@@ -1039,6 +1353,25 @@ input ThreadMessageCreateWithoutAuthorInput {
   headId: String!
   highlights: String!
   id: String
+}
+
+input ThreadMessageListRelationFilter {
+  every: ThreadMessageWhereInput
+  none: ThreadMessageWhereInput
+  some: ThreadMessageWhereInput
+}
+
+input ThreadMessageWhereInput {
+  AND: [ThreadMessageWhereInput!]
+  NOT: [ThreadMessageWhereInput!]
+  OR: [ThreadMessageWhereInput!]
+  author: UserWhereInput
+  body: StringFilter
+  createdAt: DateTimeFilter
+  headId: StringFilter
+  highlights: StringFilter
+  id: StringFilter
+  userId: StringFilter
 }
 
 input ThreadMessageWhereUniqueInput {
@@ -1241,6 +1574,25 @@ input UserCreateWithoutReviewsInput {
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
 }
 
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  authorships: ArticleAuthorListRelationFilter
+  bio: StringFilter
+  chairSubmissions: SubmissionListRelationFilter
+  decisions: DecisionListRelationFilter
+  email: StringFilter
+  id: StringFilter
+  name: StringFilter
+  organizationMemberships: OrganizationMembershipListRelationFilter
+  profilePictureUrl: StringNullableFilter
+  relations: RelationListRelationFilter
+  relationsAsTarget: RelationListRelationFilter
+  reviews: ReviewListRelationFilter
+  threadMessage: ThreadMessageListRelationFilter
+}
+
 input UserWhereUniqueInput {
   email: String
   id: String
@@ -1292,6 +1644,27 @@ input VenueCreateWithoutOrganizationInput {
   name: String!
   submissionDeadline: DateTime
   venueDate: DateTime
+}
+
+input VenueListRelationFilter {
+  every: VenueWhereInput
+  none: VenueWhereInput
+  some: VenueWhereInput
+}
+
+input VenueWhereInput {
+  AND: [VenueWhereInput!]
+  NOT: [VenueWhereInput!]
+  OR: [VenueWhereInput!]
+  abbreviation: StringNullableFilter
+  description: StringFilter
+  id: StringFilter
+  logoRef: StringNullableFilter
+  name: StringFilter
+  organization: OrganizationWhereInput
+  organizationId: StringFilter
+  submissionDeadline: DateTimeNullableFilter
+  venueDate: DateTimeNullableFilter
 }
 
 input VenueWhereUniqueInput {

@@ -15,7 +15,7 @@ const UserQuery = gql`
     user(where: $where) {
       id
       name
-      email
+      bio
       profilePictureUrl
       articles {
         id
@@ -67,6 +67,11 @@ const useStyles = makeStyles((theme) => ({
   editButton: {
     marginLeft: "auto",
   },
+  avatar: {
+    height: theme.spacing(10),
+    width: theme.spacing(10),
+    marginRight: theme.spacing(2),
+  },
 }));
 
 function User() {
@@ -87,15 +92,22 @@ function User() {
     return <div>Error: {error.message}</div>;
   }
 
-  const { name, email, articles, profilePictureUrl } = data.user;
+  const { name, bio, articles, profilePictureUrl } = data.user;
   console.log(profilePictureUrl);
   const tabKey = "articles";
 
   return (
     <Layout>
       <div className={classes.header}>
-        <FirebaseAvatar storeRef={profilePictureUrl} name={name} />
-        <Typography variant="h5">{name}</Typography>
+        <FirebaseAvatar
+          className={classes.avatar}
+          storeRef={profilePictureUrl}
+          name={name}
+        />
+        <div>
+          <Typography variant="h5">{name}</Typography>
+          {bio}
+        </div>
         <div className={classes.editButton}>
           <Button
             variant="outlined"

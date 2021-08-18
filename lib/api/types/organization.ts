@@ -7,11 +7,12 @@ import Role from "./role";
 const Organization = objectType({
   name: "Organization",
   definition(t) {
-    t.string("id");
-    t.string("name");
-    t.string("description");
-    t.string("abbreviation");
-    t.string("logoRef");
+    t.model.id();
+    t.model.name();
+    t.model.description();
+    t.model.abbreviation();
+    t.model.logoRef();
+    t.model.venues();
     t.field("role", {
       type: Role,
       resolve: async (parent, _, ctx) => {
@@ -28,16 +29,6 @@ const Organization = objectType({
           return membership.role;
         }
         return RoleEnum.NONE;
-      },
-    });
-    t.list.field("venues", {
-      type: "Venue",
-      resolve: async (parent) => {
-        return await prisma.venue.findMany({
-          where: {
-            organizationId: parent.id,
-          },
-        });
       },
     });
     t.list.field("admins", {

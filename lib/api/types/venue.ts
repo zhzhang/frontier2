@@ -1,6 +1,6 @@
 import { objectType } from "nexus";
 
-export const Venue = objectType({
+const Venue = objectType({
   name: "Venue",
   definition(t) {
     t.model.id();

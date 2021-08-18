@@ -5,7 +5,9 @@ const User = objectType({
   definition(t) {
     t.model.id();
     t.model.name();
-    t.model.email();
+    t.model.email({
+      authorize: ({ id }, _, ctx) => ctx.user.id === id,
+    });
     t.model.bio();
     t.model.profilePictureUrl();
     t.list.field("articles", {
@@ -16,19 +18,6 @@ const User = objectType({
     });
     t.model.relations();
     t.model.relationsAsTarget();
-    // t.list.field("relations", {
-    //   type: "Relation",
-    //   resolve: async (parent, _, ctx) => {
-    //     if (ctx.user.id !== parent.id) {
-    //       return [];
-    //     }
-    //     return await ctx.prisma.relation.findMany({
-    //       where: {
-    //         userId: parent.id,
-    //       },
-    //     });
-    //   },
-    // });
   },
 });
 

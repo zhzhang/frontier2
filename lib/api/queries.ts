@@ -7,6 +7,12 @@ export default objectType({
   name: "Query",
   definition(t) {
     t.crud.user();
+    t.crud.organization();
+    t.crud.organizations();
+    t.crud.venue();
+    t.crud.venues({
+      filtering: true,
+    });
     t.list.field("userArticles", {
       type: "Article",
       args: {
@@ -176,15 +182,6 @@ export default objectType({
         return await ctx.prisma.threadMessage.findMany(query);
       },
     });
-    t.field("organization", {
-      type: "Organization",
-      args: { id: nonNull(stringArg()) },
-      resolve: (_, args, ctx) => {
-        return ctx.prisma.organization.findUnique({
-          where: { id: args.id },
-        });
-      },
-    });
     t.list.field("browseOrganizations", {
       type: "Organization",
       args: { tags: list(stringArg()) },
@@ -222,61 +219,6 @@ export default objectType({
           },
         });
         return memberships.map((membership) => membership.user);
-      },
-    });
-    t.list.field("searchOrganizations", {
-      type: "Organization",
-      args: { query: stringArg() },
-      resolve: async (_, { query }, ctx) => {
-        if (query === "") {
-          return [];
-        }
-        return await ctx.prisma.organization.findMany({
-          where: {
-            OR: [
-              {
-                name: {
-                  contains: query,
-                },
-              },
-              {
-                abbreviation: {
-                  contains: query,
-                },
-              },
-            ],
-          },
-        });
-      },
-    });
-    t.list.field("searchVenues", {
-      type: "Venue",
-      args: { query: stringArg() },
-      resolve: async (_, { query }, ctx) => {
-        if (query === "") {
-          return [];
-        }
-        return await ctx.prisma.venue.findMany({
-          where: {
-            OR: [
-              {
-                name: {
-                  contains: query,
-                },
-              },
-              {
-                abbreviation: {
-                  contains: query,
-                },
-              },
-            ],
-            AND: {
-              submissionDeadline: {
-                gte: new Date(),
-              },
-            },
-          },
-        });
       },
     });
     t.list.field("reviewerAssignedSubmissions", {

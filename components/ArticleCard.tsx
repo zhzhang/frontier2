@@ -1,7 +1,6 @@
 import AuthorPopover from "@/components/AuthorPopover";
 import Markdown from "@/components/Markdown";
 import OrganizationPopover from "@/components/OrganizationPopover";
-import { withApollo } from "@/lib/apollo";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
@@ -17,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function ArticleCard({ article }) {
+export default function ArticleCard({ article }) {
   const { id, title, versions, authors, acceptedOrganizations } = article;
   const classes = useStyles();
   return (
@@ -42,5 +41,3 @@ function ArticleCard({ article }) {
     </>
   );
 }
-
-export default withApollo(ArticleCard);

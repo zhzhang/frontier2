@@ -1,9 +1,7 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Markdown from "@/components/Markdown";
-import { withApollo } from "@/lib/apollo";
 import Avatar from "@material-ui/core/Avatar";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -21,28 +19,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OrganizationCard = ({ organization }) => {
+export default function OrganizationCard({ organization }) {
   const { id, name, description, logoRef } = organization;
   const classes = useStyles();
   return (
-    <Card>
-      <CardContent>
-        <div className={classes.header}>
-          {logoRef === null ? (
-            <Avatar variant="rounded">T</Avatar>
-          ) : (
-            <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
-          )}
-          <Typography variant="h5">
-            <Link href={`/organization/${id}`} color="inherit">
-              {name}
-            </Link>
-          </Typography>
-        </div>
-        <Markdown>{description}</Markdown>
-      </CardContent>
-    </Card>
+    <>
+      <div className={classes.header}>
+        {logoRef === null ? (
+          <Avatar variant="rounded">T</Avatar>
+        ) : (
+          <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
+        )}
+        <Typography variant="h4" color="textSecondary">
+          <Link href={`/organization/${id}`} color="inherit">
+            {name}
+          </Link>
+        </Typography>
+      </div>
+      <Markdown>{description}</Markdown>
+      <Button color="primary" variant="outlined">
+        Submit
+      </Button>
+      <Button color="primary" variant="outlined">
+        View Venues
+      </Button>
+    </>
   );
-};
-
-export default withApollo(OrganizationCard);
+}

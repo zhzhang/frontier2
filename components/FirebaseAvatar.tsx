@@ -10,7 +10,7 @@ export default function FirebaseAvatar({
 }) {
   if (anonymous) {
     return (
-      <Avatar>
+      <Avatar {...props}>
         <PersonIcon />
       </Avatar>
     );
@@ -18,5 +18,5 @@ export default function FirebaseAvatar({
     const url = useRef(storeRef);
     return <Avatar {...props} src={url} />;
   }
-  return <Avatar>{name[0]}</Avatar>;
+  return <Avatar {...props}>{name[0]}</Avatar>;
 }

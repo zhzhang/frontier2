@@ -1,4 +1,3 @@
-import { serialize } from "@/components/editor/Editor";
 import Layout from "@/components/Layout";
 import MarkdownEditor from "@/components/MarkdownEditor";
 import { withApollo } from "@/lib/apollo";
@@ -76,7 +75,7 @@ const NewOrganization = () => {
         variables: {
           name,
           abbreviation,
-          description: serialize(description),
+          description: description,
         },
       });
       console.log("DONE");
@@ -93,7 +92,7 @@ const NewOrganization = () => {
           variables: {
             name,
             abbreviation,
-            description: serialize(description),
+            description: description,
             logoRef: refPath,
           },
         });
