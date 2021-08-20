@@ -95,12 +95,8 @@ const Navigation = () => {
           <Button color="inherit" href="/articles" className={classes.button}>
             Articles
           </Button>
-          <Button
-            color="inherit"
-            href="/organizations"
-            className={classes.button}
-          >
-            Organizations
+          <Button color="inherit" href="/venues" className={classes.button}>
+            Venues
           </Button>
           <Button
             color="inherit"

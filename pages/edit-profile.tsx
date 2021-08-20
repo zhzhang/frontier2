@@ -257,7 +257,6 @@ function Relations({ userId, relations }) {
 }
 
 function Editor({ user }) {
-  // const { name, email, articles, profilePictureUrl } = data.user;
   const classes = useStyles();
   const [name, setName] = useState(user.name);
   const [bio, setBio] = useState(user.bio);
@@ -269,9 +268,13 @@ function Editor({ user }) {
     if (!imgRef) {
       await updateUser({
         variables: {
-          id: user.id,
-          name,
-          bio,
+          where: {
+            id: user.id,
+          },
+          data: {
+            name,
+            bio,
+          },
         },
       });
       return;
@@ -288,10 +291,14 @@ function Editor({ user }) {
       () => {
         updateUser({
           variables: {
-            id: user.id,
-            name,
-            bio,
-            profilePictureUrl: refPath,
+            where: {
+              id: user.id,
+            },
+            data: {
+              name,
+              bio,
+              profilePictureUrl: refPath,
+            },
           },
         });
       }

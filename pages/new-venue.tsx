@@ -5,11 +5,13 @@ import { getCroppedImg } from "@/lib/crop";
 import { uploadFile } from "@/lib/firebase";
 import { UploadTypeEnum } from "@/lib/types";
 import { useMutation } from "@apollo/react-hooks";
+import DateFnsUtils from "@date-io/date-fns";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import gql from "graphql-tag";
 import Router from "next/router";
 import { useCallback, useRef, useState } from "react";
@@ -32,38 +34,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateOrganizationMutation = gql`
-  mutation CreateOrganizationQuery(
-    $name: String!
-    $description: String!
-    $abbreviation: String
-    $logoRef: String
-  ) {
-    createOrganization(
-      name: $name
-      description: $description
-      abbreviation: $abbreviation
-      logoRef: $logoRef
-    ) {
+const CreateVenueMutation = gql`
+  mutation CreateVenueQuery($data: VenueCreateInput!) {
+    createOneVenue(data: $data) {
       id
     }
   }
 `;
 
-const NewOrganization = () => {
+const NewVenue = () => {
   const classes = useStyles();
   const [name, setName] = useState("");
   const [abbreviation, setAbbreviation] = useState(null);
   const [description, setDescription] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
-  const [createOrganization, { loading, error, data }] = useMutation(
-    CreateOrganizationMutation
-  );
+  const [createVenue, { loading, error, data }] =
+    useMutation(CreateVenueMutation);
   const imgRef = useRef(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
 
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
-  if (!loading && data && data.createOrganization) {
-    Router.push(`/organization/${data.createOrganization.id}`);
+  if (!loading && data && data.createVenue) {
+    Router.push(`/venue/${data.createVenue.id}`);
   }
   const onLoad = useCallback((img) => {
     imgRef.current = img;
@@ -71,14 +67,15 @@ const NewOrganization = () => {
 
   const handleSubmit = async () => {
     if (!imgRef) {
-      await createOrganization({
+      await createVenue({
         variables: {
-          name,
-          abbreviation,
-          description: description,
+          data: {
+            name,
+            abbreviation,
+            description: description,
+          },
         },
       });
-      console.log("DONE");
       return;
     }
     const img = await getCroppedImg(imgRef.current, crop, "hello");
@@ -88,12 +85,14 @@ const NewOrganization = () => {
       (snapshot) => {},
       (error) => {},
       () => {
-        createOrganization({
+        createVenue({
           variables: {
-            name,
-            abbreviation,
-            description: description,
-            logoRef: refPath,
+            data: {
+              name,
+              abbreviation,
+              description: description,
+              logoRef: refPath,
+            },
           },
         });
       }
@@ -104,7 +103,7 @@ const NewOrganization = () => {
     <Layout>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Typography variant="h4">Create Organization</Typography>
+          <Typography variant="h4">Create Venue</Typography>
         </Grid>
         <Grid item xs={8}>
           <TextField
@@ -125,7 +124,45 @@ const NewOrganization = () => {
             onChange={(event) => setAbbreviation(event.target.value)}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DateTimePicker
+              inputVariant="outlined"
+              id="date-picker-dialog"
+              label="Venue Date"
+              format="MM/dd/yyyy"
+              value={selectedDate}
+              onChange={handleDateChange}
+            />
+            <DateTimePicker
+              margin="normal"
+              inputVariant="outlined"
+              id="date-picker-dialog"
+              label="Submission Deadline"
+              format="MM/dd/yyyy"
+              value={selectedDate}
+              onChange={handleDateChange}
+            />
+            <DateTimePicker
+              margin="normal"
+              inputVariant="outlined"
+              id="date-picker-dialog"
+              label="Submissions Open"
+              format="MM/dd/yyyy"
+              value={selectedDate}
+              onChange={handleDateChange}
+            />
+          </MuiPickersUtilsProvider>
+        </Grid>
+        <Grid item xs={10}>
+          <MarkdownEditor
+            body={description}
+            onChange={(description) => setDescription(description)}
+            label="Description"
+            placeholder="Write a description."
+          />
+        </Grid>
+        <Grid item xs={2}>
           {logoUrl ? (
             <ReactCrop
               src={logoUrl}
@@ -152,14 +189,6 @@ const NewOrganization = () => {
             </Dropzone>
           )}
         </Grid>
-        <Grid item xs={9}>
-          <MarkdownEditor
-            body={description}
-            onChange={(description) => setDescription(description)}
-            label="Description"
-            placeholder="Write a description."
-          />
-        </Grid>
         <Grid item xs={12}>
           <Button
             variant="contained"
@@ -174,4 +203,4 @@ const NewOrganization = () => {
   );
 };
 
-export default withApollo(NewOrganization);
+export default withApollo(NewVenue);

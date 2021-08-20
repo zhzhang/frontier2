@@ -8,19 +8,19 @@ datasource db {
 }
 
 model User {
-  id                      String                   @id
-  email                   String                   @unique
-  name                    String
-  bio                     String                   @default("")
-  profilePictureUrl       String?
-  reviews                 Review[]
-  organizationMemberships OrganizationMembership[]
-  decisions               Decision[]               @relation("chair")
-  threadMessage           ThreadMessage[]
-  authorships             ArticleAuthor[]
-  chairSubmissions        Submission[]
-  relations               Relation[]
-  relationsAsTarget       Relation[]               @relation("target")
+  id                String            @id
+  email             String            @unique
+  name              String
+  bio               String            @default("")
+  profilePictureUrl String?
+  reviews           Review[]
+  venueMemberships  VenueMembership[]
+  decisions         Decision[]        @relation("chair")
+  threadMessage     ThreadMessage[]
+  authorships       ArticleAuthor[]
+  chairSubmissions  Submission[]
+  relations         Relation[]
+  relationsAsTarget Relation[]        @relation("target")
 }
 
 enum RelationType {
@@ -83,82 +83,72 @@ model ThreadMessage {
 }
 
 model Submission {
-  id             String       @id @default(cuid())
-  article        Article      @relation(fields: [articleId], references: [id])
-  articleId      String
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  owner          User?        @relation(fields: [ownerId], references: [id])
-  ownerId        String?
-  decision       Decision?    @relation(fields: [decisionId], references: [id])
-  decisionId     String?
-  createdAt      DateTime     @default(now())
-}
-
-model Organization {
-  id           String                   @id @default(cuid())
-  name         String
-  website      String?
-  abbreviation String?
-  description  String                   @db.MediumText
-  logoRef      String?
-  memberships  OrganizationMembership[]
-  reviews      Review[]
-  decisions    Decision[]
-  submissions  Submission[]
-  venues       Venue[]
-}
-
-model OrganizationMembership {
-  id             Int          @id @default(autoincrement())
-  user           User         @relation(fields: [userId], references: [id])
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  role           String
-  userId         String
-  organizationId String
+  id         String    @id @default(cuid())
+  article    Article   @relation(fields: [articleId], references: [id])
+  articleId  String
+  venue      Venue     @relation(fields: [venueId], references: [id])
+  venueId    String
+  owner      User?     @relation(fields: [ownerId], references: [id])
+  ownerId    String?
+  decision   Decision? @relation(fields: [decisionId], references: [id])
+  decisionId String?
+  createdAt  DateTime  @default(now())
 }
 
 model Venue {
-  id                 String       @id @default(cuid())
+  id                 String            @id @default(cuid())
   name               String
+  websiteUrl         String?
   abbreviation       String?
+  description        String            @db.MediumText
   logoRef            String?
-  description        String       @db.MediumText
-  organization       Organization @relation(fields: [organizationId], references: [id])
-  organizationId     String
-  submissionDeadline DateTime?    @db.DateTime
-  venueDate          DateTime?    @db.DateTime
+  venueDate          DateTime?
+  submissionOpen     DateTime?
+  submissionDeadline DateTime?
+  memberships        VenueMembership[]
+  reviews            Review[]
+  decisions          Decision[]
+  submissions        Submission[]
+}
+
+model VenueMembership {
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id])
+  venue   Venue  @relation(fields: [venueId], references: [id])
+  role    String
+  userId  String
+  venueId String
 }
 
 model Review {
-  id             String        @id @default(cuid())
-  body           String        @db.MediumText
-  rating         Int           @default(0)
-  article        Article       @relation(fields: [articleId], references: [id])
-  author         User          @relation(fields: [authorId], references: [id])
-  highlights     String        @db.MediumText
-  articleId      String
-  authorId       String
-  organization   Organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
-  reviewNumber   Int
-  published      Boolean       @default(false)
-  anonymized     Boolean       @default(true)
-  decisions      Decision[]
+  id           String     @id @default(cuid())
+  body         String     @db.MediumText
+  rating       Int        @default(0)
+  article      Article    @relation(fields: [articleId], references: [id])
+  author       User       @relation(fields: [authorId], references: [id])
+  highlights   String     @db.MediumText
+  articleId    String
+  authorId     String
+  venue        Venue?     @relation(fields: [venueId], references: [id])
+  venueId      String?
+  reviewNumber Int
+  published    Boolean    @default(false)
+  anonymized   Boolean    @default(true)
+  decisions    Decision[]
 }
 
 model Decision {
-  id             String        @id @default(cuid())
-  body           String        @db.MediumText
-  decision       Boolean       @default(false)
-  highlights     String        @db.MediumText
-  citedReviews   Review[]
-  article        Article       @relation(fields: [articleId], references: [id])
-  articleId      String
-  organization   Organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
-  author         User          @relation("chair", fields: [authorId], references: [id])
-  authorId       String
-  submission     Submission?
-  published      Boolean       @default(false)
+  id           String      @id @default(cuid())
+  body         String      @db.MediumText
+  decision     Boolean     @default(false)
+  highlights   String      @db.MediumText
+  citedReviews Review[]
+  article      Article     @relation(fields: [articleId], references: [id])
+  articleId    String
+  venue        Venue       @relation(fields: [venueId], references: [id])
+  venueId      String
+  author       User        @relation("chair", fields: [authorId], references: [id])
+  authorId     String
+  submission   Submission?
+  published    Boolean     @default(false)
 }

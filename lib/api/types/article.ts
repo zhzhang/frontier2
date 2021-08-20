@@ -21,16 +21,16 @@ const Article = objectType({
     });
     t.model.versions({ pagination: false });
     t.model.reviews({ filtering: { published: true } });
-    t.list.field("acceptedOrganizations", {
-      type: "Organization",
+    t.list.field("acceptedVenues", {
+      type: "Venue",
       resolve: async (parent) => {
         const acceptances = await prisma.decision.findMany({
           where: { articleId: parent.id, decision: true },
           include: {
-            organization: true,
+            venue: true,
           },
         });
-        return acceptances.map((decision) => decision.organization);
+        return acceptances.map((decision) => decision.venue);
       },
     });
   },

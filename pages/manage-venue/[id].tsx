@@ -1,30 +1,22 @@
-import { useState } from "react";
-import Layout from "../../components/Layout";
-import { useRouter } from "next/router";
-import { withApollo } from "../../lib/apollo";
-import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import Error from "../../components/Error";
-import { useAuth } from "../../lib/firebase";
-import { useRef } from "../../lib/firebase";
+import gql from "graphql-tag";
+import { useRouter } from "next/router";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Image from "react-bootstrap/Image";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
+import Tab from "react-bootstrap/Tab";
+import "react-datepicker/dist/react-datepicker.css";
 import Spinner from "../../components/CenteredSpinner";
-import VenuesPane from "../../components/manage-organization/VenuesPane";
-import SubmissionsPane from "../../components/manage-organization/SubmissionsPane";
+import Error from "../../components/Error";
+import Layout from "../../components/Layout";
 import AdminsPane from "../../components/manage-organization/AdminsPane";
 import EditorsPane from "../../components/manage-organization/EditorsPane";
 import InfoPane from "../../components/manage-organization/InfoPane";
-import { RoleEnum } from "../../lib/types";
-
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
-import Tabs from "react-bootstrap/Tabs";
-import Nav from "react-bootstrap/Nav";
-import Tab from "react-bootstrap/Tab";
-import Row from "react-bootstrap/Row";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import SubmissionsPane from "../../components/manage-organization/SubmissionsPane";
+import { withApollo } from "../../lib/apollo";
+import { useRef } from "../../lib/firebase";
 
 const OrganizationQuery = gql`
   query OrganizationQuery($id: String!) {
@@ -48,7 +40,7 @@ function Header({ name, logoRef }) {
   );
 }
 
-function Organization() {
+function Venue() {
   const router = useRouter();
   const id = router.query.id;
   const view = router.query.view ? router.query.view : "info";
@@ -123,4 +115,4 @@ function Organization() {
   );
 }
 
-export default withApollo(Organization);
+export default withApollo(Venue);

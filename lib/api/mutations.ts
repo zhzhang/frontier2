@@ -9,7 +9,6 @@ import {
   stringArg,
 } from "nexus";
 import stream from "stream";
-import { RoleEnum } from "../types";
 import { isOrganizationAdmin } from "./utils";
 
 function s3UploadFromStream(bucket, key) {
@@ -39,27 +38,8 @@ function readStreamData(stream) {
 export default objectType({
   name: "Mutation",
   definition(t) {
-    t.field("updateUser", {
-      type: "User",
-      args: {
-        id: nonNull(stringArg()),
-        name: nullable(stringArg()),
-        bio: nullable(stringArg()),
-        profilePictureUrl: nullable(stringArg()),
-      },
-      authorize: (_, { id }, ctx) => id === ctx.user.id,
-      resolve: async (_, { id, name, bio, profilePictureUrl }, ctx) => {
-        return await ctx.prisma.user.update({
-          where: {
-            id,
-          },
-          data: {
-            name,
-            bio,
-            profilePictureUrl,
-          },
-        });
-      },
+    t.crud.updateOneUser({
+      authorize: (_, { data: { id } }, ctx) => id === ctx.user.id,
     });
     t.field("createArticle", {
       type: "Article",
@@ -111,74 +91,6 @@ export default objectType({
           });
         }
         return article;
-      },
-    });
-    t.field("createOrganization", {
-      type: "Organization",
-      args: {
-        name: nonNull(stringArg()),
-        description: nonNull(stringArg()),
-        abbreviation: nullable(stringArg()),
-        logoRef: nullable(stringArg()),
-        // logoFile: nullable(arg({ type: "Upload" })),
-      },
-      resolve: async (_, { name, description, abbreviation, logoRef }, ctx) => {
-        // const { createReadStream, filename, mimetype } = await logoFile;
-        const organization = await ctx.prisma.organization.create({
-          data: {
-            name,
-            description,
-            logoRef,
-            abbreviation,
-            memberships: {
-              create: [
-                {
-                  userId: ctx.user.id,
-                  role: RoleEnum.ADMIN,
-                },
-              ],
-            },
-          },
-        });
-        return organization;
-      },
-    });
-    t.field("updateOrganization", {
-      type: "Organization",
-      args: {
-        id: nonNull(stringArg()),
-        name: nullable(stringArg()),
-        description: nullable(stringArg()),
-        abbreviation: nullable(stringArg()),
-        logoRef: nullable(stringArg()),
-      },
-      resolve: async (
-        _,
-        { id, name, description, abbreviation, logoRef },
-        ctx
-      ) => {
-        const membership = await ctx.prisma.organizationMembership.findFirst({
-          where: {
-            userId: ctx.user.id,
-            organizationId: id,
-            role: RoleEnum.ADMIN,
-          },
-        });
-        if (!membership) {
-          return null;
-        }
-        const organization = await ctx.prisma.organization.update({
-          where: {
-            id,
-          },
-          data: {
-            name,
-            description,
-            logoRef,
-            abbreviation,
-          },
-        });
-        return organization;
       },
     });
     t.field("assignSubmissionOwner", {
@@ -268,7 +180,7 @@ export default objectType({
       },
     });
     t.field("updateOrganizationMembership", {
-      type: "Organization",
+      type: "Venue",
       args: {
         organizationId: nonNull(stringArg()),
         userId: nonNull(stringArg()),
@@ -324,5 +236,6 @@ export default objectType({
         return relation.userId === ctx.user.id;
       },
     });
+    t.crud.createOneVenue();
   },
 });

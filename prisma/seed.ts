@@ -1,6 +1,5 @@
 import cuid from "cuid";
 import prisma from "../lib/prisma";
-import { RoleEnum } from "../lib/types";
 
 function createEditorState(text: string) {
   return `{"blocks":[{"key":"q1g7","text":"${text}","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`;
@@ -73,29 +72,13 @@ async function main() {
     },
   });
 
-  // ORGANIZATION
-  const organization = await prisma.organization.create({
-    data: {
-      id: "cklhou5t30000wpfwuehicxyu",
-      name: "Association for Computational Linguistics",
-      abbreviation: "ACL",
-      description: `The Association for Computational Linguistics (ACL) is the premier international scientific and professional society for people working on computational problems involving human language, a field often referred to as either computational linguistics or natural language processing (NLP). The association was founded in 1962, originally named the Association for Machine Translation and Computational Linguistics (AMTCL), and became the ACL in 1968. Activities of the ACL include the holding of an annual meeting each summer and the sponsoring of the journal Computational Linguistics, published by MIT Press; this conference and journal are the leading publications of the field. For more information, see: https://www.aclweb.org/. `,
-      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
-    },
-  });
-  const otherOrganization = await prisma.organization.create({
+  const iclr = await prisma.venue.create({
     data: {
       name: "International Conference on Learning Representations",
       abbreviation: "ICLR",
       description: `The International Conference on Learning Representations (ICLR) is the premier gathering of professionals dedicated to the advancement of the branch of artificial intelligence called representation learning, but generally referred to as deep learning. ICLR is globally renowned for presenting and publishing cutting-edge research on all aspects of deep learning used in the fields of artificial intelligence, statistics and data science, as well as important application areas such as machine vision, computational biology, speech recognition, text understanding, gaming, and robotics.`,
       logoRef: "logos/Mt1ozX07_400x400.jpg",
-    },
-  });
-  await prisma.organizationMembership.create({
-    data: {
-      userId: user.id,
-      organizationId: organization.id,
-      role: RoleEnum.ADMIN,
+      websiteUrl: "https://iclr.cc/",
     },
   });
 
@@ -151,7 +134,6 @@ async function main() {
       reviewNumber: 1,
       articleId: article.id,
       published: true,
-      organizationId: organization.id,
       rating: 1,
       anonymized: false,
       highlights: "[]",
@@ -164,7 +146,6 @@ async function main() {
       reviewNumber: 2,
       articleId: article.id,
       published: true,
-      organizationId: otherOrganization.id,
       body: reviewBody,
       rating: 3,
       highlights: highlights,
@@ -184,9 +165,9 @@ async function main() {
       authorId: reviewer.id,
       body: `This is an example meta-review. Reviews that an author cites in writing the meta-review are attached to the meta-review, and directly credit the reviewer. Reviews from other organizations can be cited as well!`,
       highlights: "",
+      venueId: iclr.id,
       decision: true,
       articleId: article.id,
-      organizationId: organization.id,
     },
   });
   await prisma.decision.update({
@@ -226,21 +207,81 @@ async function main() {
     },
   });
 
-  await prisma.submission.create({
-    data: {
-      articleId: article2.id,
-      organizationId: organization.id,
-    },
-  });
-
-  const venue = await prisma.venue.create({
+  await prisma.venue.create({
     data: {
       name: "Annual Meeting of the Association for Computational Linguistics",
       abbreviation: "ACL",
-      description: "SubmissionTargetTypeahed",
-      organizationId: organization.id,
+      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
+      websiteUrl: "https://acl2020.org/",
+      description:
+        "ACL is the premier conference of the field of computational linguistics, covering a broad spectrum of diverse research areas that are concerned with computational approaches to natural language.",
       submissionDeadline: "2022-06-05T10:00:00.000Z",
       venueDate: "2022-06-10T10:00:00.000Z",
+    },
+  });
+
+  await prisma.venue.create({
+    data: {
+      name: "Conference of the North American Chapter of the Association for Computational Linguistics",
+      abbreviation: "NAACL",
+      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
+      websiteUrl: "https://naacl.org/",
+      description:
+        "The North American Chapter of the Association for Computational Linguistics (NAACL) provides a regional focus for members of the Association for Computational Linguistics (ACL) in North America as well as in Central and South America, organizes annual conferences, promotes cooperation and information exchange among related scientific and professional societies, encourages and facilitates ACL membership by people and institutions in the Americas, and provides a source of information on regional activities for the ACL Executive Committee.",
+      submissionDeadline: "2022-06-05T10:00:00.000Z",
+      venueDate: "2022-06-10T10:00:00.000Z",
+    },
+  });
+
+  await prisma.venue.create({
+    data: {
+      name: "Conference on Empirical Methods in Natural Language Processing",
+      abbreviation: "EMNLP",
+      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
+      websiteUrl: "https://2020.emnlp.org",
+      description:
+        "The 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP 2021) invites the submission of long and short papers on substantial, original, and unpublished research in empirical methods for Natural Language Processing. As in recent years, some of the presentations at the conference will be for papers accepted by the Transactions of the ACL (TACL) and Computational Linguistics (CL) journals.",
+      submissionDeadline: "2021-05-17T10:00:00.000Z",
+      venueDate: "2021-11-07T10:00:00.000Z",
+    },
+  });
+
+  await prisma.venue.create({
+    data: {
+      name: "Annual Meeting of the Association for Computational Linguistics",
+      abbreviation: "ACL",
+      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
+      websiteUrl: "https://acl2020.org/",
+      description:
+        "ACL is the premier conference of the field of computational linguistics, covering a broad spectrum of diverse research areas that are concerned with computational approaches to natural language.",
+      submissionDeadline: "2020-06-05T10:00:00.000Z",
+      venueDate: "2020-06-10T10:00:00.000Z",
+    },
+  });
+
+  await prisma.venue.create({
+    data: {
+      name: "Conference of the North American Chapter of the Association for Computational Linguistics",
+      abbreviation: "NAACL",
+      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
+      websiteUrl: "https://naacl.org/",
+      description:
+        "The North American Chapter of the Association for Computational Linguistics (NAACL) provides a regional focus for members of the Association for Computational Linguistics (ACL) in North America as well as in Central and South America, organizes annual conferences, promotes cooperation and information exchange among related scientific and professional societies, encourages and facilitates ACL membership by people and institutions in the Americas, and provides a source of information on regional activities for the ACL Executive Committee.",
+      submissionDeadline: "2020-06-05T10:00:00.000Z",
+      venueDate: "2020-06-10T10:00:00.000Z",
+    },
+  });
+
+  await prisma.venue.create({
+    data: {
+      name: "Conference on Empirical Methods in Natural Language Processing",
+      websiteUrl: "https://2021.emnlp.org",
+      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
+      abbreviation: "EMNLP",
+      description:
+        "The Conference on Empirical Methods in Natural Language Processing invites the submission of long and short papers on substantial, original, and unpublished research in empirical methods for Natural Language Processing. As in recent years, some of the presentations at the conference will be for papers accepted by the Transactions of the ACL (TACL) and Computational Linguistics (CL) journals.",
+      submissionDeadline: "2020-05-17T10:00:00.000Z",
+      venueDate: "2020-11-07T10:00:00.000Z",
     },
   });
 }

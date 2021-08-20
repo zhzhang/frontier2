@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { list, nonNull, objectType, stringArg } from "nexus";
+import { nonNull, objectType, stringArg } from "nexus";
 import prisma from "../prisma";
 import { RoleEnum } from "../types";
 
@@ -7,8 +7,8 @@ export default objectType({
   name: "Query",
   definition(t) {
     t.crud.user();
-    t.crud.organization();
-    t.crud.organizations();
+    t.crud.article();
+    t.crud.articles({ filtering: true });
     t.crud.venue();
     t.crud.venues({
       filtering: true,
@@ -42,40 +42,6 @@ export default objectType({
         return articles;
       },
     });
-    t.field("article", {
-      type: "Article",
-      args: { id: nonNull(stringArg()) },
-      resolve: async (_, { id }, ctx) => {
-        return await ctx.prisma.article.findUnique({
-          where: {
-            id,
-          },
-          include: {
-            authors: {
-              include: {
-                user: true,
-              },
-            },
-          },
-        });
-      },
-    });
-    t.list.field("articles", {
-      type: "Article",
-      args: {},
-      resolve: async (_, args, ctx) => {
-        return await ctx.prisma.article.findMany({
-          include: {
-            versions: true,
-            authors: {
-              include: {
-                user: true,
-              },
-            },
-          },
-        });
-      },
-    });
     t.list.field("articleVersions", {
       type: "ArticleVersion",
       args: {},
@@ -101,7 +67,6 @@ export default objectType({
           },
           include: {
             author: true,
-            organization: true,
           },
         });
         return reviews.map((review) => {
@@ -127,7 +92,6 @@ export default objectType({
           },
           include: {
             author: true,
-            organization: true,
           },
         });
       },
@@ -142,11 +106,9 @@ export default objectType({
           },
           include: {
             author: true,
-            organization: true,
             citedReviews: {
               include: {
                 author: true,
-                organization: true,
               },
             },
           },
@@ -180,13 +142,6 @@ export default objectType({
           };
         }
         return await ctx.prisma.threadMessage.findMany(query);
-      },
-    });
-    t.list.field("browseOrganizations", {
-      type: "Organization",
-      args: { tags: list(stringArg()) },
-      resolve: (_, _args, ctx) => {
-        return ctx.prisma.organization.findMany();
       },
     });
     t.list.field("searchUsers", {

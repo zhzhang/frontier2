@@ -44,6 +44,7 @@ export default function MarkdownEditor({
         placeholder={placeholder}
         value={body}
         onChange={({ target }) => onChange(target.value)}
+        rows={4}
       />
       <Button onClick={() => toggleShowPreview(!previewOpen)}>
         {previewOpen ? "Hide Preview" : "Show Preview"}

@@ -6,9 +6,9 @@ const Venue = objectType({
     t.model.id();
     t.model.name();
     t.model.abbreviation();
+    t.model.websiteUrl();
     t.model.description();
     t.model.logoRef();
-    t.model.organization();
     t.model.submissionDeadline();
     t.model.venueDate();
   },

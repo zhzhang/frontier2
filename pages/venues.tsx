@@ -1,24 +1,25 @@
 import ErrorPage from "@/components/ErrorPage";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
-import OrganizationCard from "@/components/OrganizationCard";
+import VenueCard from "@/components/VenueCard";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
-const OrganizationQuery = gql`
-  query OrganizationQuery {
-    browseOrganizations {
+const VenueQuery = gql`
+  query VenueQuery {
+    venues {
       id
       name
       description
       logoRef
+      websiteUrl
     }
   }
 `;
 
-function Organizations() {
-  const { loading, error, data } = useQuery(OrganizationQuery);
+function Venues() {
+  const { loading, error, data } = useQuery(VenueQuery);
 
   if (loading) {
     return (
@@ -29,21 +30,19 @@ function Organizations() {
   }
   if (error) {
     return (
-      <ErrorPage>
-        Unable to load organizations, please try again later.
-      </ErrorPage>
+      <ErrorPage>Unable to load venues, please try again later.</ErrorPage>
     );
   }
 
   return (
     <Layout>
-      {data.browseOrganizations.map((organization) => (
+      {data.venues.map((venue) => (
         <div className="mt-3">
-          <OrganizationCard organization={organization} />
+          <VenueCard venue={venue} />
         </div>
       ))}
     </Layout>
   );
 }
 
-export default withApollo(Organizations);
+export default withApollo(Venues);

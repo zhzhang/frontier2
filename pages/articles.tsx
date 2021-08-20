@@ -1,12 +1,11 @@
 import ArticleCard from "@/components/ArticleCard";
-import Error from "@/components/Error";
+import ErrorPage from "@/components/ErrorPage";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import React from "react";
-import Container from "react-bootstrap/Container";
 
 const GetArticlesQuery = gql`
   query GetArticlesQuery {
@@ -22,7 +21,7 @@ const GetArticlesQuery = gql`
         ref
         createdAt
       }
-      acceptedOrganizations {
+      acceptedVenues {
         id
         name
       }
@@ -30,7 +29,7 @@ const GetArticlesQuery = gql`
   }
 `;
 
-function Articles(props) {
+function Articles() {
   const { loading, error, data } = useQuery(GetArticlesQuery, {});
   if (loading) {
     return (
@@ -40,23 +39,13 @@ function Articles(props) {
     );
   }
   if (error) {
-    return (
-      <Layout>
-        <Container fluid className="mt-3">
-          <Error header={"Error loading articles."} />
-        </Container>
-      </Layout>
-    );
+    return <ErrorPage> {"Error loading articles."}</ErrorPage>;
   }
   return (
     <Layout>
-      <Container fluid>
-        {data.articles.map((article) => (
-          <div className="mt-3">
-            <ArticleCard article={article} />
-          </div>
-        ))}
-      </Container>
+      {data.articles.map((article) => (
+        <ArticleCard article={article} />
+      ))}
     </Layout>
   );
 }

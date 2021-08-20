@@ -3,7 +3,6 @@ import Query from "@/lib/api/queries";
 import Article from "@/lib/api/types/article";
 import ArticleVersion from "@/lib/api/types/article-version";
 import Decision from "@/lib/api/types/decision";
-import Organization from "@/lib/api/types/organization";
 import Relation, { RelationType } from "@/lib/api/types/relation";
 import Review from "@/lib/api/types/review";
 import Role from "@/lib/api/types/role";
@@ -51,7 +50,6 @@ export const schema = makeSchema({
     User,
     Article,
     ArticleVersion,
-    Organization,
     Venue,
     Submission,
     Review,

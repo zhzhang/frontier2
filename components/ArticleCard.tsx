@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function ArticleCard({ article }) {
-  const { id, title, versions, authors, acceptedOrganizations } = article;
+  const { id, title, versions, authors, acceptedVenues } = article;
   const classes = useStyles();
   return (
     <>
@@ -33,8 +33,8 @@ export default function ArticleCard({ article }) {
       </div>
       <Markdown>{versions[0].abstract}</Markdown>
       <div>
-        {acceptedOrganizations.length === 0 ? null : "Accepted by: "}
-        {acceptedOrganizations.map((org) => (
+        {acceptedVenues.length === 0 ? null : "Accepted by: "}
+        {acceptedVenues.map((org) => (
           <OrganizationPopover organization={org} />
         ))}
       </div>

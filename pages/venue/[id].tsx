@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Organization() {
+function Venue() {
   const router = useRouter();
   const id = router.query.id;
   const view = router.query.view ? router.query.view : "info";
@@ -113,4 +113,4 @@ function Organization() {
   );
 }
 
-export default withApollo(Organization);
+export default withApollo(Venue);
