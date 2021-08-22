@@ -126,7 +126,7 @@ const Navigation = () => {
             >
               <StyledMenuItem
                 onClick={async () => {
-                  router.push(`user/${user.uid}`);
+                  router.push(`/user/${user.uid}`);
                 }}
               >
                 <ListItemText primary="Profile" />

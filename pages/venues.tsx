@@ -11,9 +11,13 @@ const VenueQuery = gql`
     venues {
       id
       name
+      abbreviation
       description
       logoRef
       websiteUrl
+      venueDate
+      submissionDeadline
+      submissionOpen
     }
   }
 `;

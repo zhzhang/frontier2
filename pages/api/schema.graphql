@@ -12,168 +12,6 @@ type Article {
   versions: [ArticleVersion!]!
 }
 
-input ArticleAuthorCreateManyArticleInput {
-  authorNumber: Int!
-  id: Int
-  userId: String!
-}
-
-input ArticleAuthorCreateManyArticleInputEnvelope {
-  data: [ArticleAuthorCreateManyArticleInput!]
-  skipDuplicates: Boolean
-}
-
-input ArticleAuthorCreateManyUserInput {
-  articleId: String!
-  authorNumber: Int!
-  id: Int
-}
-
-input ArticleAuthorCreateManyUserInputEnvelope {
-  data: [ArticleAuthorCreateManyUserInput!]
-  skipDuplicates: Boolean
-}
-
-input ArticleAuthorCreateNestedManyWithoutArticleInput {
-  connect: [ArticleAuthorWhereUniqueInput!]
-  connectOrCreate: [ArticleAuthorCreateOrConnectWithoutArticleInput!]
-  create: [ArticleAuthorCreateWithoutArticleInput!]
-  createMany: ArticleAuthorCreateManyArticleInputEnvelope
-}
-
-input ArticleAuthorCreateNestedManyWithoutUserInput {
-  connect: [ArticleAuthorWhereUniqueInput!]
-  connectOrCreate: [ArticleAuthorCreateOrConnectWithoutUserInput!]
-  create: [ArticleAuthorCreateWithoutUserInput!]
-  createMany: ArticleAuthorCreateManyUserInputEnvelope
-}
-
-input ArticleAuthorCreateOrConnectWithoutArticleInput {
-  create: ArticleAuthorCreateWithoutArticleInput!
-  where: ArticleAuthorWhereUniqueInput!
-}
-
-input ArticleAuthorCreateOrConnectWithoutUserInput {
-  create: ArticleAuthorCreateWithoutUserInput!
-  where: ArticleAuthorWhereUniqueInput!
-}
-
-input ArticleAuthorCreateWithoutArticleInput {
-  authorNumber: Int!
-  user: UserCreateNestedOneWithoutAuthorshipsInput!
-}
-
-input ArticleAuthorCreateWithoutUserInput {
-  article: ArticleCreateNestedOneWithoutAuthorsInput!
-  authorNumber: Int!
-}
-
-input ArticleAuthorListRelationFilter {
-  every: ArticleAuthorWhereInput
-  none: ArticleAuthorWhereInput
-  some: ArticleAuthorWhereInput
-}
-
-input ArticleAuthorScalarWhereInput {
-  AND: [ArticleAuthorScalarWhereInput!]
-  NOT: [ArticleAuthorScalarWhereInput!]
-  OR: [ArticleAuthorScalarWhereInput!]
-  articleId: StringFilter
-  authorNumber: IntFilter
-  id: IntFilter
-  userId: StringFilter
-}
-
-input ArticleAuthorUpdateManyMutationInput {
-  authorNumber: IntFieldUpdateOperationsInput
-}
-
-input ArticleAuthorUpdateManyWithWhereWithoutArticleInput {
-  data: ArticleAuthorUpdateManyMutationInput!
-  where: ArticleAuthorScalarWhereInput!
-}
-
-input ArticleAuthorUpdateManyWithWhereWithoutUserInput {
-  data: ArticleAuthorUpdateManyMutationInput!
-  where: ArticleAuthorScalarWhereInput!
-}
-
-input ArticleAuthorUpdateManyWithoutArticleInput {
-  connect: [ArticleAuthorWhereUniqueInput!]
-  connectOrCreate: [ArticleAuthorCreateOrConnectWithoutArticleInput!]
-  create: [ArticleAuthorCreateWithoutArticleInput!]
-  createMany: ArticleAuthorCreateManyArticleInputEnvelope
-  delete: [ArticleAuthorWhereUniqueInput!]
-  deleteMany: [ArticleAuthorScalarWhereInput!]
-  disconnect: [ArticleAuthorWhereUniqueInput!]
-  set: [ArticleAuthorWhereUniqueInput!]
-  update: [ArticleAuthorUpdateWithWhereUniqueWithoutArticleInput!]
-  updateMany: [ArticleAuthorUpdateManyWithWhereWithoutArticleInput!]
-  upsert: [ArticleAuthorUpsertWithWhereUniqueWithoutArticleInput!]
-}
-
-input ArticleAuthorUpdateManyWithoutUserInput {
-  connect: [ArticleAuthorWhereUniqueInput!]
-  connectOrCreate: [ArticleAuthorCreateOrConnectWithoutUserInput!]
-  create: [ArticleAuthorCreateWithoutUserInput!]
-  createMany: ArticleAuthorCreateManyUserInputEnvelope
-  delete: [ArticleAuthorWhereUniqueInput!]
-  deleteMany: [ArticleAuthorScalarWhereInput!]
-  disconnect: [ArticleAuthorWhereUniqueInput!]
-  set: [ArticleAuthorWhereUniqueInput!]
-  update: [ArticleAuthorUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [ArticleAuthorUpdateManyWithWhereWithoutUserInput!]
-  upsert: [ArticleAuthorUpsertWithWhereUniqueWithoutUserInput!]
-}
-
-input ArticleAuthorUpdateWithWhereUniqueWithoutArticleInput {
-  data: ArticleAuthorUpdateWithoutArticleInput!
-  where: ArticleAuthorWhereUniqueInput!
-}
-
-input ArticleAuthorUpdateWithWhereUniqueWithoutUserInput {
-  data: ArticleAuthorUpdateWithoutUserInput!
-  where: ArticleAuthorWhereUniqueInput!
-}
-
-input ArticleAuthorUpdateWithoutArticleInput {
-  authorNumber: IntFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutAuthorshipsInput
-}
-
-input ArticleAuthorUpdateWithoutUserInput {
-  article: ArticleUpdateOneRequiredWithoutAuthorsInput
-  authorNumber: IntFieldUpdateOperationsInput
-}
-
-input ArticleAuthorUpsertWithWhereUniqueWithoutArticleInput {
-  create: ArticleAuthorCreateWithoutArticleInput!
-  update: ArticleAuthorUpdateWithoutArticleInput!
-  where: ArticleAuthorWhereUniqueInput!
-}
-
-input ArticleAuthorUpsertWithWhereUniqueWithoutUserInput {
-  create: ArticleAuthorCreateWithoutUserInput!
-  update: ArticleAuthorUpdateWithoutUserInput!
-  where: ArticleAuthorWhereUniqueInput!
-}
-
-input ArticleAuthorWhereInput {
-  AND: [ArticleAuthorWhereInput!]
-  NOT: [ArticleAuthorWhereInput!]
-  OR: [ArticleAuthorWhereInput!]
-  article: ArticleWhereInput
-  articleId: StringFilter
-  authorNumber: IntFilter
-  id: IntFilter
-  user: UserWhereInput
-  userId: StringFilter
-}
-
-input ArticleAuthorWhereUniqueInput {
-  id: Int
-}
-
 input ArticleCreateNestedOneWithoutAuthorsInput {
   connect: ArticleWhereUniqueInput
   connectOrCreate: ArticleCreateOrConnectWithoutAuthorsInput
@@ -230,7 +68,7 @@ input ArticleCreateWithoutAuthorsInput {
 
 input ArticleCreateWithoutDecisionsInput {
   anonymous: Boolean
-  authors: ArticleAuthorCreateNestedManyWithoutArticleInput
+  authors: AuthorshipCreateNestedManyWithoutArticleInput
   id: String
   reviews: ReviewCreateNestedManyWithoutArticleInput
   submissions: SubmissionCreateNestedManyWithoutArticleInput
@@ -240,7 +78,7 @@ input ArticleCreateWithoutDecisionsInput {
 
 input ArticleCreateWithoutReviewsInput {
   anonymous: Boolean
-  authors: ArticleAuthorCreateNestedManyWithoutArticleInput
+  authors: AuthorshipCreateNestedManyWithoutArticleInput
   decisions: DecisionCreateNestedManyWithoutArticleInput
   id: String
   submissions: SubmissionCreateNestedManyWithoutArticleInput
@@ -250,7 +88,7 @@ input ArticleCreateWithoutReviewsInput {
 
 input ArticleCreateWithoutSubmissionsInput {
   anonymous: Boolean
-  authors: ArticleAuthorCreateNestedManyWithoutArticleInput
+  authors: AuthorshipCreateNestedManyWithoutArticleInput
   decisions: DecisionCreateNestedManyWithoutArticleInput
   id: String
   reviews: ReviewCreateNestedManyWithoutArticleInput
@@ -306,7 +144,7 @@ input ArticleUpdateWithoutAuthorsInput {
 
 input ArticleUpdateWithoutDecisionsInput {
   anonymous: BoolFieldUpdateOperationsInput
-  authors: ArticleAuthorUpdateManyWithoutArticleInput
+  authors: AuthorshipUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
   reviews: ReviewUpdateManyWithoutArticleInput
   submissions: SubmissionUpdateManyWithoutArticleInput
@@ -316,7 +154,7 @@ input ArticleUpdateWithoutDecisionsInput {
 
 input ArticleUpdateWithoutReviewsInput {
   anonymous: BoolFieldUpdateOperationsInput
-  authors: ArticleAuthorUpdateManyWithoutArticleInput
+  authors: AuthorshipUpdateManyWithoutArticleInput
   decisions: DecisionUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutArticleInput
@@ -326,7 +164,7 @@ input ArticleUpdateWithoutReviewsInput {
 
 input ArticleUpdateWithoutSubmissionsInput {
   anonymous: BoolFieldUpdateOperationsInput
-  authors: ArticleAuthorUpdateManyWithoutArticleInput
+  authors: AuthorshipUpdateManyWithoutArticleInput
   decisions: DecisionUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
   reviews: ReviewUpdateManyWithoutArticleInput
@@ -481,7 +319,7 @@ input ArticleWhereInput {
   NOT: [ArticleWhereInput!]
   OR: [ArticleWhereInput!]
   anonymous: BoolFilter
-  authors: ArticleAuthorListRelationFilter
+  authors: AuthorshipListRelationFilter
   decisions: DecisionListRelationFilter
   id: StringFilter
   reviews: ReviewListRelationFilter
@@ -492,6 +330,175 @@ input ArticleWhereInput {
 
 input ArticleWhereUniqueInput {
   id: String
+}
+
+type Authorship {
+  article: Article!
+  authorNumber: Int!
+  id: Int!
+  user: User!
+}
+
+input AuthorshipCreateManyArticleInput {
+  authorNumber: Int!
+  id: Int
+  userId: String!
+}
+
+input AuthorshipCreateManyArticleInputEnvelope {
+  data: [AuthorshipCreateManyArticleInput!]
+  skipDuplicates: Boolean
+}
+
+input AuthorshipCreateManyUserInput {
+  articleId: String!
+  authorNumber: Int!
+  id: Int
+}
+
+input AuthorshipCreateManyUserInputEnvelope {
+  data: [AuthorshipCreateManyUserInput!]
+  skipDuplicates: Boolean
+}
+
+input AuthorshipCreateNestedManyWithoutArticleInput {
+  connect: [AuthorshipWhereUniqueInput!]
+  connectOrCreate: [AuthorshipCreateOrConnectWithoutArticleInput!]
+  create: [AuthorshipCreateWithoutArticleInput!]
+  createMany: AuthorshipCreateManyArticleInputEnvelope
+}
+
+input AuthorshipCreateNestedManyWithoutUserInput {
+  connect: [AuthorshipWhereUniqueInput!]
+  connectOrCreate: [AuthorshipCreateOrConnectWithoutUserInput!]
+  create: [AuthorshipCreateWithoutUserInput!]
+  createMany: AuthorshipCreateManyUserInputEnvelope
+}
+
+input AuthorshipCreateOrConnectWithoutArticleInput {
+  create: AuthorshipCreateWithoutArticleInput!
+  where: AuthorshipWhereUniqueInput!
+}
+
+input AuthorshipCreateOrConnectWithoutUserInput {
+  create: AuthorshipCreateWithoutUserInput!
+  where: AuthorshipWhereUniqueInput!
+}
+
+input AuthorshipCreateWithoutArticleInput {
+  authorNumber: Int!
+  user: UserCreateNestedOneWithoutAuthorshipsInput!
+}
+
+input AuthorshipCreateWithoutUserInput {
+  article: ArticleCreateNestedOneWithoutAuthorsInput!
+  authorNumber: Int!
+}
+
+input AuthorshipListRelationFilter {
+  every: AuthorshipWhereInput
+  none: AuthorshipWhereInput
+  some: AuthorshipWhereInput
+}
+
+input AuthorshipScalarWhereInput {
+  AND: [AuthorshipScalarWhereInput!]
+  NOT: [AuthorshipScalarWhereInput!]
+  OR: [AuthorshipScalarWhereInput!]
+  articleId: StringFilter
+  authorNumber: IntFilter
+  id: IntFilter
+  userId: StringFilter
+}
+
+input AuthorshipUpdateManyMutationInput {
+  authorNumber: IntFieldUpdateOperationsInput
+}
+
+input AuthorshipUpdateManyWithWhereWithoutArticleInput {
+  data: AuthorshipUpdateManyMutationInput!
+  where: AuthorshipScalarWhereInput!
+}
+
+input AuthorshipUpdateManyWithWhereWithoutUserInput {
+  data: AuthorshipUpdateManyMutationInput!
+  where: AuthorshipScalarWhereInput!
+}
+
+input AuthorshipUpdateManyWithoutArticleInput {
+  connect: [AuthorshipWhereUniqueInput!]
+  connectOrCreate: [AuthorshipCreateOrConnectWithoutArticleInput!]
+  create: [AuthorshipCreateWithoutArticleInput!]
+  createMany: AuthorshipCreateManyArticleInputEnvelope
+  delete: [AuthorshipWhereUniqueInput!]
+  deleteMany: [AuthorshipScalarWhereInput!]
+  disconnect: [AuthorshipWhereUniqueInput!]
+  set: [AuthorshipWhereUniqueInput!]
+  update: [AuthorshipUpdateWithWhereUniqueWithoutArticleInput!]
+  updateMany: [AuthorshipUpdateManyWithWhereWithoutArticleInput!]
+  upsert: [AuthorshipUpsertWithWhereUniqueWithoutArticleInput!]
+}
+
+input AuthorshipUpdateManyWithoutUserInput {
+  connect: [AuthorshipWhereUniqueInput!]
+  connectOrCreate: [AuthorshipCreateOrConnectWithoutUserInput!]
+  create: [AuthorshipCreateWithoutUserInput!]
+  createMany: AuthorshipCreateManyUserInputEnvelope
+  delete: [AuthorshipWhereUniqueInput!]
+  deleteMany: [AuthorshipScalarWhereInput!]
+  disconnect: [AuthorshipWhereUniqueInput!]
+  set: [AuthorshipWhereUniqueInput!]
+  update: [AuthorshipUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AuthorshipUpdateManyWithWhereWithoutUserInput!]
+  upsert: [AuthorshipUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AuthorshipUpdateWithWhereUniqueWithoutArticleInput {
+  data: AuthorshipUpdateWithoutArticleInput!
+  where: AuthorshipWhereUniqueInput!
+}
+
+input AuthorshipUpdateWithWhereUniqueWithoutUserInput {
+  data: AuthorshipUpdateWithoutUserInput!
+  where: AuthorshipWhereUniqueInput!
+}
+
+input AuthorshipUpdateWithoutArticleInput {
+  authorNumber: IntFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAuthorshipsInput
+}
+
+input AuthorshipUpdateWithoutUserInput {
+  article: ArticleUpdateOneRequiredWithoutAuthorsInput
+  authorNumber: IntFieldUpdateOperationsInput
+}
+
+input AuthorshipUpsertWithWhereUniqueWithoutArticleInput {
+  create: AuthorshipCreateWithoutArticleInput!
+  update: AuthorshipUpdateWithoutArticleInput!
+  where: AuthorshipWhereUniqueInput!
+}
+
+input AuthorshipUpsertWithWhereUniqueWithoutUserInput {
+  create: AuthorshipCreateWithoutUserInput!
+  update: AuthorshipUpdateWithoutUserInput!
+  where: AuthorshipWhereUniqueInput!
+}
+
+input AuthorshipWhereInput {
+  AND: [AuthorshipWhereInput!]
+  NOT: [AuthorshipWhereInput!]
+  OR: [AuthorshipWhereInput!]
+  article: ArticleWhereInput
+  articleId: StringFilter
+  authorNumber: IntFilter
+  id: IntFilter
+  user: UserWhereInput
+  userId: StringFilter
+}
+
+input AuthorshipWhereUniqueInput {
+  id: Int
 }
 
 input BoolFieldUpdateOperationsInput {
@@ -1078,6 +1085,7 @@ type Query {
   article(where: ArticleWhereUniqueInput!): Article
   articleVersions: [ArticleVersion]
   articles(after: ArticleWhereUniqueInput, before: ArticleWhereUniqueInput, first: Int, last: Int, where: ArticleWhereInput): [Article!]!
+  authorships(after: AuthorshipWhereUniqueInput, before: AuthorshipWhereUniqueInput, first: Int, last: Int, where: AuthorshipWhereInput): [Authorship!]!
   decisions(articleId: String!): [Decision]
   review(reviewId: String!): Review
   reviewerAssignedSubmissions: [Submission]
@@ -1086,7 +1094,6 @@ type Query {
   searchUsers(query: String): [User]
   threadMessages(cursor: String, headId: String!): [ThreadMessage]
   user(where: UserWhereUniqueInput!): User
-  userArticles(id: String!): [Article]
   venue(where: VenueWhereUniqueInput!): Venue
   venues(after: VenueWhereUniqueInput, before: VenueWhereUniqueInput, first: Int, last: Int, where: VenueWhereInput): [Venue!]!
 }
@@ -2252,7 +2259,7 @@ input UserCreateWithoutAuthorshipsInput {
 }
 
 input UserCreateWithoutChairSubmissionsInput {
-  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
@@ -2267,7 +2274,7 @@ input UserCreateWithoutChairSubmissionsInput {
 }
 
 input UserCreateWithoutDecisionsInput {
-  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   email: String!
@@ -2282,7 +2289,7 @@ input UserCreateWithoutDecisionsInput {
 }
 
 input UserCreateWithoutRelationsAsTargetInput {
-  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
@@ -2297,7 +2304,7 @@ input UserCreateWithoutRelationsAsTargetInput {
 }
 
 input UserCreateWithoutRelationsInput {
-  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
@@ -2312,7 +2319,7 @@ input UserCreateWithoutRelationsInput {
 }
 
 input UserCreateWithoutReviewsInput {
-  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
@@ -2327,7 +2334,7 @@ input UserCreateWithoutReviewsInput {
 }
 
 input UserCreateWithoutVenueMembershipsInput {
-  authorships: ArticleAuthorCreateNestedManyWithoutUserInput
+  authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
@@ -2342,7 +2349,7 @@ input UserCreateWithoutVenueMembershipsInput {
 }
 
 input UserUpdateInput {
-  authorships: ArticleAuthorUpdateManyWithoutUserInput
+  authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
@@ -2431,7 +2438,7 @@ input UserUpdateWithoutAuthorshipsInput {
 }
 
 input UserUpdateWithoutChairSubmissionsInput {
-  authorships: ArticleAuthorUpdateManyWithoutUserInput
+  authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
@@ -2446,7 +2453,7 @@ input UserUpdateWithoutChairSubmissionsInput {
 }
 
 input UserUpdateWithoutDecisionsInput {
-  authorships: ArticleAuthorUpdateManyWithoutUserInput
+  authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   email: StringFieldUpdateOperationsInput
@@ -2461,7 +2468,7 @@ input UserUpdateWithoutDecisionsInput {
 }
 
 input UserUpdateWithoutRelationsAsTargetInput {
-  authorships: ArticleAuthorUpdateManyWithoutUserInput
+  authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
@@ -2476,7 +2483,7 @@ input UserUpdateWithoutRelationsAsTargetInput {
 }
 
 input UserUpdateWithoutRelationsInput {
-  authorships: ArticleAuthorUpdateManyWithoutUserInput
+  authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
@@ -2491,7 +2498,7 @@ input UserUpdateWithoutRelationsInput {
 }
 
 input UserUpdateWithoutReviewsInput {
-  authorships: ArticleAuthorUpdateManyWithoutUserInput
+  authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
@@ -2506,7 +2513,7 @@ input UserUpdateWithoutReviewsInput {
 }
 
 input UserUpdateWithoutVenueMembershipsInput {
-  authorships: ArticleAuthorUpdateManyWithoutUserInput
+  authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
@@ -2559,7 +2566,7 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
-  authorships: ArticleAuthorListRelationFilter
+  authorships: AuthorshipListRelationFilter
   bio: StringFilter
   chairSubmissions: SubmissionListRelationFilter
   decisions: DecisionListRelationFilter
@@ -2585,7 +2592,9 @@ type Venue {
   id: String!
   logoRef: String
   name: String!
+  role: Role
   submissionDeadline: DateTime
+  submissionOpen: DateTime
   venueDate: DateTime
   websiteUrl: String
 }
@@ -2600,6 +2609,7 @@ input VenueCreateInput {
   name: String!
   reviews: ReviewCreateNestedManyWithoutVenueInput
   submissionDeadline: DateTime
+  submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
   venueDate: DateTime
   websiteUrl: String
@@ -2658,6 +2668,7 @@ input VenueCreateWithoutDecisionsInput {
   name: String!
   reviews: ReviewCreateNestedManyWithoutVenueInput
   submissionDeadline: DateTime
+  submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
   venueDate: DateTime
   websiteUrl: String
@@ -2672,6 +2683,7 @@ input VenueCreateWithoutMembershipsInput {
   name: String!
   reviews: ReviewCreateNestedManyWithoutVenueInput
   submissionDeadline: DateTime
+  submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
   venueDate: DateTime
   websiteUrl: String
@@ -2686,6 +2698,7 @@ input VenueCreateWithoutReviewsInput {
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
   submissionDeadline: DateTime
+  submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
   venueDate: DateTime
   websiteUrl: String
@@ -2701,6 +2714,7 @@ input VenueCreateWithoutSubmissionsInput {
   name: String!
   reviews: ReviewCreateNestedManyWithoutVenueInput
   submissionDeadline: DateTime
+  submissionOpen: DateTime
   venueDate: DateTime
   websiteUrl: String
 }
@@ -2910,6 +2924,7 @@ input VenueUpdateWithoutDecisionsInput {
   name: StringFieldUpdateOperationsInput
   reviews: ReviewUpdateManyWithoutVenueInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
+  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
   websiteUrl: NullableStringFieldUpdateOperationsInput
@@ -2924,6 +2939,7 @@ input VenueUpdateWithoutMembershipsInput {
   name: StringFieldUpdateOperationsInput
   reviews: ReviewUpdateManyWithoutVenueInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
+  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
   websiteUrl: NullableStringFieldUpdateOperationsInput
@@ -2938,6 +2954,7 @@ input VenueUpdateWithoutReviewsInput {
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
+  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
   websiteUrl: NullableStringFieldUpdateOperationsInput
@@ -2953,6 +2970,7 @@ input VenueUpdateWithoutSubmissionsInput {
   name: StringFieldUpdateOperationsInput
   reviews: ReviewUpdateManyWithoutVenueInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
+  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
   websiteUrl: NullableStringFieldUpdateOperationsInput
 }
@@ -2990,6 +3008,7 @@ input VenueWhereInput {
   name: StringFilter
   reviews: ReviewListRelationFilter
   submissionDeadline: DateTimeNullableFilter
+  submissionOpen: DateTimeNullableFilter
   submissions: SubmissionListRelationFilter
   venueDate: DateTimeNullableFilter
   websiteUrl: StringNullableFilter

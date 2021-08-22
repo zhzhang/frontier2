@@ -10,7 +10,21 @@ const Venue = objectType({
     t.model.description();
     t.model.logoRef();
     t.model.submissionDeadline();
+    t.model.submissionOpen();
     t.model.venueDate();
+    t.field("role", {
+      type: "Role",
+      resolve: async (root, _, ctx) => {
+        const userId = ctx.user.id;
+        const membership = ctx.prisma.venueMembership.findFirst({
+          where: {
+            userId,
+            venueId: root.id,
+          },
+        });
+        return membership.role;
+      },
+    });
   },
 });
 export default Venue;

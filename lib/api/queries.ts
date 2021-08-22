@@ -9,38 +9,10 @@ export default objectType({
     t.crud.user();
     t.crud.article();
     t.crud.articles({ filtering: true });
+    t.crud.authorships({ filtering: true });
     t.crud.venue();
     t.crud.venues({
       filtering: true,
-    });
-    t.list.field("userArticles", {
-      type: "Article",
-      args: {
-        id: nonNull(stringArg()),
-      },
-      resolve: async (_parent, { id }, ctx) => {
-        const articles = (
-          await ctx.prisma.articleAuthor.findMany({
-            where: { userId: id },
-            include: {
-              article: {
-                include: {
-                  authors: {
-                    include: {
-                      user: true,
-                    },
-                  },
-                  versions: true,
-                },
-              },
-            },
-          })
-        ).map((authorship) => authorship.article);
-        if (!(ctx.user?.id === id)) {
-          return _.filter(articles, (a) => !a.anonymous); // Filter out anonymous articles if the viewer is not the author.
-        }
-        return articles;
-      },
     });
     t.list.field("articleVersions", {
       type: "ArticleVersion",

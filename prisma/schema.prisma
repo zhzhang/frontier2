@@ -17,7 +17,7 @@ model User {
   venueMemberships  VenueMembership[]
   decisions         Decision[]        @relation("chair")
   threadMessage     ThreadMessage[]
-  authorships       ArticleAuthor[]
+  authorships       Authorship[]
   chairSubmissions  Submission[]
   relations         Relation[]
   relationsAsTarget Relation[]        @relation("target")
@@ -45,7 +45,7 @@ model Relation {
 model Article {
   id          String           @id @default(cuid())
   title       String
-  authors     ArticleAuthor[]
+  authors     Authorship[]
   reviews     Review[]
   versions    ArticleVersion[]
   decisions   Decision[]
@@ -53,7 +53,7 @@ model Article {
   anonymous   Boolean          @default(true)
 }
 
-model ArticleAuthor {
+model Authorship {
   id           Int     @id @default(autoincrement())
   user         User    @relation(fields: [userId], references: [id])
   authorNumber Int

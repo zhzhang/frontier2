@@ -1,9 +1,8 @@
 import Layout from "@/components/Layout";
-import MarkdownEditor from "@/components/MarkdownEditor";
 import { withApollo } from "@/lib/apollo";
 import { getCroppedImg } from "@/lib/crop";
-import { uploadFile } from "@/lib/firebase";
-import { UploadTypeEnum } from "@/lib/types";
+import { uploadFile, useAuth } from "@/lib/firebase";
+import { RoleEnum, UploadTypeEnum } from "@/lib/types";
 import { useMutation } from "@apollo/react-hooks";
 import DateFnsUtils from "@date-io/date-fns";
 import Button from "@material-ui/core/Button";
@@ -29,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid rgba(0, 0, 0, 0.23)",
     borderRadius: "4px",
     borderStyle: "dashed",
-    padding: theme.spacing(1),
-    height: "302px",
+    padding: theme.spacing(2),
+    height: "220",
   },
 }));
 
@@ -43,38 +42,53 @@ const CreateVenueMutation = gql`
 `;
 
 const NewVenue = () => {
+  const { user } = useAuth();
   const classes = useStyles();
-  const [name, setName] = useState("");
-  const [abbreviation, setAbbreviation] = useState(null);
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState();
+  const [abbreviation, setAbbreviation] = useState();
+  const [websiteUrl, setWebsiteUrl] = useState();
+  const [description, setDescription] = useState();
   const [logoUrl, setLogoUrl] = useState("");
   const [createVenue, { loading, error, data }] =
     useMutation(CreateVenueMutation);
   const imgRef = useRef(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
+  const [venueDate, setVenueDate] = useState<Date | null>();
+  const [submissionDeadline, setSubmissionDeadline] = useState<Date | null>();
+  const [submissionsOpen, setSubmissionOpen] = useState<Date | null>();
 
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
-  if (!loading && data && data.createVenue) {
-    Router.push(`/venue/${data.createVenue.id}`);
+  if (!loading && data && data.createOneVenue) {
+    Router.push(`/venue/${data.createOneVenue.id}`);
   }
   const onLoad = useCallback((img) => {
     imgRef.current = img;
   }, []);
 
   const handleSubmit = async () => {
-    if (!imgRef) {
-      await createVenue({
-        variables: {
-          data: {
-            name,
-            abbreviation,
-            description: description,
+    let data = {
+      name,
+      websiteUrl,
+      abbreviation,
+      description: description,
+      venueDate,
+      submissionDeadline,
+      submissionsOpen,
+      memberships: {
+        create: [
+          {
+            role: RoleEnum.ADMIN,
+            user: {
+              connect: {
+                id: user.uid,
+              },
+            },
           },
-        },
+        ],
+      },
+    };
+    if (!imgRef.current) {
+      await createVenue({
+        variables: { data },
       });
       return;
     }
@@ -88,9 +102,7 @@ const NewVenue = () => {
         createVenue({
           variables: {
             data: {
-              name,
-              abbreviation,
-              description: description,
+              ...data,
               logoRef: refPath,
             },
           },
@@ -124,40 +136,59 @@ const NewVenue = () => {
             onChange={(event) => setAbbreviation(event.target.value)}
           />
         </Grid>
-        <Grid item xs={2}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Grid item xs={2}>
             <DateTimePicker
+              fullWidth
               inputVariant="outlined"
               id="date-picker-dialog"
               label="Venue Date"
               format="MM/dd/yyyy"
-              value={selectedDate}
-              onChange={handleDateChange}
+              value={venueDate}
+              onChange={setVenueDate}
             />
+          </Grid>
+          <Grid item xs={2}>
             <DateTimePicker
-              margin="normal"
+              fullWidth
               inputVariant="outlined"
               id="date-picker-dialog"
               label="Submission Deadline"
               format="MM/dd/yyyy"
-              value={selectedDate}
-              onChange={handleDateChange}
+              value={submissionDeadline}
+              onChange={setSubmissionDeadline}
             />
+          </Grid>
+          <Grid item xs={2}>
             <DateTimePicker
-              margin="normal"
+              fullWidth
               inputVariant="outlined"
               id="date-picker-dialog"
               label="Submissions Open"
               format="MM/dd/yyyy"
-              value={selectedDate}
-              onChange={handleDateChange}
+              value={submissionsOpen}
+              onChange={setSubmissionOpen}
             />
-          </MuiPickersUtilsProvider>
+          </Grid>
+        </MuiPickersUtilsProvider>
+        <Grid item xs={6}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            label="Website URL"
+            value={websiteUrl}
+            onChange={(event) => setWebsiteUrl(event.target.value)}
+          />
         </Grid>
         <Grid item xs={10}>
-          <MarkdownEditor
-            body={description}
-            onChange={(description) => setDescription(description)}
+          <TextField
+            value={description}
+            fullWidth
+            variant="outlined"
+            multiline
+            rows={4}
+            onChange={(event) => setDescription(event.target.value)}
             label="Description"
             placeholder="Write a description."
           />

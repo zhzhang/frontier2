@@ -17,23 +17,6 @@ const UserQuery = gql`
       name
       bio
       profilePictureUrl
-      articles {
-        id
-        authors {
-          id
-          name
-        }
-        title
-        versions {
-          id
-          versionNumber
-          abstract
-        }
-        acceptedOrganizations {
-          id
-          name
-        }
-      }
     }
   }
 `;
