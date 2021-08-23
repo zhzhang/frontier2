@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: "25ch",
     },
   },
+  icon: {
+    color: "gray",
+    margin: theme.spacing(0.5),
+  },
   formField: {
     marginTop: theme.spacing(2),
   },
@@ -57,38 +61,38 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const STYLES = [
-  { icon: <Title />, style: "Headers", example: "### Header Level 3" },
+  { Icon: Title, style: "Headers", example: "### Header Level 3" },
   {
-    icon: <FormatQuote />,
+    Icon: FormatQuote,
     style: "Quotes",
     example: "`Inline quote` and\n```Block quote```",
   },
   {
-    icon: <FormatListBulleted />,
+    Icon: FormatListBulleted,
     style: "Bulleted List",
     example: "- List item one.\n- List item two.",
   },
   {
-    icon: <FormatListNumbered />,
+    Icon: FormatListNumbered,
     style: "Numbered List",
     example: "1. List item one.\n2. List item two.",
   },
   {
-    icon: <Code />,
+    Icon: Code,
     style: "Code",
     example: "`Inline code` and\n```Block code```",
   },
   {
-    icon: <Functions />,
+    Icon: Functions,
     style: "Math",
     example: "$$x = y$$\nor block math\n$$\nx = y\n$$",
   },
-  { icon: <FormatBold />, style: "Bold", example: "**Bold**" },
-  { icon: <FormatItalic />, style: "Italic", example: "*Italic*" },
-  { icon: <FormatUnderlined />, style: "Underline", example: "Hello" },
+  { Icon: FormatBold, style: "Bold", example: "**Bold**" },
+  { Icon: FormatItalic, style: "Italic", example: "*Italic*" },
+  { Icon: FormatUnderlined, style: "Underline", example: "Hello" },
 ];
 
-function StyleButton({ icon, style, example }) {
+function StyleButton({ Icon, style, example }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -104,9 +108,11 @@ function StyleButton({ icon, style, example }) {
   const open = Boolean(anchorEl);
   return (
     <>
-      <span onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
-        {icon}
-      </span>
+      <Icon
+        className={classes.icon}
+        onMouseEnter={handlePopoverOpen}
+        onMouseLeave={handlePopoverClose}
+      />
       <Popover
         id="mouse-over-popover"
         className={classes.popover}
@@ -157,7 +163,7 @@ export default function MarkdownEditor({
       />
       <div className={classes.utils}>
         {STYLES.map((style) => (
-          <StyleButton {...style} />
+          <StyleButton {...style} key={style.style} />
         ))}
         <Button
           className={classes.showPreviewButton}

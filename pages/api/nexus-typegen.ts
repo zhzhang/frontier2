@@ -2692,9 +2692,10 @@ export interface NexusGenFieldTypes {
     decisions: Array<NexusGenRootTypes['Decision'] | null> | null; // [Decision]
     review: NexusGenRootTypes['Review'] | null; // Review
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
-    reviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
+    reviews: NexusGenRootTypes['Review'][]; // [Review!]!
     searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    searchVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     threadMessages: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
     user: NexusGenRootTypes['User'] | null; // User
     venue: NexusGenRootTypes['Venue'] | null; // Venue
@@ -2807,6 +2808,7 @@ export interface NexusGenFieldTypeNames {
     reviews: 'Review'
     searchEditors: 'User'
     searchUsers: 'User'
+    searchVenues: 'Venue'
     threadMessages: 'ThreadMessage'
     user: 'User'
     venue: 'Venue'
@@ -2948,13 +2950,20 @@ export interface NexusGenArgTypes {
       reviewId: string; // String!
     }
     reviews: { // args
-      articleId: string; // String!
+      after?: NexusGenInputs['ReviewWhereUniqueInput'] | null; // ReviewWhereUniqueInput
+      before?: NexusGenInputs['ReviewWhereUniqueInput'] | null; // ReviewWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      where?: NexusGenInputs['ReviewWhereInput'] | null; // ReviewWhereInput
     }
     searchEditors: { // args
       organizationId: string; // String!
       query?: string | null; // String
     }
     searchUsers: { // args
+      query?: string | null; // String
+    }
+    searchVenues: { // args
       query?: string | null; // String
     }
     threadMessages: { // args

@@ -30,7 +30,7 @@ import Pane from "react-split-pane/lib/Pane";
 
 const ArticleQuery = gql`
   query ArticleQuery($id: String!) {
-    article(id: $id) {
+    article(where: { id: $id }) {
       id
       title
       authors {
@@ -43,10 +43,6 @@ const ArticleQuery = gql`
         ref
         versionNumber
         createdAt
-      }
-      acceptedOrganizations {
-        id
-        name
       }
     }
   }

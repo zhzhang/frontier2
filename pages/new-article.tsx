@@ -4,6 +4,8 @@ import PdfViewer from "@/components/PDFViewer";
 import SubmissionTargetTypeahed from "@/components/SubmissionTargetTypeahead";
 import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
+import { uploadFile } from "@/lib/firebase";
+import { UploadTypeEnum } from "@/lib/types";
 import { useMutation } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -22,12 +24,14 @@ const CreateArticleMutation = gql`
   mutation CreateArticleQuery(
     $title: String!
     $abstract: String!
+    $anonymous: Boolean!
     $authorIds: [String!]!
     $ref: String!
   ) {
     createArticle(
       title: $title
       abstract: $abstract
+      anonymous: $anonymous
       authorIds: $authorIds
       ref: $ref
     ) {
@@ -61,52 +65,42 @@ const useStyles = makeStyles((theme) => ({
 const NewArticle = () => {
   const classes = useStyles();
   const router = useRouter();
-  const { organizationId } = router.query;
+  const { venueId } = router.query;
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [submissionTargets, setSubmissionTargets] = useState([]);
   const [abstract, setAbstract] = useState("");
   const [authors, setAuthors] = useState([]);
-  const [anonymized, setAnonymized] = useState(true);
+  const [anonymous, setAnonymous] = useState(true);
   const [createArticle, { loading, error, data }] = useMutation(
     CreateArticleMutation
   );
 
   const handleSubmit = () => {
-    const refPath = "articles/ACL2020_SpeechScoring.pdf";
-    createArticle({
-      variables: {
-        title,
-        abstract,
-        ref: refPath,
-        authorIds: authors.map((a) => a.id),
-      },
-    });
-    // const { uploadTask, refPath } = uploadFile(file, UploadTypeEnum.ARTICLE);
-    // uploadTask.on(
-    //   "state_changed",
-    //   (snapshot) => {},
-    //   (error) => {},
-    //   () => {
-    //     createArticle({
-    //       variables: {
-    //         title,
-    //         abstract: serialize(abstract),
-    //         ref: refPath,
-    //         authorIds: authors.map((a) => a.id),
-    //       },
-    //     });
-    //   }
-    // );
+    const { uploadTask, refPath } = uploadFile(file, UploadTypeEnum.ARTICLE);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {},
+      () => {
+        createArticle({
+          variables: {
+            title,
+            abstract,
+            anonymous,
+            ref: refPath,
+            authorIds: authors.map((a) => a.id),
+          },
+        });
+      }
+    );
   };
 
   return (
     <Layout>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Typography variant="h4">New Article</Typography>
-        </Grid>
         <Grid item xs={5}>
+          <Typography variant="h4">New Article</Typography>
           <TextField
             required
             fullWidth
@@ -126,14 +120,14 @@ const NewArticle = () => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={anonymized}
-                onChange={() => setAnonymized(!anonymized)}
+                checked={anonymous}
+                onChange={() => setAnonymous(!anonymous)}
                 name="anonymize"
               />
             }
             label="Anonymize Authors"
           />
-          {!anonymized && (
+          {!anonymous && (
             <div className={classes.alert}>
               <Alert severity="warning">
                 Submitting without anonymization will disqualify this
@@ -168,7 +162,7 @@ const NewArticle = () => {
         </Grid>
         <Grid item xs={7}>
           {file ? (
-            <>
+            <div style={{ height: 600 }}>
               <Button
                 variant="contained"
                 color="primary"
@@ -177,7 +171,7 @@ const NewArticle = () => {
                 Choose Different PDF
               </Button>
               <PdfViewer file={file} />
-            </>
+            </div>
           ) : (
             <Dropzone
               onDrop={(acceptedFiles) => {

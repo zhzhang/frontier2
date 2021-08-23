@@ -1089,9 +1089,10 @@ type Query {
   decisions(articleId: String!): [Decision]
   review(reviewId: String!): Review
   reviewerAssignedSubmissions: [Submission]
-  reviews(articleId: String!): [Review]
+  reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, where: ReviewWhereInput): [Review!]!
   searchEditors(organizationId: String!, query: String): [User]
   searchUsers(query: String): [User]
+  searchVenues(query: String): [Venue]
   threadMessages(cursor: String, headId: String!): [ThreadMessage]
   user(where: UserWhereUniqueInput!): User
   venue(where: VenueWhereUniqueInput!): Venue

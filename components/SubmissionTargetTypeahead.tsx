@@ -7,12 +7,6 @@ import { useState } from "react";
 
 const SearchQuery = gql`
   query SearchSubmissionTargets($query: String!) {
-    searchOrganizations(query: $query) {
-      id
-      name
-      abbreviation
-      logoRef
-    }
     searchVenues(query: $query) {
       id
       name
@@ -24,31 +18,31 @@ const SearchQuery = gql`
 `;
 
 export default function SubmissionTargetTypeahead({
-  label = "Search users...",
+  label = "Search venues...",
   ...rest
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const { loading, error, data } = useQuery(SearchQuery, {
-    variables: { query },
+    variables: {
+      query,
+    },
   });
   const options = data
-    ? data.searchOrganizations
-        .map((org) => {
-          return { ...org, type: "Organization" };
-        })
-        .concat(
-          data.searchVenues.map((org) => {
-            return { ...org, type: "Venue" };
-          })
-        )
+    ? data.searchVenues.map(({ abbreviation, venueDate, name }) => {
+        let abbrev = abbreviation;
+        if (venueDate) {
+          abbrev = `${abbrev} ${new Date(venueDate).getFullYear()}`;
+        }
+        abbrev = abbreviation && `(${abbrev}) `;
+        return { name: `${abbrev}${name}`, type: "Venue" };
+      })
     : [];
 
   return (
     <Autocomplete
-      id="user-typeahead"
+      id="submission-target-typeahead"
       {...rest}
-      groupBy={(option) => option.type}
       inputValue={query}
       onInputChange={(event, newQuery) => {
         setQuery(newQuery);

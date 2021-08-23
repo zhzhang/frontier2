@@ -75,7 +75,7 @@ export default objectType({
                 {
                   abstract: abstract,
                   ref: ref,
-                  versionNumber: 0,
+                  versionNumber: 1,
                 },
               ],
             },

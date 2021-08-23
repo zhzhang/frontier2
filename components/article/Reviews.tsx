@@ -5,8 +5,8 @@ import gql from "graphql-tag";
 import { useState } from "react";
 
 const ReviewsQuery = gql`
-  query ReviewsQuery($articleId: String!) {
-    reviews(articleId: $articleId) {
+  query ReviewsQuery($where: ReviewWhereInput!) {
+    reviews(where: $where) {
       id
       author {
         id
@@ -16,7 +16,7 @@ const ReviewsQuery = gql`
       highlights
       reviewNumber
       rating
-      organization {
+      venue {
         id
         logoRef
         abbreviation
@@ -32,7 +32,7 @@ const Reviews = ({
   articleVersion,
 }) => {
   const { loading, error, data } = useQuery(ReviewsQuery, {
-    variables: { articleId },
+    variables: { where: { articleId: { equals: articleId } } },
   });
   const [body, setBody] = useState("Try me!");
   const [previewOpen, setPreviewOpen] = useState(true);

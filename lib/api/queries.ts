@@ -14,6 +14,40 @@ export default objectType({
     t.crud.venues({
       filtering: true,
     });
+    t.crud.reviews({
+      filtering: true,
+    });
+    t.list.field("searchVenues", {
+      type: "Venue",
+      args: { query: stringArg() },
+      resolve: async (_, { query }, ctx) => {
+        if (query.length < 2) {
+          return [];
+        }
+        return await ctx.prisma.venue.findMany({
+          where: {
+            AND: [
+              {
+                OR: [
+                  {
+                    name: {
+                      contains: query,
+                    },
+                  },
+                  {
+                    abbreviation: {
+                      contains: query,
+                    },
+                  },
+                ],
+              },
+              { venueDate: { gt: new Date(Date.now()) } },
+              { submissionDeadline: { gt: new Date(Date.now()) } },
+            ],
+          },
+        });
+      },
+    });
     t.list.field("articleVersions", {
       type: "ArticleVersion",
       args: {},
@@ -27,31 +61,6 @@ export default objectType({
           ["versionNumber"],
           ["desc"]
         );
-      },
-    });
-    t.list.field("reviews", {
-      type: "Review",
-      args: { articleId: nonNull(stringArg()) },
-      resolve: async (_, { articleId }, ctx) => {
-        const reviews = await ctx.prisma.review.findMany({
-          where: {
-            articleId,
-          },
-          include: {
-            author: true,
-          },
-        });
-        return reviews.map((review) => {
-          return {
-            ...review,
-            author: review.anonymized
-              ? review.author
-              : {
-                  id: "anonymous",
-                  name: `Reviewer ${review.reviewNumber}`,
-                },
-          };
-        });
       },
     });
     t.field("review", {
