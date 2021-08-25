@@ -1,11 +1,11 @@
 import AuthorPopover from "@/components/AuthorPopover";
+import Markdown from "@/components/Markdown";
+import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import Thread from "@/components/Thread";
 import { useMutation } from "@apollo/react-hooks";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
-import Markdown from "./Markdown";
-import ProfilePicturePopover from "./ProfilePicturePopover";
 
 const UpdateReviewMutation = gql`
   mutation UpdateReviewMutation(
@@ -48,26 +48,26 @@ function Rating({ rating }) {
   }
 }
 
-const Review = ({
-  review,
+export default function Comment({
+  comment,
   editing,
   startOpen,
   updateArticleAndScroll,
   articleMode,
-}) => {
+}) {
   const classes = useStyles();
-  const { highlights } = review;
-  const [body, setBody] = useState(review.body);
+  const { highlights } = comment;
+  const [body, setBody] = useState(comment.body);
   const [updateReview, { loading, error, data }] =
     useMutation(UpdateReviewMutation);
   return (
     <>
       <div className={classes.review}>
         <div className={classes.picture}>
-          <ProfilePicturePopover user={review.author} />
+          <ProfilePicturePopover user={comment.author} />
         </div>
         <div>
-          <AuthorPopover user={review.author} />
+          <AuthorPopover user={comment.author} />
           <Markdown
             highlights={JSON.parse(highlights)}
             updateArticleAndScroll={updateArticleAndScroll}
@@ -76,9 +76,7 @@ const Review = ({
           </Markdown>
         </div>
       </div>
-      <Thread headId={review.id} />
+      <Thread headId={comment.id} />
     </>
   );
-};
-
-export default Review;
+}

@@ -20,10 +20,10 @@ export function useAuth() {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
-      setLoading(false);
       if (user != null) {
         setUser(user);
       }
+      setLoading(false);
     });
   });
 

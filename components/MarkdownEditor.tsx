@@ -13,6 +13,7 @@ import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 import FormatQuote from "@material-ui/icons/FormatQuote";
 import FormatUnderlined from "@material-ui/icons/FormatUnderlined";
 import Functions from "@material-ui/icons/Functions";
+import RateReview from "@material-ui/icons/RateReview";
 import Title from "@material-ui/icons/Title";
 import { useState } from "react";
 
@@ -91,6 +92,11 @@ const STYLES = [
   { Icon: FormatItalic, style: "Italic", example: "*Italic*" },
   { Icon: FormatUnderlined, style: "Underline", example: "Hello" },
 ];
+const HIGHLIGHT_STYLE = {
+  Icon: RateReview,
+  style: "Highlight",
+  example: "Hello",
+};
 
 function StyleButton({ Icon, style, example }) {
   const classes = useStyles();
@@ -143,11 +149,18 @@ function StyleButton({ Icon, style, example }) {
 export default function MarkdownEditor({
   body,
   onChange,
+  articleMode = false,
   label = null,
   placeholder = null,
+  highlights = [],
+  updateArticleAndScroll = () => {},
 }) {
   const classes = useStyles();
   const [previewOpen, toggleShowPreview] = useState(false);
+  // useEffect(() => {
+  //   const newHighlight = highlights[highlights.length - 1];
+  //   onChange(body + ` []{${newHighlight.id}}`);
+  // }, [highlights]);
   return (
     <div>
       <TextField
@@ -165,6 +178,7 @@ export default function MarkdownEditor({
         {STYLES.map((style) => (
           <StyleButton {...style} key={style.style} />
         ))}
+        {articleMode && <StyleButton {...HIGHLIGHT_STYLE} />}
         <Button
           className={classes.showPreviewButton}
           onClick={() => toggleShowPreview(!previewOpen)}
@@ -173,9 +187,28 @@ export default function MarkdownEditor({
           {previewOpen ? "Hide Preview" : "Show Preview"}
         </Button>
       </div>
+      {/* {highlights.map((highlight) => (
+        <div
+          key={highlight.id}
+          onClick={() =>
+            updateArticleAndScroll(
+              highlight.articleVersion,
+              highlights,
+              highlight
+            )
+          }
+        >
+          {`${highlight.id}) ${highlight.text.substring(0, 60)}...`}
+        </div>
+      ))} */}
       {previewOpen && (
         <Paper className={classes.preview} elevation={0}>
-          <Markdown>{body}</Markdown>
+          <Markdown
+            highlights={highlights}
+            updateArticleAndScroll={updateArticleAndScroll}
+          >
+            {body}
+          </Markdown>
         </Paper>
       )}
     </div>

@@ -992,6 +992,7 @@ type Mutation {
   assignSubmissionOwner(submissionId: String!, userId: String!): Submission
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, organizationId: String, ref: String!, title: String!): Article
   createOneRelation(data: RelationCreateInput!): Relation!
+  createOneThreadMessage(data: ThreadMessageCreateInput!): ThreadMessage!
   createOneVenue(data: VenueCreateInput!): Venue!
   createReview(articleId: String!, submissionId: String): Review
   deleteOneRelation(where: RelationWhereUniqueInput!): Relation
@@ -1093,7 +1094,7 @@ type Query {
   searchEditors(organizationId: String!, query: String): [User]
   searchUsers(query: String): [User]
   searchVenues(query: String): [Venue]
-  threadMessages(cursor: String, headId: String!): [ThreadMessage]
+  threadMessages(after: ThreadMessageWhereUniqueInput, before: ThreadMessageWhereUniqueInput, first: Int, last: Int, where: ThreadMessageWhereInput): [ThreadMessage!]!
   user(where: UserWhereUniqueInput!): User
   venue(where: VenueWhereUniqueInput!): Venue
   venues(after: VenueWhereUniqueInput, before: VenueWhereUniqueInput, first: Int, last: Int, where: VenueWhereInput): [Venue!]!
@@ -2031,20 +2032,32 @@ input SubmissionWhereUniqueInput {
 }
 
 type ThreadMessage {
-  articleVersion: Int
-  author: User
-  body: String
-  createdAt: String
-  highlights: String
+  author: User!
+  body: String!
+  createdAt: DateTime!
+  highlights: String!
+  id: String!
+}
+
+input ThreadMessageCreateInput {
+  articleId: String!
+  author: UserCreateNestedOneWithoutThreadMessageInput!
+  body: String!
+  createdAt: DateTime
+  headId: String
+  highlights: String!
   id: String
+  published: Boolean
 }
 
 input ThreadMessageCreateManyAuthorInput {
+  articleId: String!
   body: String!
   createdAt: DateTime
-  headId: String!
+  headId: String
   highlights: String!
   id: String
+  published: Boolean
 }
 
 input ThreadMessageCreateManyAuthorInputEnvelope {
@@ -2065,11 +2078,13 @@ input ThreadMessageCreateOrConnectWithoutAuthorInput {
 }
 
 input ThreadMessageCreateWithoutAuthorInput {
+  articleId: String!
   body: String!
   createdAt: DateTime
-  headId: String!
+  headId: String
   highlights: String!
   id: String
+  published: Boolean
 }
 
 input ThreadMessageListRelationFilter {
@@ -2082,20 +2097,24 @@ input ThreadMessageScalarWhereInput {
   AND: [ThreadMessageScalarWhereInput!]
   NOT: [ThreadMessageScalarWhereInput!]
   OR: [ThreadMessageScalarWhereInput!]
+  articleId: StringFilter
+  authorId: StringFilter
   body: StringFilter
   createdAt: DateTimeFilter
-  headId: StringFilter
+  headId: StringNullableFilter
   highlights: StringFilter
   id: StringFilter
-  userId: StringFilter
+  published: BoolFilter
 }
 
 input ThreadMessageUpdateManyMutationInput {
+  articleId: StringFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  headId: StringFieldUpdateOperationsInput
+  headId: NullableStringFieldUpdateOperationsInput
   highlights: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  published: BoolFieldUpdateOperationsInput
 }
 
 input ThreadMessageUpdateManyWithWhereWithoutAuthorInput {
@@ -2123,11 +2142,13 @@ input ThreadMessageUpdateWithWhereUniqueWithoutAuthorInput {
 }
 
 input ThreadMessageUpdateWithoutAuthorInput {
+  articleId: StringFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  headId: StringFieldUpdateOperationsInput
+  headId: NullableStringFieldUpdateOperationsInput
   highlights: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  published: BoolFieldUpdateOperationsInput
 }
 
 input ThreadMessageUpsertWithWhereUniqueWithoutAuthorInput {
@@ -2140,13 +2161,15 @@ input ThreadMessageWhereInput {
   AND: [ThreadMessageWhereInput!]
   NOT: [ThreadMessageWhereInput!]
   OR: [ThreadMessageWhereInput!]
+  articleId: StringFilter
   author: UserWhereInput
+  authorId: StringFilter
   body: StringFilter
   createdAt: DateTimeFilter
-  headId: StringFilter
+  headId: StringNullableFilter
   highlights: StringFilter
   id: StringFilter
-  userId: StringFilter
+  published: BoolFilter
 }
 
 input ThreadMessageWhereUniqueInput {
@@ -2203,6 +2226,12 @@ input UserCreateNestedOneWithoutReviewsInput {
   create: UserCreateWithoutReviewsInput
 }
 
+input UserCreateNestedOneWithoutThreadMessageInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutThreadMessageInput
+  create: UserCreateWithoutThreadMessageInput
+}
+
 input UserCreateNestedOneWithoutVenueMembershipsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutVenueMembershipsInput
@@ -2236,6 +2265,11 @@ input UserCreateOrConnectWithoutRelationsInput {
 
 input UserCreateOrConnectWithoutReviewsInput {
   create: UserCreateWithoutReviewsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutThreadMessageInput {
+  create: UserCreateWithoutThreadMessageInput!
   where: UserWhereUniqueInput!
 }
 
@@ -2331,6 +2365,21 @@ input UserCreateWithoutReviewsInput {
   relations: RelationCreateNestedManyWithoutUserInput
   relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutThreadMessageInput {
+  authorships: AuthorshipCreateNestedManyWithoutUserInput
+  bio: String
+  chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
+  decisions: DecisionCreateNestedManyWithoutAuthorInput
+  email: String!
+  id: String!
+  name: String!
+  profilePictureUrl: String
+  relations: RelationCreateNestedManyWithoutUserInput
+  relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
+  reviews: ReviewCreateNestedManyWithoutAuthorInput
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
 }
 

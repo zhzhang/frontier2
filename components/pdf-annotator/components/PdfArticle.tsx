@@ -175,6 +175,7 @@ export default class PdfArticle extends React.Component {
             ...scaledPosition,
             id: highlights.length + 1,
             articleVersion,
+            text: range.toString(),
           };
           setHighlights([...highlights, highlight]);
           this.hideTipAndSelection();

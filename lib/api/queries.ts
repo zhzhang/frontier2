@@ -16,7 +16,11 @@ export default objectType({
     });
     t.crud.reviews({
       filtering: true,
+      authorize: (root, a, b) => {
+        return true;
+      },
     });
+    t.crud.threadMessages({ filtering: true });
     t.list.field("searchVenues", {
       type: "Venue",
       args: { query: stringArg() },
@@ -95,34 +99,6 @@ export default objectType({
           },
         });
         return tmp;
-      },
-    });
-    t.list.field("threadMessages", {
-      type: "ThreadMessage",
-      args: { headId: nonNull(stringArg()), cursor: stringArg() },
-      resolve: async (_, { headId, cursor }, ctx) => {
-        let query = {
-          take: 1,
-          where: {
-            headId,
-          },
-          orderBy: {
-            createdAt: "asc",
-          },
-          include: {
-            author: true,
-          },
-        };
-        if (cursor) {
-          query = {
-            ...query,
-            skip: 1,
-            cursor: {
-              id: cursor,
-            },
-          };
-        }
-        return await ctx.prisma.threadMessage.findMany(query);
       },
     });
     t.list.field("searchUsers", {

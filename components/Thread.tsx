@@ -8,8 +8,8 @@ import { useState } from "react";
 import Markdown from "./Markdown";
 
 const ThreadMessagesQuery = gql`
-  query ThreadMessagesQuery($headId: String!, $cursor: String) {
-    threadMessages(headId: $headId, cursor: $cursor) {
+  query ThreadMessagesQuery($where: ThreadMessageWhereInput!) {
+    threadMessages(where: $where) {
       id
       author {
         name
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(2),
       marginLeft: 20, // Centers to the profile picture.
       paddingLeft: 20,
-      borderLeft: "1px solid rgba(0,0,0,.125)",
+      // borderLeft: "1px solid rgba(0,0,0,.125)",
     },
     picture: {
       marginRight: theme.spacing(1),
@@ -42,7 +42,7 @@ export default function Thread({ headId }) {
   const classes = useStyles();
   const [cursor, setCursor] = useState(null);
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
-    variables: { headId, cursor },
+    variables: { where: { headId: { equals: headId } } },
   });
   if (loading) {
     return <CenteredSpinner />;

@@ -237,5 +237,6 @@ export default objectType({
       },
     });
     t.crud.createOneVenue();
+    t.crud.createOneThreadMessage();
   },
 });

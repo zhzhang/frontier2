@@ -146,10 +146,12 @@ async function main() {
   });
   await prisma.threadMessage.create({
     data: {
+      articleId: article.id,
       headId: review2.id,
-      userId: andrew.id,
+      authorId: andrew.id,
       body: `Author responses and other discussion on public reviews can be viewed in a thread below the review.`,
       highlights: "[]",
+      published: true,
     },
   });
 

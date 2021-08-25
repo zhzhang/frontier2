@@ -1706,12 +1706,24 @@ export interface NexusGenInputs {
   SubmissionWhereUniqueInput: { // input type
     id?: string | null; // String
   }
-  ThreadMessageCreateManyAuthorInput: { // input type
+  ThreadMessageCreateInput: { // input type
+    articleId: string; // String!
+    author: NexusGenInputs['UserCreateNestedOneWithoutThreadMessageInput']; // UserCreateNestedOneWithoutThreadMessageInput!
     body: string; // String!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    headId: string; // String!
+    headId?: string | null; // String
     highlights: string; // String!
     id?: string | null; // String
+    published?: boolean | null; // Boolean
+  }
+  ThreadMessageCreateManyAuthorInput: { // input type
+    articleId: string; // String!
+    body: string; // String!
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    headId?: string | null; // String
+    highlights: string; // String!
+    id?: string | null; // String
+    published?: boolean | null; // Boolean
   }
   ThreadMessageCreateManyAuthorInputEnvelope: { // input type
     data?: NexusGenInputs['ThreadMessageCreateManyAuthorInput'][] | null; // [ThreadMessageCreateManyAuthorInput!]
@@ -1728,11 +1740,13 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ThreadMessageWhereUniqueInput']; // ThreadMessageWhereUniqueInput!
   }
   ThreadMessageCreateWithoutAuthorInput: { // input type
+    articleId: string; // String!
     body: string; // String!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    headId: string; // String!
+    headId?: string | null; // String
     highlights: string; // String!
     id?: string | null; // String
+    published?: boolean | null; // Boolean
   }
   ThreadMessageListRelationFilter: { // input type
     every?: NexusGenInputs['ThreadMessageWhereInput'] | null; // ThreadMessageWhereInput
@@ -1743,19 +1757,23 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ThreadMessageScalarWhereInput'][] | null; // [ThreadMessageScalarWhereInput!]
     NOT?: NexusGenInputs['ThreadMessageScalarWhereInput'][] | null; // [ThreadMessageScalarWhereInput!]
     OR?: NexusGenInputs['ThreadMessageScalarWhereInput'][] | null; // [ThreadMessageScalarWhereInput!]
+    articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    authorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     body?: NexusGenInputs['StringFilter'] | null; // StringFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
-    headId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    headId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     highlights?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
   }
   ThreadMessageUpdateManyMutationInput: { // input type
+    articleId?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
-    headId?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    headId?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     highlights?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    published?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
   }
   ThreadMessageUpdateManyWithWhereWithoutAuthorInput: { // input type
     data: NexusGenInputs['ThreadMessageUpdateManyMutationInput']; // ThreadMessageUpdateManyMutationInput!
@@ -1779,11 +1797,13 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ThreadMessageWhereUniqueInput']; // ThreadMessageWhereUniqueInput!
   }
   ThreadMessageUpdateWithoutAuthorInput: { // input type
+    articleId?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
-    headId?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    headId?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     highlights?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    published?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
   }
   ThreadMessageUpsertWithWhereUniqueWithoutAuthorInput: { // input type
     create: NexusGenInputs['ThreadMessageCreateWithoutAuthorInput']; // ThreadMessageCreateWithoutAuthorInput!
@@ -1794,13 +1814,15 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ThreadMessageWhereInput'][] | null; // [ThreadMessageWhereInput!]
     NOT?: NexusGenInputs['ThreadMessageWhereInput'][] | null; // [ThreadMessageWhereInput!]
     OR?: NexusGenInputs['ThreadMessageWhereInput'][] | null; // [ThreadMessageWhereInput!]
+    articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    authorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     body?: NexusGenInputs['StringFilter'] | null; // StringFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
-    headId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    headId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     highlights?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
   }
   ThreadMessageWhereUniqueInput: { // input type
     id?: string | null; // String
@@ -1835,6 +1857,11 @@ export interface NexusGenInputs {
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutReviewsInput'] | null; // UserCreateOrConnectWithoutReviewsInput
     create?: NexusGenInputs['UserCreateWithoutReviewsInput'] | null; // UserCreateWithoutReviewsInput
   }
+  UserCreateNestedOneWithoutThreadMessageInput: { // input type
+    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutThreadMessageInput'] | null; // UserCreateOrConnectWithoutThreadMessageInput
+    create?: NexusGenInputs['UserCreateWithoutThreadMessageInput'] | null; // UserCreateWithoutThreadMessageInput
+  }
   UserCreateNestedOneWithoutVenueMembershipsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutVenueMembershipsInput'] | null; // UserCreateOrConnectWithoutVenueMembershipsInput
@@ -1862,6 +1889,10 @@ export interface NexusGenInputs {
   }
   UserCreateOrConnectWithoutReviewsInput: { // input type
     create: NexusGenInputs['UserCreateWithoutReviewsInput']; // UserCreateWithoutReviewsInput!
+    where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
+  }
+  UserCreateOrConnectWithoutThreadMessageInput: { // input type
+    create: NexusGenInputs['UserCreateWithoutThreadMessageInput']; // UserCreateWithoutThreadMessageInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
   UserCreateOrConnectWithoutVenueMembershipsInput: { // input type
@@ -1950,6 +1981,20 @@ export interface NexusGenInputs {
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
+    venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
+  }
+  UserCreateWithoutThreadMessageInput: { // input type
+    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
+    bio?: string | null; // String
+    chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
+    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
+    email: string; // String!
+    id: string; // String!
+    name: string; // String!
+    profilePictureUrl?: string | null; // String
+    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
+    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
   UserCreateWithoutVenueMembershipsInput: { // input type
@@ -2605,12 +2650,10 @@ export interface NexusGenObjects {
     id: string; // String!
   }
   ThreadMessage: { // root type
-    articleVersion?: number | null; // Int
-    author?: NexusGenRootTypes['User'] | null; // User
-    body?: string | null; // String
-    createdAt?: string | null; // String
-    highlights?: string | null; // String
-    id?: string | null; // String
+    body: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    highlights: string; // String!
+    id: string; // String!
   }
   User: { // root type
     bio: string; // String!
@@ -2677,6 +2720,7 @@ export interface NexusGenFieldTypes {
     assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOneRelation: NexusGenRootTypes['Relation']; // Relation!
+    createOneThreadMessage: NexusGenRootTypes['ThreadMessage']; // ThreadMessage!
     createOneVenue: NexusGenRootTypes['Venue']; // Venue!
     createReview: NexusGenRootTypes['Review'] | null; // Review
     deleteOneRelation: NexusGenRootTypes['Relation'] | null; // Relation
@@ -2696,7 +2740,7 @@ export interface NexusGenFieldTypes {
     searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
-    threadMessages: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
+    threadMessages: NexusGenRootTypes['ThreadMessage'][]; // [ThreadMessage!]!
     user: NexusGenRootTypes['User'] | null; // User
     venue: NexusGenRootTypes['Venue'] | null; // Venue
     venues: NexusGenRootTypes['Venue'][]; // [Venue!]!
@@ -2724,12 +2768,11 @@ export interface NexusGenFieldTypes {
     requestedReviewers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
   ThreadMessage: { // field return type
-    articleVersion: number | null; // Int
-    author: NexusGenRootTypes['User'] | null; // User
-    body: string | null; // String
-    createdAt: string | null; // String
-    highlights: string | null; // String
-    id: string | null; // String
+    author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    highlights: string; // String!
+    id: string; // String!
   }
   User: { // field return type
     articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
@@ -2790,6 +2833,7 @@ export interface NexusGenFieldTypeNames {
     assignSubmissionOwner: 'Submission'
     createArticle: 'Article'
     createOneRelation: 'Relation'
+    createOneThreadMessage: 'ThreadMessage'
     createOneVenue: 'Venue'
     createReview: 'Review'
     deleteOneRelation: 'Relation'
@@ -2837,10 +2881,9 @@ export interface NexusGenFieldTypeNames {
     requestedReviewers: 'User'
   }
   ThreadMessage: { // field return type name
-    articleVersion: 'Int'
     author: 'User'
     body: 'String'
-    createdAt: 'String'
+    createdAt: 'DateTime'
     highlights: 'String'
     id: 'String'
   }
@@ -2897,6 +2940,9 @@ export interface NexusGenArgTypes {
     }
     createOneRelation: { // args
       data: NexusGenInputs['RelationCreateInput']; // RelationCreateInput!
+    }
+    createOneThreadMessage: { // args
+      data: NexusGenInputs['ThreadMessageCreateInput']; // ThreadMessageCreateInput!
     }
     createOneVenue: { // args
       data: NexusGenInputs['VenueCreateInput']; // VenueCreateInput!
@@ -2967,8 +3013,11 @@ export interface NexusGenArgTypes {
       query?: string | null; // String
     }
     threadMessages: { // args
-      cursor?: string | null; // String
-      headId: string; // String!
+      after?: NexusGenInputs['ThreadMessageWhereUniqueInput'] | null; // ThreadMessageWhereUniqueInput
+      before?: NexusGenInputs['ThreadMessageWhereUniqueInput'] | null; // ThreadMessageWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      where?: NexusGenInputs['ThreadMessageWhereInput'] | null; // ThreadMessageWhereInput
     }
     user: { // args
       where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
