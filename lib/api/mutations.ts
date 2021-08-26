@@ -39,7 +39,7 @@ export default objectType({
   name: "Mutation",
   definition(t) {
     t.crud.updateOneUser({
-      authorize: (_, { data: { id } }, ctx) => id === ctx.user.id,
+      authorize: (_, { where: { id } }, ctx) => id === ctx.user.id,
     });
     t.field("createArticle", {
       type: "Article",

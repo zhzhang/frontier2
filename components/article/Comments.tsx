@@ -14,6 +14,8 @@ const CommentsQuery = gql`
       author {
         id
         name
+        profilePictureUrl
+        bio
       }
       body
       highlights
@@ -32,19 +34,36 @@ const CreateCommentMutation = gql`
 `;
 
 function NewComment({ userId, articleId, highlights, updateArticleAndScroll }) {
-  const { loading, error, data } = useQuery(CommentsQuery, {
-    variables: {
-      where: {
-        // authorId: { equals: userId },
-        AND: [
-          { articleId: { equals: articleId } },
-          { published: { equals: true } },
-          { headId: { equals: null } },
-        ],
-      },
+  const getThreadsVariables = {
+    where: {
+      // authorId: { equals: userId },
+      AND: [
+        { articleId: { equals: articleId } },
+        { published: { equals: true } },
+        { headId: { equals: null } },
+      ],
+    },
+  };
+  const [createComment, result] = useMutation(CreateCommentMutation, {
+    update(cache, { data: { createOneThreadMessage } }) {
+      console.log(getThreadsVariables);
+      const { threadMessages } = cache.readQuery({
+        query: CommentsQuery,
+        variables: {
+          ...getThreadsVariables,
+        },
+      });
+      cache.writeQuery({
+        query: CommentsQuery,
+        variables: {
+          ...getThreadsVariables,
+        },
+        data: {
+          threadMessages: [createOneThreadMessage, ...threadMessages],
+        },
+      });
     },
   });
-  const [createComment, result] = useMutation(CreateCommentMutation);
   const [body, setBody] = useState("");
 
   const handleCreate = () => {
@@ -65,9 +84,6 @@ function NewComment({ userId, articleId, highlights, updateArticleAndScroll }) {
     });
   };
 
-  if (loading) {
-    return <CenteredSpinner />;
-  }
   return (
     <>
       <MarkdownEditor
@@ -81,12 +97,6 @@ function NewComment({ userId, articleId, highlights, updateArticleAndScroll }) {
       <Button variant="contained" color="primary" onClick={handleCreate}>
         Comment
       </Button>
-      {data.threadMessages.map((message) => (
-        <Comment
-          comment={message}
-          updateArticleAndScroll={updateArticleAndScroll}
-        />
-      ))}
     </>
   );
 }
@@ -96,17 +106,39 @@ export default function Comments({
   highlights,
   updateArticleAndScroll,
 }) {
-  const { user, loading } = useAuth();
-  if (loading) {
-    return null;
+  const auth = useAuth();
+  const getThreadsVariables = {
+    where: {
+      // authorId: { equals: userId },
+      AND: [
+        { articleId: { equals: articleId } },
+        { published: { equals: true } },
+        { headId: { equals: null } },
+      ],
+    },
+  };
+  const { loading, error, data } = useQuery(CommentsQuery, {
+    variables: getThreadsVariables,
+  });
+  if (auth.loading || loading) {
+    return <CenteredSpinner />;
   }
 
   return (
-    <NewComment
-      userId={user.uid}
-      articleId={articleId}
-      highlights={highlights}
-      updateArticleAndScroll={updateArticleAndScroll}
-    />
+    <>
+      <NewComment
+        userId={auth.user.uid}
+        articleId={articleId}
+        highlights={highlights}
+        updateArticleAndScroll={updateArticleAndScroll}
+      />
+      {data.threadMessages.map((message) => (
+        <Comment
+          key={message.id}
+          comment={message}
+          updateArticleAndScroll={updateArticleAndScroll}
+        />
+      ))}
+    </>
   );
 }

@@ -51,7 +51,7 @@ export default function Thread({ headId }) {
   return (
     <div>
       {threadMessages.map((message) => (
-        <div className={classes.message}>
+        <div className={classes.message} id={message.id}>
           <div className={classes.picture}>
             <ProfilePicturePopover user={message.author} />
           </div>

@@ -169,9 +169,10 @@ function Article() {
               className={classes.margin}
             >
               {versions.map((version) => (
-                <MenuItem value={version.versionNumber}>{`Version ${
-                  version.versionNumber
-                } - ${dateFormat(
+                <MenuItem
+                  key={version.versionNumber}
+                  value={version.versionNumber}
+                >{`Version ${version.versionNumber} - ${dateFormat(
                   new Date(parseInt(version.createdAt)),
                   "mmm d, yyyy"
                 )}`}</MenuItem>

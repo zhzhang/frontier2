@@ -1,4 +1,5 @@
 import Spinner from "@/components/CenteredSpinner";
+import Error from "@/components/Error";
 import ErrorPage from "@/components/ErrorPage";
 import Layout from "@/components/Layout";
 import UserTypeahead from "@/components/UserTypeahead";
@@ -38,7 +39,6 @@ const UserQuery = gql`
         target {
           id
           name
-          email
         }
         relation
         endYear
@@ -48,18 +48,8 @@ const UserQuery = gql`
 `;
 
 const UpdateUserMutation = gql`
-  mutation UpdateUser(
-    $id: String!
-    $name: String
-    $bio: String
-    $profilePictureUrl: String
-  ) {
-    updateUser(
-      id: $id
-      name: $name
-      bio: $bio
-      profilePictureUrl: $profilePictureUrl
-    ) {
+  mutation UpdateUser($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
+    updateOneUser(data: $data, where: $where) {
       id
     }
   }
@@ -72,7 +62,6 @@ const CreateRelationMutation = gql`
       target {
         id
         name
-        email
       }
       relation
       endYear
@@ -168,6 +157,9 @@ function Relations({ userId, relations }) {
         },
       },
     });
+    setTarget(null);
+    setEndYear("");
+    setRelationType("");
   };
   const relationMenuItems = [];
   const handleRelationTypeChange = (event) => {
@@ -264,18 +256,19 @@ function Editor({ user }) {
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
   const imgRef = useRef(null);
   const [updateUser, result] = useMutation(UpdateUserMutation);
+  let variables = {
+    where: {
+      id: user.id,
+    },
+    data: {
+      name: { set: name },
+      bio: { set: bio },
+    },
+  };
   const handleUpdateUser = async () => {
     if (!imgRef) {
       await updateUser({
-        variables: {
-          where: {
-            id: user.id,
-          },
-          data: {
-            name,
-            bio,
-          },
-        },
+        variables,
       });
       return;
     }
@@ -289,17 +282,9 @@ function Editor({ user }) {
       (snapshot) => {},
       (error) => {},
       () => {
+        variables.data.profilePictureUrl = { set: refPath };
         updateUser({
-          variables: {
-            where: {
-              id: user.id,
-            },
-            data: {
-              name,
-              bio,
-              profilePictureUrl: refPath,
-            },
-          },
+          variables,
         });
       }
     );
@@ -389,19 +374,14 @@ function EditProfile({ id }) {
     variables: { where: { id } },
   });
   if (loading) {
-    return (
-      <Layout>
-        <Spinner />
-      </Layout>
-    );
+    return <Spinner />;
   } else if (error) {
-    return null;
+    return <Error>Error loading profile information.</Error>;
   }
   return <Editor user={data.user} />;
 }
 
 function RetrieveAndEditProfile() {
-  const classes = useStyles();
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -414,7 +394,11 @@ function RetrieveAndEditProfile() {
     );
   }
 
-  return <EditProfile id={user.uid} />;
+  return (
+    <Layout>
+      <EditProfile id={user.uid} />
+    </Layout>
+  );
 }
 
 export default withApollo(RetrieveAndEditProfile);
