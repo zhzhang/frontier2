@@ -22,6 +22,7 @@ export default objectType({
     });
     t.crud.threadMessages({ filtering: true });
     t.crud.decisions({ filtering: true });
+    t.crud.submissions({ filtering: true });
     t.list.field("searchVenues", {
       type: "Venue",
       args: { query: stringArg() },

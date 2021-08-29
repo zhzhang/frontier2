@@ -298,77 +298,71 @@ function Editor({ user }) {
   }, []);
 
   return (
-    <Layout>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Typography variant="h4">Editing Profile</Typography>
-        </Grid>
-        <Grid item xs={5}>
-          <TextField
-            required
-            value={name}
-            fullWidth
-            variant="outlined"
-            label="Name"
-            onChange={(event) => setName(event.target.value)}
-          />
-        </Grid>
-        <Grid item xs={7} />
-        <Grid item xs={5}>
-          <TextField
-            value={bio}
-            fullWidth
-            multiline
-            variant="outlined"
-            label="Bio"
-            onChange={(event) => setBio(event.target.value)}
-          />
-        </Grid>
-        <Grid item xs={7} />
-        <Grid item xs={3}>
-          {profilePictureUrl ? (
-            <ReactCrop
-              src={profilePictureUrl}
-              crop={crop}
-              onChange={(newCrop) => setCrop(newCrop)}
-              onImageLoaded={onLoad}
-            />
-          ) : (
-            <Dropzone
-              onDrop={(acceptedFiles) => {
-                setProfilePictureUrl(URL.createObjectURL(acceptedFiles[0]));
-              }}
-              accept={["image/png", "image/jpeg"]}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <div {...getRootProps()} className={classes.dropzone}>
-                  <input {...getInputProps()} />
-                  <p>
-                    (Optional) Drag and drop a logo image here, or click to
-                    select file.
-                  </p>
-                </div>
-              )}
-            </Dropzone>
-          )}
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleUpdateUser}
-          >
-            Save
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h5">Relations</Typography>
-        </Grid>
-
-        <Relations userId={user.id} relations={user.relations} />
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography variant="h4">Editing Profile</Typography>
       </Grid>
-    </Layout>
+      <Grid item xs={5}>
+        <TextField
+          required
+          value={name}
+          fullWidth
+          variant="outlined"
+          label="Name"
+          onChange={(event) => setName(event.target.value)}
+        />
+      </Grid>
+      <Grid item xs={7} />
+      <Grid item xs={5}>
+        <TextField
+          value={bio}
+          fullWidth
+          multiline
+          variant="outlined"
+          label="Bio"
+          onChange={(event) => setBio(event.target.value)}
+        />
+      </Grid>
+      <Grid item xs={7} />
+      <Grid item xs={3}>
+        {profilePictureUrl ? (
+          <ReactCrop
+            src={profilePictureUrl}
+            crop={crop}
+            onChange={(newCrop) => setCrop(newCrop)}
+            onImageLoaded={onLoad}
+          />
+        ) : (
+          <Dropzone
+            onDrop={(acceptedFiles) => {
+              setProfilePictureUrl(URL.createObjectURL(acceptedFiles[0]));
+            }}
+            accept={["image/png", "image/jpeg"]}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <div {...getRootProps()} className={classes.dropzone}>
+                <input {...getInputProps()} />
+                <p>
+                  (Optional) Drag and drop a logo image here, or click to select
+                  file.
+                </p>
+              </div>
+            )}
+          </Dropzone>
+        )}
+      </Grid>
+
+      <Grid item xs={12}>
+        <Button variant="contained" color="primary" onClick={handleUpdateUser}>
+          Save
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h5">Relations</Typography>
+      </Grid>
+
+      <Relations userId={user.id} relations={user.relations} />
+    </Grid>
   );
 }
 

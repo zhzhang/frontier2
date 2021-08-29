@@ -9,12 +9,19 @@ import { useCallback, useRef, useState } from "react";
 import Dropzone from "react-dropzone";
 import ReactCrop from "react-image-crop";
 
-const UpdateOrganizationMutation = gql`
-  mutation UpdateOrganization($id: String!, $description: String!) {
-    updateOneOrganization(id: $id, description: $description) {
+const UpdateVenueMutation = gql`
+  mutation UpdateVenue(
+    $data: VenueUpdateInput!
+    $where: VenueWhereUniqueInput!
+  ) {
+    updateOneVenue(data: $data, where: $where) {
       id
       name
+      abbreviation
       description
+      venueDate
+      role
+      logoRef
     }
   }
 `;
@@ -39,19 +46,31 @@ export default function InfoPane({ venue }) {
   const [name, setName] = useState(venue.name);
   const [abbrev, setAbbrev] = useState(venue.abbreviation);
   const [logoUrl, setLogoUrl] = useState("");
-  const [updateOrganization, { loading, error, data }] = useMutation(
-    UpdateOrganizationMutation
-  );
+  const [updateVenue, { loading, error, data }] =
+    useMutation(UpdateVenueMutation);
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
   const [desc, setDescription] = useState(venue.description);
   const imgRef = useRef(null);
   const onLoad = useCallback((img) => {
     imgRef.current = img;
   }, []);
+  let variables = {
+    where: {
+      id: venue.id,
+    },
+    data: {
+      name: { set: name },
+      abbreviation: { set: abbrev },
+      description: { set: desc },
+    },
+  };
+  const handleUpdate = () => {
+    updateVenue({ variables });
+  };
 
   return (
-    <Grid container spacing={2} className={classes.body}>
-      <Grid item md={9}>
+    <Grid container item sm={10} spacing={2}>
+      <Grid item sm={10}>
         <TextField
           required
           value={name}
@@ -61,7 +80,7 @@ export default function InfoPane({ venue }) {
           onChange={(event) => setName(event.target.value)}
         />
       </Grid>
-      <Grid item md={2}>
+      <Grid item sm={2}>
         <TextField
           value={abbrev}
           fullWidth
@@ -70,10 +89,10 @@ export default function InfoPane({ venue }) {
           onChange={(event) => setAbbrev(event.target.value)}
         />
       </Grid>
-      <Grid item md={11}>
+      <Grid item sm={12}>
         <MarkdownEditor body={desc} onChange={setDescription} />
       </Grid>
-      <Grid item xs={10}>
+      <Grid item sm={12}>
         {logoUrl ? (
           <ReactCrop
             src={logoUrl}
@@ -102,18 +121,7 @@ export default function InfoPane({ venue }) {
         )}
       </Grid>
       <Grid item>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => {
-            updateOrganization({
-              variables: {
-                id,
-                description: desc,
-              },
-            });
-          }}
-        >
+        <Button color="primary" variant="contained" onClick={handleUpdate}>
           Save
         </Button>
       </Grid>

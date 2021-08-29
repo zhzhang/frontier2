@@ -607,12 +607,6 @@ input DecisionCreateNestedManyWithoutAuthorInput {
   createMany: DecisionCreateManyAuthorInputEnvelope
 }
 
-input DecisionCreateNestedManyWithoutCitedReviewsInput {
-  connect: [DecisionWhereUniqueInput!]
-  connectOrCreate: [DecisionCreateOrConnectWithoutCitedReviewsInput!]
-  create: [DecisionCreateWithoutCitedReviewsInput!]
-}
-
 input DecisionCreateNestedManyWithoutVenueInput {
   connect: [DecisionWhereUniqueInput!]
   connectOrCreate: [DecisionCreateOrConnectWithoutVenueInput!]
@@ -636,11 +630,6 @@ input DecisionCreateOrConnectWithoutAuthorInput {
   where: DecisionWhereUniqueInput!
 }
 
-input DecisionCreateOrConnectWithoutCitedReviewsInput {
-  create: DecisionCreateWithoutCitedReviewsInput!
-  where: DecisionWhereUniqueInput!
-}
-
 input DecisionCreateOrConnectWithoutSubmissionInput {
   create: DecisionCreateWithoutSubmissionInput!
   where: DecisionWhereUniqueInput!
@@ -654,7 +643,6 @@ input DecisionCreateOrConnectWithoutVenueInput {
 input DecisionCreateWithoutArticleInput {
   author: UserCreateNestedOneWithoutDecisionsInput!
   body: String!
-  citedReviews: ReviewCreateNestedManyWithoutDecisionsInput
   decision: Boolean
   highlights: String!
   id: String
@@ -665,19 +653,6 @@ input DecisionCreateWithoutArticleInput {
 
 input DecisionCreateWithoutAuthorInput {
   article: ArticleCreateNestedOneWithoutDecisionsInput!
-  body: String!
-  citedReviews: ReviewCreateNestedManyWithoutDecisionsInput
-  decision: Boolean
-  highlights: String!
-  id: String
-  published: Boolean
-  submission: SubmissionCreateNestedOneWithoutDecisionInput
-  venue: VenueCreateNestedOneWithoutDecisionsInput!
-}
-
-input DecisionCreateWithoutCitedReviewsInput {
-  article: ArticleCreateNestedOneWithoutDecisionsInput!
-  author: UserCreateNestedOneWithoutDecisionsInput!
   body: String!
   decision: Boolean
   highlights: String!
@@ -691,7 +666,6 @@ input DecisionCreateWithoutSubmissionInput {
   article: ArticleCreateNestedOneWithoutDecisionsInput!
   author: UserCreateNestedOneWithoutDecisionsInput!
   body: String!
-  citedReviews: ReviewCreateNestedManyWithoutDecisionsInput
   decision: Boolean
   highlights: String!
   id: String
@@ -703,7 +677,6 @@ input DecisionCreateWithoutVenueInput {
   article: ArticleCreateNestedOneWithoutDecisionsInput!
   author: UserCreateNestedOneWithoutDecisionsInput!
   body: String!
-  citedReviews: ReviewCreateNestedManyWithoutDecisionsInput
   decision: Boolean
   highlights: String!
   id: String
@@ -749,11 +722,6 @@ input DecisionUpdateManyWithWhereWithoutAuthorInput {
   where: DecisionScalarWhereInput!
 }
 
-input DecisionUpdateManyWithWhereWithoutCitedReviewsInput {
-  data: DecisionUpdateManyMutationInput!
-  where: DecisionScalarWhereInput!
-}
-
 input DecisionUpdateManyWithWhereWithoutVenueInput {
   data: DecisionUpdateManyMutationInput!
   where: DecisionScalarWhereInput!
@@ -785,19 +753,6 @@ input DecisionUpdateManyWithoutAuthorInput {
   update: [DecisionUpdateWithWhereUniqueWithoutAuthorInput!]
   updateMany: [DecisionUpdateManyWithWhereWithoutAuthorInput!]
   upsert: [DecisionUpsertWithWhereUniqueWithoutAuthorInput!]
-}
-
-input DecisionUpdateManyWithoutCitedReviewsInput {
-  connect: [DecisionWhereUniqueInput!]
-  connectOrCreate: [DecisionCreateOrConnectWithoutCitedReviewsInput!]
-  create: [DecisionCreateWithoutCitedReviewsInput!]
-  delete: [DecisionWhereUniqueInput!]
-  deleteMany: [DecisionScalarWhereInput!]
-  disconnect: [DecisionWhereUniqueInput!]
-  set: [DecisionWhereUniqueInput!]
-  update: [DecisionUpdateWithWhereUniqueWithoutCitedReviewsInput!]
-  updateMany: [DecisionUpdateManyWithWhereWithoutCitedReviewsInput!]
-  upsert: [DecisionUpsertWithWhereUniqueWithoutCitedReviewsInput!]
 }
 
 input DecisionUpdateManyWithoutVenueInput {
@@ -834,11 +789,6 @@ input DecisionUpdateWithWhereUniqueWithoutAuthorInput {
   where: DecisionWhereUniqueInput!
 }
 
-input DecisionUpdateWithWhereUniqueWithoutCitedReviewsInput {
-  data: DecisionUpdateWithoutCitedReviewsInput!
-  where: DecisionWhereUniqueInput!
-}
-
 input DecisionUpdateWithWhereUniqueWithoutVenueInput {
   data: DecisionUpdateWithoutVenueInput!
   where: DecisionWhereUniqueInput!
@@ -847,7 +797,6 @@ input DecisionUpdateWithWhereUniqueWithoutVenueInput {
 input DecisionUpdateWithoutArticleInput {
   author: UserUpdateOneRequiredWithoutDecisionsInput
   body: StringFieldUpdateOperationsInput
-  citedReviews: ReviewUpdateManyWithoutDecisionsInput
   decision: BoolFieldUpdateOperationsInput
   highlights: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
@@ -858,19 +807,6 @@ input DecisionUpdateWithoutArticleInput {
 
 input DecisionUpdateWithoutAuthorInput {
   article: ArticleUpdateOneRequiredWithoutDecisionsInput
-  body: StringFieldUpdateOperationsInput
-  citedReviews: ReviewUpdateManyWithoutDecisionsInput
-  decision: BoolFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  published: BoolFieldUpdateOperationsInput
-  submission: SubmissionUpdateOneWithoutDecisionInput
-  venue: VenueUpdateOneRequiredWithoutDecisionsInput
-}
-
-input DecisionUpdateWithoutCitedReviewsInput {
-  article: ArticleUpdateOneRequiredWithoutDecisionsInput
-  author: UserUpdateOneRequiredWithoutDecisionsInput
   body: StringFieldUpdateOperationsInput
   decision: BoolFieldUpdateOperationsInput
   highlights: StringFieldUpdateOperationsInput
@@ -884,7 +820,6 @@ input DecisionUpdateWithoutSubmissionInput {
   article: ArticleUpdateOneRequiredWithoutDecisionsInput
   author: UserUpdateOneRequiredWithoutDecisionsInput
   body: StringFieldUpdateOperationsInput
-  citedReviews: ReviewUpdateManyWithoutDecisionsInput
   decision: BoolFieldUpdateOperationsInput
   highlights: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
@@ -896,7 +831,6 @@ input DecisionUpdateWithoutVenueInput {
   article: ArticleUpdateOneRequiredWithoutDecisionsInput
   author: UserUpdateOneRequiredWithoutDecisionsInput
   body: StringFieldUpdateOperationsInput
-  citedReviews: ReviewUpdateManyWithoutDecisionsInput
   decision: BoolFieldUpdateOperationsInput
   highlights: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
@@ -913,12 +847,6 @@ input DecisionUpsertWithWhereUniqueWithoutArticleInput {
 input DecisionUpsertWithWhereUniqueWithoutAuthorInput {
   create: DecisionCreateWithoutAuthorInput!
   update: DecisionUpdateWithoutAuthorInput!
-  where: DecisionWhereUniqueInput!
-}
-
-input DecisionUpsertWithWhereUniqueWithoutCitedReviewsInput {
-  create: DecisionCreateWithoutCitedReviewsInput!
-  update: DecisionUpdateWithoutCitedReviewsInput!
   where: DecisionWhereUniqueInput!
 }
 
@@ -942,7 +870,6 @@ input DecisionWhereInput {
   author: UserWhereInput
   authorId: StringFilter
   body: StringFilter
-  citedReviews: ReviewListRelationFilter
   decision: BoolFilter
   highlights: StringFilter
   id: StringFilter
@@ -1094,6 +1021,7 @@ type Query {
   searchEditors(organizationId: String!, query: String): [User]
   searchUsers(query: String): [User]
   searchVenues(query: String): [Venue]
+  submissions(after: SubmissionWhereUniqueInput, before: SubmissionWhereUniqueInput, first: Int, last: Int, where: SubmissionWhereInput): [Submission!]!
   threadMessages(after: ThreadMessageWhereUniqueInput, before: ThreadMessageWhereUniqueInput, first: Int, last: Int, where: ThreadMessageWhereInput): [ThreadMessage!]!
   user(where: UserWhereUniqueInput!): User
   venue(where: VenueWhereUniqueInput!): Venue
@@ -1376,12 +1304,6 @@ input ReviewCreateNestedManyWithoutAuthorInput {
   createMany: ReviewCreateManyAuthorInputEnvelope
 }
 
-input ReviewCreateNestedManyWithoutDecisionsInput {
-  connect: [ReviewWhereUniqueInput!]
-  connectOrCreate: [ReviewCreateOrConnectWithoutDecisionsInput!]
-  create: [ReviewCreateWithoutDecisionsInput!]
-}
-
 input ReviewCreateNestedManyWithoutVenueInput {
   connect: [ReviewWhereUniqueInput!]
   connectOrCreate: [ReviewCreateOrConnectWithoutVenueInput!]
@@ -1399,11 +1321,6 @@ input ReviewCreateOrConnectWithoutAuthorInput {
   where: ReviewWhereUniqueInput!
 }
 
-input ReviewCreateOrConnectWithoutDecisionsInput {
-  create: ReviewCreateWithoutDecisionsInput!
-  where: ReviewWhereUniqueInput!
-}
-
 input ReviewCreateOrConnectWithoutVenueInput {
   create: ReviewCreateWithoutVenueInput!
   where: ReviewWhereUniqueInput!
@@ -1413,7 +1330,6 @@ input ReviewCreateWithoutArticleInput {
   anonymized: Boolean
   author: UserCreateNestedOneWithoutReviewsInput!
   body: String!
-  decisions: DecisionCreateNestedManyWithoutCitedReviewsInput
   highlights: String!
   id: String
   published: Boolean
@@ -1425,20 +1341,6 @@ input ReviewCreateWithoutArticleInput {
 input ReviewCreateWithoutAuthorInput {
   anonymized: Boolean
   article: ArticleCreateNestedOneWithoutReviewsInput!
-  body: String!
-  decisions: DecisionCreateNestedManyWithoutCitedReviewsInput
-  highlights: String!
-  id: String
-  published: Boolean
-  rating: Int
-  reviewNumber: Int!
-  venue: VenueCreateNestedOneWithoutReviewsInput
-}
-
-input ReviewCreateWithoutDecisionsInput {
-  anonymized: Boolean
-  article: ArticleCreateNestedOneWithoutReviewsInput!
-  author: UserCreateNestedOneWithoutReviewsInput!
   body: String!
   highlights: String!
   id: String
@@ -1453,7 +1355,6 @@ input ReviewCreateWithoutVenueInput {
   article: ArticleCreateNestedOneWithoutReviewsInput!
   author: UserCreateNestedOneWithoutReviewsInput!
   body: String!
-  decisions: DecisionCreateNestedManyWithoutCitedReviewsInput
   highlights: String!
   id: String
   published: Boolean
@@ -1503,11 +1404,6 @@ input ReviewUpdateManyWithWhereWithoutAuthorInput {
   where: ReviewScalarWhereInput!
 }
 
-input ReviewUpdateManyWithWhereWithoutDecisionsInput {
-  data: ReviewUpdateManyMutationInput!
-  where: ReviewScalarWhereInput!
-}
-
 input ReviewUpdateManyWithWhereWithoutVenueInput {
   data: ReviewUpdateManyMutationInput!
   where: ReviewScalarWhereInput!
@@ -1541,19 +1437,6 @@ input ReviewUpdateManyWithoutAuthorInput {
   upsert: [ReviewUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
-input ReviewUpdateManyWithoutDecisionsInput {
-  connect: [ReviewWhereUniqueInput!]
-  connectOrCreate: [ReviewCreateOrConnectWithoutDecisionsInput!]
-  create: [ReviewCreateWithoutDecisionsInput!]
-  delete: [ReviewWhereUniqueInput!]
-  deleteMany: [ReviewScalarWhereInput!]
-  disconnect: [ReviewWhereUniqueInput!]
-  set: [ReviewWhereUniqueInput!]
-  update: [ReviewUpdateWithWhereUniqueWithoutDecisionsInput!]
-  updateMany: [ReviewUpdateManyWithWhereWithoutDecisionsInput!]
-  upsert: [ReviewUpsertWithWhereUniqueWithoutDecisionsInput!]
-}
-
 input ReviewUpdateManyWithoutVenueInput {
   connect: [ReviewWhereUniqueInput!]
   connectOrCreate: [ReviewCreateOrConnectWithoutVenueInput!]
@@ -1578,11 +1461,6 @@ input ReviewUpdateWithWhereUniqueWithoutAuthorInput {
   where: ReviewWhereUniqueInput!
 }
 
-input ReviewUpdateWithWhereUniqueWithoutDecisionsInput {
-  data: ReviewUpdateWithoutDecisionsInput!
-  where: ReviewWhereUniqueInput!
-}
-
 input ReviewUpdateWithWhereUniqueWithoutVenueInput {
   data: ReviewUpdateWithoutVenueInput!
   where: ReviewWhereUniqueInput!
@@ -1592,7 +1470,6 @@ input ReviewUpdateWithoutArticleInput {
   anonymized: BoolFieldUpdateOperationsInput
   author: UserUpdateOneRequiredWithoutReviewsInput
   body: StringFieldUpdateOperationsInput
-  decisions: DecisionUpdateManyWithoutCitedReviewsInput
   highlights: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
@@ -1604,20 +1481,6 @@ input ReviewUpdateWithoutArticleInput {
 input ReviewUpdateWithoutAuthorInput {
   anonymized: BoolFieldUpdateOperationsInput
   article: ArticleUpdateOneRequiredWithoutReviewsInput
-  body: StringFieldUpdateOperationsInput
-  decisions: DecisionUpdateManyWithoutCitedReviewsInput
-  highlights: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  published: BoolFieldUpdateOperationsInput
-  rating: IntFieldUpdateOperationsInput
-  reviewNumber: IntFieldUpdateOperationsInput
-  venue: VenueUpdateOneWithoutReviewsInput
-}
-
-input ReviewUpdateWithoutDecisionsInput {
-  anonymized: BoolFieldUpdateOperationsInput
-  article: ArticleUpdateOneRequiredWithoutReviewsInput
-  author: UserUpdateOneRequiredWithoutReviewsInput
   body: StringFieldUpdateOperationsInput
   highlights: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
@@ -1632,7 +1495,6 @@ input ReviewUpdateWithoutVenueInput {
   article: ArticleUpdateOneRequiredWithoutReviewsInput
   author: UserUpdateOneRequiredWithoutReviewsInput
   body: StringFieldUpdateOperationsInput
-  decisions: DecisionUpdateManyWithoutCitedReviewsInput
   highlights: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
@@ -1652,12 +1514,6 @@ input ReviewUpsertWithWhereUniqueWithoutAuthorInput {
   where: ReviewWhereUniqueInput!
 }
 
-input ReviewUpsertWithWhereUniqueWithoutDecisionsInput {
-  create: ReviewCreateWithoutDecisionsInput!
-  update: ReviewUpdateWithoutDecisionsInput!
-  where: ReviewWhereUniqueInput!
-}
-
 input ReviewUpsertWithWhereUniqueWithoutVenueInput {
   create: ReviewCreateWithoutVenueInput!
   update: ReviewUpdateWithoutVenueInput!
@@ -1674,7 +1530,6 @@ input ReviewWhereInput {
   author: UserWhereInput
   authorId: StringFilter
   body: StringFilter
-  decisions: DecisionListRelationFilter
   highlights: StringFilter
   id: StringFilter
   published: BoolFilter

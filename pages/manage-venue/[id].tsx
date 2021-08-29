@@ -5,7 +5,6 @@ import Layout from "@/components/Layout";
 import InfoPane from "@/components/manage-organization/InfoPane";
 import SubmissionsPane from "@/components/manage-organization/SubmissionsPane";
 import { withApollo } from "@/lib/apollo";
-import { useRef } from "@/lib/firebase";
 import { useQuery } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
@@ -31,6 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
     headerItem: {
       marginRight: theme.spacing(2),
     },
+    nav: {
+      padding: theme.spacing(1),
+    },
   })
 );
 
@@ -50,7 +52,6 @@ const VenueQuery = gql`
 
 function Header({ name, logoRef }) {
   const classes = useStyles();
-  const url = useRef(logoRef);
   return (
     <div className={classes.header}>
       <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
@@ -67,6 +68,7 @@ const TABS = [
 ];
 
 function Venue() {
+  const classes = useStyles();
   const router = useRouter();
   const id = router.query.id;
   const view = router.query.view ? router.query.view : "info";
@@ -101,8 +103,8 @@ function Venue() {
     <Layout>
       <Header name={name} logoRef={logoRef} />
       <Grid container>
-        <Grid item md={2}>
-          <List>
+        <Grid item xs={2}>
+          <List className={classes.nav}>
             {TABS.map(({ name, key }) => (
               <ListItem
                 button
@@ -115,9 +117,7 @@ function Venue() {
             ))}
           </List>
         </Grid>
-        <Grid item md={10}>
-          {renderedView}
-        </Grid>
+        {renderedView}
       </Grid>
     </Layout>
   );

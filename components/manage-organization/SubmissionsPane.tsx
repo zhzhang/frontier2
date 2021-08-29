@@ -1,27 +1,24 @@
 import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
+import { Grid } from "@material-ui/core";
 import gql from "graphql-tag";
-import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 import SubmissionCard from "./SubmissionCard";
 
-const OrganizationQuery = gql`
-  query OrganizationQuery($id: String!) {
-    organization(id: $id) {
+const SubmissionsQuery = gql`
+  query SubmissionsQuery($where: SubmissionWhereInput!) {
+    submissions(where: $where) {
       id
-      submissions {
+      owner {
         id
-        owner {
-          id
-          name
-          email
-        }
-        article {
-          id
-          title
-          versions {
-            abstract
-          }
+        name
+        email
+      }
+      article {
+        id
+        title
+        versions {
+          abstract
         }
       }
     }
@@ -29,29 +26,31 @@ const OrganizationQuery = gql`
 `;
 
 const SubmissionsPane = ({ id }) => {
-  const { loading, error, data } = useQuery(OrganizationQuery, {
-    variables: { id },
+  const { loading, error, data } = useQuery(SubmissionsQuery, {
+    variables: { where: { id: { equals: id } } },
   });
   if (loading) {
     return <Spinner animation="border" style={{ top: "50%", left: "50%" }} />;
-  }
-  if (error) {
+  } else if (error) {
     return (
-      <Container fluid className="mt-3">
-        <Error header="There was a problem retrieving this organization's submissions." />
-      </Container>
+      <Grid container item sm={10} spacing={2}>
+        <Grid item>
+          <Error>
+            There was a problem retrieving this organization's submissions.
+          </Error>
+        </Grid>
+      </Grid>
     );
   }
-  const { submissions } = data.organization;
+  const submissions = data.submissions;
   return (
-    <Container fluid style={{ paddingTop: 10 }}>
-      <h4>Submissions</h4>
+    <Grid container item sm={10} spacing={2}>
       {submissions.length === 0
         ? "There are currently no submissions."
         : submissions.map((submission) => (
             <SubmissionCard submission={submission} organizationId={id} />
           ))}
-    </Container>
+    </Grid>
   );
 };
 

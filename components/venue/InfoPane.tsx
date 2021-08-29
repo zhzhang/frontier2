@@ -1,56 +1,21 @@
 import Markdown from "@/components/Markdown";
-import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import { RoleEnum } from "../../lib/types";
+import { Grid } from "@material-ui/core";
+import EventIcon from "@material-ui/icons/Event";
+import dateformat from "dateformat";
 
-const UpdateOrganizationMutation = gql`
-  mutation UpdateOrganization($id: String!, $description: String!) {
-    updateOrganization(id: $id, description: $description) {
-      id
-      name
-      description
-    }
-  }
-`;
-
-const InfoPane = ({ id, description, role }) => {
-  const [editing, setEditing] = useState(false);
-  const [updateOrganization, { loading, error, data }] = useMutation(
-    UpdateOrganizationMutation
-  );
+const InfoPane = ({ venue: { id, description, role, venueDate } }) => {
   return (
-    <div className="mt-2">
-      <Markdown>{description}</Markdown>
-      {role === RoleEnum.ADMIN ? (
-        editing ? (
-          <>
-            <Button
-              variant="primary"
-              onClick={() => {
-                updateOrganization({
-                  variables: {
-                    id,
-                    description: desc,
-                  },
-                });
-                setEditing(false);
-              }}
-            >
-              Save
-            </Button>{" "}
-            <Button variant="secondary" onClick={() => setEditing(false)}>
-              Cancel
-            </Button>
-          </>
-        ) : (
-          <Button variant="primary" onClick={() => setEditing(true)}>
-            Edit
-          </Button>
-        )
-      ) : null}
-    </div>
+    <Grid container spacing={2}>
+      <Grid item>
+        <Markdown>{description}</Markdown>
+        {venueDate && (
+          <span>
+            <EventIcon />
+            {dateformat(venueDate, "longDate")}
+          </span>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 

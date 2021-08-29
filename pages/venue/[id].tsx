@@ -23,6 +23,7 @@ const VenueQuery = gql`
       websiteUrl
       logoRef
       role
+      venueDate
     }
   }
 `;
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     width: theme.spacing(7),
     height: theme.spacing(7),
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -67,7 +68,7 @@ function Venue() {
         };
       default:
         return {
-          body: <InfoPane id={id} description={description} role={role} />,
+          body: <InfoPane venue={data.venue} />,
           tab: 0,
         };
     }
@@ -83,7 +84,7 @@ function Venue() {
           variant="rounded"
           name={name}
         />
-        <Typography variant="h4">{name}</Typography>
+        <Typography variant="h5">{name}</Typography>
         <div className={classes.editButton}>
           <Button
             variant="outlined"
