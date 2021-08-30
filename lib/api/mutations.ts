@@ -52,11 +52,11 @@ export default objectType({
         authorIds: nonNull(list(nonNull(stringArg()))),
         ref: nonNull(stringArg()),
         anonymous: nonNull(booleanArg()),
-        organizationId: nullable(stringArg()),
+        venueId: nullable(stringArg()),
       },
       resolve: async (
         _,
-        { title, abstract, authorIds, anonymous, ref, organizationId },
+        { title, abstract, authorIds, anonymous, ref, venueId },
         ctx
       ) => {
         let authorCreationArgs = [];
@@ -85,11 +85,11 @@ export default objectType({
           },
         };
         const article = await ctx.prisma.article.create(input);
-        if (organizationId) {
+        if (venueId) {
           const sub = await ctx.prisma.submission.create({
             data: {
               articleId: article.id,
-              organizationId,
+              venueId,
             },
           });
         }

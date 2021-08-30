@@ -62,13 +62,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewArticle = () => {
+function NewArticle({ venue }) {
   const classes = useStyles();
   const router = useRouter();
-  const { venueId } = router.query;
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [submissionTargets, setSubmissionTargets] = useState([]);
+  const [submissionTarget, setSubmissionTarget] = useState(null);
   const [abstract, setAbstract] = useState("");
   const [authors, setAuthors] = useState([]);
   const [anonymous, setAnonymous] = useState(true);
@@ -82,8 +81,8 @@ const NewArticle = () => {
       "state_changed",
       (snapshot) => {},
       (error) => {},
-      () => {
-        createArticle({
+      async () => {
+        await createArticle({
           variables: {
             title,
             abstract,
@@ -92,6 +91,7 @@ const NewArticle = () => {
             authorIds: authors.map((a) => a.id),
           },
         });
+        router.push(`/article/${data.article.id}`);
       }
     );
   };
@@ -144,11 +144,10 @@ const NewArticle = () => {
           <SubmissionTargetTypeahed
             className={classes.formField}
             label="Submit to..."
-            multiple
             onChange={(_, selected) => {
-              setSubmissionTargets(selected);
+              setSubmissionTarget(selected);
             }}
-            value={submissionTargets}
+            value={submissionTarget}
           />
           <div className={classes.formField}>
             <Button
@@ -197,6 +196,13 @@ const NewArticle = () => {
       </Grid>
     </Layout>
   );
-};
+}
 
-export default withApollo(NewArticle);
+function NewArticleWithVenue() {
+  const router = useRouter();
+  const { venueId } = router.query;
+
+  return <NewArticle />;
+}
+
+export default withApollo(NewArticleWithVenue);

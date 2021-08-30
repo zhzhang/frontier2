@@ -30,6 +30,7 @@ export default objectType({
         if (query.length < 2) {
           return [];
         }
+        const now = new Date(Date.now());
         return await ctx.prisma.venue.findMany({
           where: {
             AND: [
@@ -47,8 +48,32 @@ export default objectType({
                   },
                 ],
               },
-              { venueDate: { gt: new Date(Date.now()) } },
-              { submissionDeadline: { gt: new Date(Date.now()) } },
+              {
+                OR: [
+                  {
+                    AND: [
+                      { submissionDeadline: { gt: now } },
+                      {
+                        OR: [
+                          { submissionOpen: null },
+                          { submissionOpen: { lt: now } },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    AND: [
+                      { submissionDeadline: null },
+                      {
+                        OR: [
+                          { submissionOpen: null },
+                          { submissionOpen: { lt: now } },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
             ],
           },
         });

@@ -2820,9 +2820,9 @@ export interface NexusGenArgTypes {
       abstract: string; // String!
       anonymous: boolean; // Boolean!
       authorIds: string[]; // [String!]!
-      organizationId?: string | null; // String
       ref: string; // String!
       title: string; // String!
+      venueId?: string | null; // String
     }
     createOneRelation: { // args
       data: NexusGenInputs['RelationCreateInput']; // RelationCreateInput!
