@@ -1,15 +1,11 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
+import VenueDatesBar from "@/components/VenueDatesBar";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import EventIcon from "@material-ui/icons/Event";
-import EventAvailableIcon from "@material-ui/icons/EventAvailable";
-import LinkIcon from "@material-ui/icons/Link";
-import dateformat from "dateformat";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     header: {
       display: "flex",
@@ -21,25 +17,13 @@ const useStyles = makeStyles((theme) =>
       width: theme.spacing(7),
       height: theme.spacing(7),
     },
-    headerItem: {
-      marginRight: theme.spacing(2),
-    },
   })
 );
 
 export default function VenueCard({ venue }) {
   const classes = useStyles();
-  const {
-    id,
-    name,
-    abbreviation,
-    description,
-    logoRef,
-    websiteUrl,
-    venueDate,
-    submissionDeadline,
-    submissionOpen,
-  } = venue;
+  const { id, name, abbreviation, logoRef, venueDate, submissionDeadline } =
+    venue;
 
   const Header = () => {
     const parsedVenueDate = new Date(venueDate);
@@ -58,45 +42,6 @@ export default function VenueCard({ venue }) {
     );
   };
 
-  const canSubmit =
-    !submissionDeadline || new Date(submissionDeadline) > new Date(Date.now());
-
-  const SubHeader = () => {
-    return (
-      <Typography>
-        {venueDate && (
-          <span className={classes.headerItem}>
-            <EventIcon />
-            {dateformat(venueDate, "longDate")}
-          </span>
-        )}
-        <span className={classes.headerItem}>
-          <LinkIcon />
-          <Link href={websiteUrl}>{websiteUrl}</Link>
-        </span>
-        {submissionOpen && (
-          <span className={classes.headerItem}>
-            <EventAvailableIcon />
-            {`Submissions Open: ${dateformat(submissionOpen, "longDate")} `}
-          </span>
-        )}
-        {submissionDeadline && (
-          <span className={classes.headerItem}>
-            <EventAvailableIcon />
-            {`Submissions Deadline: ${dateformat(
-              submissionDeadline,
-              "longDate"
-            )}`}
-          </span>
-        )}
-        {canSubmit && (
-          <Button color="primary" size="small">
-            Submit
-          </Button>
-        )}
-      </Typography>
-    );
-  };
   return (
     <>
       <div className={classes.header}>
@@ -107,7 +52,7 @@ export default function VenueCard({ venue }) {
         )}
         <div>
           <Header />
-          <SubHeader />
+          <VenueDatesBar venue={venue} />
         </div>
       </div>
       {/* <Typography>{description}</Typography> */}

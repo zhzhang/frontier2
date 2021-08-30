@@ -1,19 +1,27 @@
 import Markdown from "@/components/Markdown";
 import { Grid } from "@material-ui/core";
-import EventIcon from "@material-ui/icons/Event";
-import dateformat from "dateformat";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import VenueDatesBar from "../VenueDatesBar";
 
-const InfoPane = ({ venue: { id, description, role, venueDate } }) => {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    body: {
+      paddingTop: theme.spacing(1),
+    },
+    icon: {
+      height: `${theme.typography.fontSize}pt`,
+    },
+  })
+);
+
+const InfoPane = ({ venue }) => {
+  const { description } = venue;
+  const classes = useStyles();
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} className={classes.body}>
       <Grid item>
+        <VenueDatesBar venue={venue} />
         <Markdown>{description}</Markdown>
-        {venueDate && (
-          <span>
-            <EventIcon />
-            {dateformat(venueDate, "longDate")}
-          </span>
-        )}
       </Grid>
     </Grid>
   );

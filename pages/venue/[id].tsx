@@ -24,6 +24,8 @@ const VenueQuery = gql`
       logoRef
       role
       venueDate
+      submissionOpen
+      submissionDeadline
     }
   }
 `;
