@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function OrganizationPopover({ organization }) {
-  const { id, name, logoRef } = organization;
+export default function VenuePopover({ venue }) {
+  const { id, name, logoRef } = venue;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
@@ -37,7 +37,7 @@ export default function OrganizationPopover({ organization }) {
       <Typography
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-        onClick={() => Router.push(`/organization/${id}`)}
+        onClick={() => Router.push(`/venue/${id}`)}
       >
         {name}
       </Typography>

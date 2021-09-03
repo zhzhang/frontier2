@@ -10,11 +10,22 @@ const Article = objectType({
     t.model.anonymous();
     t.list.field("authors", {
       type: "User",
-      resolve: (parent, _args, ctx) => {
-        if (parent.anonymous) {
+      resolve: async (root, _args, ctx) => {
+        const authorships = await ctx.prisma.authorship.findMany({
+          where: {
+            articleId: root.id,
+          },
+          include: {
+            user: true,
+          },
+        });
+        const isAuthor = Boolean(
+          _.findLast(authorships, (o) => o.userId === ctx.user.id)
+        );
+        if (root.anonymous && !isAuthor) {
           return null;
         }
-        return _.sortBy(parent.authors, ["authorNumber"]).map(
+        return _.sortBy(authorships, ["authorNumber"]).map(
           (authorship) => authorship.user
         );
       },

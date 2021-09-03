@@ -76,7 +76,6 @@ function User() {
   }
 
   const { name, bio, articles, profilePictureUrl } = data.user;
-  console.log(profilePictureUrl);
   const tabKey = "articles";
 
   return (

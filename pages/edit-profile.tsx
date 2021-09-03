@@ -23,6 +23,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
+import Router from "next/router";
 import { useCallback, useRef, useState } from "react";
 import Dropzone from "react-dropzone";
 import ReactCrop from "react-image-crop";
@@ -266,10 +267,11 @@ function Editor({ user }) {
     },
   };
   const handleUpdateUser = async () => {
-    if (!imgRef) {
+    if (!imgRef.current) {
       await updateUser({
         variables,
       });
+      Router.push(`/user/${user.id}`);
       return;
     }
     const img = await getCroppedImg(imgRef.current, crop, "hello");
@@ -281,11 +283,12 @@ function Editor({ user }) {
       "state_changed",
       (snapshot) => {},
       (error) => {},
-      () => {
+      async () => {
         variables.data.profilePictureUrl = { set: refPath };
-        updateUser({
+        await updateUser({
           variables,
         });
+        Router.push(`/user/${user.id}`);
       }
     );
   };

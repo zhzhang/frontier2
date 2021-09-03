@@ -1,8 +1,7 @@
-import AuthorPopover from "@/components/AuthorPopover";
+import Authors from "@/components/Authors";
 import Markdown from "@/components/Markdown";
-import OrganizationPopover from "@/components/OrganizationPopover";
+import VenuePopover from "@/components/VenuePopover";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,28 +15,20 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ArticleCard({ article }) {
+export default function ArticleCard({ article, className = null }) {
   const { id, title, versions, authors, acceptedVenues } = article;
   const classes = useStyles();
   return (
-    <>
+    <div className={className}>
       <a href={`/article/${id}`}>{title}</a>
-      <div className={classes.chips}>
-        {authors !== null ? (
-          authors.map((author) => <AuthorPopover user={author} />)
-        ) : (
-          <Typography color="textSecondary">
-            <em>Anonymized</em>
-          </Typography>
-        )}
-      </div>
+      <Authors authors={authors} />
       <Markdown>{versions[0].abstract}</Markdown>
       <div>
         {acceptedVenues.length === 0 ? null : "Accepted by: "}
-        {acceptedVenues.map((org) => (
-          <OrganizationPopover organization={org} />
+        {acceptedVenues.map((venue) => (
+          <VenuePopover venue={venue} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
