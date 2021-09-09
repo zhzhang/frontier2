@@ -1,55 +1,45 @@
+import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import AcceptedArticleCard from "../AcceptedArticleCard";
 import Error from "../Error";
-import Spinner from "react-bootstrap/Spinner";
-import { useQuery } from "@apollo/react-hooks";
 
-const OrganizationQuery = gql`
-  query OrganizationQuery($id: String!) {
-    organization(id: $id) {
+const AcceptedArticlesQuery = gql`
+  query AcceptedArticlesQuery($where: DecisionsWhereInput!) {
+    decisions(where: $where) {
       id
-      accepted {
+      body
+      article {
         id
-        body
-        article {
-          id
-          title
-          authors {
-            id
-            name
-          }
-          versions {
-            id
-            abstract
-            versionNumber
-          }
-        }
-        author {
+        title
+        authors {
           id
           name
         }
-        citedReviews {
-          author {
-            name
-          }
-          body
-          reviewNumber
-          rating
-          canAccess
-          organization {
-            logoRef
-            abbreviation
-          }
+        versions {
+          id
+          abstract
+          versionNumber
         }
+      }
+      author {
+        id
+        name
       }
     }
   }
 `;
 
 const ArticlesPane = ({ id }) => {
-  const { loading, error, data } = useQuery(OrganizationQuery, {
-    variables: { id },
+  const { loading, error, data } = useQuery(AcceptedArticlesQuery, {
+    variables: {
+      where: {
+        articleId: {
+          equals: id,
+        },
+      },
+    },
   });
   if (loading) {
     return <Spinner animation="border" style={{ top: "50%", left: "50%" }} />;

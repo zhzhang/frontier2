@@ -6,13 +6,13 @@ import ArticlesPane from "@/components/venue/ArticlesPane";
 import InfoPane from "@/components/venue/InfoPane";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import "react-datepicker/dist/react-datepicker.css";
 
 const VenueQuery = gql`
   query VenueQuery($where: VenueWhereUniqueInput!) {
@@ -30,13 +30,14 @@ const VenueQuery = gql`
 const useStyles = makeStyles((theme) => ({
   header: {
     display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
+  },
+  editButton: {
+    marginLeft: "auto",
   },
   logo: {
     width: theme.spacing(7),
     height: theme.spacing(7),
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -83,6 +84,15 @@ function Venue() {
           name={name}
         />
         <Typography variant="h4">{name}</Typography>
+        <div className={classes.editButton}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => router.push(`/manage-venue/${id}`)}
+          >
+            Manage
+          </Button>
+        </div>
       </div>
       <Tabs
         value={tab}

@@ -158,19 +158,11 @@ async function main() {
   const decision = await prisma.decision.create({
     data: {
       authorId: reviewer.id,
-      body: `This is an example meta-review. Reviews that an author cites in writing the meta-review are attached to the meta-review, and directly credit the reviewer. Reviews from other organizations can be cited as well!`,
+      body: `This is an example meta-review. Reviews that an author cites in writing the meta-review are attached to the meta-review, and directly credit the reviewer. Reviews `,
       highlights: "",
       venueId: iclr.id,
       decision: true,
       articleId: article.id,
-    },
-  });
-  await prisma.decision.update({
-    where: { id: decision.id },
-    data: {
-      citedReviews: {
-        connect: [{ id: review1.id }, { id: review2.id }],
-      },
     },
   });
 
@@ -241,7 +233,7 @@ async function main() {
     },
   });
 
-  await prisma.venue.create({
+  const pastACL = await prisma.venue.create({
     data: {
       name: "Annual Meeting of the Association for Computational Linguistics",
       abbreviation: "ACL",
@@ -251,6 +243,17 @@ async function main() {
         "ACL is the premier conference of the field of computational linguistics, covering a broad spectrum of diverse research areas that are concerned with computational approaches to natural language.",
       submissionDeadline: "2020-06-05T10:00:00.000Z",
       venueDate: "2020-06-10T10:00:00.000Z",
+    },
+  });
+
+  await prisma.decision.create({
+    data: {
+      authorId: reviewer.id,
+      body: `Articles can be accepted by multiple venues.`,
+      highlights: "",
+      venueId: pastACL.id,
+      decision: true,
+      articleId: article.id,
     },
   });
 

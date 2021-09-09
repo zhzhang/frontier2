@@ -1,18 +1,15 @@
+import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { ChevronUp, ChevronDown } from "react-bootstrap-icons";
-import Error from "../Error";
 import Markdown from "../Markdown";
-import { RoleEnum } from "../../lib/types";
-import Spinner from "react-bootstrap/Spinner";
-import { useMutation } from "@apollo/react-hooks";
-import { useState } from "react";
 
 const UpdateOrganizationMutation = gql`
   mutation UpdateOrganization($id: String!, $description: String!) {
@@ -24,7 +21,7 @@ const UpdateOrganizationMutation = gql`
   }
 `;
 
-const EditView = ({ description, setDescription }) => {
+function EditView({ description, setDescription }) {
   const [previewOpen, setPreviewOpen] = useState(true);
   return (
     <>
@@ -61,9 +58,9 @@ const EditView = ({ description, setDescription }) => {
       </Accordion>
     </>
   );
-};
+}
 
-const InfoPane = ({ id, description }) => {
+export default function InfoPane({ id, description }) {
   const [editingDescription, setEditingDescription] = useState(false);
   const [updateOrganization, { loading, error, data }] = useMutation(
     UpdateOrganizationMutation
@@ -111,6 +108,4 @@ const InfoPane = ({ id, description }) => {
       </Row>
     </Container>
   );
-};
-
-export default InfoPane;
+}

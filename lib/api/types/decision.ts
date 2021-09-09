@@ -7,7 +7,6 @@ const Decision = objectType({
     t.model.body();
     t.model.author();
     t.model.article();
-    t.list.field("citedReviews", { type: "Review" });
   },
 });
 

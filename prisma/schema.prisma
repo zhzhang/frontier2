@@ -123,34 +123,32 @@ model VenueMembership {
 }
 
 model Review {
-  id           String     @id @default(cuid())
-  body         String     @db.MediumText
-  rating       Int        @default(0)
-  article      Article    @relation(fields: [articleId], references: [id])
-  author       User       @relation(fields: [authorId], references: [id])
-  highlights   String     @db.MediumText
+  id           String  @id @default(cuid())
+  body         String  @db.MediumText
+  rating       Int     @default(0)
+  article      Article @relation(fields: [articleId], references: [id])
+  author       User    @relation(fields: [authorId], references: [id])
+  highlights   String  @db.MediumText
   articleId    String
   authorId     String
-  venue        Venue?     @relation(fields: [venueId], references: [id])
+  venue        Venue?  @relation(fields: [venueId], references: [id])
   venueId      String?
   reviewNumber Int
-  published    Boolean    @default(false)
-  anonymized   Boolean    @default(true)
-  decisions    Decision[]
+  published    Boolean @default(false)
+  anonymized   Boolean @default(true)
 }
 
 model Decision {
-  id           String      @id @default(cuid())
-  body         String      @db.MediumText
-  decision     Boolean     @default(false)
-  highlights   String      @db.MediumText
-  citedReviews Review[]
-  article      Article     @relation(fields: [articleId], references: [id])
-  articleId    String
-  venue        Venue       @relation(fields: [venueId], references: [id])
-  venueId      String
-  author       User        @relation("chair", fields: [authorId], references: [id])
-  authorId     String
-  submission   Submission?
-  published    Boolean     @default(false)
+  id         String      @id @default(cuid())
+  body       String      @db.MediumText
+  decision   Boolean     @default(false)
+  highlights String      @db.MediumText
+  article    Article     @relation(fields: [articleId], references: [id])
+  articleId  String
+  venue      Venue       @relation(fields: [venueId], references: [id])
+  venueId    String
+  author     User        @relation("chair", fields: [authorId], references: [id])
+  authorId   String
+  submission Submission?
+  published  Boolean     @default(false)
 }

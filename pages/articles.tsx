@@ -25,6 +25,10 @@ const GetArticlesQuery = gql`
       acceptedVenues {
         id
         name
+        abbreviation
+        description
+        logoRef
+        venueDate
       }
     }
   }

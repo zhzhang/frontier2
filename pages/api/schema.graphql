@@ -545,7 +545,6 @@ type Decision {
   article: Article!
   author: User!
   body: String!
-  citedReviews: [Review]
   id: String!
 }
 
@@ -1087,7 +1086,7 @@ type Query {
   articleVersions: [ArticleVersion]
   articles(after: ArticleWhereUniqueInput, before: ArticleWhereUniqueInput, first: Int, last: Int, where: ArticleWhereInput): [Article!]!
   authorships(after: AuthorshipWhereUniqueInput, before: AuthorshipWhereUniqueInput, first: Int, last: Int, where: AuthorshipWhereInput): [Authorship!]!
-  decisions(articleId: String!): [Decision]
+  decisions(after: DecisionWhereUniqueInput, before: DecisionWhereUniqueInput, first: Int, last: Int, where: DecisionWhereInput): [Decision!]!
   review(reviewId: String!): Review
   reviewerAssignedSubmissions: [Submission]
   reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, where: ReviewWhereInput): [Review!]!

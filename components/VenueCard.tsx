@@ -2,28 +2,30 @@ import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
-import { makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import EventIcon from "@material-ui/icons/Event";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
 import LinkIcon from "@material-ui/icons/Link";
 import dateformat from "dateformat";
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    header: {
+      display: "flex",
+      "& > *": {
+        margin: theme.spacing(1),
+      },
     },
-  },
-  logo: {
-    width: theme.spacing(7),
-    height: theme.spacing(7),
-  },
-  headerItem: {
-    marginRight: theme.spacing(2),
-  },
-}));
+    logo: {
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+    },
+    headerItem: {
+      marginRight: theme.spacing(2),
+    },
+  })
+);
 
 export default function VenueCard({ venue }) {
   const classes = useStyles();
@@ -108,7 +110,7 @@ export default function VenueCard({ venue }) {
           <SubHeader />
         </div>
       </div>
-      <Typography>{description}</Typography>
+      {/* <Typography>{description}</Typography> */}
     </>
   );
 }

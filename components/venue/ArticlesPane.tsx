@@ -1,82 +1,86 @@
+import AcceptedArticleCard from "@/components/AcceptedArticleCard";
+import Spinner from "@/components/CenteredSpinner";
+import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import gql from "graphql-tag";
-import Container from "react-bootstrap/Container";
-import Spinner from "react-bootstrap/Spinner";
-import AcceptedArticleCard from "../AcceptedArticleCard";
-import Error from "../Error";
 
-const OrganizationQuery = gql`
-  query OrganizationQuery($id: String!) {
-    organization(id: $id) {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    body: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
+
+const AcceptedArticlesQuery = gql`
+  query AcceptedArticlesQuery($where: DecisionWhereInput!) {
+    decisions(where: $where) {
       id
-      accepted {
+      body
+      article {
         id
-        body
-        article {
-          id
-          title
-          authors {
-            id
-            name
-          }
-          versions {
-            id
-            abstract
-            versionNumber
-          }
-        }
-        author {
+        title
+        authors {
           id
           name
         }
-        citedReviews {
-          author {
-            name
-          }
-          body
-          highlights
-          reviewNumber
-          rating
-          canAccess
-          organization {
-            logoRef
-            abbreviation
-          }
+        versions {
+          id
+          abstract
+          versionNumber
         }
+      }
+      author {
+        id
+        name
       }
     }
   }
 `;
 
 const ArticlesPane = ({ id }) => {
-  const { loading, error, data } = useQuery(OrganizationQuery, {
-    variables: { id },
+  const classes = useStyles();
+  const { loading, error, data } = useQuery(AcceptedArticlesQuery, {
+    variables: {
+      where: {
+        AND: [
+          {
+            venueId: {
+              equals: id,
+            },
+          },
+          {
+            decision: {
+              equals: true,
+            },
+          },
+        ],
+      },
+    },
   });
   if (loading) {
-    return <Spinner animation="border" style={{ top: "50%", left: "50%" }} />;
-  }
-  const { accepted } = data.organization;
-  let interiorComponent;
-  if (error) {
-    interiorComponent = (
-      <Error
-        header="There was a problem loading this organization's articles."
-        dismissible={false}
-      />
+    return <Spinner />;
+  } else if (error) {
+    return (
+      <div className={classes.body}>
+        <Error>
+          There was a problem loading this venue's accepted articles.
+        </Error>
+      </div>
     );
-  } else if (accepted.length === 0) {
+  }
+  const { decisions } = data;
+  let interiorComponent;
+  if (decisions.length === 0) {
     interiorComponent = "No accepted articles yet.";
   } else {
-    interiorComponent = accepted.map((decision) => (
-      <AcceptedArticleCard decision={decision} />
+    interiorComponent = decisions.map((decision) => (
+      <AcceptedArticleCard key={decision.id} decision={decision} />
     ));
   }
 
-  return (
-    <Container fluid className="mt-2">
-      {interiorComponent}
-    </Container>
-  );
+  return <div className={classes.body}>{interiorComponent}</div>;
 };
 
 export default ArticlesPane;

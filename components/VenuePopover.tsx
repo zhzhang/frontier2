@@ -1,4 +1,5 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
+import Link from "@material-ui/core/Link";
 import Popover from "@material-ui/core/Popover";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -7,23 +8,29 @@ import { useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    typography: {
-      padding: theme.spacing(2),
-    },
     popover: {
       pointerEvents: "none",
     },
     paper: {
-      padding: theme.spacing(1),
+      padding: theme.spacing(2),
+      maxWidth: 600,
     },
     header: {
       display: "flex",
     },
+    typography: {
+      marginLeft: theme.spacing(2),
+      paddingTop: 6,
+    },
   })
 );
 
-export default function VenuePopover({ venue }) {
-  const { id, name, logoRef } = venue;
+export default function VenuePopover({
+  venue,
+  color = "textSecondary",
+  variant = "span",
+}) {
+  const { id, name, abbreviation, description, venueDate, logoRef } = venue;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
@@ -32,14 +39,26 @@ export default function VenuePopover({ venue }) {
   const handleLeave = () => {
     setAnchorEl(null);
   };
+
+  const parsedVenueDate = new Date(venueDate);
+  let abbrev = abbreviation;
+  if (venueDate) {
+    abbrev += ` ${parsedVenueDate.getFullYear()}`;
+  }
+
   return (
     <>
       <Typography
+        color="textSecondary"
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
+        color={color}
+        variant={variant}
         onClick={() => Router.push(`/venue/${id}`)}
       >
-        {name}
+        <Link href={`/venue/${id}`} color="inherit">
+          {abbrev}
+        </Link>
       </Typography>
       <Popover
         id={id}
@@ -65,6 +84,7 @@ export default function VenuePopover({ venue }) {
             {name}
           </Typography>
         </div>
+        {description}
       </Popover>
     </>
   );

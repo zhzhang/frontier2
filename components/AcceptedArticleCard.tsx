@@ -1,62 +1,20 @@
 import AuthorPopover from "@/components/AuthorPopover";
+import Authors from "@/components/Authors";
 import Markdown from "@/components/Markdown";
-import Review from "@/components/Review";
-import { withApollo } from "@/lib/apollo";
-import Router from "next/router";
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
-import Accordion from "react-bootstrap/Accordion";
-import Card from "react-bootstrap/Card";
 
-const AcceptedArticleCard = ({ decision }) => {
+export default function AcceptedArticleCard({ decision }) {
   const { article } = decision;
-  const { title, authors } = article;
+  const { id, title, authors, versions } = article;
   const [open, setOpen] = useState(true);
-  const [hover, setHover] = useState(false);
   return (
-    <Accordion activeKey={open ? "0" : null}>
-      <Card style={{ padding: 10 }}>
-        <h6
-          onClick={() => Router.push(`/article/${article.id}`)}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          style={{ color: hover ? "blue" : "black" }}
-        >
-          {title}
-        </h6>
-        <span>
-          Authors:{" "}
-          {authors !== null ? (
-            authors.map((author) => <AuthorPopover user={author} />)
-          ) : (
-            <em>anonymized</em>
-          )}
-        </span>
-      </Card>
-      <Card>
-        <Accordion.Toggle
-          as={Card.Header}
-          eventKey="0"
-          onClick={() => setOpen(!open)}
-        >
-          <span>
-            Decision by: <AuthorPopover user={decision.author} />
-          </span>
-          <span style={{ float: "right" }}>
-            {open ? <ChevronUp /> : <ChevronDown />}
-          </span>
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="0">
-          <Card.Body>
-            <Markdown>{decision.body}</Markdown>
-            {decision.citedReviews.map((review) => (
-              <Review review={review} editing={false} />
-            ))}
-          </Card.Body>
-        </Accordion.Collapse>
-      </Card>
-    </Accordion>
+    <>
+      <a href={`/article/${id}`}>{title}</a>
+      <Authors authors={authors} />
+      <Markdown>{versions[0].abstract}</Markdown>
+      <span>
+        Decision by: <AuthorPopover user={decision.author} />
+      </span>
+    </>
   );
-};
-
-export default withApollo(AcceptedArticleCard);
+}

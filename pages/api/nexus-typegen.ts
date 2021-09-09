@@ -2628,7 +2628,6 @@ export interface NexusGenObjects {
   }
   Decision: { // root type
     body: string; // String!
-    citedReviews?: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
     id: string; // String!
   }
   Mutation: {};
@@ -2712,7 +2711,6 @@ export interface NexusGenFieldTypes {
     article: NexusGenRootTypes['Article']; // Article!
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    citedReviews: Array<NexusGenRootTypes['Review'] | null> | null; // [Review]
     id: string; // String!
   }
   Mutation: { // field return type
@@ -2733,7 +2731,7 @@ export interface NexusGenFieldTypes {
     articleVersions: Array<NexusGenRootTypes['ArticleVersion'] | null> | null; // [ArticleVersion]
     articles: NexusGenRootTypes['Article'][]; // [Article!]!
     authorships: NexusGenRootTypes['Authorship'][]; // [Authorship!]!
-    decisions: Array<NexusGenRootTypes['Decision'] | null> | null; // [Decision]
+    decisions: NexusGenRootTypes['Decision'][]; // [Decision!]!
     review: NexusGenRootTypes['Review'] | null; // Review
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     reviews: NexusGenRootTypes['Review'][]; // [Review!]!
@@ -2825,7 +2823,6 @@ export interface NexusGenFieldTypeNames {
     article: 'Article'
     author: 'User'
     body: 'String'
-    citedReviews: 'Review'
     id: 'String'
   }
   Mutation: { // field return type name
@@ -2990,7 +2987,11 @@ export interface NexusGenArgTypes {
       where?: NexusGenInputs['AuthorshipWhereInput'] | null; // AuthorshipWhereInput
     }
     decisions: { // args
-      articleId: string; // String!
+      after?: NexusGenInputs['DecisionWhereUniqueInput'] | null; // DecisionWhereUniqueInput
+      before?: NexusGenInputs['DecisionWhereUniqueInput'] | null; // DecisionWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      where?: NexusGenInputs['DecisionWhereInput'] | null; // DecisionWhereInput
     }
     review: { // args
       reviewId: string; // String!

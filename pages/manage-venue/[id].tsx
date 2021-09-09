@@ -1,26 +1,41 @@
+import ErrorPage from "@/components/ErrorPage";
+import FirebaseAvatar from "@/components/FirebaseAvatar";
+import Spinner from "@/components/FixedSpinner";
+import Layout from "@/components/Layout";
+import InfoPane from "@/components/manage-organization/InfoPane";
 import { useQuery } from "@apollo/react-hooks";
+import Grid from "@material-ui/core/Grid";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Image from "react-bootstrap/Image";
-import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
-import Tab from "react-bootstrap/Tab";
-import "react-datepicker/dist/react-datepicker.css";
-import Spinner from "../../components/CenteredSpinner";
-import Error from "../../components/Error";
-import Layout from "../../components/Layout";
-import AdminsPane from "../../components/manage-organization/AdminsPane";
-import EditorsPane from "../../components/manage-organization/EditorsPane";
-import InfoPane from "../../components/manage-organization/InfoPane";
-import SubmissionsPane from "../../components/manage-organization/SubmissionsPane";
 import { withApollo } from "../../lib/apollo";
 import { useRef } from "../../lib/firebase";
 
-const OrganizationQuery = gql`
-  query OrganizationQuery($id: String!) {
-    organization(id: $id) {
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    header: {
+      display: "flex",
+      "& > *": {
+        margin: theme.spacing(1),
+      },
+    },
+    logo: {
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+    },
+    headerItem: {
+      marginRight: theme.spacing(2),
+    },
+  })
+);
+
+const VenueQuery = gql`
+  query VenueQuery($where: VenueWhereUniqueInput!) {
+    venue(where: $where) {
       id
       name
       description
@@ -31,86 +46,66 @@ const OrganizationQuery = gql`
 `;
 
 function Header({ name, logoRef }) {
+  const classes = useStyles();
   const url = useRef(logoRef);
   return (
-    <>
-      <Image src={url} className="organization-logo" thumbnail />
-      <h2>{name}</h2>
-    </>
+    <div className={classes.header}>
+      <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
+      <Typography variant="h5">{name}</Typography>
+    </div>
   );
 }
+
+const TABS = [
+  { name: "Info", key: "info" },
+  { name: "Submissions", key: "submissions" },
+  { name: "Action Editors", key: "editors" },
+  { name: "Admins", key: "admins" },
+];
 
 function Venue() {
   const router = useRouter();
   const id = router.query.id;
   const view = router.query.view ? router.query.view : "info";
-  const { loading, error, data } = useQuery(OrganizationQuery, {
-    variables: { id },
+  const { loading, error, data } = useQuery(VenueQuery, {
+    variables: { where: { id } },
   });
 
   if (loading) {
     return <Spinner animation="border" />;
   }
   if (error) {
-    return (
-      <div className="m-4">
-        <Error header={"Error loading this organization."} />
-      </div>
-    );
+    return <ErrorPage>Error loading this organization.</ErrorPage>;
   }
 
-  const { name, description, role, logoRef } = data.organization;
+  const { name, description, role, logoRef } = data.venue;
+  const handleSelectTab = (key) => () => {
+    router.query.view = key;
+    router.push(router, undefined, { shallow: true });
+  };
 
   return (
     <Layout>
-      <Container fluid className="mt-3">
-        <Header name={name} logoRef={logoRef} />
-      </Container>
-      <Container fluid className="mt-3">
-        <Tab.Container
-          id="left-tabs-example"
-          activeKey={view}
-          onSelect={(newTabKey) => {
-            router.query.view = newTabKey;
-            router.push(router, undefined, { shallow: true });
-          }}
-        >
-          <Row>
-            <Col sm={3}>
-              <Nav variant="pills" className="flex-column">
-                <Nav.Item>
-                  <Nav.Link eventKey="info">Info</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="submissions">Submissions</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="editors">Action Editors</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="admins">Admins</Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </Col>
-            <Col>
-              <Tab.Content>
-                <Tab.Pane eventKey="info">
-                  <InfoPane id={id} description={description} />
-                </Tab.Pane>
-                <Tab.Pane eventKey="admins">
-                  <AdminsPane id={id} />
-                </Tab.Pane>
-                <Tab.Pane eventKey="editors">
-                  <EditorsPane id={id} />
-                </Tab.Pane>
-                <Tab.Pane eventKey="submissions">
-                  <SubmissionsPane id={id} />
-                </Tab.Pane>
-              </Tab.Content>
-            </Col>
-          </Row>
-        </Tab.Container>
-      </Container>
+      <Header name={name} logoRef={logoRef} />
+      <Grid container>
+        <Grid item md={2}>
+          <List>
+            {TABS.map(({ name, key }) => (
+              <ListItem
+                button
+                selected={view === key}
+                key={key}
+                onClick={handleSelectTab(key)}
+              >
+                <ListItemText primary={name} />
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+        <Grid item md={10}>
+          <InfoPane id={id} description={description} />
+        </Grid>
+      </Grid>
     </Layout>
   );
 }

@@ -21,6 +21,7 @@ export default objectType({
       },
     });
     t.crud.threadMessages({ filtering: true });
+    t.crud.decisions({ filtering: true });
     t.list.field("searchVenues", {
       type: "Venue",
       args: { query: stringArg() },
@@ -79,26 +80,6 @@ export default objectType({
             author: true,
           },
         });
-      },
-    });
-    t.list.field("decisions", {
-      type: "Decision",
-      args: { articleId: nonNull(stringArg()) },
-      resolve: async (_, { articleId }, ctx) => {
-        const tmp = await ctx.prisma.decision.findMany({
-          where: {
-            articleId,
-          },
-          include: {
-            author: true,
-            citedReviews: {
-              include: {
-                author: true,
-              },
-            },
-          },
-        });
-        return tmp;
       },
     });
     t.list.field("searchUsers", {
