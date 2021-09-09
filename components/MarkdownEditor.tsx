@@ -172,7 +172,7 @@ export default function MarkdownEditor({
         placeholder={placeholder}
         value={body}
         onChange={({ target }) => onChange(target.value)}
-        rows={4}
+        rowsMax={20}
       />
       <div className={classes.utils}>
         {STYLES.map((style) => (

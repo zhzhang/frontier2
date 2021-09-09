@@ -253,7 +253,7 @@ function Editor({ user }) {
   const classes = useStyles();
   const [name, setName] = useState(user.name);
   const [bio, setBio] = useState(user.bio);
-  const [logoUrl, setLogoUrl] = useState("");
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
   const imgRef = useRef(null);
   const [updateUser, result] = useMutation(UpdateUserMutation);
@@ -326,9 +326,9 @@ function Editor({ user }) {
         </Grid>
         <Grid item xs={7} />
         <Grid item xs={3}>
-          {logoUrl ? (
+          {profilePictureUrl ? (
             <ReactCrop
-              src={logoUrl}
+              src={profilePictureUrl}
               crop={crop}
               onChange={(newCrop) => setCrop(newCrop)}
               onImageLoaded={onLoad}
@@ -336,7 +336,7 @@ function Editor({ user }) {
           ) : (
             <Dropzone
               onDrop={(acceptedFiles) => {
-                setLogoUrl(URL.createObjectURL(acceptedFiles[0]));
+                setProfilePictureUrl(URL.createObjectURL(acceptedFiles[0]));
               }}
               accept={["image/png", "image/jpeg"]}
             >

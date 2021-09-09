@@ -1,19 +1,17 @@
+import MarkdownEditor from "@/components/MarkdownEditor";
 import { useMutation } from "@apollo/react-hooks";
+import { Grid } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 import gql from "graphql-tag";
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
-import Accordion from "react-bootstrap/Accordion";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Markdown from "../Markdown";
+import { useCallback, useRef, useState } from "react";
+import Dropzone from "react-dropzone";
+import ReactCrop from "react-image-crop";
 
 const UpdateOrganizationMutation = gql`
   mutation UpdateOrganization($id: String!, $description: String!) {
-    updateOrganization(id: $id, description: $description) {
+    updateOneOrganization(id: $id, description: $description) {
       id
       name
       description
@@ -21,91 +19,104 @@ const UpdateOrganizationMutation = gql`
   }
 `;
 
-function EditView({ description, setDescription }) {
-  const [previewOpen, setPreviewOpen] = useState(true);
-  return (
-    <>
-      <Form>
-        <Form.Group controlId="name">
-          <Form.Control
-            as="textarea"
-            rows={5}
-            value={description}
-            onChange={({ target: { value } }) => {
-              setDescription(value);
-            }}
-          />
-        </Form.Group>
-      </Form>
-      <Accordion activeKey={previewOpen ? "0" : null}>
-        <Card>
-          <Accordion.Toggle
-            as={Card.Header}
-            eventKey="0"
-            onClick={() => setPreviewOpen(!previewOpen)}
-          >
-            Preview
-            <span className="float-right">
-              {previewOpen ? <ChevronUp /> : <ChevronDown />}
-            </span>
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="0">
-            <div className="p-2">
-              <Markdown>{description}</Markdown>
-            </div>
-          </Accordion.Collapse>
-        </Card>
-      </Accordion>
-    </>
-  );
-}
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    body: {
+      margin: theme.spacing(1),
+    },
+    dropzone: {
+      border: "1px solid rgba(0, 0, 0, 0.23)",
+      borderRadius: "4px",
+      borderStyle: "dashed",
+      padding: theme.spacing(1),
+      height: "150px",
+    },
+  })
+);
 
-export default function InfoPane({ id, description }) {
-  const [editingDescription, setEditingDescription] = useState(false);
+export default function InfoPane({ venue }) {
+  const classes = useStyles();
+  const [name, setName] = useState(venue.name);
+  const [abbrev, setAbbrev] = useState(venue.abbreviation);
+  const [logoUrl, setLogoUrl] = useState("");
   const [updateOrganization, { loading, error, data }] = useMutation(
     UpdateOrganizationMutation
   );
-  const [desc, setDescription] = useState(description);
+  const [crop, setCrop] = useState({ aspect: 1, width: 30 });
+  const [desc, setDescription] = useState(venue.description);
+  const imgRef = useRef(null);
+  const onLoad = useCallback((img) => {
+    imgRef.current = img;
+  }, []);
+
   return (
-    <Container fluid className="mt-2">
-      <Row>
-        <Col>
-          {editingDescription ? (
-            <EditView description={desc} setDescription={setDescription} />
-          ) : (
-            <Markdown>{description}</Markdown>
-          )}
-        </Col>
-        <Col md={2}>
-          <div className="mt-2">
-            {editingDescription ? (
-              <>
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    updateOrganization({
-                      variables: {
-                        id,
-                        description: desc,
-                      },
-                    });
-                    setEditing(false);
-                  }}
-                >
-                  Save
-                </Button>{" "}
-                <Button variant="secondary" onClick={() => setEditing(false)}>
-                  Cancel
-                </Button>
-              </>
-            ) : (
-              <Button variant="primary" onClick={() => setEditing(true)}>
-                Edit
-              </Button>
+    <Grid container spacing={2} className={classes.body}>
+      <Grid item md={9}>
+        <TextField
+          required
+          value={name}
+          fullWidth
+          variant="outlined"
+          label="Name"
+          onChange={(event) => setName(event.target.value)}
+        />
+      </Grid>
+      <Grid item md={2}>
+        <TextField
+          value={abbrev}
+          fullWidth
+          variant="outlined"
+          label="Abbreviation"
+          onChange={(event) => setAbbrev(event.target.value)}
+        />
+      </Grid>
+      <Grid item md={11}>
+        <MarkdownEditor body={desc} onChange={setDescription} />
+      </Grid>
+      <Grid item xs={10}>
+        {logoUrl ? (
+          <ReactCrop
+            src={logoUrl}
+            crop={crop}
+            onChange={(newCrop) => setCrop(newCrop)}
+            onImageLoaded={onLoad}
+            style={{ height: 200, width: 200 }}
+          />
+        ) : (
+          <Dropzone
+            onDrop={(acceptedFiles) => {
+              setLogoUrl(URL.createObjectURL(acceptedFiles[0]));
+            }}
+            accept={["image/png", "image/jpeg"]}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <div {...getRootProps()} className={classes.dropzone}>
+                <input {...getInputProps()} />
+                <p>
+                  (Optional) Drag and drop a logo image here, or click to select
+                  file.
+                </p>
+              </div>
             )}
-          </div>
-        </Col>
-      </Row>
-    </Container>
+          </Dropzone>
+        )}
+      </Grid>
+      <Grid item>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            updateOrganization({
+              variables: {
+                id,
+                description: desc,
+              },
+            });
+          }}
+        >
+          Save
+        </Button>
+      </Grid>
+    </Grid>
   );
 }

@@ -41,6 +41,9 @@ export default objectType({
     t.crud.updateOneUser({
       authorize: (_, { where: { id } }, ctx) => id === ctx.user.id,
     });
+    t.crud.updateOneVenue({
+      authorize: (_, { where: { id } }, ctx) => true,
+    });
     t.field("createArticle", {
       type: "Article",
       args: {

@@ -3,19 +3,20 @@ import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import InfoPane from "@/components/manage-organization/InfoPane";
+import SubmissionsPane from "@/components/manage-organization/SubmissionsPane";
+import { withApollo } from "@/lib/apollo";
+import { useRef } from "@/lib/firebase";
 import { useQuery } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import { withApollo } from "../../lib/apollo";
-import { useRef } from "../../lib/firebase";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     header: {
       display: "flex",
@@ -38,7 +39,9 @@ const VenueQuery = gql`
     venue(where: $where) {
       id
       name
+      abbreviation
       description
+      venueDate
       role
       logoRef
     }
@@ -57,7 +60,7 @@ function Header({ name, logoRef }) {
 }
 
 const TABS = [
-  { name: "Info", key: "info" },
+  { name: "Venue Info", key: "info" },
   { name: "Submissions", key: "submissions" },
   { name: "Action Editors", key: "editors" },
   { name: "Admins", key: "admins" },
@@ -78,11 +81,21 @@ function Venue() {
     return <ErrorPage>Error loading this organization.</ErrorPage>;
   }
 
-  const { name, description, role, logoRef } = data.venue;
+  const { name, logoRef } = data.venue;
   const handleSelectTab = (key) => () => {
     router.query.view = key;
     router.push(router, undefined, { shallow: true });
   };
+
+  let renderedView;
+  switch (view) {
+    case "info":
+      renderedView = <InfoPane venue={data.venue} />;
+      break;
+    case "submissions":
+      renderedView = <SubmissionsPane id={id} />;
+      break;
+  }
 
   return (
     <Layout>
@@ -103,7 +116,7 @@ function Venue() {
           </List>
         </Grid>
         <Grid item md={10}>
-          <InfoPane id={id} description={description} />
+          {renderedView}
         </Grid>
       </Grid>
     </Layout>

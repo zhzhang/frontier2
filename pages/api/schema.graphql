@@ -996,6 +996,7 @@ type Mutation {
   createReview(articleId: String!, submissionId: String): Review
   deleteOneRelation(where: RelationWhereUniqueInput!): Relation
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateOneVenue(data: VenueUpdateInput!, where: VenueWhereUniqueInput!): Venue
   updateOrganizationMembership(action: String!, organizationId: String!, role: Role!, userId: String!): Venue
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
 }
@@ -2928,6 +2929,22 @@ input VenueMembershipWhereInput {
 
 input VenueMembershipWhereUniqueInput {
   id: Int
+}
+
+input VenueUpdateInput {
+  abbreviation: NullableStringFieldUpdateOperationsInput
+  decisions: DecisionUpdateManyWithoutVenueInput
+  description: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  logoRef: NullableStringFieldUpdateOperationsInput
+  memberships: VenueMembershipUpdateManyWithoutVenueInput
+  name: StringFieldUpdateOperationsInput
+  reviews: ReviewUpdateManyWithoutVenueInput
+  submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
+  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
+  submissions: SubmissionUpdateManyWithoutVenueInput
+  venueDate: NullableDateTimeFieldUpdateOperationsInput
+  websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
 input VenueUpdateOneRequiredWithoutDecisionsInput {

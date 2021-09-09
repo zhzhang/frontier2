@@ -2469,6 +2469,21 @@ export interface NexusGenInputs {
   VenueMembershipWhereUniqueInput: { // input type
     id?: number | null; // Int
   }
+  VenueUpdateInput: { // input type
+    abbreviation?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    decisions?: NexusGenInputs['DecisionUpdateManyWithoutVenueInput'] | null; // DecisionUpdateManyWithoutVenueInput
+    description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    logoRef?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    memberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutVenueInput'] | null; // VenueMembershipUpdateManyWithoutVenueInput
+    name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    reviews?: NexusGenInputs['ReviewUpdateManyWithoutVenueInput'] | null; // ReviewUpdateManyWithoutVenueInput
+    submissionDeadline?: NexusGenInputs['NullableDateTimeFieldUpdateOperationsInput'] | null; // NullableDateTimeFieldUpdateOperationsInput
+    submissionOpen?: NexusGenInputs['NullableDateTimeFieldUpdateOperationsInput'] | null; // NullableDateTimeFieldUpdateOperationsInput
+    submissions?: NexusGenInputs['SubmissionUpdateManyWithoutVenueInput'] | null; // SubmissionUpdateManyWithoutVenueInput
+    venueDate?: NexusGenInputs['NullableDateTimeFieldUpdateOperationsInput'] | null; // NullableDateTimeFieldUpdateOperationsInput
+    websiteUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+  }
   VenueUpdateOneRequiredWithoutDecisionsInput: { // input type
     connect?: NexusGenInputs['VenueWhereUniqueInput'] | null; // VenueWhereUniqueInput
     connectOrCreate?: NexusGenInputs['VenueCreateOrConnectWithoutDecisionsInput'] | null; // VenueCreateOrConnectWithoutDecisionsInput
@@ -2723,6 +2738,7 @@ export interface NexusGenFieldTypes {
     createReview: NexusGenRootTypes['Review'] | null; // Review
     deleteOneRelation: NexusGenRootTypes['Relation'] | null; // Relation
     updateOneUser: NexusGenRootTypes['User'] | null; // User
+    updateOneVenue: NexusGenRootTypes['Venue'] | null; // Venue
     updateOrganizationMembership: NexusGenRootTypes['Venue'] | null; // Venue
     updateReview: NexusGenRootTypes['Review'] | null; // Review
   }
@@ -2835,6 +2851,7 @@ export interface NexusGenFieldTypeNames {
     createReview: 'Review'
     deleteOneRelation: 'Relation'
     updateOneUser: 'User'
+    updateOneVenue: 'Venue'
     updateOrganizationMembership: 'Venue'
     updateReview: 'Review'
   }
@@ -2954,6 +2971,10 @@ export interface NexusGenArgTypes {
     updateOneUser: { // args
       data: NexusGenInputs['UserUpdateInput']; // UserUpdateInput!
       where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
+    }
+    updateOneVenue: { // args
+      data: NexusGenInputs['VenueUpdateInput']; // VenueUpdateInput!
+      where: NexusGenInputs['VenueWhereUniqueInput']; // VenueWhereUniqueInput!
     }
     updateOrganizationMembership: { // args
       action: string; // String!
