@@ -7,7 +7,7 @@ import { useState } from "react";
 
 const SearchQuery = gql`
   query SearchSubmissionTargets($query: String!) {
-    searchVenues(query: $query) {
+    searchOpenVenues(query: $query) {
       id
       name
       abbreviation
@@ -29,7 +29,7 @@ export default function SubmissionTargetTypeahead({
     },
   });
   const options = data
-    ? data.searchVenues.map(({ abbreviation, venueDate, name }) => {
+    ? data.searchOpenVenues.map(({ abbreviation, venueDate, name }) => {
         let abbrev = abbreviation;
         if (venueDate) {
           abbrev = `${abbrev} ${new Date(venueDate).getFullYear()}`;

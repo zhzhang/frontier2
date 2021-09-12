@@ -23,7 +23,7 @@ export default objectType({
     t.crud.threadMessages({ filtering: true });
     t.crud.decisions({ filtering: true });
     t.crud.submissions({ filtering: true });
-    t.list.field("searchVenues", {
+    t.list.field("searchOpenVenues", {
       type: "Venue",
       args: { query: stringArg() },
       resolve: async (_, { query }, ctx) => {

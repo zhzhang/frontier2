@@ -27,7 +27,7 @@ const SubmissionsQuery = gql`
 
 const SubmissionsPane = ({ id }) => {
   const { loading, error, data } = useQuery(SubmissionsQuery, {
-    variables: { where: { id: { equals: id } } },
+    variables: { where: { venueId: { equals: id } } },
   });
   if (loading) {
     return <Spinner animation="border" style={{ top: "50%", left: "50%" }} />;
@@ -45,11 +45,13 @@ const SubmissionsPane = ({ id }) => {
   const submissions = data.submissions;
   return (
     <Grid container item sm={10} spacing={2}>
-      {submissions.length === 0
-        ? "There are currently no submissions."
-        : submissions.map((submission) => (
-            <SubmissionCard submission={submission} organizationId={id} />
-          ))}
+      <Grid item>
+        {submissions.length === 0
+          ? "There are currently no submissions."
+          : submissions.map((submission) => (
+              <SubmissionCard submission={submission} organizationId={id} />
+            ))}
+      </Grid>
     </Grid>
   );
 };

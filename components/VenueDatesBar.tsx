@@ -5,6 +5,7 @@ import EventIcon from "@material-ui/icons/Event";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import dateformat from "dateformat";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,7 +24,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function VenueDatesBar({ venue }) {
   const classes = useStyles();
-  const { venueDate, websiteUrl, submissionOpen, submissionDeadline } = venue;
+  const router = useRouter();
+  const { id, venueDate, websiteUrl, submissionOpen, submissionDeadline } =
+    venue;
   const canSubmit =
     !submissionDeadline || new Date(submissionDeadline) > new Date(Date.now());
   return (
@@ -56,7 +59,12 @@ export default function VenueDatesBar({ venue }) {
         </span>
       )}
       {canSubmit && (
-        <Button color="primary" size="small" variant="outlined">
+        <Button
+          color="primary"
+          size="small"
+          variant="outlined"
+          onClick={() => router.push(`/new-article?venue=${id}`)}
+        >
           Submit
         </Button>
       )}

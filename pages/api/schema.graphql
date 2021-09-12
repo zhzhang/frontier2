@@ -1019,8 +1019,8 @@ type Query {
   reviewerAssignedSubmissions: [Submission]
   reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, where: ReviewWhereInput): [Review!]!
   searchEditors(organizationId: String!, query: String): [User]
+  searchOpenVenues(query: String): [Venue]
   searchUsers(query: String): [User]
-  searchVenues(query: String): [Venue]
   submissions(after: SubmissionWhereUniqueInput, before: SubmissionWhereUniqueInput, first: Int, last: Int, where: SubmissionWhereInput): [Submission!]!
   threadMessages(after: ThreadMessageWhereUniqueInput, before: ThreadMessageWhereUniqueInput, first: Int, last: Int, where: ThreadMessageWhereInput): [ThreadMessage!]!
   user(where: UserWhereUniqueInput!): User

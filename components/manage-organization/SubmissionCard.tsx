@@ -1,11 +1,21 @@
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Markdown from "../Markdown";
-import { withApollo } from "../../lib/apollo";
-import EditorTypeahead from "./EditorTypeahead";
-import { useState } from "react";
-import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import gql from "graphql-tag";
+import { useState } from "react";
+import { withApollo } from "../../lib/apollo";
+import Markdown from "../Markdown";
+import EditorTypeahead from "./EditorTypeahead";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    card: {
+      marginBottom: theme.spacing(1),
+      padding: theme.spacing(1),
+    },
+  })
+);
 
 const AssignOwnerMutation = gql`
   mutation AssignOwner($submissionId: String!, $userId: String!) {
@@ -21,15 +31,15 @@ const AssignOwnerMutation = gql`
 `;
 
 const SubmissionCard = ({ submission, organizationId }) => {
+  const classes = useStyles();
   const { id } = submission;
   const { title, versions } = submission.article;
   const abstract = versions[0].abstract;
   const [owner, setOwner] = useState();
-  const [assignOwner, { loading, error, data }] = useMutation(
-    AssignOwnerMutation
-  );
+  const [assignOwner, { loading, error, data }] =
+    useMutation(AssignOwnerMutation);
   return (
-    <Card className="p-2">
+    <Card className={classes.card}>
       <p>{title}</p>
       <Markdown>{abstract}</Markdown>
       {submission.owner ? (

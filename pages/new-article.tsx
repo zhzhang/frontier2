@@ -1,3 +1,5 @@
+import ErrorSnackbar from "@/components/ErrorSnackbar";
+import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import MarkdownEditor from "@/components/MarkdownEditor";
 import PdfViewer from "@/components/PDFViewer";
@@ -6,12 +8,12 @@ import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
 import { uploadFile } from "@/lib/firebase";
 import { UploadTypeEnum } from "@/lib/types";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
@@ -27,6 +29,7 @@ const CreateArticleMutation = gql`
     $anonymous: Boolean!
     $authorIds: [String!]!
     $ref: String!
+    $venueId: String
   ) {
     createArticle(
       title: $title
@@ -34,40 +37,55 @@ const CreateArticleMutation = gql`
       anonymous: $anonymous
       authorIds: $authorIds
       ref: $ref
+      venueId: $venueId
     ) {
       id
     }
   }
 `;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-      width: "25ch",
+const VenueQuery = gql`
+  query VenueQuery($where: VenueWhereUniqueInput!) {
+    venue(where: $where) {
+      id
+      name
+      abbreviation
+      logoRef
+      venueDate
+    }
+  }
+`;
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      "& .MuiTextField-root": {
+        margin: theme.spacing(1),
+        width: "25ch",
+      },
     },
-  },
-  formField: {
-    marginTop: theme.spacing(2),
-  },
-  alert: {
-    marginBottom: theme.spacing(2),
-  },
-  dropzone: {
-    border: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRadius: "4px",
-    borderStyle: "dashed",
-    padding: theme.spacing(1),
-    height: "302px",
-  },
-}));
+    formField: {
+      marginTop: theme.spacing(2),
+    },
+    alert: {
+      marginBottom: theme.spacing(2),
+    },
+    dropzone: {
+      border: "1px solid rgba(0, 0, 0, 0.23)",
+      borderRadius: "4px",
+      borderStyle: "dashed",
+      padding: theme.spacing(1),
+      height: "302px",
+    },
+  })
+);
 
 function NewArticle({ venue }) {
   const classes = useStyles();
   const router = useRouter();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [submissionTarget, setSubmissionTarget] = useState(null);
+  const [submissionTarget, setSubmissionTarget] = useState(venue);
   const [abstract, setAbstract] = useState("");
   const [authors, setAuthors] = useState([]);
   const [anonymous, setAnonymous] = useState(true);
@@ -82,22 +100,27 @@ function NewArticle({ venue }) {
       (snapshot) => {},
       (error) => {},
       async () => {
-        await createArticle({
+        createArticle({
           variables: {
             title,
             abstract,
             anonymous,
             ref: refPath,
             authorIds: authors.map((a) => a.id),
+            venueId: submissionTarget && submissionTarget.id,
           },
         });
-        router.push(`/article/${data.article.id}`);
+        // router.push(`/article/${data.article.id}`);
       }
     );
   };
 
+  const canSubmit =
+    authors.length > 0 && abstract.length > 0 && title.length > 0 && file;
+
   return (
     <Layout>
+      <ErrorSnackbar error={error} />
       <Grid container spacing={3}>
         <Grid item xs={5}>
           <Typography variant="h4">New Article</Typography>
@@ -110,7 +133,7 @@ function NewArticle({ venue }) {
           />
           <UserTypeahead
             className={classes.formField}
-            label="Authors"
+            label="Authors (In Order)"
             multiple
             value={authors}
             onChange={(_, selected) => {
@@ -154,6 +177,7 @@ function NewArticle({ venue }) {
               variant="contained"
               color="primary"
               onClick={() => handleSubmit()}
+              disabled={!canSubmit}
             >
               Submit
             </Button>
@@ -200,9 +224,17 @@ function NewArticle({ venue }) {
 
 function NewArticleWithVenue() {
   const router = useRouter();
-  const { venueId } = router.query;
+  const { venue } = router.query;
+  const { loading, error, data } = useQuery(VenueQuery, {
+    variables: { where: { id: venue } },
+  });
 
-  return <NewArticle />;
+  if (venue) {
+    if (loading) {
+      return <Spinner />;
+    }
+  }
+  return <NewArticle venue={data && data.venue} />;
 }
 
 export default withApollo(NewArticleWithVenue);

@@ -2622,8 +2622,8 @@ export interface NexusGenFieldTypes {
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     reviews: NexusGenRootTypes['Review'][]; // [Review!]!
     searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    searchOpenVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    searchVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     submissions: NexusGenRootTypes['Submission'][]; // [Submission!]!
     threadMessages: NexusGenRootTypes['ThreadMessage'][]; // [ThreadMessage!]!
     user: NexusGenRootTypes['User'] | null; // User
@@ -2736,8 +2736,8 @@ export interface NexusGenFieldTypeNames {
     reviewerAssignedSubmissions: 'Submission'
     reviews: 'Review'
     searchEditors: 'User'
+    searchOpenVenues: 'Venue'
     searchUsers: 'User'
-    searchVenues: 'Venue'
     submissions: 'Submission'
     threadMessages: 'ThreadMessage'
     user: 'User'
@@ -2900,10 +2900,10 @@ export interface NexusGenArgTypes {
       organizationId: string; // String!
       query?: string | null; // String
     }
-    searchUsers: { // args
+    searchOpenVenues: { // args
       query?: string | null; // String
     }
-    searchVenues: { // args
+    searchUsers: { // args
       query?: string | null; // String
     }
     submissions: { // args
