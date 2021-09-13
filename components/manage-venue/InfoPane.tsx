@@ -69,7 +69,7 @@ export default function InfoPane({ venue }) {
   };
 
   return (
-    <Grid container item sm={10} spacing={2}>
+    <>
       <Grid item sm={10}>
         <TextField
           required
@@ -125,6 +125,6 @@ export default function InfoPane({ venue }) {
           Save
         </Button>
       </Grid>
-    </Grid>
+    </>
   );
 }

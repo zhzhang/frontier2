@@ -2,8 +2,9 @@ import ErrorPage from "@/components/ErrorPage";
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
-import InfoPane from "@/components/manage-organization/InfoPane";
-import SubmissionsPane from "@/components/manage-organization/SubmissionsPane";
+import AdminsPane from "@/components/manage-venue/AdminsPane";
+import InfoPane from "@/components/manage-venue/InfoPane";
+import SubmissionsPane from "@/components/manage-venue/SubmissionsPane";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
@@ -61,10 +62,10 @@ function Header({ name, logoRef }) {
 }
 
 const TABS = [
-  { name: "Venue Info", key: "info" },
   { name: "Submissions", key: "submissions" },
   { name: "Action Editors", key: "editors" },
   { name: "Admins", key: "admins" },
+  { name: "Venue Info", key: "info" },
 ];
 
 function Venue() {
@@ -80,7 +81,7 @@ function Venue() {
     return <Spinner animation="border" />;
   }
   if (error) {
-    return <ErrorPage>Error loading this organization.</ErrorPage>;
+    return <ErrorPage>Error loading this venue.</ErrorPage>;
   }
 
   const { name, logoRef } = data.venue;
@@ -96,6 +97,9 @@ function Venue() {
       break;
     case "submissions":
       renderedView = <SubmissionsPane id={id} />;
+      break;
+    case "admins":
+      renderedView = <AdminsPane id={id} />;
       break;
   }
 
@@ -117,7 +121,9 @@ function Venue() {
             ))}
           </List>
         </Grid>
-        {renderedView}
+        <Grid item container xs={10}>
+          {renderedView}
+        </Grid>
       </Grid>
     </Layout>
   );

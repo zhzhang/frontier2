@@ -11,6 +11,7 @@ import Submission from "@/lib/api/types/submission";
 import ThreadMessage from "@/lib/api/types/thread_message";
 import User from "@/lib/api/types/user";
 import Venue from "@/lib/api/types/venue";
+import VenueMembership from "@/lib/api/types/venueMembership";
 import { GraphQLDateTime } from "@/lib/graphql-iso-date";
 import prisma from "@/lib/prisma";
 import { ApolloServer } from "apollo-server-micro";
@@ -59,6 +60,7 @@ export const schema = makeSchema({
     RelationType,
     ThreadMessage,
     Decision,
+    VenueMembership,
     Role,
     Upload,
   ],

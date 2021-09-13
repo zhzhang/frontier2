@@ -920,11 +920,12 @@ type Mutation {
   createOneRelation(data: RelationCreateInput!): Relation!
   createOneThreadMessage(data: ThreadMessageCreateInput!): ThreadMessage!
   createOneVenue(data: VenueCreateInput!): Venue!
+  createOneVenueMembership(data: VenueMembershipCreateInput!): VenueMembership!
   createReview(articleId: String!, submissionId: String): Review
   deleteOneRelation(where: RelationWhereUniqueInput!): Relation
+  deleteOneVenueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateOneVenue(data: VenueUpdateInput!, where: VenueWhereUniqueInput!): Venue
-  updateOrganizationMembership(action: String!, organizationId: String!, role: Role!, userId: String!): Venue
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
 }
 
@@ -1025,6 +1026,8 @@ type Query {
   threadMessages(after: ThreadMessageWhereUniqueInput, before: ThreadMessageWhereUniqueInput, first: Int, last: Int, where: ThreadMessageWhereInput): [ThreadMessage!]!
   user(where: UserWhereUniqueInput!): User
   venue(where: VenueWhereUniqueInput!): Venue
+  venueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
+  venueMemberships(after: VenueMembershipWhereUniqueInput, before: VenueMembershipWhereUniqueInput, first: Int, last: Int, where: VenueMembershipWhereInput): [VenueMembership!]!
   venues(after: VenueWhereUniqueInput, before: VenueWhereUniqueInput, first: Int, last: Int, where: VenueWhereInput): [Venue!]!
 }
 
@@ -2622,6 +2625,19 @@ input VenueCreateWithoutSubmissionsInput {
   submissionOpen: DateTime
   venueDate: DateTime
   websiteUrl: String
+}
+
+type VenueMembership {
+  id: Int!
+  role: String!
+  user: User!
+  venue: Venue!
+}
+
+input VenueMembershipCreateInput {
+  role: String!
+  user: UserCreateNestedOneWithoutVenueMembershipsInput!
+  venue: VenueCreateNestedOneWithoutMembershipsInput!
 }
 
 input VenueMembershipCreateManyUserInput {

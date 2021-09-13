@@ -1,5 +1,4 @@
 import {
-  arg,
   booleanArg,
   intArg,
   list,
@@ -9,7 +8,6 @@ import {
   stringArg,
 } from "nexus";
 import stream from "stream";
-import { isOrganizationAdmin } from "./utils";
 
 function s3UploadFromStream(bucket, key) {
   const pass = new stream.PassThrough();
@@ -44,6 +42,13 @@ export default objectType({
     t.crud.updateOneVenue({
       authorize: (_, { where: { id } }, ctx) => true,
     });
+    t.crud.createOneVenueMembership({
+      authorize: (_, args, ctx) => {
+        console.log(ctx.user);
+        return true;
+      },
+    });
+    t.crud.deleteOneVenueMembership();
     t.field("createArticle", {
       type: "Article",
       args: {
@@ -186,49 +191,6 @@ export default objectType({
         } catch (e) {
           console.log(e);
         }
-      },
-    });
-    t.field("updateOrganizationMembership", {
-      type: "Venue",
-      args: {
-        organizationId: nonNull(stringArg()),
-        userId: nonNull(stringArg()),
-        action: nonNull(stringArg()),
-        role: nonNull(arg({ type: "Role" })),
-      },
-      resolve: async (_, { organizationId, userId, action, role }, ctx) => {
-        if (await isOrganizationAdmin(ctx.user.id, organizationId)) {
-          const membership = await ctx.prisma.organizationMembership.findFirst({
-            where: {
-              organizationId,
-              userId,
-              role,
-            },
-          });
-          if (action == "REMOVE") {
-            if (membership) {
-              await ctx.prisma.organizationMembership.delete({
-                where: {
-                  id: membership.id,
-                },
-              });
-            }
-          } else if (action == "ADD") {
-            if (!membership) {
-              await ctx.prisma.organizationMembership.create({
-                data: {
-                  organizationId,
-                  userId,
-                  role,
-                },
-              });
-            }
-          }
-          return await ctx.prisma.organization.findUnique({
-            where: { id: organizationId },
-          });
-        }
-        return null;
       },
     });
     t.crud.createOneRelation({
