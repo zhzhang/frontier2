@@ -21,6 +21,7 @@ model User {
   chairSubmissions  Submission[]
   relations         Relation[]
   relationsAsTarget Relation[]        @relation("target")
+  ReviewRequest     ReviewRequest[]
 }
 
 enum RelationType {
@@ -43,14 +44,15 @@ model Relation {
 }
 
 model Article {
-  id          String           @id @default(cuid())
-  title       String
-  authors     Authorship[]
-  reviews     Review[]
-  versions    ArticleVersion[]
-  decisions   Decision[]
-  submissions Submission[]
-  anonymous   Boolean          @default(true)
+  id            String           @id @default(cuid())
+  title         String
+  authors       Authorship[]
+  reviews       Review[]
+  versions      ArticleVersion[]
+  decisions     Decision[]
+  submissions   Submission[]
+  anonymous     Boolean          @default(true)
+  ReviewRequest ReviewRequest[]
 }
 
 model Authorship {
@@ -136,6 +138,14 @@ model Review {
   reviewNumber Int
   published    Boolean @default(false)
   anonymized   Boolean @default(true)
+}
+
+model ReviewRequest {
+  id        String  @id @default(cuid())
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id])
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Decision {

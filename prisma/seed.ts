@@ -81,6 +81,18 @@ async function main() {
       websiteUrl: "https://iclr.cc/",
     },
   });
+  const acl = await prisma.venue.create({
+    data: {
+      name: "Annual Meeting of the Association for Computational Linguistics",
+      abbreviation: "ACL",
+      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
+      websiteUrl: "https://acl2020.org/",
+      description:
+        "ACL is the premier conference of the field of computational linguistics, covering a broad spectrum of diverse research areas that are concerned with computational approaches to natural language.",
+      submissionDeadline: "2022-06-05T10:00:00.000Z",
+      venueDate: "2022-06-10T10:00:00.000Z",
+    },
+  });
 
   const abstract =
     "We address the task of automatically grading the language proficiency of spontaneous speech based on textual features from automatic speech recognition transcripts. Motivated by recent advances in multi-task learning, we develop neural networks trained in a multi-task fashion that learn to predict the proficiency level of non-native English speakers by taking advantage of inductive transfer between the main task (grading) and auxiliary prediction tasks: morpho-syntactic labeling, language modeling, and native language identification (L1). We encode the transcriptions with both bi-directional recurrent neural networks and with bi-directional representations from transformers, compare against a feature-rich baseline, and analyse performance at different proficiency levels and with transcriptions of varying error rates. Our best performance comes from a transformer encoder with L1 prediction as an auxiliary task. We discuss areas for improvement and potential applications for text-only speech scoring.";
@@ -155,12 +167,19 @@ async function main() {
     },
   });
 
+  await prisma.submission.create({
+    data: {
+      articleId: article.id,
+      venueId: iclr.id,
+    },
+  });
+
   const decision = await prisma.decision.create({
     data: {
       authorId: reviewer.id,
       body: `This is an example meta-review. Reviews that an author cites in writing the meta-review are attached to the meta-review, and directly credit the reviewer. Reviews `,
       highlights: "",
-      venueId: iclr.id,
+      venueId: acl.id,
       decision: true,
       articleId: article.id,
     },
@@ -191,19 +210,6 @@ async function main() {
         ],
       },
       anonymous: true,
-    },
-  });
-
-  await prisma.venue.create({
-    data: {
-      name: "Annual Meeting of the Association for Computational Linguistics",
-      abbreviation: "ACL",
-      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
-      websiteUrl: "https://acl2020.org/",
-      description:
-        "ACL is the premier conference of the field of computational linguistics, covering a broad spectrum of diverse research areas that are concerned with computational approaches to natural language.",
-      submissionDeadline: "2022-06-05T10:00:00.000Z",
-      venueDate: "2022-06-10T10:00:00.000Z",
     },
   });
 

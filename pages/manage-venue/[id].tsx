@@ -2,8 +2,8 @@ import ErrorPage from "@/components/ErrorPage";
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
-import AdminsPane from "@/components/manage-venue/AdminsPane";
 import InfoPane from "@/components/manage-venue/InfoPane";
+import MembersPane from "@/components/manage-venue/MembersPane";
 import SubmissionsPane from "@/components/manage-venue/SubmissionsPane";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
@@ -28,11 +28,12 @@ const useStyles = makeStyles((theme: Theme) =>
       width: theme.spacing(7),
       height: theme.spacing(7),
     },
-    headerItem: {
-      marginRight: theme.spacing(2),
-    },
     nav: {
-      padding: theme.spacing(1),
+      marginRight: theme.spacing(1),
+    },
+    body: {
+      overflowY: "scroll",
+      height: "100%",
     },
   })
 );
@@ -63,8 +64,7 @@ function Header({ name, logoRef }) {
 
 const TABS = [
   { name: "Submissions", key: "submissions" },
-  { name: "Action Editors", key: "editors" },
-  { name: "Admins", key: "admins" },
+  { name: "Members", key: "members" },
   { name: "Venue Info", key: "info" },
 ];
 
@@ -72,7 +72,7 @@ function Venue() {
   const classes = useStyles();
   const router = useRouter();
   const id = router.query.id;
-  const view = router.query.view ? router.query.view : "info";
+  const view = router.query.view ? router.query.view : "submissions";
   const { loading, error, data } = useQuery(VenueQuery, {
     variables: { where: { id } },
   });
@@ -98,8 +98,8 @@ function Venue() {
     case "submissions":
       renderedView = <SubmissionsPane id={id} />;
       break;
-    case "admins":
-      renderedView = <AdminsPane id={id} />;
+    case "members":
+      renderedView = <MembersPane id={id} />;
       break;
   }
 
@@ -121,7 +121,7 @@ function Venue() {
             ))}
           </List>
         </Grid>
-        <Grid item container xs={10}>
+        <Grid item container xs={10} spacing={2} className={classes.body}>
           {renderedView}
         </Grid>
       </Grid>

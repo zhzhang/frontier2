@@ -30,7 +30,7 @@ const AssignOwnerMutation = gql`
   }
 `;
 
-const SubmissionCard = ({ submission, organizationId }) => {
+const SubmissionCard = ({ submission, venueId }) => {
   const classes = useStyles();
   const { id } = submission;
   const { title, versions } = submission.article;
@@ -48,7 +48,7 @@ const SubmissionCard = ({ submission, organizationId }) => {
         <div>
           <EditorTypeahead
             id="select-editor"
-            organizationId={organizationId}
+            venueId={venueId}
             selected={owner}
             onChangeSelection={setOwner}
           />

@@ -5,26 +5,36 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import gql from "graphql-tag";
 import { useState } from "react";
 
-const SearchEditorsQuery = gql`
-  query SearchEditors($query: String!, $organizationId: String!) {
-    searchEditors(query: $query, organizationId: $organizationId) {
+const MembershipsQuery = gql`
+  query MembershipsQuery($where: VenueMembershipWhereInput!) {
+    venueMemberships(where: $where) {
       id
-      name
-      email
+      role
+      user {
+        id
+        name
+        profilePictureUrl
+      }
     }
   }
 `;
 
-export default function EditorTypeahead({
-  label = "Search users...",
-  ...rest
-}) {
+export default function EditorTypeahead({ venueId, ...rest }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const { loading, error, data } = useQuery(SearchEditorsQuery, {
-    variables: { query },
+  const { loading, error, data } = useQuery(MembershipsQuery, {
+    variables: {
+      where: {
+        AND: [
+          { venueId: { equals: venueId } },
+          { role: { equals: "CHAIR" } },
+          { user: { name: { contains: query } } },
+        ],
+      },
+    },
   });
-  const options = data ? data.searchUsers : [];
+  console.log(data);
+  const options = data ? data.venueMemberships.map(({ user }) => user) : [];
 
   return (
     <Autocomplete
@@ -48,7 +58,7 @@ export default function EditorTypeahead({
       renderInput={(params) => (
         <TextField
           {...params}
-          label={label}
+          label={"Search chairs..."}
           variant="outlined"
           InputProps={{
             ...params.InputProps,

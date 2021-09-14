@@ -41,13 +41,14 @@ const SubmissionsPane = ({ id }) => {
     );
   }
   const submissions = data.submissions;
+  if (submissions.length === 0) {
+    return <Grid item>There are currently no submissions.</Grid>;
+  }
   return (
     <Grid item>
-      {submissions.length === 0
-        ? "There are currently no submissions."
-        : submissions.map((submission) => (
-            <SubmissionCard submission={submission} organizationId={id} />
-          ))}
+      {submissions.map((submission) => (
+        <SubmissionCard submission={submission} organizationId={id} />
+      ))}
     </Grid>
   );
 };

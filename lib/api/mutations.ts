@@ -49,6 +49,7 @@ export default objectType({
       },
     });
     t.crud.deleteOneVenueMembership();
+    t.crud.updateOneSubmission();
     t.field("createArticle", {
       type: "Article",
       args: {
@@ -105,21 +106,6 @@ export default objectType({
           console.log("hit");
         }
         return article;
-      },
-    });
-    t.field("assignSubmissionOwner", {
-      type: "Submission",
-      args: {
-        submissionId: nonNull(stringArg()),
-        userId: nonNull(stringArg()),
-      },
-      resolve: async (_, { submissionId, userId }, ctx) => {
-        return await ctx.prisma.submission.update({
-          where: {
-            id: submissionId,
-          },
-          data: { ownerId: userId },
-        });
       },
     });
     t.field("assignReviewers", {
