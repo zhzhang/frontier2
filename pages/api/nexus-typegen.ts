@@ -1435,6 +1435,14 @@ export interface NexusGenInputs {
     ownerId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     venueId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
+  SubmissionUpdateInput: { // input type
+    article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutSubmissionsInput'] | null; // ArticleUpdateOneRequiredWithoutSubmissionsInput
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    decision?: NexusGenInputs['DecisionUpdateOneWithoutSubmissionInput'] | null; // DecisionUpdateOneWithoutSubmissionInput
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    owner?: NexusGenInputs['UserUpdateOneWithoutChairSubmissionsInput'] | null; // UserUpdateOneWithoutChairSubmissionsInput
+    venue?: NexusGenInputs['VenueUpdateOneRequiredWithoutSubmissionsInput'] | null; // VenueUpdateOneRequiredWithoutSubmissionsInput
+  }
   SubmissionUpdateManyMutationInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -2608,8 +2616,6 @@ export interface NexusGenFieldTypes {
     id: string; // String!
   }
   Mutation: { // field return type
-    assignReviewers: NexusGenRootTypes['Submission'] | null; // Submission
-    assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOneRelation: NexusGenRootTypes['Relation']; // Relation!
     createOneThreadMessage: NexusGenRootTypes['ThreadMessage']; // ThreadMessage!
@@ -2618,6 +2624,7 @@ export interface NexusGenFieldTypes {
     createReview: NexusGenRootTypes['Review'] | null; // Review
     deleteOneRelation: NexusGenRootTypes['Relation'] | null; // Relation
     deleteOneVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
+    updateOneSubmission: NexusGenRootTypes['Submission'] | null; // Submission
     updateOneUser: NexusGenRootTypes['User'] | null; // User
     updateOneVenue: NexusGenRootTypes['Venue'] | null; // Venue
     updateReview: NexusGenRootTypes['Review'] | null; // Review
@@ -2731,8 +2738,6 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
   }
   Mutation: { // field return type name
-    assignReviewers: 'Submission'
-    assignSubmissionOwner: 'Submission'
     createArticle: 'Article'
     createOneRelation: 'Relation'
     createOneThreadMessage: 'ThreadMessage'
@@ -2741,6 +2746,7 @@ export interface NexusGenFieldTypeNames {
     createReview: 'Review'
     deleteOneRelation: 'Relation'
     deleteOneVenueMembership: 'VenueMembership'
+    updateOneSubmission: 'Submission'
     updateOneUser: 'User'
     updateOneVenue: 'Venue'
     updateReview: 'Review'
@@ -2835,14 +2841,6 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
-    assignReviewers: { // args
-      reviewerIds: string[]; // [String!]!
-      submissionId: string; // String!
-    }
-    assignSubmissionOwner: { // args
-      submissionId: string; // String!
-      userId: string; // String!
-    }
     createArticle: { // args
       abstract: string; // String!
       anonymous: boolean; // Boolean!
@@ -2872,6 +2870,10 @@ export interface NexusGenArgTypes {
     }
     deleteOneVenueMembership: { // args
       where: NexusGenInputs['VenueMembershipWhereUniqueInput']; // VenueMembershipWhereUniqueInput!
+    }
+    updateOneSubmission: { // args
+      data: NexusGenInputs['SubmissionUpdateInput']; // SubmissionUpdateInput!
+      where: NexusGenInputs['SubmissionWhereUniqueInput']; // SubmissionWhereUniqueInput!
     }
     updateOneUser: { // args
       data: NexusGenInputs['UserUpdateInput']; // UserUpdateInput!

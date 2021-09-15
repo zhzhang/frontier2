@@ -914,8 +914,6 @@ input IntFilter {
 }
 
 type Mutation {
-  assignReviewers(reviewerIds: [String!]!, submissionId: String!): Submission
-  assignSubmissionOwner(submissionId: String!, userId: String!): Submission
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createOneRelation(data: RelationCreateInput!): Relation!
   createOneThreadMessage(data: ThreadMessageCreateInput!): ThreadMessage!
@@ -924,6 +922,7 @@ type Mutation {
   createReview(articleId: String!, submissionId: String): Review
   deleteOneRelation(where: RelationWhereUniqueInput!): Relation
   deleteOneVenueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
+  updateOneSubmission(data: SubmissionUpdateInput!, where: SubmissionWhereUniqueInput!): Submission
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateOneVenue(data: VenueUpdateInput!, where: VenueWhereUniqueInput!): Venue
   updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
@@ -1725,6 +1724,15 @@ input SubmissionScalarWhereInput {
   id: StringFilter
   ownerId: StringNullableFilter
   venueId: StringFilter
+}
+
+input SubmissionUpdateInput {
+  article: ArticleUpdateOneRequiredWithoutSubmissionsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  decision: DecisionUpdateOneWithoutSubmissionInput
+  id: StringFieldUpdateOperationsInput
+  owner: UserUpdateOneWithoutChairSubmissionsInput
+  venue: VenueUpdateOneRequiredWithoutSubmissionsInput
 }
 
 input SubmissionUpdateManyMutationInput {

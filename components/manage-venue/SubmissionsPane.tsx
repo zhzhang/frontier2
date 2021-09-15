@@ -1,3 +1,4 @@
+import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
@@ -6,20 +7,16 @@ import gql from "graphql-tag";
 import SubmissionCard from "./SubmissionCard";
 
 const SubmissionsQuery = gql`
+  ${ARTICLE_CARD_FIELDS}
   query SubmissionsQuery($where: SubmissionWhereInput!) {
     submissions(where: $where) {
       id
       owner {
         id
         name
-        email
       }
       article {
-        id
-        title
-        versions {
-          abstract
-        }
+        ...ArticleCardFields
       }
     }
   }
@@ -47,7 +44,11 @@ const SubmissionsPane = ({ id }) => {
   return (
     <Grid item>
       {submissions.map((submission) => (
-        <SubmissionCard submission={submission} organizationId={id} />
+        <SubmissionCard
+          key={submission.id}
+          submission={submission}
+          venueId={id}
+        />
       ))}
     </Grid>
   );

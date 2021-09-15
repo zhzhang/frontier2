@@ -1,12 +1,28 @@
+import ArticleCard from "@/components/ArticleCard";
+import UserChip, { USER_CHIP_FIELDS } from "@/components/UserChip";
+import UserTypeahead from "@/components/UserTypeahead";
 import { useMutation } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
+import Divider from "@material-ui/core/Divider";
+import Grid from "@material-ui/core/Grid";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { useState } from "react";
-import { withApollo } from "../../lib/apollo";
-import Markdown from "../Markdown";
-import EditorTypeahead from "./EditorTypeahead";
+
+const MembershipsQuery = gql`
+  ${USER_CHIP_FIELDS}
+  query MembershipsQuery($where: VenueMembershipWhereInput!) {
+    venueMemberships(where: $where) {
+      id
+      role
+      user {
+        ...UserChipFields
+      }
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -14,57 +30,103 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1),
       padding: theme.spacing(1),
     },
+    divider: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
   })
 );
 
 const AssignOwnerMutation = gql`
-  mutation AssignOwner($submissionId: String!, $userId: String!) {
-    assignSubmissionOwner(submissionId: $submissionId, userId: $userId) {
+  mutation AssignOwner(
+    $where: SubmissionWhereUniqueInput!
+    $data: SubmissionUpdateInput!
+  ) {
+    updateOneSubmission(data: $data, where: $where) {
       id
       owner {
         id
         name
-        email
+      }
+      article {
+        id
+        title
+        versions {
+          abstract
+        }
       }
     }
   }
 `;
 
-const SubmissionCard = ({ submission, venueId }) => {
+export default function SubmissionCard({ submission, venueId }) {
   const classes = useStyles();
-  const { id } = submission;
-  const { title, versions } = submission.article;
-  const abstract = versions[0].abstract;
-  const [owner, setOwner] = useState();
+  const { id, owner, article } = submission;
+  const [newOwner, setNewOwner] = useState(owner);
   const [assignOwner, { loading, error, data }] =
     useMutation(AssignOwnerMutation);
-  return (
-    <Card className={classes.card}>
-      <p>{title}</p>
-      <Markdown>{abstract}</Markdown>
-      {submission.owner ? (
-        submission.owner.name
-      ) : (
-        <div>
-          <EditorTypeahead
+  console.log(owner);
+
+  const Assign = () => {
+    if (owner) {
+      return (
+        <Grid item>
+          <UserChip user={owner} />
+        </Grid>
+      );
+    }
+    return (
+      <>
+        <Grid item xs={9}>
+          <UserTypeahead
             id="select-editor"
+            query={MembershipsQuery}
             venueId={venueId}
-            selected={owner}
-            onChangeSelection={setOwner}
+            selected={newOwner}
+            onChange={(_, selected) => {
+              setNewOwner(selected);
+            }}
           />
+        </Grid>
+        <Grid item xs={2}>
           <Button
+            color="primary"
+            variant="contained"
             onClick={() =>
               assignOwner({
-                variables: { submissionId: id, userId: owner[0].id },
+                variables: {
+                  where: { id },
+                  data: {
+                    owner: {
+                      connect: {
+                        id: tmp.id,
+                      },
+                    },
+                  },
+                },
               })
             }
           >
-            Assign Action Editor
+            Assign
           </Button>
-        </div>
-      )}
+        </Grid>
+      </>
+    );
+  };
+  return (
+    <Card className={classes.card}>
+      <Grid container spacing={2}>
+        <Grid item>
+          <ArticleCard article={article} />
+        </Grid>
+        <Grid item xs={12}>
+          <Divider className={classes.divider} />
+        </Grid>
+        <Grid item xs={1}>
+          <Typography> Editor</Typography>
+        </Grid>
+        <Assign />
+      </Grid>
     </Card>
   );
-};
-
-export default withApollo(SubmissionCard);
+}

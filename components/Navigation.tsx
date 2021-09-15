@@ -3,6 +3,7 @@ import { signOut, useAuth } from "@/lib/firebase";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -15,6 +16,8 @@ import {
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -129,7 +132,20 @@ const Navigation = () => {
                   router.push(`/user/${user.uid}`);
                 }}
               >
+                <ListItemIcon>
+                  <AccountCircle />
+                </ListItemIcon>
                 <ListItemText primary="Profile" />
+              </StyledMenuItem>
+              <StyledMenuItem
+                onClick={async () => {
+                  router.push(`/review-requests/${user.uid}`);
+                }}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Review Requests" />
               </StyledMenuItem>
               <StyledMenuItem
                 onClick={async () => {
@@ -137,6 +153,9 @@ const Navigation = () => {
                   router.reload(window.location.pathname);
                 }}
               >
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
                 <ListItemText primary="Logout" />
               </StyledMenuItem>
             </StyledMenu>

@@ -1,4 +1,5 @@
 import AcceptedArticleCard from "@/components/AcceptedArticleCard";
+import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
@@ -15,21 +16,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const AcceptedArticlesQuery = gql`
   query AcceptedArticlesQuery($where: DecisionWhereInput!) {
+    ${ARTICLE_CARD_FIELDS}
     decisions(where: $where) {
       id
       body
       article {
-        id
-        title
-        authors {
-          id
-          name
-        }
-        versions {
-          id
-          abstract
-          versionNumber
-        }
+        ...ArticleCardFields
       }
       author {
         id

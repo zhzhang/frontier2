@@ -1,4 +1,4 @@
-import ArticleCard from "@/components/ArticleCard";
+import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import ErrorPage from "@/components/ErrorPage";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
@@ -9,27 +9,10 @@ import gql from "graphql-tag";
 import React from "react";
 
 const GetArticlesQuery = gql`
+  ${ARTICLE_CARD_FIELDS}
   query GetArticlesQuery {
     articles {
-      id
-      title
-      authors {
-        id
-        name
-      }
-      versions {
-        abstract
-        ref
-        createdAt
-      }
-      acceptedVenues {
-        id
-        name
-        abbreviation
-        description
-        logoRef
-        venueDate
-      }
+      ...ArticleCardFields
     }
   }
 `;

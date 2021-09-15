@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import gql from "graphql-tag";
 import { useState } from "react";
+import UserChip from "./UserChip";
 
 const SearchUsersQuery = gql`
   query SearchUsers($query: String!) {
@@ -15,10 +16,14 @@ const SearchUsersQuery = gql`
   }
 `;
 
-export default function UserTypeahead({ label = "Search users...", ...rest }) {
+export default function UserTypeahead({
+  label = "Search users...",
+  gqlQuery = SearchUsersQuery,
+  ...rest
+}) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const { loading, error, data } = useQuery(SearchUsersQuery, {
+  const { loading, error, data } = useQuery(gqlQuery, {
     variables: { query },
   });
   const options = data ? data.searchUsers : [];
@@ -42,6 +47,7 @@ export default function UserTypeahead({ label = "Search users...", ...rest }) {
       getOptionLabel={(option) => option.name}
       options={options}
       loading={loading}
+      renderOption={(user) => <UserChip user={user} canInteract={false} />}
       renderInput={(params) => (
         <TextField
           {...params}

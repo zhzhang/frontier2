@@ -2,6 +2,31 @@ import Authors from "@/components/Authors";
 import Markdown from "@/components/Markdown";
 import VenuePopover from "@/components/VenuePopover";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import gql from "graphql-tag";
+
+export const ARTICLE_CARD_FIELDS = gql`
+  fragment ArticleCardFields on Article {
+    id
+    title
+    authors {
+      id
+      name
+    }
+    versions {
+      abstract
+      ref
+      createdAt
+    }
+    acceptedVenues {
+      id
+      name
+      abbreviation
+      description
+      logoRef
+      venueDate
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

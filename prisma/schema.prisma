@@ -146,6 +146,7 @@ model ReviewRequest {
   article   Article @relation(fields: [articleId], references: [id])
   userId    String
   user      User    @relation(fields: [userId], references: [id])
+  status    String
 }
 
 model Decision {

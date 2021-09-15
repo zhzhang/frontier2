@@ -2,13 +2,28 @@ import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Popover from "@material-ui/core/Popover";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import gql from "graphql-tag";
 import Router from "next/router";
 import { useState } from "react";
 
+export const USER_CHIP_FIELDS = gql`
+  fragment UserChipFields on User {
+    id
+    name
+    profilePictureUrl
+  }
+`;
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    typography: {
-      padding: theme.spacing(2),
+    chip: {
+      display: "flex",
+      alignItems: "center",
+    },
+    avatar: {
+      width: 30,
+      height: 30,
+      marginRight: theme.spacing(0.5),
     },
     popover: {
       pointerEvents: "none",
@@ -22,47 +37,39 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function AuthorPopover({
-  user,
-  color = "textSecondary",
-  variant = "span",
-}) {
+export default function UserChip({ user, canInteract = true }) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
   const { id, name, profilePictureUrl } = user;
-  const anonymized = id === "anonymous";
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
-    setAnchorEl(event.currentTarget);
+    canInteract && setAnchorEl(event.currentTarget);
   };
   const handleLeave = () => {
-    setAnchorEl(null);
+    canInteract && setAnchorEl(null);
   };
   const handleClick = () => {
-    if (!anonymized) {
-      Router.push(`/user/${id}`);
-    }
+    canInteract && Router.push(`/user/${id}`);
   };
   return (
-    <span
+    <div
+      className={classes.chip}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onClick={handleClick}
     >
-      <Typography
-        aria-owns={open ? "mouse-over-popover" : undefined}
-        aria-haspopup="true"
-        color={color}
-        variant={variant}
-      >
-        {name}
-      </Typography>
+      <FirebaseAvatar
+        storeRef={profilePictureUrl}
+        name={name}
+        className={classes.avatar}
+      />
+      <Typography>{name}</Typography>
       <Popover
         id={id}
         className={classes.popover}
         classes={{
           paper: classes.paper,
         }}
-        open={Boolean(anchorEl) && !anonymized}
+        open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",
@@ -81,6 +88,6 @@ export default function AuthorPopover({
           </Typography>
         </div>
       </Popover>
-    </span>
+    </div>
   );
 }
