@@ -25,6 +25,7 @@ export default objectType({
     t.crud.submissions({ filtering: true });
     t.crud.venueMembership();
     t.crud.venueMemberships({ filtering: true });
+    t.crud.reviewRequests({ filtering: true });
     t.list.field("searchOpenVenues", {
       type: "Venue",
       args: { query: stringArg() },

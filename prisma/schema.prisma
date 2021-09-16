@@ -21,7 +21,7 @@ model User {
   chairSubmissions  Submission[]
   relations         Relation[]
   relationsAsTarget Relation[]        @relation("target")
-  ReviewRequest     ReviewRequest[]
+  reviewRequests    ReviewRequest[]
 }
 
 enum RelationType {
@@ -87,16 +87,17 @@ model ThreadMessage {
 }
 
 model Submission {
-  id         String    @id @default(cuid())
-  article    Article   @relation(fields: [articleId], references: [id])
-  articleId  String
-  venue      Venue     @relation(fields: [venueId], references: [id])
-  venueId    String
-  owner      User?     @relation(fields: [ownerId], references: [id])
-  ownerId    String?
-  decision   Decision? @relation(fields: [decisionId], references: [id])
-  decisionId String?
-  createdAt  DateTime  @default(now())
+  id             String          @id @default(cuid())
+  article        Article         @relation(fields: [articleId], references: [id])
+  articleId      String
+  venue          Venue           @relation(fields: [venueId], references: [id])
+  venueId        String
+  owner          User?           @relation(fields: [ownerId], references: [id])
+  ownerId        String?
+  decision       Decision?       @relation(fields: [decisionId], references: [id])
+  decisionId     String?
+  createdAt      DateTime        @default(now())
+  reviewRequests ReviewRequest[]
 }
 
 model Venue {
@@ -141,12 +142,14 @@ model Review {
 }
 
 model ReviewRequest {
-  id        String  @id @default(cuid())
-  articleId String
-  article   Article @relation(fields: [articleId], references: [id])
-  userId    String
-  user      User    @relation(fields: [userId], references: [id])
-  status    String
+  id           String      @id @default(cuid())
+  articleId    String
+  article      Article     @relation(fields: [articleId], references: [id])
+  submission   Submission? @relation(fields: [submissionId], references: [id])
+  userId       String
+  user         User        @relation(fields: [userId], references: [id])
+  status       String
+  submissionId String?
 }
 
 model Decision {

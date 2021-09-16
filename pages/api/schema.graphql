@@ -24,6 +24,12 @@ input ArticleCreateNestedOneWithoutDecisionsInput {
   create: ArticleCreateWithoutDecisionsInput
 }
 
+input ArticleCreateNestedOneWithoutReviewRequestInput {
+  connect: ArticleWhereUniqueInput
+  connectOrCreate: ArticleCreateOrConnectWithoutReviewRequestInput
+  create: ArticleCreateWithoutReviewRequestInput
+}
+
 input ArticleCreateNestedOneWithoutReviewsInput {
   connect: ArticleWhereUniqueInput
   connectOrCreate: ArticleCreateOrConnectWithoutReviewsInput
@@ -46,6 +52,11 @@ input ArticleCreateOrConnectWithoutDecisionsInput {
   where: ArticleWhereUniqueInput!
 }
 
+input ArticleCreateOrConnectWithoutReviewRequestInput {
+  create: ArticleCreateWithoutReviewRequestInput!
+  where: ArticleWhereUniqueInput!
+}
+
 input ArticleCreateOrConnectWithoutReviewsInput {
   create: ArticleCreateWithoutReviewsInput!
   where: ArticleWhereUniqueInput!
@@ -57,6 +68,7 @@ input ArticleCreateOrConnectWithoutSubmissionsInput {
 }
 
 input ArticleCreateWithoutAuthorsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   anonymous: Boolean
   decisions: DecisionCreateNestedManyWithoutArticleInput
   id: String
@@ -67,6 +79,7 @@ input ArticleCreateWithoutAuthorsInput {
 }
 
 input ArticleCreateWithoutDecisionsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   anonymous: Boolean
   authors: AuthorshipCreateNestedManyWithoutArticleInput
   id: String
@@ -76,7 +89,19 @@ input ArticleCreateWithoutDecisionsInput {
   versions: ArticleVersionCreateNestedManyWithoutArticleInput
 }
 
+input ArticleCreateWithoutReviewRequestInput {
+  anonymous: Boolean
+  authors: AuthorshipCreateNestedManyWithoutArticleInput
+  decisions: DecisionCreateNestedManyWithoutArticleInput
+  id: String
+  reviews: ReviewCreateNestedManyWithoutArticleInput
+  submissions: SubmissionCreateNestedManyWithoutArticleInput
+  title: String!
+  versions: ArticleVersionCreateNestedManyWithoutArticleInput
+}
+
 input ArticleCreateWithoutReviewsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   anonymous: Boolean
   authors: AuthorshipCreateNestedManyWithoutArticleInput
   decisions: DecisionCreateNestedManyWithoutArticleInput
@@ -87,6 +112,7 @@ input ArticleCreateWithoutReviewsInput {
 }
 
 input ArticleCreateWithoutSubmissionsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   anonymous: Boolean
   authors: AuthorshipCreateNestedManyWithoutArticleInput
   decisions: DecisionCreateNestedManyWithoutArticleInput
@@ -116,6 +142,14 @@ input ArticleUpdateOneRequiredWithoutDecisionsInput {
   upsert: ArticleUpsertWithoutDecisionsInput
 }
 
+input ArticleUpdateOneRequiredWithoutReviewRequestInput {
+  connect: ArticleWhereUniqueInput
+  connectOrCreate: ArticleCreateOrConnectWithoutReviewRequestInput
+  create: ArticleCreateWithoutReviewRequestInput
+  update: ArticleUpdateWithoutReviewRequestInput
+  upsert: ArticleUpsertWithoutReviewRequestInput
+}
+
 input ArticleUpdateOneRequiredWithoutReviewsInput {
   connect: ArticleWhereUniqueInput
   connectOrCreate: ArticleCreateOrConnectWithoutReviewsInput
@@ -133,6 +167,7 @@ input ArticleUpdateOneRequiredWithoutSubmissionsInput {
 }
 
 input ArticleUpdateWithoutAuthorsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   anonymous: BoolFieldUpdateOperationsInput
   decisions: DecisionUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
@@ -143,6 +178,7 @@ input ArticleUpdateWithoutAuthorsInput {
 }
 
 input ArticleUpdateWithoutDecisionsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: AuthorshipUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
@@ -152,7 +188,19 @@ input ArticleUpdateWithoutDecisionsInput {
   versions: ArticleVersionUpdateManyWithoutArticleInput
 }
 
+input ArticleUpdateWithoutReviewRequestInput {
+  anonymous: BoolFieldUpdateOperationsInput
+  authors: AuthorshipUpdateManyWithoutArticleInput
+  decisions: DecisionUpdateManyWithoutArticleInput
+  id: StringFieldUpdateOperationsInput
+  reviews: ReviewUpdateManyWithoutArticleInput
+  submissions: SubmissionUpdateManyWithoutArticleInput
+  title: StringFieldUpdateOperationsInput
+  versions: ArticleVersionUpdateManyWithoutArticleInput
+}
+
 input ArticleUpdateWithoutReviewsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: AuthorshipUpdateManyWithoutArticleInput
   decisions: DecisionUpdateManyWithoutArticleInput
@@ -163,6 +211,7 @@ input ArticleUpdateWithoutReviewsInput {
 }
 
 input ArticleUpdateWithoutSubmissionsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: AuthorshipUpdateManyWithoutArticleInput
   decisions: DecisionUpdateManyWithoutArticleInput
@@ -180,6 +229,11 @@ input ArticleUpsertWithoutAuthorsInput {
 input ArticleUpsertWithoutDecisionsInput {
   create: ArticleCreateWithoutDecisionsInput!
   update: ArticleUpdateWithoutDecisionsInput!
+}
+
+input ArticleUpsertWithoutReviewRequestInput {
+  create: ArticleCreateWithoutReviewRequestInput!
+  update: ArticleUpdateWithoutReviewRequestInput!
 }
 
 input ArticleUpsertWithoutReviewsInput {
@@ -318,6 +372,7 @@ input ArticleWhereInput {
   AND: [ArticleWhereInput!]
   NOT: [ArticleWhereInput!]
   OR: [ArticleWhereInput!]
+  ReviewRequest: ReviewRequestListRelationFilter
   anonymous: BoolFilter
   authors: AuthorshipListRelationFilter
   decisions: DecisionListRelationFilter
@@ -916,6 +971,7 @@ input IntFilter {
 type Mutation {
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createOneRelation(data: RelationCreateInput!): Relation!
+  createOneReviewRequest(data: ReviewRequestCreateInput!): ReviewRequest!
   createOneThreadMessage(data: ThreadMessageCreateInput!): ThreadMessage!
   createOneVenue(data: VenueCreateInput!): Venue!
   createOneVenueMembership(data: VenueMembershipCreateInput!): VenueMembership!
@@ -1016,6 +1072,7 @@ type Query {
   authorships(after: AuthorshipWhereUniqueInput, before: AuthorshipWhereUniqueInput, first: Int, last: Int, where: AuthorshipWhereInput): [Authorship!]!
   decisions(after: DecisionWhereUniqueInput, before: DecisionWhereUniqueInput, first: Int, last: Int, where: DecisionWhereInput): [Decision!]!
   review(reviewId: String!): Review
+  reviewRequests(after: ReviewRequestWhereUniqueInput, before: ReviewRequestWhereUniqueInput, first: Int, last: Int, where: ReviewRequestWhereInput): [ReviewRequest!]!
   reviewerAssignedSubmissions: [Submission]
   reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, where: ReviewWhereInput): [Review!]!
   searchEditors(organizationId: String!, query: String): [User]
@@ -1370,6 +1427,266 @@ input ReviewListRelationFilter {
   some: ReviewWhereInput
 }
 
+type ReviewRequest {
+  article: Article!
+  id: String!
+  status: String!
+  submission: Submission
+  user: User!
+}
+
+input ReviewRequestCreateInput {
+  article: ArticleCreateNestedOneWithoutReviewRequestInput!
+  id: String
+  status: String!
+  submission: SubmissionCreateNestedOneWithoutReviewRequestsInput
+  user: UserCreateNestedOneWithoutReviewRequestInput!
+}
+
+input ReviewRequestCreateManyArticleInput {
+  id: String
+  status: String!
+  submissionId: String
+  userId: String!
+}
+
+input ReviewRequestCreateManyArticleInputEnvelope {
+  data: [ReviewRequestCreateManyArticleInput!]
+  skipDuplicates: Boolean
+}
+
+input ReviewRequestCreateManySubmissionInput {
+  articleId: String!
+  id: String
+  status: String!
+  userId: String!
+}
+
+input ReviewRequestCreateManySubmissionInputEnvelope {
+  data: [ReviewRequestCreateManySubmissionInput!]
+  skipDuplicates: Boolean
+}
+
+input ReviewRequestCreateManyUserInput {
+  articleId: String!
+  id: String
+  status: String!
+  submissionId: String
+}
+
+input ReviewRequestCreateManyUserInputEnvelope {
+  data: [ReviewRequestCreateManyUserInput!]
+  skipDuplicates: Boolean
+}
+
+input ReviewRequestCreateNestedManyWithoutArticleInput {
+  connect: [ReviewRequestWhereUniqueInput!]
+  connectOrCreate: [ReviewRequestCreateOrConnectWithoutArticleInput!]
+  create: [ReviewRequestCreateWithoutArticleInput!]
+  createMany: ReviewRequestCreateManyArticleInputEnvelope
+}
+
+input ReviewRequestCreateNestedManyWithoutSubmissionInput {
+  connect: [ReviewRequestWhereUniqueInput!]
+  connectOrCreate: [ReviewRequestCreateOrConnectWithoutSubmissionInput!]
+  create: [ReviewRequestCreateWithoutSubmissionInput!]
+  createMany: ReviewRequestCreateManySubmissionInputEnvelope
+}
+
+input ReviewRequestCreateNestedManyWithoutUserInput {
+  connect: [ReviewRequestWhereUniqueInput!]
+  connectOrCreate: [ReviewRequestCreateOrConnectWithoutUserInput!]
+  create: [ReviewRequestCreateWithoutUserInput!]
+  createMany: ReviewRequestCreateManyUserInputEnvelope
+}
+
+input ReviewRequestCreateOrConnectWithoutArticleInput {
+  create: ReviewRequestCreateWithoutArticleInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestCreateOrConnectWithoutSubmissionInput {
+  create: ReviewRequestCreateWithoutSubmissionInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestCreateOrConnectWithoutUserInput {
+  create: ReviewRequestCreateWithoutUserInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestCreateWithoutArticleInput {
+  id: String
+  status: String!
+  submission: SubmissionCreateNestedOneWithoutReviewRequestsInput
+  user: UserCreateNestedOneWithoutReviewRequestInput!
+}
+
+input ReviewRequestCreateWithoutSubmissionInput {
+  article: ArticleCreateNestedOneWithoutReviewRequestInput!
+  id: String
+  status: String!
+  user: UserCreateNestedOneWithoutReviewRequestInput!
+}
+
+input ReviewRequestCreateWithoutUserInput {
+  article: ArticleCreateNestedOneWithoutReviewRequestInput!
+  id: String
+  status: String!
+  submission: SubmissionCreateNestedOneWithoutReviewRequestsInput
+}
+
+input ReviewRequestListRelationFilter {
+  every: ReviewRequestWhereInput
+  none: ReviewRequestWhereInput
+  some: ReviewRequestWhereInput
+}
+
+input ReviewRequestScalarWhereInput {
+  AND: [ReviewRequestScalarWhereInput!]
+  NOT: [ReviewRequestScalarWhereInput!]
+  OR: [ReviewRequestScalarWhereInput!]
+  articleId: StringFilter
+  id: StringFilter
+  status: StringFilter
+  submissionId: StringNullableFilter
+  userId: StringFilter
+}
+
+input ReviewRequestUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+}
+
+input ReviewRequestUpdateManyWithWhereWithoutArticleInput {
+  data: ReviewRequestUpdateManyMutationInput!
+  where: ReviewRequestScalarWhereInput!
+}
+
+input ReviewRequestUpdateManyWithWhereWithoutSubmissionInput {
+  data: ReviewRequestUpdateManyMutationInput!
+  where: ReviewRequestScalarWhereInput!
+}
+
+input ReviewRequestUpdateManyWithWhereWithoutUserInput {
+  data: ReviewRequestUpdateManyMutationInput!
+  where: ReviewRequestScalarWhereInput!
+}
+
+input ReviewRequestUpdateManyWithoutArticleInput {
+  connect: [ReviewRequestWhereUniqueInput!]
+  connectOrCreate: [ReviewRequestCreateOrConnectWithoutArticleInput!]
+  create: [ReviewRequestCreateWithoutArticleInput!]
+  createMany: ReviewRequestCreateManyArticleInputEnvelope
+  delete: [ReviewRequestWhereUniqueInput!]
+  deleteMany: [ReviewRequestScalarWhereInput!]
+  disconnect: [ReviewRequestWhereUniqueInput!]
+  set: [ReviewRequestWhereUniqueInput!]
+  update: [ReviewRequestUpdateWithWhereUniqueWithoutArticleInput!]
+  updateMany: [ReviewRequestUpdateManyWithWhereWithoutArticleInput!]
+  upsert: [ReviewRequestUpsertWithWhereUniqueWithoutArticleInput!]
+}
+
+input ReviewRequestUpdateManyWithoutSubmissionInput {
+  connect: [ReviewRequestWhereUniqueInput!]
+  connectOrCreate: [ReviewRequestCreateOrConnectWithoutSubmissionInput!]
+  create: [ReviewRequestCreateWithoutSubmissionInput!]
+  createMany: ReviewRequestCreateManySubmissionInputEnvelope
+  delete: [ReviewRequestWhereUniqueInput!]
+  deleteMany: [ReviewRequestScalarWhereInput!]
+  disconnect: [ReviewRequestWhereUniqueInput!]
+  set: [ReviewRequestWhereUniqueInput!]
+  update: [ReviewRequestUpdateWithWhereUniqueWithoutSubmissionInput!]
+  updateMany: [ReviewRequestUpdateManyWithWhereWithoutSubmissionInput!]
+  upsert: [ReviewRequestUpsertWithWhereUniqueWithoutSubmissionInput!]
+}
+
+input ReviewRequestUpdateManyWithoutUserInput {
+  connect: [ReviewRequestWhereUniqueInput!]
+  connectOrCreate: [ReviewRequestCreateOrConnectWithoutUserInput!]
+  create: [ReviewRequestCreateWithoutUserInput!]
+  createMany: ReviewRequestCreateManyUserInputEnvelope
+  delete: [ReviewRequestWhereUniqueInput!]
+  deleteMany: [ReviewRequestScalarWhereInput!]
+  disconnect: [ReviewRequestWhereUniqueInput!]
+  set: [ReviewRequestWhereUniqueInput!]
+  update: [ReviewRequestUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ReviewRequestUpdateManyWithWhereWithoutUserInput!]
+  upsert: [ReviewRequestUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ReviewRequestUpdateWithWhereUniqueWithoutArticleInput {
+  data: ReviewRequestUpdateWithoutArticleInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestUpdateWithWhereUniqueWithoutSubmissionInput {
+  data: ReviewRequestUpdateWithoutSubmissionInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestUpdateWithWhereUniqueWithoutUserInput {
+  data: ReviewRequestUpdateWithoutUserInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestUpdateWithoutArticleInput {
+  id: StringFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  submission: SubmissionUpdateOneWithoutReviewRequestsInput
+  user: UserUpdateOneRequiredWithoutReviewRequestInput
+}
+
+input ReviewRequestUpdateWithoutSubmissionInput {
+  article: ArticleUpdateOneRequiredWithoutReviewRequestInput
+  id: StringFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutReviewRequestInput
+}
+
+input ReviewRequestUpdateWithoutUserInput {
+  article: ArticleUpdateOneRequiredWithoutReviewRequestInput
+  id: StringFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+  submission: SubmissionUpdateOneWithoutReviewRequestsInput
+}
+
+input ReviewRequestUpsertWithWhereUniqueWithoutArticleInput {
+  create: ReviewRequestCreateWithoutArticleInput!
+  update: ReviewRequestUpdateWithoutArticleInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestUpsertWithWhereUniqueWithoutSubmissionInput {
+  create: ReviewRequestCreateWithoutSubmissionInput!
+  update: ReviewRequestUpdateWithoutSubmissionInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestUpsertWithWhereUniqueWithoutUserInput {
+  create: ReviewRequestCreateWithoutUserInput!
+  update: ReviewRequestUpdateWithoutUserInput!
+  where: ReviewRequestWhereUniqueInput!
+}
+
+input ReviewRequestWhereInput {
+  AND: [ReviewRequestWhereInput!]
+  NOT: [ReviewRequestWhereInput!]
+  OR: [ReviewRequestWhereInput!]
+  article: ArticleWhereInput
+  articleId: StringFilter
+  id: StringFilter
+  status: StringFilter
+  submission: SubmissionWhereInput
+  submissionId: StringNullableFilter
+  user: UserWhereInput
+  userId: StringFilter
+}
+
+input ReviewRequestWhereUniqueInput {
+  id: String
+}
+
 input ReviewScalarWhereInput {
   AND: [ReviewScalarWhereInput!]
   NOT: [ReviewScalarWhereInput!]
@@ -1587,7 +1904,8 @@ type Submission {
   article: Article!
   id: String!
   owner: User
-  requestedReviewers: [User]
+  reviewRequests(after: ReviewRequestWhereUniqueInput, before: ReviewRequestWhereUniqueInput, first: Int, last: Int): [ReviewRequest!]!
+  venue: Venue!
 }
 
 input SubmissionCreateManyArticleInput {
@@ -1656,6 +1974,12 @@ input SubmissionCreateNestedOneWithoutDecisionInput {
   create: SubmissionCreateWithoutDecisionInput
 }
 
+input SubmissionCreateNestedOneWithoutReviewRequestsInput {
+  connect: SubmissionWhereUniqueInput
+  connectOrCreate: SubmissionCreateOrConnectWithoutReviewRequestsInput
+  create: SubmissionCreateWithoutReviewRequestsInput
+}
+
 input SubmissionCreateOrConnectWithoutArticleInput {
   create: SubmissionCreateWithoutArticleInput!
   where: SubmissionWhereUniqueInput!
@@ -1671,6 +1995,11 @@ input SubmissionCreateOrConnectWithoutOwnerInput {
   where: SubmissionWhereUniqueInput!
 }
 
+input SubmissionCreateOrConnectWithoutReviewRequestsInput {
+  create: SubmissionCreateWithoutReviewRequestsInput!
+  where: SubmissionWhereUniqueInput!
+}
+
 input SubmissionCreateOrConnectWithoutVenueInput {
   create: SubmissionCreateWithoutVenueInput!
   where: SubmissionWhereUniqueInput!
@@ -1681,6 +2010,7 @@ input SubmissionCreateWithoutArticleInput {
   decision: DecisionCreateNestedOneWithoutSubmissionInput
   id: String
   owner: UserCreateNestedOneWithoutChairSubmissionsInput
+  reviewRequests: ReviewRequestCreateNestedManyWithoutSubmissionInput
   venue: VenueCreateNestedOneWithoutSubmissionsInput!
 }
 
@@ -1689,6 +2019,7 @@ input SubmissionCreateWithoutDecisionInput {
   createdAt: DateTime
   id: String
   owner: UserCreateNestedOneWithoutChairSubmissionsInput
+  reviewRequests: ReviewRequestCreateNestedManyWithoutSubmissionInput
   venue: VenueCreateNestedOneWithoutSubmissionsInput!
 }
 
@@ -1697,6 +2028,16 @@ input SubmissionCreateWithoutOwnerInput {
   createdAt: DateTime
   decision: DecisionCreateNestedOneWithoutSubmissionInput
   id: String
+  reviewRequests: ReviewRequestCreateNestedManyWithoutSubmissionInput
+  venue: VenueCreateNestedOneWithoutSubmissionsInput!
+}
+
+input SubmissionCreateWithoutReviewRequestsInput {
+  article: ArticleCreateNestedOneWithoutSubmissionsInput!
+  createdAt: DateTime
+  decision: DecisionCreateNestedOneWithoutSubmissionInput
+  id: String
+  owner: UserCreateNestedOneWithoutChairSubmissionsInput
   venue: VenueCreateNestedOneWithoutSubmissionsInput!
 }
 
@@ -1706,6 +2047,7 @@ input SubmissionCreateWithoutVenueInput {
   decision: DecisionCreateNestedOneWithoutSubmissionInput
   id: String
   owner: UserCreateNestedOneWithoutChairSubmissionsInput
+  reviewRequests: ReviewRequestCreateNestedManyWithoutSubmissionInput
 }
 
 input SubmissionListRelationFilter {
@@ -1732,6 +2074,7 @@ input SubmissionUpdateInput {
   decision: DecisionUpdateOneWithoutSubmissionInput
   id: StringFieldUpdateOperationsInput
   owner: UserUpdateOneWithoutChairSubmissionsInput
+  reviewRequests: ReviewRequestUpdateManyWithoutSubmissionInput
   venue: VenueUpdateOneRequiredWithoutSubmissionsInput
 }
 
@@ -1807,6 +2150,16 @@ input SubmissionUpdateOneWithoutDecisionInput {
   upsert: SubmissionUpsertWithoutDecisionInput
 }
 
+input SubmissionUpdateOneWithoutReviewRequestsInput {
+  connect: SubmissionWhereUniqueInput
+  connectOrCreate: SubmissionCreateOrConnectWithoutReviewRequestsInput
+  create: SubmissionCreateWithoutReviewRequestsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: SubmissionUpdateWithoutReviewRequestsInput
+  upsert: SubmissionUpsertWithoutReviewRequestsInput
+}
+
 input SubmissionUpdateWithWhereUniqueWithoutArticleInput {
   data: SubmissionUpdateWithoutArticleInput!
   where: SubmissionWhereUniqueInput!
@@ -1827,6 +2180,7 @@ input SubmissionUpdateWithoutArticleInput {
   decision: DecisionUpdateOneWithoutSubmissionInput
   id: StringFieldUpdateOperationsInput
   owner: UserUpdateOneWithoutChairSubmissionsInput
+  reviewRequests: ReviewRequestUpdateManyWithoutSubmissionInput
   venue: VenueUpdateOneRequiredWithoutSubmissionsInput
 }
 
@@ -1835,6 +2189,7 @@ input SubmissionUpdateWithoutDecisionInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   owner: UserUpdateOneWithoutChairSubmissionsInput
+  reviewRequests: ReviewRequestUpdateManyWithoutSubmissionInput
   venue: VenueUpdateOneRequiredWithoutSubmissionsInput
 }
 
@@ -1843,6 +2198,16 @@ input SubmissionUpdateWithoutOwnerInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   decision: DecisionUpdateOneWithoutSubmissionInput
   id: StringFieldUpdateOperationsInput
+  reviewRequests: ReviewRequestUpdateManyWithoutSubmissionInput
+  venue: VenueUpdateOneRequiredWithoutSubmissionsInput
+}
+
+input SubmissionUpdateWithoutReviewRequestsInput {
+  article: ArticleUpdateOneRequiredWithoutSubmissionsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  decision: DecisionUpdateOneWithoutSubmissionInput
+  id: StringFieldUpdateOperationsInput
+  owner: UserUpdateOneWithoutChairSubmissionsInput
   venue: VenueUpdateOneRequiredWithoutSubmissionsInput
 }
 
@@ -1852,6 +2217,7 @@ input SubmissionUpdateWithoutVenueInput {
   decision: DecisionUpdateOneWithoutSubmissionInput
   id: StringFieldUpdateOperationsInput
   owner: UserUpdateOneWithoutChairSubmissionsInput
+  reviewRequests: ReviewRequestUpdateManyWithoutSubmissionInput
 }
 
 input SubmissionUpsertWithWhereUniqueWithoutArticleInput {
@@ -1877,6 +2243,11 @@ input SubmissionUpsertWithoutDecisionInput {
   update: SubmissionUpdateWithoutDecisionInput!
 }
 
+input SubmissionUpsertWithoutReviewRequestsInput {
+  create: SubmissionCreateWithoutReviewRequestsInput!
+  update: SubmissionUpdateWithoutReviewRequestsInput!
+}
+
 input SubmissionWhereInput {
   AND: [SubmissionWhereInput!]
   NOT: [SubmissionWhereInput!]
@@ -1889,6 +2260,7 @@ input SubmissionWhereInput {
   id: StringFilter
   owner: UserWhereInput
   ownerId: StringNullableFilter
+  reviewRequests: ReviewRequestListRelationFilter
   venue: VenueWhereInput
   venueId: StringFilter
 }
@@ -2086,6 +2458,12 @@ input UserCreateNestedOneWithoutRelationsInput {
   create: UserCreateWithoutRelationsInput
 }
 
+input UserCreateNestedOneWithoutReviewRequestInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutReviewRequestInput
+  create: UserCreateWithoutReviewRequestInput
+}
+
 input UserCreateNestedOneWithoutReviewsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutReviewsInput
@@ -2129,6 +2507,11 @@ input UserCreateOrConnectWithoutRelationsInput {
   where: UserWhereUniqueInput!
 }
 
+input UserCreateOrConnectWithoutReviewRequestInput {
+  create: UserCreateWithoutReviewRequestInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateOrConnectWithoutReviewsInput {
   create: UserCreateWithoutReviewsInput!
   where: UserWhereUniqueInput!
@@ -2145,6 +2528,7 @@ input UserCreateOrConnectWithoutVenueMembershipsInput {
 }
 
 input UserCreateWithoutAuthorshipsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
@@ -2160,6 +2544,7 @@ input UserCreateWithoutAuthorshipsInput {
 }
 
 input UserCreateWithoutChairSubmissionsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutUserInput
   authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   decisions: DecisionCreateNestedManyWithoutAuthorInput
@@ -2175,6 +2560,7 @@ input UserCreateWithoutChairSubmissionsInput {
 }
 
 input UserCreateWithoutDecisionsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutUserInput
   authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
@@ -2190,6 +2576,7 @@ input UserCreateWithoutDecisionsInput {
 }
 
 input UserCreateWithoutRelationsAsTargetInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutUserInput
   authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
@@ -2205,6 +2592,7 @@ input UserCreateWithoutRelationsAsTargetInput {
 }
 
 input UserCreateWithoutRelationsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutUserInput
   authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
@@ -2219,7 +2607,24 @@ input UserCreateWithoutRelationsInput {
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
 }
 
+input UserCreateWithoutReviewRequestInput {
+  authorships: AuthorshipCreateNestedManyWithoutUserInput
+  bio: String
+  chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
+  decisions: DecisionCreateNestedManyWithoutAuthorInput
+  email: String!
+  id: String!
+  name: String!
+  profilePictureUrl: String
+  relations: RelationCreateNestedManyWithoutUserInput
+  relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
+  reviews: ReviewCreateNestedManyWithoutAuthorInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+}
+
 input UserCreateWithoutReviewsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutUserInput
   authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
@@ -2235,6 +2640,7 @@ input UserCreateWithoutReviewsInput {
 }
 
 input UserCreateWithoutThreadMessageInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutUserInput
   authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
@@ -2250,6 +2656,7 @@ input UserCreateWithoutThreadMessageInput {
 }
 
 input UserCreateWithoutVenueMembershipsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutUserInput
   authorships: AuthorshipCreateNestedManyWithoutUserInput
   bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
@@ -2265,6 +2672,7 @@ input UserCreateWithoutVenueMembershipsInput {
 }
 
 input UserUpdateInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutUserInput
   authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
@@ -2312,6 +2720,14 @@ input UserUpdateOneRequiredWithoutRelationsInput {
   upsert: UserUpsertWithoutRelationsInput
 }
 
+input UserUpdateOneRequiredWithoutReviewRequestInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutReviewRequestInput
+  create: UserCreateWithoutReviewRequestInput
+  update: UserUpdateWithoutReviewRequestInput
+  upsert: UserUpsertWithoutReviewRequestInput
+}
+
 input UserUpdateOneRequiredWithoutReviewsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutReviewsInput
@@ -2339,6 +2755,7 @@ input UserUpdateOneWithoutChairSubmissionsInput {
 }
 
 input UserUpdateWithoutAuthorshipsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
@@ -2354,6 +2771,7 @@ input UserUpdateWithoutAuthorshipsInput {
 }
 
 input UserUpdateWithoutChairSubmissionsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutUserInput
   authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   decisions: DecisionUpdateManyWithoutAuthorInput
@@ -2369,6 +2787,7 @@ input UserUpdateWithoutChairSubmissionsInput {
 }
 
 input UserUpdateWithoutDecisionsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutUserInput
   authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
@@ -2384,6 +2803,7 @@ input UserUpdateWithoutDecisionsInput {
 }
 
 input UserUpdateWithoutRelationsAsTargetInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutUserInput
   authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
@@ -2399,6 +2819,7 @@ input UserUpdateWithoutRelationsAsTargetInput {
 }
 
 input UserUpdateWithoutRelationsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutUserInput
   authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
@@ -2413,7 +2834,24 @@ input UserUpdateWithoutRelationsInput {
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
 }
 
+input UserUpdateWithoutReviewRequestInput {
+  authorships: AuthorshipUpdateManyWithoutUserInput
+  bio: StringFieldUpdateOperationsInput
+  chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
+  decisions: DecisionUpdateManyWithoutAuthorInput
+  email: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  profilePictureUrl: NullableStringFieldUpdateOperationsInput
+  relations: RelationUpdateManyWithoutUserInput
+  relationsAsTarget: RelationUpdateManyWithoutTargetInput
+  reviews: ReviewUpdateManyWithoutAuthorInput
+  threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+}
+
 input UserUpdateWithoutReviewsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutUserInput
   authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
@@ -2429,6 +2867,7 @@ input UserUpdateWithoutReviewsInput {
 }
 
 input UserUpdateWithoutVenueMembershipsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutUserInput
   authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
@@ -2468,6 +2907,11 @@ input UserUpsertWithoutRelationsInput {
   update: UserUpdateWithoutRelationsInput!
 }
 
+input UserUpsertWithoutReviewRequestInput {
+  create: UserCreateWithoutReviewRequestInput!
+  update: UserUpdateWithoutReviewRequestInput!
+}
+
 input UserUpsertWithoutReviewsInput {
   create: UserCreateWithoutReviewsInput!
   update: UserUpdateWithoutReviewsInput!
@@ -2482,6 +2926,7 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  ReviewRequest: ReviewRequestListRelationFilter
   authorships: AuthorshipListRelationFilter
   bio: StringFilter
   chairSubmissions: SubmissionListRelationFilter

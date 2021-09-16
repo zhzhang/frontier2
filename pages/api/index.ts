@@ -6,6 +6,7 @@ import Authorship from "@/lib/api/types/authorship";
 import Decision from "@/lib/api/types/decision";
 import Relation, { RelationType } from "@/lib/api/types/relation";
 import Review from "@/lib/api/types/review";
+import ReviewRequest from "@/lib/api/types/reviewRequest";
 import Role from "@/lib/api/types/role";
 import Submission from "@/lib/api/types/submission";
 import ThreadMessage from "@/lib/api/types/thread_message";
@@ -56,6 +57,7 @@ export const schema = makeSchema({
     Venue,
     Submission,
     Review,
+    ReviewRequest,
     Relation,
     RelationType,
     ThreadMessage,

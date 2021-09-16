@@ -1,43 +1,48 @@
-import FirebaseAvatar from "@/components/FirebaseAvatar";
+import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
+import Spinner from "@/components/CenteredSpinner";
+import Layout from "@/components/Layout";
+import ReviewRequestCard from "@/components/review-requests/ReviewRequestCard";
+import SubmissionCard from "@/components/review-requests/SubmissionCard";
+import { USER_CHIP_FIELDS } from "@/components/UserChip";
+import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
-import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import "react-datepicker/dist/react-datepicker.css";
-import Spinner from "../../components/CenteredSpinner";
-import Layout from "../../components/Layout";
-import { withApollo } from "../../lib/apollo";
 
-const UserQuery = gql`
-  query UserQuery($where: UserWhereUniqueInput!) {
-    user(where: $where) {
+const SubmissionsQuery = gql`
+  ${ARTICLE_CARD_FIELDS}
+  ${USER_CHIP_FIELDS}
+  query SubmissionsQuery($where: SubmissionWhereInput!) {
+    submissions(where: $where) {
       id
-      name
-      bio
-      profilePictureUrl
+      article {
+        ...ArticleCardFields
+      }
+      reviewRequests {
+        user {
+          ...UserChipFields
+        }
+      }
     }
   }
 `;
 
-const UserArticlesQuery = gql`
-  query UserArticlesQuery($id: String!) {
-    userArticles(id: $id) {
+const RequestsQuery = gql`
+  ${ARTICLE_CARD_FIELDS}
+  query RequestsQuery($where: ReviewRequestWhereInput!) {
+    reviewRequests(where: $where) {
       id
-      authors {
-        id
-        name
+      article {
+        ...ArticleCardFields
       }
-      title
-      versions {
+      submission {
         id
-        versionNumber
-        abstract
-      }
-      acceptedOrganizations {
-        id
-        name
+        venue {
+          id
+          name
+        }
       }
     }
   }
@@ -57,51 +62,59 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function User() {
-  const classes = useStyles();
-  const router = useRouter();
-  const id = router.query.id;
-  const { loading, error, data } = useQuery(UserQuery, {
-    variables: { where: { id } },
+function Submissions({ id }) {
+  const { loading, error, data } = useQuery(SubmissionsQuery, {
+    variables: { where: { owner: { id: { equals: id } } } },
   });
-  // const articlesResult = useQuery(UserArticlesQuery, {
-  //   variables: { id },
-  // });
-
   if (loading) {
     return <Spinner animation="border" />;
   }
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+  return (
+    <>
+      {data.submissions.map((submission) => (
+        <SubmissionCard submission={submission} />
+      ))}
+    </>
+  );
+}
 
-  const { name, bio, articles, profilePictureUrl } = data.user;
+function ReviewRequests({ id }) {
+  const { loading, error, data } = useQuery(RequestsQuery, {
+    variables: { where: { user: { id: { equals: id } } } },
+  });
+  if (loading) {
+    return <Spinner animation="border" />;
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+  return (
+    <>
+      {data.reviewRequests.map((request) => (
+        <ReviewRequestCard request={request} />
+      ))}
+    </>
+  );
+}
+
+function Root() {
+  const classes = useStyles();
+  const router = useRouter();
+  const id = router.query.id;
+
   const tabKey = "articles";
 
   return (
     <Layout>
-      <div className={classes.header}>
-        <FirebaseAvatar
-          className={classes.avatar}
-          storeRef={profilePictureUrl}
-          name={name}
-        />
-        <div>
-          <Typography variant="h5">{name}</Typography>
-          {bio}
-        </div>
-        <div className={classes.editButton}>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => router.push("/edit-profile")}
-          >
-            Edit
-          </Button>
-        </div>
-      </div>
+      <Typography variant="h4">Meta-Review Requests</Typography>
+      <Submissions id={id} />
+      <Typography variant="h4">Review Requests</Typography>
+      <ReviewRequests id={id} />
     </Layout>
   );
 }
 
-export default withApollo(User);
+export default withApollo(Root);

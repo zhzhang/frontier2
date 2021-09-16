@@ -1,4 +1,4 @@
-import ArticleCard from "@/components/ArticleCard";
+import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import UserChip, { USER_CHIP_FIELDS } from "@/components/UserChip";
 import UserTypeahead from "@/components/UserTypeahead";
 import { useMutation } from "@apollo/react-hooks";
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const AssignOwnerMutation = gql`
+  ${ARTICLE_CARD_FIELDS}
   mutation AssignOwner(
     $where: SubmissionWhereUniqueInput!
     $data: SubmissionUpdateInput!
@@ -49,11 +50,7 @@ const AssignOwnerMutation = gql`
         name
       }
       article {
-        id
-        title
-        versions {
-          abstract
-        }
+        ...ArticleCardFields
       }
     }
   }
@@ -65,7 +62,6 @@ export default function SubmissionCard({ submission, venueId }) {
   const [newOwner, setNewOwner] = useState(owner);
   const [assignOwner, { loading, error, data }] =
     useMutation(AssignOwnerMutation);
-  console.log(owner);
 
   const Assign = () => {
     if (owner) {

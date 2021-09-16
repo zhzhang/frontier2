@@ -1,8 +1,8 @@
 import DecisionCard from "@/components/DecisionCard";
+import Spinner from "@/components/FixedSpinner";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
-import Spinner from "react-bootstrap/Spinner";
 
 const DecisionsQuery = gql`
   query DecisionsQuery($articleId: String!) {
@@ -47,7 +47,7 @@ const Decisions = ({
   const [body, setBody] = useState("Try me!");
   const [previewOpen, setPreviewOpen] = useState(true);
   if (loading) {
-    return <Spinner animation="border" style={{ top: "50%", left: "50%" }} />;
+    return <Spinner />;
   }
   if (error) {
     return <div>{error.message}</div>;

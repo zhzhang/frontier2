@@ -50,6 +50,7 @@ export default objectType({
     });
     t.crud.deleteOneVenueMembership();
     t.crud.updateOneSubmission();
+    t.crud.createOneReviewRequest();
     t.field("createArticle", {
       type: "Article",
       args: {

@@ -6,12 +6,8 @@ const Submission = objectType({
     t.model.id();
     t.model.article();
     t.model.owner();
-    t.list.field("requestedReviewers", {
-      type: "User",
-      resolve: (parent) => {
-        return parent.requestedReviewers;
-      },
-    });
+    t.model.venue();
+    t.model.reviewRequests();
   },
 });
 
