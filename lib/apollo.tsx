@@ -1,9 +1,8 @@
 import Spinner from "@/components/FixedSpinner";
 import { auth, useAuth } from "@/lib/firebase";
-import { InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { ApolloClient } from "apollo-client";
 import { createUploadLink } from "apollo-upload-client";
 import React from "react";
 
@@ -73,7 +72,19 @@ function initApolloClient(initialState) {
  * @param  {Object} [initialState={}]
  */
 function createApolloClient(initialState = {}) {
-  const cache = new InMemoryCache().restore(initialState);
+  const cache = new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          selectedVersion: {
+            read() {
+              return makeVar(true)();
+            },
+          },
+        },
+      },
+    },
+  }).restore(initialState);
   const authLink = setContext(async (_, { headers }) => {
     const user = auth().currentUser;
     const token = user == null ? "" : await auth().currentUser.getIdToken();

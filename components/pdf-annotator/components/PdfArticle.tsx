@@ -197,7 +197,7 @@ export default class PdfArticle extends React.Component {
   }
 
   componentDidMount() {
-    const { document, setViewer } = this.props;
+    const { document } = this.props;
 
     this.viewer =
       this.viewer ||

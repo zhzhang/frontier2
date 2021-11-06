@@ -45,6 +45,7 @@ const ArticleQuery = gql`
         createdAt
       }
     }
+    selectedVersion @client
   }
 `;
 
@@ -130,7 +131,7 @@ function Article() {
     );
   }
 
-  const { title, authors, versions, acceptedOrganizations } = data.article;
+  const { title, authors, versions } = data.article;
   const selectedVersion =
     selectedVersionNumber === -1
       ? versions[0]

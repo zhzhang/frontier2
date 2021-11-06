@@ -1188,7 +1188,7 @@ export interface NexusGenInputs {
     id?: string | null; // String
     status: string; // String!
     submission?: NexusGenInputs['SubmissionCreateNestedOneWithoutReviewRequestsInput'] | null; // SubmissionCreateNestedOneWithoutReviewRequestsInput
-    user: NexusGenInputs['UserCreateNestedOneWithoutReviewRequestInput']; // UserCreateNestedOneWithoutReviewRequestInput!
+    user: NexusGenInputs['UserCreateNestedOneWithoutReviewRequestsInput']; // UserCreateNestedOneWithoutReviewRequestsInput!
   }
   ReviewRequestCreateManyArticleInput: { // input type
     id?: string | null; // String
@@ -1254,13 +1254,13 @@ export interface NexusGenInputs {
     id?: string | null; // String
     status: string; // String!
     submission?: NexusGenInputs['SubmissionCreateNestedOneWithoutReviewRequestsInput'] | null; // SubmissionCreateNestedOneWithoutReviewRequestsInput
-    user: NexusGenInputs['UserCreateNestedOneWithoutReviewRequestInput']; // UserCreateNestedOneWithoutReviewRequestInput!
+    user: NexusGenInputs['UserCreateNestedOneWithoutReviewRequestsInput']; // UserCreateNestedOneWithoutReviewRequestsInput!
   }
   ReviewRequestCreateWithoutSubmissionInput: { // input type
     article: NexusGenInputs['ArticleCreateNestedOneWithoutReviewRequestInput']; // ArticleCreateNestedOneWithoutReviewRequestInput!
     id?: string | null; // String
     status: string; // String!
-    user: NexusGenInputs['UserCreateNestedOneWithoutReviewRequestInput']; // UserCreateNestedOneWithoutReviewRequestInput!
+    user: NexusGenInputs['UserCreateNestedOneWithoutReviewRequestsInput']; // UserCreateNestedOneWithoutReviewRequestsInput!
   }
   ReviewRequestCreateWithoutUserInput: { // input type
     article: NexusGenInputs['ArticleCreateNestedOneWithoutReviewRequestInput']; // ArticleCreateNestedOneWithoutReviewRequestInput!
@@ -1354,13 +1354,13 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     status?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     submission?: NexusGenInputs['SubmissionUpdateOneWithoutReviewRequestsInput'] | null; // SubmissionUpdateOneWithoutReviewRequestsInput
-    user?: NexusGenInputs['UserUpdateOneRequiredWithoutReviewRequestInput'] | null; // UserUpdateOneRequiredWithoutReviewRequestInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutReviewRequestsInput'] | null; // UserUpdateOneRequiredWithoutReviewRequestsInput
   }
   ReviewRequestUpdateWithoutSubmissionInput: { // input type
     article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutReviewRequestInput'] | null; // ArticleUpdateOneRequiredWithoutReviewRequestInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     status?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    user?: NexusGenInputs['UserUpdateOneRequiredWithoutReviewRequestInput'] | null; // UserUpdateOneRequiredWithoutReviewRequestInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutReviewRequestsInput'] | null; // UserUpdateOneRequiredWithoutReviewRequestsInput
   }
   ReviewRequestUpdateWithoutUserInput: { // input type
     article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutReviewRequestInput'] | null; // ArticleUpdateOneRequiredWithoutReviewRequestInput
@@ -2043,10 +2043,10 @@ export interface NexusGenInputs {
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutRelationsInput'] | null; // UserCreateOrConnectWithoutRelationsInput
     create?: NexusGenInputs['UserCreateWithoutRelationsInput'] | null; // UserCreateWithoutRelationsInput
   }
-  UserCreateNestedOneWithoutReviewRequestInput: { // input type
+  UserCreateNestedOneWithoutReviewRequestsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutReviewRequestInput'] | null; // UserCreateOrConnectWithoutReviewRequestInput
-    create?: NexusGenInputs['UserCreateWithoutReviewRequestInput'] | null; // UserCreateWithoutReviewRequestInput
+    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutReviewRequestsInput'] | null; // UserCreateOrConnectWithoutReviewRequestsInput
+    create?: NexusGenInputs['UserCreateWithoutReviewRequestsInput'] | null; // UserCreateWithoutReviewRequestsInput
   }
   UserCreateNestedOneWithoutReviewsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
@@ -2083,8 +2083,8 @@ export interface NexusGenInputs {
     create: NexusGenInputs['UserCreateWithoutRelationsInput']; // UserCreateWithoutRelationsInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
-  UserCreateOrConnectWithoutReviewRequestInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutReviewRequestInput']; // UserCreateWithoutReviewRequestInput!
+  UserCreateOrConnectWithoutReviewRequestsInput: { // input type
+    create: NexusGenInputs['UserCreateWithoutReviewRequestsInput']; // UserCreateWithoutReviewRequestsInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
   UserCreateOrConnectWithoutReviewsInput: { // input type
@@ -2100,7 +2100,6 @@ export interface NexusGenInputs {
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
   UserCreateWithoutAuthorshipsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
     decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
@@ -2110,12 +2109,12 @@ export interface NexusGenInputs {
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
   UserCreateWithoutChairSubmissionsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
@@ -2125,12 +2124,12 @@ export interface NexusGenInputs {
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
   UserCreateWithoutDecisionsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
@@ -2140,12 +2139,12 @@ export interface NexusGenInputs {
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
   UserCreateWithoutRelationsAsTargetInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
@@ -2155,12 +2154,12 @@ export interface NexusGenInputs {
     name: string; // String!
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
+    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
   UserCreateWithoutRelationsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
@@ -2170,11 +2169,12 @@ export interface NexusGenInputs {
     name: string; // String!
     profilePictureUrl?: string | null; // String
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
-  UserCreateWithoutReviewRequestInput: { // input type
+  UserCreateWithoutReviewRequestsInput: { // input type
     authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
@@ -2190,7 +2190,6 @@ export interface NexusGenInputs {
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
   UserCreateWithoutReviewsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
@@ -2201,11 +2200,11 @@ export interface NexusGenInputs {
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
   UserCreateWithoutThreadMessageInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
@@ -2216,11 +2215,11 @@ export interface NexusGenInputs {
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
   }
   UserCreateWithoutVenueMembershipsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     bio?: string | null; // String
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
@@ -2231,11 +2230,11 @@ export interface NexusGenInputs {
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
   }
   UserUpdateInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
@@ -2246,6 +2245,7 @@ export interface NexusGenInputs {
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
@@ -2278,12 +2278,12 @@ export interface NexusGenInputs {
     update?: NexusGenInputs['UserUpdateWithoutRelationsInput'] | null; // UserUpdateWithoutRelationsInput
     upsert?: NexusGenInputs['UserUpsertWithoutRelationsInput'] | null; // UserUpsertWithoutRelationsInput
   }
-  UserUpdateOneRequiredWithoutReviewRequestInput: { // input type
+  UserUpdateOneRequiredWithoutReviewRequestsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutReviewRequestInput'] | null; // UserCreateOrConnectWithoutReviewRequestInput
-    create?: NexusGenInputs['UserCreateWithoutReviewRequestInput'] | null; // UserCreateWithoutReviewRequestInput
-    update?: NexusGenInputs['UserUpdateWithoutReviewRequestInput'] | null; // UserUpdateWithoutReviewRequestInput
-    upsert?: NexusGenInputs['UserUpsertWithoutReviewRequestInput'] | null; // UserUpsertWithoutReviewRequestInput
+    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutReviewRequestsInput'] | null; // UserCreateOrConnectWithoutReviewRequestsInput
+    create?: NexusGenInputs['UserCreateWithoutReviewRequestsInput'] | null; // UserCreateWithoutReviewRequestsInput
+    update?: NexusGenInputs['UserUpdateWithoutReviewRequestsInput'] | null; // UserUpdateWithoutReviewRequestsInput
+    upsert?: NexusGenInputs['UserUpsertWithoutReviewRequestsInput'] | null; // UserUpsertWithoutReviewRequestsInput
   }
   UserUpdateOneRequiredWithoutReviewsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
@@ -2309,7 +2309,6 @@ export interface NexusGenInputs {
     upsert?: NexusGenInputs['UserUpsertWithoutChairSubmissionsInput'] | null; // UserUpsertWithoutChairSubmissionsInput
   }
   UserUpdateWithoutAuthorshipsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
     decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
@@ -2319,12 +2318,12 @@ export interface NexusGenInputs {
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
   }
   UserUpdateWithoutChairSubmissionsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
@@ -2334,12 +2333,12 @@ export interface NexusGenInputs {
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
   }
   UserUpdateWithoutDecisionsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
@@ -2349,12 +2348,12 @@ export interface NexusGenInputs {
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
   }
   UserUpdateWithoutRelationsAsTargetInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
@@ -2364,12 +2363,12 @@ export interface NexusGenInputs {
     name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
+    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
   }
   UserUpdateWithoutRelationsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
@@ -2379,11 +2378,12 @@ export interface NexusGenInputs {
     name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
   }
-  UserUpdateWithoutReviewRequestInput: { // input type
+  UserUpdateWithoutReviewRequestsInput: { // input type
     authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
@@ -2399,7 +2399,6 @@ export interface NexusGenInputs {
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
   }
   UserUpdateWithoutReviewsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
@@ -2410,11 +2409,11 @@ export interface NexusGenInputs {
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
   }
   UserUpdateWithoutVenueMembershipsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     bio?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
@@ -2425,6 +2424,7 @@ export interface NexusGenInputs {
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
+    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
     threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
   }
@@ -2448,9 +2448,9 @@ export interface NexusGenInputs {
     create: NexusGenInputs['UserCreateWithoutRelationsInput']; // UserCreateWithoutRelationsInput!
     update: NexusGenInputs['UserUpdateWithoutRelationsInput']; // UserUpdateWithoutRelationsInput!
   }
-  UserUpsertWithoutReviewRequestInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutReviewRequestInput']; // UserCreateWithoutReviewRequestInput!
-    update: NexusGenInputs['UserUpdateWithoutReviewRequestInput']; // UserUpdateWithoutReviewRequestInput!
+  UserUpsertWithoutReviewRequestsInput: { // input type
+    create: NexusGenInputs['UserCreateWithoutReviewRequestsInput']; // UserCreateWithoutReviewRequestsInput!
+    update: NexusGenInputs['UserUpdateWithoutReviewRequestsInput']; // UserUpdateWithoutReviewRequestsInput!
   }
   UserUpsertWithoutReviewsInput: { // input type
     create: NexusGenInputs['UserCreateWithoutReviewsInput']; // UserCreateWithoutReviewsInput!
@@ -2464,7 +2464,6 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
-    ReviewRequest?: NexusGenInputs['ReviewRequestListRelationFilter'] | null; // ReviewRequestListRelationFilter
     authorships?: NexusGenInputs['AuthorshipListRelationFilter'] | null; // AuthorshipListRelationFilter
     bio?: NexusGenInputs['StringFilter'] | null; // StringFilter
     chairSubmissions?: NexusGenInputs['SubmissionListRelationFilter'] | null; // SubmissionListRelationFilter
@@ -2475,6 +2474,7 @@ export interface NexusGenInputs {
     profilePictureUrl?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     relations?: NexusGenInputs['RelationListRelationFilter'] | null; // RelationListRelationFilter
     relationsAsTarget?: NexusGenInputs['RelationListRelationFilter'] | null; // RelationListRelationFilter
+    reviewRequests?: NexusGenInputs['ReviewRequestListRelationFilter'] | null; // ReviewRequestListRelationFilter
     reviews?: NexusGenInputs['ReviewListRelationFilter'] | null; // ReviewListRelationFilter
     threadMessage?: NexusGenInputs['ThreadMessageListRelationFilter'] | null; // ThreadMessageListRelationFilter
     venueMemberships?: NexusGenInputs['VenueMembershipListRelationFilter'] | null; // VenueMembershipListRelationFilter

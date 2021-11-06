@@ -27,7 +27,6 @@
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@material-ui/pickers": "^3.3.10",
     "@prisma/client": "^2.23.0",
-    "apollo-client": "^2.6.10",
     "apollo-link-schema": "1.2.5",
     "apollo-server-micro": "^2.25.0",
     "apollo-upload-client": "^14.1.3",
