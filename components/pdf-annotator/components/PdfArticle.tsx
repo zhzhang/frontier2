@@ -1,5 +1,4 @@
 import _ from "lodash";
-import debounce from "lodash.debounce";
 import * as pdfjsWeb from "pdfjs-dist/web/pdf_viewer";
 import "pdfjs-dist/web/pdf_viewer.css";
 import React from "react";
@@ -184,7 +183,7 @@ export default class PdfArticle extends React.Component {
     );
   };
 
-  debouncedAfterSelection = debounce(this.afterSelection, 500);
+  debouncedAfterSelection = _.debounce(this.afterSelection, 500);
 
   setTip(position, inner) {
     this.setState(

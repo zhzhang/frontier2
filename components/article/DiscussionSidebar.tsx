@@ -23,7 +23,7 @@ const DiscussionSidebar = ({
   const classes = useStyles();
   const router = useRouter();
   const reviewId = router.query.reviewId;
-  const [view, setView] = useState(1);
+  const [view, setView] = useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setView(newValue);
@@ -51,6 +51,7 @@ const DiscussionSidebar = ({
         );
     }
   };
+
   return (
     <div className={classes.margin}>
       <Tabs
@@ -69,13 +70,6 @@ const DiscussionSidebar = ({
       </div>
     </div>
   );
-  // <LinkedReview
-  //   articleId={articleId}
-  //   articleVersion={articleVersion}
-  //   highlights={highlights}
-  //   updateArticleAndScroll={updateArticleAndScroll}
-  //   reviewId={reviewId}
-  // />
 };
 
 export default DiscussionSidebar;

@@ -7,10 +7,9 @@ const Review = objectType({
     t.model.body();
     t.model.highlights();
     t.model.rating();
-    t.model.reviewNumber();
+    t.model.publishTimestamp();
     t.model.published();
     t.model.author();
-    t.model.venue();
   },
 });
 

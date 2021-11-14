@@ -69,7 +69,7 @@ const Review = ({
         <div>
           <AuthorPopover user={review.author} />
           <Markdown
-            highlights={JSON.parse(highlights)}
+            highlights={highlights}
             updateArticleAndScroll={updateArticleAndScroll}
           >
             {body}

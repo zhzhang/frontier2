@@ -607,7 +607,7 @@ input DecisionCreateManyArticleInput {
   authorId: String!
   body: String!
   decision: Boolean
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
   venueId: String!
@@ -622,7 +622,7 @@ input DecisionCreateManyAuthorInput {
   articleId: String!
   body: String!
   decision: Boolean
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
   venueId: String!
@@ -638,7 +638,7 @@ input DecisionCreateManyVenueInput {
   authorId: String!
   body: String!
   decision: Boolean
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
 }
@@ -699,7 +699,7 @@ input DecisionCreateWithoutArticleInput {
   author: UserCreateNestedOneWithoutDecisionsInput!
   body: String!
   decision: Boolean
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
   submission: SubmissionCreateNestedOneWithoutDecisionInput
@@ -710,7 +710,7 @@ input DecisionCreateWithoutAuthorInput {
   article: ArticleCreateNestedOneWithoutDecisionsInput!
   body: String!
   decision: Boolean
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
   submission: SubmissionCreateNestedOneWithoutDecisionInput
@@ -722,7 +722,7 @@ input DecisionCreateWithoutSubmissionInput {
   author: UserCreateNestedOneWithoutDecisionsInput!
   body: String!
   decision: Boolean
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
   venue: VenueCreateNestedOneWithoutDecisionsInput!
@@ -733,7 +733,7 @@ input DecisionCreateWithoutVenueInput {
   author: UserCreateNestedOneWithoutDecisionsInput!
   body: String!
   decision: Boolean
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
   submission: SubmissionCreateNestedOneWithoutDecisionInput
@@ -753,7 +753,6 @@ input DecisionScalarWhereInput {
   authorId: StringFilter
   body: StringFilter
   decision: BoolFilter
-  highlights: StringFilter
   id: StringFilter
   published: BoolFilter
   venueId: StringFilter
@@ -762,7 +761,7 @@ input DecisionScalarWhereInput {
 input DecisionUpdateManyMutationInput {
   body: StringFieldUpdateOperationsInput
   decision: BoolFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
 }
@@ -853,7 +852,7 @@ input DecisionUpdateWithoutArticleInput {
   author: UserUpdateOneRequiredWithoutDecisionsInput
   body: StringFieldUpdateOperationsInput
   decision: BoolFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
   submission: SubmissionUpdateOneWithoutDecisionInput
@@ -864,7 +863,7 @@ input DecisionUpdateWithoutAuthorInput {
   article: ArticleUpdateOneRequiredWithoutDecisionsInput
   body: StringFieldUpdateOperationsInput
   decision: BoolFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
   submission: SubmissionUpdateOneWithoutDecisionInput
@@ -876,7 +875,7 @@ input DecisionUpdateWithoutSubmissionInput {
   author: UserUpdateOneRequiredWithoutDecisionsInput
   body: StringFieldUpdateOperationsInput
   decision: BoolFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
   venue: VenueUpdateOneRequiredWithoutDecisionsInput
@@ -887,7 +886,7 @@ input DecisionUpdateWithoutVenueInput {
   author: UserUpdateOneRequiredWithoutDecisionsInput
   body: StringFieldUpdateOperationsInput
   decision: BoolFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
   submission: SubmissionUpdateOneWithoutDecisionInput
@@ -926,7 +925,6 @@ input DecisionWhereInput {
   authorId: StringFilter
   body: StringFilter
   decision: BoolFilter
-  highlights: StringFilter
   id: StringFilter
   published: BoolFilter
   submission: SubmissionWhereInput
@@ -968,20 +966,22 @@ input IntFilter {
   notIn: [Int!]
 }
 
+scalar Json
+
 type Mutation {
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createOneRelation(data: RelationCreateInput!): Relation!
+  createOneReview(data: ReviewCreateInput!): Review!
   createOneReviewRequest(data: ReviewRequestCreateInput!): ReviewRequest!
   createOneThreadMessage(data: ThreadMessageCreateInput!): ThreadMessage!
   createOneVenue(data: VenueCreateInput!): Venue!
   createOneVenueMembership(data: VenueMembershipCreateInput!): VenueMembership!
-  createReview(articleId: String!, submissionId: String): Review
   deleteOneRelation(where: RelationWhereUniqueInput!): Relation
   deleteOneVenueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
   updateOneSubmission(data: SubmissionUpdateInput!, where: SubmissionWhereUniqueInput!): Submission
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateOneVenue(data: VenueUpdateInput!, where: VenueWhereUniqueInput!): Venue
-  updateReview(body: String!, id: String!, published: Boolean!, rating: Int!): Review
+  upsertOneThreadMessage(create: ThreadMessageCreateInput!, update: ThreadMessageUpdateInput!, where: ThreadMessageWhereUniqueInput!): ThreadMessage!
 }
 
 input NestedBoolFilter {
@@ -1071,7 +1071,6 @@ type Query {
   articles(after: ArticleWhereUniqueInput, before: ArticleWhereUniqueInput, first: Int, last: Int, where: ArticleWhereInput): [Article!]!
   authorships(after: AuthorshipWhereUniqueInput, before: AuthorshipWhereUniqueInput, first: Int, last: Int, where: AuthorshipWhereInput): [Authorship!]!
   decisions(after: DecisionWhereUniqueInput, before: DecisionWhereUniqueInput, first: Int, last: Int, where: DecisionWhereInput): [Decision!]!
-  review(reviewId: String!): Review
   reviewRequests(after: ReviewRequestWhereUniqueInput, before: ReviewRequestWhereUniqueInput, first: Int, last: Int, where: ReviewRequestWhereInput): [ReviewRequest!]!
   reviewerAssignedSubmissions: [Submission]
   reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, where: ReviewWhereInput): [Review!]!
@@ -1081,6 +1080,7 @@ type Query {
   submissions(after: SubmissionWhereUniqueInput, before: SubmissionWhereUniqueInput, first: Int, last: Int, where: SubmissionWhereInput): [Submission!]!
   threadMessages(after: ThreadMessageWhereUniqueInput, before: ThreadMessageWhereUniqueInput, first: Int, last: Int, where: ThreadMessageWhereInput): [ThreadMessage!]!
   user(where: UserWhereUniqueInput!): User
+  userReview(articleId: String!, userId: String!): Review
   venue(where: VenueWhereUniqueInput!): Venue
   venueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
   venueMemberships(after: VenueMembershipWhereUniqueInput, before: VenueMembershipWhereUniqueInput, first: Int, last: Int, where: VenueMembershipWhereInput): [VenueMembership!]!
@@ -1290,24 +1290,34 @@ input RelationWhereUniqueInput {
 type Review {
   author: User!
   body: String!
-  highlights: String!
+  highlights: Json!
   id: String!
+  publishTimestamp: DateTime
   published: Boolean!
   rating: Int!
-  reviewNumber: Int!
-  venue: Venue
+}
+
+input ReviewCreateInput {
+  anonymized: Boolean
+  article: ArticleCreateNestedOneWithoutReviewsInput!
+  author: UserCreateNestedOneWithoutReviewsInput!
+  body: String!
+  highlights: Json!
+  id: String
+  publishTimestamp: DateTime
+  published: Boolean
+  rating: Int
 }
 
 input ReviewCreateManyArticleInput {
   anonymized: Boolean
   authorId: String!
   body: String!
-  highlights: String!
+  highlights: Json!
   id: String
+  publishTimestamp: DateTime
   published: Boolean
   rating: Int
-  reviewNumber: Int!
-  venueId: String
 }
 
 input ReviewCreateManyArticleInputEnvelope {
@@ -1319,33 +1329,15 @@ input ReviewCreateManyAuthorInput {
   anonymized: Boolean
   articleId: String!
   body: String!
-  highlights: String!
+  highlights: Json!
   id: String
+  publishTimestamp: DateTime
   published: Boolean
   rating: Int
-  reviewNumber: Int!
-  venueId: String
 }
 
 input ReviewCreateManyAuthorInputEnvelope {
   data: [ReviewCreateManyAuthorInput!]
-  skipDuplicates: Boolean
-}
-
-input ReviewCreateManyVenueInput {
-  anonymized: Boolean
-  articleId: String!
-  authorId: String!
-  body: String!
-  highlights: String!
-  id: String
-  published: Boolean
-  rating: Int
-  reviewNumber: Int!
-}
-
-input ReviewCreateManyVenueInputEnvelope {
-  data: [ReviewCreateManyVenueInput!]
   skipDuplicates: Boolean
 }
 
@@ -1363,13 +1355,6 @@ input ReviewCreateNestedManyWithoutAuthorInput {
   createMany: ReviewCreateManyAuthorInputEnvelope
 }
 
-input ReviewCreateNestedManyWithoutVenueInput {
-  connect: [ReviewWhereUniqueInput!]
-  connectOrCreate: [ReviewCreateOrConnectWithoutVenueInput!]
-  create: [ReviewCreateWithoutVenueInput!]
-  createMany: ReviewCreateManyVenueInputEnvelope
-}
-
 input ReviewCreateOrConnectWithoutArticleInput {
   create: ReviewCreateWithoutArticleInput!
   where: ReviewWhereUniqueInput!
@@ -1380,45 +1365,26 @@ input ReviewCreateOrConnectWithoutAuthorInput {
   where: ReviewWhereUniqueInput!
 }
 
-input ReviewCreateOrConnectWithoutVenueInput {
-  create: ReviewCreateWithoutVenueInput!
-  where: ReviewWhereUniqueInput!
-}
-
 input ReviewCreateWithoutArticleInput {
   anonymized: Boolean
   author: UserCreateNestedOneWithoutReviewsInput!
   body: String!
-  highlights: String!
+  highlights: Json!
   id: String
+  publishTimestamp: DateTime
   published: Boolean
   rating: Int
-  reviewNumber: Int!
-  venue: VenueCreateNestedOneWithoutReviewsInput
 }
 
 input ReviewCreateWithoutAuthorInput {
   anonymized: Boolean
   article: ArticleCreateNestedOneWithoutReviewsInput!
   body: String!
-  highlights: String!
+  highlights: Json!
   id: String
+  publishTimestamp: DateTime
   published: Boolean
   rating: Int
-  reviewNumber: Int!
-  venue: VenueCreateNestedOneWithoutReviewsInput
-}
-
-input ReviewCreateWithoutVenueInput {
-  anonymized: Boolean
-  article: ArticleCreateNestedOneWithoutReviewsInput!
-  author: UserCreateNestedOneWithoutReviewsInput!
-  body: String!
-  highlights: String!
-  id: String
-  published: Boolean
-  rating: Int
-  reviewNumber: Int!
 }
 
 input ReviewListRelationFilter {
@@ -1695,22 +1661,20 @@ input ReviewScalarWhereInput {
   articleId: StringFilter
   authorId: StringFilter
   body: StringFilter
-  highlights: StringFilter
   id: StringFilter
+  publishTimestamp: DateTimeNullableFilter
   published: BoolFilter
   rating: IntFilter
-  reviewNumber: IntFilter
-  venueId: StringNullableFilter
 }
 
 input ReviewUpdateManyMutationInput {
   anonymized: BoolFieldUpdateOperationsInput
   body: StringFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
+  publishTimestamp: NullableDateTimeFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
   rating: IntFieldUpdateOperationsInput
-  reviewNumber: IntFieldUpdateOperationsInput
 }
 
 input ReviewUpdateManyWithWhereWithoutArticleInput {
@@ -1719,11 +1683,6 @@ input ReviewUpdateManyWithWhereWithoutArticleInput {
 }
 
 input ReviewUpdateManyWithWhereWithoutAuthorInput {
-  data: ReviewUpdateManyMutationInput!
-  where: ReviewScalarWhereInput!
-}
-
-input ReviewUpdateManyWithWhereWithoutVenueInput {
   data: ReviewUpdateManyMutationInput!
   where: ReviewScalarWhereInput!
 }
@@ -1756,20 +1715,6 @@ input ReviewUpdateManyWithoutAuthorInput {
   upsert: [ReviewUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
-input ReviewUpdateManyWithoutVenueInput {
-  connect: [ReviewWhereUniqueInput!]
-  connectOrCreate: [ReviewCreateOrConnectWithoutVenueInput!]
-  create: [ReviewCreateWithoutVenueInput!]
-  createMany: ReviewCreateManyVenueInputEnvelope
-  delete: [ReviewWhereUniqueInput!]
-  deleteMany: [ReviewScalarWhereInput!]
-  disconnect: [ReviewWhereUniqueInput!]
-  set: [ReviewWhereUniqueInput!]
-  update: [ReviewUpdateWithWhereUniqueWithoutVenueInput!]
-  updateMany: [ReviewUpdateManyWithWhereWithoutVenueInput!]
-  upsert: [ReviewUpsertWithWhereUniqueWithoutVenueInput!]
-}
-
 input ReviewUpdateWithWhereUniqueWithoutArticleInput {
   data: ReviewUpdateWithoutArticleInput!
   where: ReviewWhereUniqueInput!
@@ -1780,45 +1725,26 @@ input ReviewUpdateWithWhereUniqueWithoutAuthorInput {
   where: ReviewWhereUniqueInput!
 }
 
-input ReviewUpdateWithWhereUniqueWithoutVenueInput {
-  data: ReviewUpdateWithoutVenueInput!
-  where: ReviewWhereUniqueInput!
-}
-
 input ReviewUpdateWithoutArticleInput {
   anonymized: BoolFieldUpdateOperationsInput
   author: UserUpdateOneRequiredWithoutReviewsInput
   body: StringFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
+  publishTimestamp: NullableDateTimeFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
   rating: IntFieldUpdateOperationsInput
-  reviewNumber: IntFieldUpdateOperationsInput
-  venue: VenueUpdateOneWithoutReviewsInput
 }
 
 input ReviewUpdateWithoutAuthorInput {
   anonymized: BoolFieldUpdateOperationsInput
   article: ArticleUpdateOneRequiredWithoutReviewsInput
   body: StringFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
+  publishTimestamp: NullableDateTimeFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
   rating: IntFieldUpdateOperationsInput
-  reviewNumber: IntFieldUpdateOperationsInput
-  venue: VenueUpdateOneWithoutReviewsInput
-}
-
-input ReviewUpdateWithoutVenueInput {
-  anonymized: BoolFieldUpdateOperationsInput
-  article: ArticleUpdateOneRequiredWithoutReviewsInput
-  author: UserUpdateOneRequiredWithoutReviewsInput
-  body: StringFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  published: BoolFieldUpdateOperationsInput
-  rating: IntFieldUpdateOperationsInput
-  reviewNumber: IntFieldUpdateOperationsInput
 }
 
 input ReviewUpsertWithWhereUniqueWithoutArticleInput {
@@ -1833,12 +1759,6 @@ input ReviewUpsertWithWhereUniqueWithoutAuthorInput {
   where: ReviewWhereUniqueInput!
 }
 
-input ReviewUpsertWithWhereUniqueWithoutVenueInput {
-  create: ReviewCreateWithoutVenueInput!
-  update: ReviewUpdateWithoutVenueInput!
-  where: ReviewWhereUniqueInput!
-}
-
 input ReviewWhereInput {
   AND: [ReviewWhereInput!]
   NOT: [ReviewWhereInput!]
@@ -1849,13 +1769,10 @@ input ReviewWhereInput {
   author: UserWhereInput
   authorId: StringFilter
   body: StringFilter
-  highlights: StringFilter
   id: StringFilter
+  publishTimestamp: DateTimeNullableFilter
   published: BoolFilter
   rating: IntFilter
-  reviewNumber: IntFilter
-  venue: VenueWhereInput
-  venueId: StringNullableFilter
 }
 
 input ReviewWhereUniqueInput {
@@ -2266,6 +2183,7 @@ input SubmissionWhereInput {
 }
 
 input SubmissionWhereUniqueInput {
+  decisionId: String
   id: String
 }
 
@@ -2273,7 +2191,7 @@ type ThreadMessage {
   author: User!
   body: String!
   createdAt: DateTime!
-  highlights: String!
+  highlights: Json!
   id: String!
 }
 
@@ -2283,7 +2201,7 @@ input ThreadMessageCreateInput {
   body: String!
   createdAt: DateTime
   headId: String
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
 }
@@ -2293,7 +2211,7 @@ input ThreadMessageCreateManyAuthorInput {
   body: String!
   createdAt: DateTime
   headId: String
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
 }
@@ -2320,7 +2238,7 @@ input ThreadMessageCreateWithoutAuthorInput {
   body: String!
   createdAt: DateTime
   headId: String
-  highlights: String!
+  highlights: Json!
   id: String
   published: Boolean
 }
@@ -2340,9 +2258,19 @@ input ThreadMessageScalarWhereInput {
   body: StringFilter
   createdAt: DateTimeFilter
   headId: StringNullableFilter
-  highlights: StringFilter
   id: StringFilter
   published: BoolFilter
+}
+
+input ThreadMessageUpdateInput {
+  articleId: StringFieldUpdateOperationsInput
+  author: UserUpdateOneRequiredWithoutThreadMessageInput
+  body: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  headId: NullableStringFieldUpdateOperationsInput
+  highlights: Json
+  id: StringFieldUpdateOperationsInput
+  published: BoolFieldUpdateOperationsInput
 }
 
 input ThreadMessageUpdateManyMutationInput {
@@ -2350,7 +2278,7 @@ input ThreadMessageUpdateManyMutationInput {
   body: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   headId: NullableStringFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
 }
@@ -2384,7 +2312,7 @@ input ThreadMessageUpdateWithoutAuthorInput {
   body: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   headId: NullableStringFieldUpdateOperationsInput
-  highlights: StringFieldUpdateOperationsInput
+  highlights: Json
   id: StringFieldUpdateOperationsInput
   published: BoolFieldUpdateOperationsInput
 }
@@ -2405,7 +2333,6 @@ input ThreadMessageWhereInput {
   body: StringFilter
   createdAt: DateTimeFilter
   headId: StringNullableFilter
-  highlights: StringFilter
   id: StringFilter
   published: BoolFilter
 }
@@ -2736,6 +2663,14 @@ input UserUpdateOneRequiredWithoutReviewsInput {
   upsert: UserUpsertWithoutReviewsInput
 }
 
+input UserUpdateOneRequiredWithoutThreadMessageInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutThreadMessageInput
+  create: UserCreateWithoutThreadMessageInput
+  update: UserUpdateWithoutThreadMessageInput
+  upsert: UserUpsertWithoutThreadMessageInput
+}
+
 input UserUpdateOneRequiredWithoutVenueMembershipsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutVenueMembershipsInput
@@ -2866,6 +2801,22 @@ input UserUpdateWithoutReviewsInput {
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
 }
 
+input UserUpdateWithoutThreadMessageInput {
+  authorships: AuthorshipUpdateManyWithoutUserInput
+  bio: StringFieldUpdateOperationsInput
+  chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
+  decisions: DecisionUpdateManyWithoutAuthorInput
+  email: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  profilePictureUrl: NullableStringFieldUpdateOperationsInput
+  relations: RelationUpdateManyWithoutUserInput
+  relationsAsTarget: RelationUpdateManyWithoutTargetInput
+  reviewRequests: ReviewRequestUpdateManyWithoutUserInput
+  reviews: ReviewUpdateManyWithoutAuthorInput
+  venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+}
+
 input UserUpdateWithoutVenueMembershipsInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
   bio: StringFieldUpdateOperationsInput
@@ -2915,6 +2866,11 @@ input UserUpsertWithoutReviewRequestsInput {
 input UserUpsertWithoutReviewsInput {
   create: UserCreateWithoutReviewsInput!
   update: UserUpdateWithoutReviewsInput!
+}
+
+input UserUpsertWithoutThreadMessageInput {
+  create: UserCreateWithoutThreadMessageInput!
+  update: UserUpdateWithoutThreadMessageInput!
 }
 
 input UserUpsertWithoutVenueMembershipsInput {
@@ -2968,7 +2924,6 @@ input VenueCreateInput {
   logoRef: String
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
-  reviews: ReviewCreateNestedManyWithoutVenueInput
   submissionDeadline: DateTime
   submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
@@ -2988,12 +2943,6 @@ input VenueCreateNestedOneWithoutMembershipsInput {
   create: VenueCreateWithoutMembershipsInput
 }
 
-input VenueCreateNestedOneWithoutReviewsInput {
-  connect: VenueWhereUniqueInput
-  connectOrCreate: VenueCreateOrConnectWithoutReviewsInput
-  create: VenueCreateWithoutReviewsInput
-}
-
 input VenueCreateNestedOneWithoutSubmissionsInput {
   connect: VenueWhereUniqueInput
   connectOrCreate: VenueCreateOrConnectWithoutSubmissionsInput
@@ -3010,11 +2959,6 @@ input VenueCreateOrConnectWithoutMembershipsInput {
   where: VenueWhereUniqueInput!
 }
 
-input VenueCreateOrConnectWithoutReviewsInput {
-  create: VenueCreateWithoutReviewsInput!
-  where: VenueWhereUniqueInput!
-}
-
 input VenueCreateOrConnectWithoutSubmissionsInput {
   create: VenueCreateWithoutSubmissionsInput!
   where: VenueWhereUniqueInput!
@@ -3027,7 +2971,6 @@ input VenueCreateWithoutDecisionsInput {
   logoRef: String
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
-  reviews: ReviewCreateNestedManyWithoutVenueInput
   submissionDeadline: DateTime
   submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
@@ -3041,22 +2984,6 @@ input VenueCreateWithoutMembershipsInput {
   description: String!
   id: String
   logoRef: String
-  name: String!
-  reviews: ReviewCreateNestedManyWithoutVenueInput
-  submissionDeadline: DateTime
-  submissionOpen: DateTime
-  submissions: SubmissionCreateNestedManyWithoutVenueInput
-  venueDate: DateTime
-  websiteUrl: String
-}
-
-input VenueCreateWithoutReviewsInput {
-  abbreviation: String
-  decisions: DecisionCreateNestedManyWithoutVenueInput
-  description: String!
-  id: String
-  logoRef: String
-  memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
   submissionDeadline: DateTime
   submissionOpen: DateTime
@@ -3073,7 +3000,6 @@ input VenueCreateWithoutSubmissionsInput {
   logoRef: String
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
-  reviews: ReviewCreateNestedManyWithoutVenueInput
   submissionDeadline: DateTime
   submissionOpen: DateTime
   venueDate: DateTime
@@ -3263,7 +3189,6 @@ input VenueUpdateInput {
   logoRef: NullableStringFieldUpdateOperationsInput
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
-  reviews: ReviewUpdateManyWithoutVenueInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
   submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
@@ -3295,16 +3220,6 @@ input VenueUpdateOneRequiredWithoutSubmissionsInput {
   upsert: VenueUpsertWithoutSubmissionsInput
 }
 
-input VenueUpdateOneWithoutReviewsInput {
-  connect: VenueWhereUniqueInput
-  connectOrCreate: VenueCreateOrConnectWithoutReviewsInput
-  create: VenueCreateWithoutReviewsInput
-  delete: Boolean
-  disconnect: Boolean
-  update: VenueUpdateWithoutReviewsInput
-  upsert: VenueUpsertWithoutReviewsInput
-}
-
 input VenueUpdateWithoutDecisionsInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
@@ -3312,7 +3227,6 @@ input VenueUpdateWithoutDecisionsInput {
   logoRef: NullableStringFieldUpdateOperationsInput
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
-  reviews: ReviewUpdateManyWithoutVenueInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
   submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
@@ -3326,22 +3240,6 @@ input VenueUpdateWithoutMembershipsInput {
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   logoRef: NullableStringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  reviews: ReviewUpdateManyWithoutVenueInput
-  submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
-  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
-  submissions: SubmissionUpdateManyWithoutVenueInput
-  venueDate: NullableDateTimeFieldUpdateOperationsInput
-  websiteUrl: NullableStringFieldUpdateOperationsInput
-}
-
-input VenueUpdateWithoutReviewsInput {
-  abbreviation: NullableStringFieldUpdateOperationsInput
-  decisions: DecisionUpdateManyWithoutVenueInput
-  description: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  logoRef: NullableStringFieldUpdateOperationsInput
-  memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
   submissionOpen: NullableDateTimeFieldUpdateOperationsInput
@@ -3358,7 +3256,6 @@ input VenueUpdateWithoutSubmissionsInput {
   logoRef: NullableStringFieldUpdateOperationsInput
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
-  reviews: ReviewUpdateManyWithoutVenueInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
   submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
@@ -3373,11 +3270,6 @@ input VenueUpsertWithoutDecisionsInput {
 input VenueUpsertWithoutMembershipsInput {
   create: VenueCreateWithoutMembershipsInput!
   update: VenueUpdateWithoutMembershipsInput!
-}
-
-input VenueUpsertWithoutReviewsInput {
-  create: VenueCreateWithoutReviewsInput!
-  update: VenueUpdateWithoutReviewsInput!
 }
 
 input VenueUpsertWithoutSubmissionsInput {
@@ -3396,7 +3288,6 @@ input VenueWhereInput {
   logoRef: StringNullableFilter
   memberships: VenueMembershipListRelationFilter
   name: StringFilter
-  reviews: ReviewListRelationFilter
   submissionDeadline: DateTimeNullableFilter
   submissionOpen: DateTimeNullableFilter
   submissions: SubmissionListRelationFilter

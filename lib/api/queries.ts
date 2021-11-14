@@ -97,18 +97,18 @@ export default objectType({
         );
       },
     });
-    t.field("review", {
+    t.field("userReview", {
       type: "Review",
-      args: { reviewId: nonNull(stringArg()) },
-      resolve: async (_, { reviewId }, ctx) => {
-        return await ctx.prisma.review.findUnique({
+      args: { userId: nonNull(stringArg()), articleId: nonNull(stringArg()) },
+      resolve: async (_, { userId, articleId }, ctx) => {
+        const reviews = await ctx.prisma.review.findMany({
           where: {
-            id: reviewId,
-          },
-          include: {
-            author: true,
+            authorId: userId,
+            articleId,
           },
         });
+        console.log(reviews);
+        return reviews[0];
       },
     });
     t.list.field("searchUsers", {

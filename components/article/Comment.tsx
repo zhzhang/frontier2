@@ -69,7 +69,7 @@ export default function Comment({
         <div>
           <AuthorPopover user={comment.author} />
           <Markdown
-            highlights={JSON.parse(highlights)}
+            highlights={highlights}
             updateArticleAndScroll={updateArticleAndScroll}
           >
             {body}

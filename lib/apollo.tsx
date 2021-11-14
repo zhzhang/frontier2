@@ -1,12 +1,12 @@
 import Spinner from "@/components/FixedSpinner";
 import { auth, useAuth } from "@/lib/firebase";
-import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { createUploadLink } from "apollo-upload-client";
 import React from "react";
 
-let apolloClient = null;
+export let apolloClient = null;
 
 /**
  * Creates and provides the apolloContext
@@ -15,7 +15,7 @@ let apolloClient = null;
  * @param {Function|Class} PageComponent
  * @param {Object} [config]
  */
-export function withApollo(PageComponent: React.FC) {
+export function withApollo(PageComponent: React.FC, typePolicies = {}) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     if (typeof window === "undefined") {
       return <Spinner animation="border" role="status" />;
@@ -24,7 +24,7 @@ export function withApollo(PageComponent: React.FC) {
     if (loading) {
       return <Spinner animation="border" role="status" />;
     }
-    const client = apolloClient || initApolloClient(apolloState);
+    const client = apolloClient || initApolloClient(apolloState, typePolicies);
     return (
       <ApolloProvider client={client}>
         <PageComponent {...pageProps} />
@@ -52,16 +52,16 @@ export function withApollo(PageComponent: React.FC) {
  * Creates or reuses apollo client in the browser.
  * @param  {Object} initialState
  */
-function initApolloClient(initialState) {
+function initApolloClient(initialState, typePolicies) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === "undefined") {
-    return createApolloClient(initialState);
+    return createApolloClient(initialState, typePolicies);
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = createApolloClient(initialState);
+    apolloClient = createApolloClient(initialState, typePolicies);
   }
 
   return apolloClient;
@@ -71,19 +71,9 @@ function initApolloClient(initialState) {
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient(initialState = {}) {
+function createApolloClient(initialState = {}, typePolicies = {}) {
   const cache = new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          selectedVersion: {
-            read() {
-              return makeVar(true)();
-            },
-          },
-        },
-      },
-    },
+    typePolicies,
   }).restore(initialState);
   const authLink = setContext(async (_, { headers }) => {
     const user = auth().currentUser;

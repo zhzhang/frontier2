@@ -45,7 +45,6 @@ const ArticleQuery = gql`
         createdAt
       }
     }
-    selectedVersion @client
   }
 `;
 
@@ -101,7 +100,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function Article() {
+function Article(props) {
   const classes = useStyles();
   const { id, reviewId, version } = useRouter().query;
   const { loading, error, data } = useQuery(ArticleQuery, {
@@ -110,9 +109,6 @@ function Article() {
   const [selectedVersionNumber, setVersionNumber] = useState(-1);
   const [editing, setEditing] = useState(true);
   const [highlights, setHighlights] = useState([]);
-  const tmp = JSON.stringify(highlights, function (key, val) {
-    return val.toFixed ? Number(val.toFixed(1)) : val;
-  });
   const [onRenderedCallback, setRenderedCallback] = useState();
   const [scrollTo, setScrollTo] = useState();
 
@@ -158,7 +154,7 @@ function Article() {
   return (
     <Layout padded={false}>
       <SplitPane split="vertical" defaultSize={50}>
-        <Pane initialSize="40%" minSize="20%" className={classes.sidebar}>
+        <Pane initialSize="40%" minSize="20%">
           <div className={classes.discussionPane}>
             <Typography variant="h6">{title}</Typography>
             <Authors authors={authors} className={classes.margin} />
@@ -201,7 +197,7 @@ function Article() {
         </Pane>
         <PdfViewer
           fileRef={ref}
-          highlights={JSON.parse(tmp)}
+          highlights={highlights}
           setHighlights={setHighlights}
           articleVersion={selectedVersion.versionNumber}
           onRenderedCallback={onRenderedCallback}
@@ -213,4 +209,4 @@ function Article() {
   );
 }
 
-export default withApollo(Article);
+export default withApollo(Article, { Query: { fields: null } });

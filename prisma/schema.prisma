@@ -81,7 +81,7 @@ model ThreadMessage {
   headId     String?
   authorId   String
   author     User     @relation(fields: [authorId], references: [id])
-  highlights String   @db.MediumText
+  highlights Json
   createdAt  DateTime @default(now())
   published  Boolean  @default(false)
 }
@@ -95,7 +95,7 @@ model Submission {
   owner          User?           @relation(fields: [ownerId], references: [id])
   ownerId        String?
   decision       Decision?       @relation(fields: [decisionId], references: [id])
-  decisionId     String?
+  decisionId     String?         @unique
   createdAt      DateTime        @default(now())
   reviewRequests ReviewRequest[]
 }
@@ -111,7 +111,6 @@ model Venue {
   submissionOpen     DateTime?
   submissionDeadline DateTime?
   memberships        VenueMembership[]
-  reviews            Review[]
   decisions          Decision[]
   submissions        Submission[]
 }
@@ -126,19 +125,17 @@ model VenueMembership {
 }
 
 model Review {
-  id           String  @id @default(cuid())
-  body         String  @db.MediumText
-  rating       Int     @default(0)
-  article      Article @relation(fields: [articleId], references: [id])
-  author       User    @relation(fields: [authorId], references: [id])
-  highlights   String  @db.MediumText
-  articleId    String
-  authorId     String
-  venue        Venue?  @relation(fields: [venueId], references: [id])
-  venueId      String?
-  reviewNumber Int
-  published    Boolean @default(false)
-  anonymized   Boolean @default(true)
+  id               String    @id @default(cuid())
+  body             String    @db.MediumText
+  rating           Int       @default(0)
+  article          Article   @relation(fields: [articleId], references: [id])
+  author           User      @relation(fields: [authorId], references: [id])
+  highlights       Json
+  articleId        String
+  authorId         String
+  publishTimestamp DateTime?
+  published        Boolean   @default(false)
+  anonymized       Boolean   @default(true)
 }
 
 model ReviewRequest {
@@ -156,7 +153,7 @@ model Decision {
   id         String      @id @default(cuid())
   body       String      @db.MediumText
   decision   Boolean     @default(false)
-  highlights String      @db.MediumText
+  highlights Json
   article    Article     @relation(fields: [articleId], references: [id])
   articleId  String
   venue      Venue       @relation(fields: [venueId], references: [id])

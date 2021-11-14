@@ -1,6 +1,5 @@
 import {
   booleanArg,
-  intArg,
   list,
   nonNull,
   nullable,
@@ -51,6 +50,8 @@ export default objectType({
     t.crud.deleteOneVenueMembership();
     t.crud.updateOneSubmission();
     t.crud.createOneReviewRequest();
+    t.crud.upsertOneThreadMessage();
+    t.crud.createOneReview();
     t.field("createArticle", {
       type: "Article",
       args: {
@@ -107,56 +108,6 @@ export default objectType({
           console.log("hit");
         }
         return article;
-      },
-    });
-    t.field("createReview", {
-      type: "Review",
-      args: {
-        articleId: nonNull(stringArg()),
-        submissionId: nullable(stringArg()),
-      },
-      resolve: async (_, { articleId, submissionId }, ctx) => {
-        const prevReviews = await ctx.prisma.review.findMany({
-          where: {
-            articleId,
-          },
-        });
-        const reviewNumber =
-          prevReviews.length === 0
-            ? 1
-            : _.max(prevReviews.map((review) => review.reviewNumber)) + 1;
-        const data = {
-          articleId,
-          reviewNumber,
-          authorId: ctx.user.id,
-        };
-        if (submissionId !== null && submissionId !== undefined) {
-          data.submissionId = submissionId;
-        }
-        return await ctx.prisma.review.create({
-          data,
-        });
-      },
-    });
-    t.field("updateReview", {
-      type: "Review",
-      args: {
-        id: nonNull(stringArg()),
-        body: nonNull(stringArg()),
-        rating: nonNull(intArg()),
-        published: nonNull(booleanArg()),
-      },
-      resolve: async (_, { id, body, rating, published }, ctx) => {
-        try {
-          await ctx.prisma.review.update({
-            where: {
-              id: id,
-            },
-            data: { body, rating, published },
-          });
-        } catch (e) {
-          console.log(e);
-        }
       },
     });
     t.crud.createOneRelation({

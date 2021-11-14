@@ -46,7 +46,6 @@ function NewComment({ userId, articleId, highlights, updateArticleAndScroll }) {
   };
   const [createComment, result] = useMutation(CreateCommentMutation, {
     update(cache, { data: { createOneThreadMessage } }) {
-      console.log(getThreadsVariables);
       const { threadMessages } = cache.readQuery({
         query: CommentsQuery,
         variables: {
@@ -72,7 +71,7 @@ function NewComment({ userId, articleId, highlights, updateArticleAndScroll }) {
         data: {
           body,
           articleId,
-          highlights: JSON.stringify(highlights),
+          highlights,
           published: true,
           author: {
             connect: {
