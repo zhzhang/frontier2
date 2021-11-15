@@ -1,3 +1,4 @@
 import { makeVar } from "@apollo/client";
 
-export const highlights = makeVar([]);
+export const highlightsVar = makeVar([]);
+export const addHighlightVar = makeVar(null);

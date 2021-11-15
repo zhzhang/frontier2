@@ -210,6 +210,7 @@ async function main() {
       pageNumber: 2,
       id: 1,
       articleVersion: 2,
+      text: "placeholder",
     },
     {
       boundingRect: {
@@ -369,6 +370,7 @@ async function main() {
       pageNumber: 4,
       id: 2,
       articleVersion: 1,
+      text: "placeholder",
     },
   ];
 

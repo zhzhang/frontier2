@@ -45,7 +45,12 @@ const CreateReviewMutation = gql`
   }
 `;
 
-function NewReview({ userId, articleId }) {
+function NewReview({
+  userId,
+  articleId,
+  setAddHighlight,
+  updateArticleAndScroll,
+}) {
   const variables = { userId, articleId };
   const { loading, error, data } = useQuery(UserReviewQuery, {
     variables,
@@ -84,35 +89,34 @@ function NewReview({ userId, articleId }) {
       </Button>
     );
   }
+
   if (loading) {
     return <></>;
   }
-  console.log(data);
+  const review = data.userReview;
+
+  const update = (review) =>
+    apolloClient.writeQuery({
+      query: UserReviewQuery,
+      variables,
+      data: {
+        userReview: review,
+      },
+    });
+  const addHighlight = (highlight) => {
+    update({ ...review, highlights: [...review.highlights, highlight] });
+  };
   return (
     <>
       <MarkdownEditor
         articleMode
-        body={data.userReview.body}
-        highlights={data.userReview.highlights}
+        body={review.body}
+        highlights={review.highlights}
+        onFocus={() => setAddHighlight(() => addHighlight)}
         onChange={(body) => {
-          apolloClient.writeQuery({
-            query: UserReviewQuery,
-            variables,
-            data: {
-              userReview: {
-                ...data.userReview,
-                body,
-              },
-            },
-          });
-          // console.log(
-          //   apolloClient.readQuery({
-          //     query: UserReviewQuery,
-          //     variables,
-          //   })
-          // );
+          update({ ...review, body });
         }}
-        updateArticleAndScroll={null}
+        updateArticleAndScroll={updateArticleAndScroll}
         placeholder="Write a comment!"
       />
     </>
@@ -123,6 +127,7 @@ export default function Reviews({
   articleId,
   updateArticleAndScroll,
   articleVersion,
+  setAddHighlight,
 }) {
   const auth = useAuth();
   const { loading, error, data } = useQuery(ReviewsQuery, {
@@ -141,12 +146,18 @@ export default function Reviews({
   const { reviews } = data;
   return (
     <>
-      {auth.user && <NewReview userId={auth.user.uid} articleId={articleId} />}
+      {auth.user && (
+        <NewReview
+          userId={auth.user.uid}
+          articleId={articleId}
+          setAddHighlight={setAddHighlight}
+          updateArticleAndScroll={updateArticleAndScroll}
+        />
+      )}
       {reviews.map((review) => (
         <div className="pb-2" key={review.id}>
           <Review
             review={review}
-            editing={false}
             startOpen={true}
             updateArticleAndScroll={updateArticleAndScroll}
             articleMode

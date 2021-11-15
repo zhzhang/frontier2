@@ -27,6 +27,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import SplitPane from "react-split-pane";
 import Pane from "react-split-pane/lib/Pane";
+import { addHighlightVar, highlightsVar } from "./vars";
 
 const ArticleQuery = gql`
   query ArticleQuery($id: String!) {
@@ -100,15 +101,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function Article(props) {
+function Article() {
   const classes = useStyles();
   const { id, reviewId, version } = useRouter().query;
   const { loading, error, data } = useQuery(ArticleQuery, {
     variables: { id },
   });
+  const [paneSize, setPaneSize] = useState(50);
   const [selectedVersionNumber, setVersionNumber] = useState(-1);
-  const [editing, setEditing] = useState(true);
   const [highlights, setHighlights] = useState([]);
+  const [addHighlight, setAddHighlight] = useState();
   const [onRenderedCallback, setRenderedCallback] = useState();
   const [scrollTo, setScrollTo] = useState();
 
@@ -141,20 +143,24 @@ function Article(props) {
       setHighlights(highlights);
       scrollTo(highlight);
     } else {
-      setVersionNumber(versionNumber);
       setHighlights(highlights);
       const onRenderedCallback = (viewer) => {
         viewer.scrollTo(highlight);
         setRenderedCallback(null);
       };
       setRenderedCallback(() => onRenderedCallback);
+      setVersionNumber(versionNumber);
     }
   };
 
   return (
     <Layout padded={false}>
-      <SplitPane split="vertical" defaultSize={50}>
-        <Pane initialSize="40%" minSize="20%">
+      <SplitPane
+        split="vertical"
+        defaultSize={50}
+        onChange={(size) => setPaneSize(size)}
+      >
+        <Pane initialSize="40%" minSize="20%" maxSize="80%" size={paneSize[0]}>
           <div className={classes.discussionPane}>
             <Typography variant="h6">{title}</Typography>
             <Authors authors={authors} className={classes.margin} />
@@ -191,6 +197,7 @@ function Article(props) {
               articleId={id}
               articleVersion={selectedVersion.versionNumber}
               highlights={highlights}
+              setAddHighlight={setAddHighlight}
               updateArticleAndScroll={updateArticleAndScroll}
             />
           </div>
@@ -198,15 +205,29 @@ function Article(props) {
         <PdfViewer
           fileRef={ref}
           highlights={highlights}
-          setHighlights={setHighlights}
+          addHighlight={addHighlight}
           articleVersion={selectedVersion.versionNumber}
           onRenderedCallback={onRenderedCallback}
           setScrollTo={setScrollTo}
-          editing={editing}
         />
       </SplitPane>
     </Layout>
   );
 }
 
-export default withApollo(Article, { Query: { fields: null } });
+export default withApollo(Article, {
+  Query: {
+    fields: {
+      highlights: {
+        read() {
+          return highlightsVar();
+        },
+      },
+      addHighlight: {
+        read() {
+          return addHighlightVar();
+        },
+      },
+    },
+  },
+});

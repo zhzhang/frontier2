@@ -143,8 +143,8 @@ export default class PdfArticle extends React.Component {
   };
 
   afterSelection = () => {
-    const { editing } = this.props;
-    if (!editing) {
+    const { highlights, addHighlight, articleVersion } = this.props;
+    if (!addHighlight) {
       return;
     }
     const { isCollapsed, range } = this.state;
@@ -169,14 +169,13 @@ export default class PdfArticle extends React.Component {
       viewportPosition,
       <Tip
         onConfirm={() => {
-          const { highlights, setHighlights, articleVersion } = this.props;
           const highlight = {
             ...scaledPosition,
-            id: highlights.length + 1,
+            id: Math.max(highlights.map((h) => h.id)) + 1,
             articleVersion,
             text: range.toString(),
           };
-          setHighlights([...highlights, highlight]);
+          addHighlight(highlight);
           this.hideTipAndSelection();
         }}
       />

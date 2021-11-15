@@ -19,6 +19,7 @@ const DiscussionSidebar = ({
   highlights,
   updateArticleAndScroll,
   articleVersion,
+  setAddHighlight,
 }) => {
   const classes = useStyles();
   const router = useRouter();
@@ -45,7 +46,7 @@ const DiscussionSidebar = ({
           <Reviews
             articleId={articleId}
             articleVersion={articleVersion}
-            highlights={highlights}
+            setAddHighlight={setAddHighlight}
             updateArticleAndScroll={updateArticleAndScroll}
           />
         );

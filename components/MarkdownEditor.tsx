@@ -152,15 +152,12 @@ export default function MarkdownEditor({
   articleMode = false,
   label = null,
   placeholder = null,
+  onFocus = null,
   highlights = [],
   updateArticleAndScroll = () => {},
 }) {
   const classes = useStyles();
   const [previewOpen, toggleShowPreview] = useState(false);
-  // useEffect(() => {
-  //   const newHighlight = highlights[highlights.length - 1];
-  //   onChange(body + ` []{${newHighlight.id}}`);
-  // }, [highlights]);
   return (
     <div>
       <TextField
@@ -172,6 +169,7 @@ export default function MarkdownEditor({
         placeholder={placeholder}
         value={body}
         onChange={({ target }) => onChange(target.value)}
+        onFocus={onFocus}
         rowsMax={20}
       />
       <div className={classes.utils}>
@@ -187,7 +185,7 @@ export default function MarkdownEditor({
           {previewOpen ? "Hide Preview" : "Show Preview"}
         </Button>
       </div>
-      {/* {highlights.map((highlight) => (
+      {highlights.map((highlight) => (
         <div
           key={highlight.id}
           onClick={() =>
@@ -200,7 +198,7 @@ export default function MarkdownEditor({
         >
           {`${highlight.id}) ${highlight.text.substring(0, 60)}...`}
         </div>
-      ))} */}
+      ))}
       {previewOpen && (
         <Paper className={classes.preview} elevation={0}>
           <Markdown
