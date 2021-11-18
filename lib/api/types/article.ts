@@ -20,7 +20,7 @@ const Article = objectType({
           },
         });
         const isAuthor = Boolean(
-          _.findLast(authorships, (o) => o.userId === ctx.user.id)
+          _.findLast(authorships, (o) => o.userId === ctx.user?.id)
         );
         if (root.anonymous && !isAuthor) {
           return null;

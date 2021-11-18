@@ -56,7 +56,7 @@ function NewReview({
     variables,
   });
   const [createReview, resp] = useMutation(CreateReviewMutation, {
-    refetchQueries: [UserReviewQuery, "UserReviewQuery"],
+    refetchQueries: ["UserReviewQuery"],
   });
   const [previewOpen, setPreviewOpen] = useState(true);
   if (!(data && data.userReview)) {
