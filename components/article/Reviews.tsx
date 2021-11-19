@@ -94,6 +94,7 @@ function NewReview({
     return <></>;
   }
   const review = data.userReview;
+  console.log(review);
 
   const update = (review) =>
     apolloClient.writeQuery({
@@ -104,7 +105,17 @@ function NewReview({
       },
     });
   const addHighlight = (highlight) => {
+    console.log(review.highlights);
+    console.log(highlight);
+    console.log([...review.highlights, highlight]);
+    console.log("-----------");
     update({ ...review, highlights: [...review.highlights, highlight] });
+  };
+  const deleteHighlight = (id: number) => {
+    update({
+      ...review,
+      highlights: _.reject(review.highlights, { id }),
+    });
   };
   return (
     <>
@@ -112,12 +123,15 @@ function NewReview({
         articleMode
         body={review.body}
         highlights={review.highlights}
-        onFocus={() => setAddHighlight(() => addHighlight)}
+        deleteHighlight={deleteHighlight}
+        onFocus={() => {
+          setAddHighlight(() => addHighlight);
+        }}
         onChange={(body) => {
           update({ ...review, body });
         }}
         updateArticleAndScroll={updateArticleAndScroll}
-        placeholder="Write a comment!"
+        placeholder="Write a review!"
       />
     </>
   );

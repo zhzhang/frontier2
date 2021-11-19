@@ -1,5 +1,4 @@
 import Markdown from "@/components/Markdown";
-import Button from "@material-ui/core/Button";
 import Popover from "@material-ui/core/Popover";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -13,10 +12,11 @@ import FormatUnderlined from "@material-ui/icons/FormatUnderlined";
 import Functions from "@material-ui/icons/Functions";
 import RateReview from "@material-ui/icons/RateReview";
 import Title from "@material-ui/icons/Title";
+import CloseRounded from "@mui/icons-material/CloseRounded";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
 import { useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -36,24 +36,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   alert: {
     marginBottom: theme.spacing(2),
   },
-  utils: {
-    borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
-    borderLeft: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRight: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRadius: "4px",
-    display: "flex",
-    padding: theme.spacing(0.5),
-  },
   showPreviewButton: {
     marginLeft: "auto",
-  },
-  preview: {
-    borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
-    borderLeft: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRight: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRadius: "4px",
-    padding: theme.spacing(1),
-    minHeight: theme.spacing(8),
   },
   popover: {
     pointerEvents: "none",
@@ -148,6 +132,38 @@ function StyleButton({ Icon, style, example }) {
   );
 }
 
+function Highlight({
+  highlight,
+  highlights,
+  deleteHighlight,
+  updateArticleAndScroll,
+}) {
+  return (
+    <Box
+      onClick={() =>
+        updateArticleAndScroll(highlight.articleVersion, highlights, highlight)
+      }
+      sx={{
+        borderTop: "1px solid rgba(0, 0, 0, 0.23)",
+        padding: 1,
+        display: "flex",
+      }}
+    >
+      <Box>{highlight.id}</Box>
+      <Box
+        sx={{
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {highlight.text}
+      </Box>
+      <CloseRounded onClick={() => deleteHighlight(highlight.id)} />
+    </Box>
+  );
+}
+
 export default function MarkdownEditor({
   body,
   onChange,
@@ -156,24 +172,43 @@ export default function MarkdownEditor({
   label = null,
   placeholder = null,
   onFocus = null,
+  onBlur = null,
   highlights = [],
+  deleteHighlight = (id: number) => {},
   updateArticleAndScroll = () => {},
 }) {
   const classes = useStyles();
   const [previewOpen, toggleShowPreview] = useState(false);
+  const [focused, setFocused] = useState(false);
   return (
     <Box
       component="form"
       noValidate
       autoComplete="off"
       key={key}
-      sx={{
-        border: "1px solid rgba(0, 0, 0, 0.23)",
-        borderRadius: "4px",
-      }}
+      sx={
+        focused
+          ? {
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              borderRadius: "4px",
+            }
+          : {
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              borderRadius: "4px",
+            }
+      }
     >
-      <FormControl fullWidth onFocus={() => onFocus && onFocus()}>
-        <InputLabel htmlFor="component-simple">{label}</InputLabel>
+      <FormControl
+        fullWidth
+        onFocus={() => {
+          setFocused(true);
+          onFocus && onFocus();
+        }}
+        onBlur={() => {
+          setFocused(false);
+          onBlur && onBlur();
+        }}
+      >
         <Input
           multiline
           required
@@ -184,7 +219,7 @@ export default function MarkdownEditor({
           onChange={({ target }) => onChange(target.value)}
         />
       </FormControl>
-      <div>
+      <Box sx={{ display: "flex", padding: 0.5 }}>
         {STYLES.map((style) => (
           <StyleButton {...style} key={style.style} />
         ))}
@@ -193,27 +228,20 @@ export default function MarkdownEditor({
           className={classes.showPreviewButton}
           onClick={() => toggleShowPreview(!previewOpen)}
           size="small"
+          fullWidth={false}
+          sx={{ flex: 1 }}
         >
           {previewOpen ? "Hide Preview" : "Show Preview"}
         </Button>
-      </div>
+      </Box>
       {highlights.map((highlight) => (
-        <Box
+        <Highlight
           key={highlight.id}
-          onClick={() =>
-            updateArticleAndScroll(
-              highlight.articleVersion,
-              highlights,
-              highlight
-            )
-          }
-          sx={{
-            borderTop: "1px solid rgba(0, 0, 0, 0.23)",
-            padding: 2,
-          }}
-        >
-          {`${highlight.id}) ${highlight.text.substring(0, 60)}...`}
-        </Box>
+          highlight={highlight}
+          highlights={highlights}
+          updateArticleAndScroll={updateArticleAndScroll}
+          deleteHighlight={deleteHighlight}
+        />
       ))}
       {previewOpen && (
         <Box

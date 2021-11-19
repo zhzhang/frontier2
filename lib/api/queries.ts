@@ -107,7 +107,6 @@ export default objectType({
             articleId,
           },
         });
-        console.log(reviews);
         return reviews[0];
       },
     });
