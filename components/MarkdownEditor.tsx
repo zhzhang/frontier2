@@ -1,9 +1,7 @@
 import Markdown from "@/components/Markdown";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
 import Popover from "@material-ui/core/Popover";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Code from "@material-ui/icons/Code";
 import FormatBold from "@material-ui/icons/FormatBold";
@@ -15,6 +13,10 @@ import FormatUnderlined from "@material-ui/icons/FormatUnderlined";
 import Functions from "@material-ui/icons/Functions";
 import RateReview from "@material-ui/icons/RateReview";
 import Title from "@material-ui/icons/Title";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
 import { useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -150,6 +152,7 @@ export default function MarkdownEditor({
   body,
   onChange,
   articleMode = false,
+  key = null,
   label = null,
   placeholder = null,
   onFocus = null,
@@ -159,20 +162,29 @@ export default function MarkdownEditor({
   const classes = useStyles();
   const [previewOpen, toggleShowPreview] = useState(false);
   return (
-    <div>
-      <TextField
-        multiline
-        required
-        fullWidth
-        variant="outlined"
-        label={label}
-        placeholder={placeholder}
-        value={body}
-        onChange={({ target }) => onChange(target.value)}
-        onFocus={onFocus}
-        rowsMax={20}
-      />
-      <div className={classes.utils}>
+    <Box
+      component="form"
+      noValidate
+      autoComplete="off"
+      key={key}
+      sx={{
+        border: "1px solid rgba(0, 0, 0, 0.23)",
+        borderRadius: "4px",
+      }}
+    >
+      <FormControl fullWidth onFocus={() => onFocus && onFocus()}>
+        <InputLabel htmlFor="component-simple">{label}</InputLabel>
+        <Input
+          multiline
+          required
+          placeholder={placeholder}
+          value={body}
+          maxRows={20}
+          sx={{ padding: 2 }}
+          onChange={({ target }) => onChange(target.value)}
+        />
+      </FormControl>
+      <div>
         {STYLES.map((style) => (
           <StyleButton {...style} key={style.style} />
         ))}
@@ -186,7 +198,7 @@ export default function MarkdownEditor({
         </Button>
       </div>
       {highlights.map((highlight) => (
-        <div
+        <Box
           key={highlight.id}
           onClick={() =>
             updateArticleAndScroll(
@@ -195,20 +207,29 @@ export default function MarkdownEditor({
               highlight
             )
           }
+          sx={{
+            borderTop: "1px solid rgba(0, 0, 0, 0.23)",
+            padding: 2,
+          }}
         >
           {`${highlight.id}) ${highlight.text.substring(0, 60)}...`}
-        </div>
+        </Box>
       ))}
       {previewOpen && (
-        <Paper className={classes.preview} elevation={0}>
+        <Box
+          sx={{
+            borderTop: "1px solid rgba(0, 0, 0, 0.23)",
+            padding: 2,
+          }}
+        >
           <Markdown
             highlights={highlights}
             updateArticleAndScroll={updateArticleAndScroll}
           >
             {body}
           </Markdown>
-        </Paper>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }

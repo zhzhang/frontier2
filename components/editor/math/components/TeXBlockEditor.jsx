@@ -1,10 +1,10 @@
 import React from 'react';
 import 'katex/dist/katex.min.css';
-import { BlockMath } from 'react-katex';
+import TeX from '@matejmazur/react-katex';
 
 export default function TeXBlockEditor({block}) {
   const text = block.getText() 
-  const rendered = <BlockMath>{text}</BlockMath>;
+  const rendered = <TeX block>{text}</TeX>;
 
   return (
     <div

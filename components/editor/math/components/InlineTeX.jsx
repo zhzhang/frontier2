@@ -1,6 +1,6 @@
 import React from 'react';
 import 'katex/dist/katex.min.css';
-import { InlineMath } from 'react-katex';
+import TeX from '@matejmazur/react-katex';
 import Styles from './styles';
 
 const styles = Styles.inline;
@@ -36,9 +36,9 @@ export default class InlineTeX extends React.Component {
         </span>
         {preview ? (
           <span style={styles.preview} contentEditable={false}>
-            <InlineMath>
+            <TeX>
               {decoratedText.substr(2, decoratedText.length - 4)}
-            </InlineMath>
+            </TeX>
           </span>
         ) : null}
       </>

@@ -194,6 +194,7 @@ function Article() {
               </AccordionDetails>
             </Accordion>
             <DiscussionSidebar
+              key="discussion-sidebar"
               articleId={id}
               articleVersion={selectedVersion.versionNumber}
               highlights={highlights}

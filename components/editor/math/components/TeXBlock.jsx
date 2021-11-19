@@ -1,6 +1,6 @@
 import React from 'react';
 import 'katex/dist/katex.min.css';
-import { BlockMath } from 'react-katex';
+import TeX from '@matejmazur/react-katex';
 
 export default class TeXBlock extends React.Component {
   state = {
@@ -13,7 +13,7 @@ export default class TeXBlock extends React.Component {
     } = this.props;
     const { showTeX } = this.state;
 
-    const rendered = <BlockMath>{text}</BlockMath>;
+    const rendered = <TeX block>{text}</TeX>;
 
     return (
       <div>
