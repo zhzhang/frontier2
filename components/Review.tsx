@@ -1,9 +1,8 @@
 import AuthorPopover from "@/components/AuthorPopover";
 import Thread from "@/components/Thread";
-import { useMutation } from "@apollo/react-hooks";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import gql from "graphql-tag";
-import { useState } from "react";
+import { updateArticleAndScroll } from "./article/vars";
 import Markdown from "./Markdown";
 import ProfilePicturePopover from "./ProfilePicturePopover";
 
@@ -48,18 +47,9 @@ function Rating({ rating }) {
   }
 }
 
-const Review = ({
-  review,
-  editing,
-  startOpen,
-  updateArticleAndScroll,
-  articleMode,
-}) => {
+const Review = ({ review }) => {
   const classes = useStyles();
-  const { highlights } = review;
-  const [body, setBody] = useState(review.body);
-  const [updateReview, { loading, error, data }] =
-    useMutation(UpdateReviewMutation);
+  const { highlights, body } = review;
   return (
     <>
       <div className={classes.review}>

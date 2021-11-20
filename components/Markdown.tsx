@@ -12,7 +12,7 @@ const Highlight = ({ highlight, highlights, text, updateArticleAndScroll }) => {
     <a
       style={{ color: "blue" }}
       onClick={() => {
-        updateArticleAndScroll(highlight.articleVersion, highlights, highlight);
+        updateArticleAndScroll({ highlights, highlight });
       }}
     >
       {text}

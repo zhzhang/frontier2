@@ -1,4 +1,3 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -9,24 +8,8 @@ import { useState } from "react";
 import Comments from "./Comments";
 import Reviews from "./Reviews";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    margin: {
-      marginTop: theme.spacing(1),
-    },
-  })
-);
-
-const DiscussionSidebar = ({
-  articleId,
-  highlights,
-  updateArticleAndScroll,
-  articleVersion,
-  setAddHighlight,
-}) => {
-  const classes = useStyles();
+function DiscussionSidebar({ articleVersion }) {
   const router = useRouter();
-  const reviewId = router.query.reviewId;
   const [view, setView] = useState("reviews");
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
@@ -57,25 +40,14 @@ const DiscussionSidebar = ({
           </TabList>
         </Box>
         <TabPanel value="reviews" sx={contentSx}>
-          <Reviews
-            key="reviews"
-            articleId={articleId}
-            articleVersion={articleVersion}
-            setAddHighlight={setAddHighlight}
-            updateArticleAndScroll={updateArticleAndScroll}
-          />
+          <Reviews />
         </TabPanel>
         <TabPanel value="discussion" sx={contentSx}>
-          <Comments
-            articleId={articleId}
-            articleVersion={articleVersion}
-            highlights={highlights}
-            updateArticleAndScroll={updateArticleAndScroll}
-          />
+          <Comments />
         </TabPanel>
       </TabContext>
     </Box>
   );
-};
+}
 
 export default DiscussionSidebar;

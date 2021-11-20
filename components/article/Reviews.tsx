@@ -6,7 +6,12 @@ import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
 import gql from "graphql-tag";
-import { useState } from "react";
+import {
+  addHighlightVar,
+  articleVar,
+  highlightsVar,
+  updateArticleAndScroll,
+} from "./vars";
 
 const ReviewsQuery = gql`
   query ReviewsQuery($where: ReviewWhereInput!) {
@@ -20,6 +25,7 @@ const ReviewsQuery = gql`
       highlights
       rating
     }
+    article @client
   }
 `;
 
@@ -45,12 +51,7 @@ const CreateReviewMutation = gql`
   }
 `;
 
-function NewReview({
-  userId,
-  articleId,
-  setAddHighlight,
-  updateArticleAndScroll,
-}) {
+function NewReview({ userId, articleId }) {
   const variables = { userId, articleId };
   const { loading, error, data } = useQuery(UserReviewQuery, {
     variables,
@@ -58,7 +59,6 @@ function NewReview({
   const [createReview, resp] = useMutation(CreateReviewMutation, {
     refetchQueries: ["UserReviewQuery"],
   });
-  const [previewOpen, setPreviewOpen] = useState(true);
   if (!(data && data.userReview)) {
     return (
       <Button
@@ -94,7 +94,6 @@ function NewReview({
     return <></>;
   }
   const review = data.userReview;
-  console.log(review);
 
   const update = (review) =>
     apolloClient.writeQuery({
@@ -105,11 +104,14 @@ function NewReview({
       },
     });
   const addHighlight = (highlight) => {
-    console.log(review.highlights);
-    console.log(highlight);
-    console.log([...review.highlights, highlight]);
-    console.log("-----------");
-    update({ ...review, highlights: [...review.highlights, highlight] });
+    const data = apolloClient.readQuery({
+      query: UserReviewQuery,
+      variables,
+    });
+    const review = data.userReview;
+    const highlights = [...review.highlights, highlight];
+    highlightsVar(highlights);
+    update({ ...review, highlights });
   };
   const deleteHighlight = (id: number) => {
     update({
@@ -118,34 +120,29 @@ function NewReview({
     });
   };
   return (
-    <>
-      <MarkdownEditor
-        articleMode
-        body={review.body}
-        highlights={review.highlights}
-        deleteHighlight={deleteHighlight}
-        onFocus={() => {
-          setAddHighlight(() => addHighlight);
-        }}
-        onChange={(body) => {
-          update({ ...review, body });
-        }}
-        updateArticleAndScroll={updateArticleAndScroll}
-        placeholder="Write a review!"
-      />
-    </>
+    <MarkdownEditor
+      articleMode
+      body={review.body}
+      highlights={review.highlights}
+      deleteHighlight={deleteHighlight}
+      onFocus={() => {
+        highlightsVar(review.highlights);
+        addHighlightVar(addHighlight);
+      }}
+      onChange={(body) => {
+        update({ ...review, body });
+      }}
+      updateArticleAndScroll={updateArticleAndScroll}
+      placeholder="Write a review!"
+    />
   );
 }
 
-export default function Reviews({
-  articleId,
-  updateArticleAndScroll,
-  articleVersion,
-  setAddHighlight,
-}) {
+export default function Reviews({ articleId }) {
   const auth = useAuth();
+  const article = articleVar();
   const { loading, error, data } = useQuery(ReviewsQuery, {
-    variables: { where: { articleId: { equals: articleId } } },
+    variables: { where: { articleId: { equals: article.id } } },
   });
   if (loading) {
     return (
@@ -160,22 +157,10 @@ export default function Reviews({
   const { reviews } = data;
   return (
     <>
-      {auth.user && (
-        <NewReview
-          userId={auth.user.uid}
-          articleId={articleId}
-          setAddHighlight={setAddHighlight}
-          updateArticleAndScroll={updateArticleAndScroll}
-        />
-      )}
+      {auth.user && <NewReview userId={auth.user.uid} articleId={article.id} />}
       {reviews.map((review) => (
         <div className="pb-2" key={review.id}>
-          <Review
-            review={review}
-            startOpen={true}
-            updateArticleAndScroll={updateArticleAndScroll}
-            articleMode
-          />
+          <Review review={review} startOpen={true} articleMode />
         </div>
       ))}
     </>

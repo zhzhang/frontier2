@@ -64,17 +64,17 @@ export default class PdfArticle extends React.Component {
   };
 
   onTextLayerRendered = () => {
-    const { onRenderedCallback, setScrollTo } = this.props;
+    const { setViewer, onRenderedCallback } = this.props;
     if (onRenderedCallback) {
       onRenderedCallback(this);
     }
-    if (setScrollTo) {
-      setScrollTo(() => this.scrollTo);
+    if (setViewer) {
+      setViewer(this);
     }
     this.renderHighlights();
   };
 
-  onMouseDown = (event) => {
+  onMouseDown = () => {
     this.hideTipAndSelection();
   };
 
@@ -171,7 +171,7 @@ export default class PdfArticle extends React.Component {
         onConfirm={() => {
           const highlight = {
             ...scaledPosition,
-            id: Math.max(highlights.map((h) => h.id)) + 1,
+            id: Math.max(0, ...highlights.map((h) => h.id)) + 1,
             articleVersion,
             text: range.toString(),
           };

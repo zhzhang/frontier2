@@ -141,17 +141,22 @@ function Highlight({
   return (
     <Box
       onClick={() =>
-        updateArticleAndScroll(highlight.articleVersion, highlights, highlight)
+        updateArticleAndScroll({
+          highlights,
+          highlight,
+        })
       }
       sx={{
         borderTop: "1px solid rgba(0, 0, 0, 0.23)",
         padding: 1,
         display: "flex",
+        fontSize: 14,
       }}
     >
       <Box>{highlight.id}</Box>
       <Box
         sx={{
+          flex: 1,
           textOverflow: "ellipsis",
           overflow: "hidden",
           whiteSpace: "nowrap",
@@ -159,7 +164,10 @@ function Highlight({
       >
         {highlight.text}
       </Box>
-      <CloseRounded onClick={() => deleteHighlight(highlight.id)} />
+      <CloseRounded
+        sx={{ height: 21, width: 21 }}
+        onClick={() => deleteHighlight(highlight.id)}
+      />
     </Box>
   );
 }
