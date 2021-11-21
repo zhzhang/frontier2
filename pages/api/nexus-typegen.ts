@@ -1381,6 +1381,17 @@ export interface NexusGenInputs {
     published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     rating?: NexusGenInputs['IntFilter'] | null; // IntFilter
   }
+  ReviewUpdateInput: { // input type
+    anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
+    article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutReviewsInput'] | null; // ArticleUpdateOneRequiredWithoutReviewsInput
+    author?: NexusGenInputs['UserUpdateOneRequiredWithoutReviewsInput'] | null; // UserUpdateOneRequiredWithoutReviewsInput
+    body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    highlights?: NexusGenScalars['Json'] | null; // Json
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    publishTimestamp?: NexusGenInputs['NullableDateTimeFieldUpdateOperationsInput'] | null; // NullableDateTimeFieldUpdateOperationsInput
+    published?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
+    rating?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+  }
   ReviewUpdateManyMutationInput: { // input type
     anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -2911,6 +2922,7 @@ export interface NexusGenFieldTypes {
     createOneVenueMembership: NexusGenRootTypes['VenueMembership']; // VenueMembership!
     deleteOneRelation: NexusGenRootTypes['Relation'] | null; // Relation
     deleteOneVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
+    updateOneReview: NexusGenRootTypes['Review'] | null; // Review
     updateOneSubmission: NexusGenRootTypes['Submission'] | null; // Submission
     updateOneUser: NexusGenRootTypes['User'] | null; // User
     updateOneVenue: NexusGenRootTypes['Venue'] | null; // Venue
@@ -3042,6 +3054,7 @@ export interface NexusGenFieldTypeNames {
     createOneVenueMembership: 'VenueMembership'
     deleteOneRelation: 'Relation'
     deleteOneVenueMembership: 'VenueMembership'
+    updateOneReview: 'Review'
     updateOneSubmission: 'Submission'
     updateOneUser: 'User'
     updateOneVenue: 'Venue'
@@ -3176,6 +3189,10 @@ export interface NexusGenArgTypes {
     }
     deleteOneVenueMembership: { // args
       where: NexusGenInputs['VenueMembershipWhereUniqueInput']; // VenueMembershipWhereUniqueInput!
+    }
+    updateOneReview: { // args
+      data: NexusGenInputs['ReviewUpdateInput']; // ReviewUpdateInput!
+      where: NexusGenInputs['ReviewWhereUniqueInput']; // ReviewWhereUniqueInput!
     }
     updateOneSubmission: { // args
       data: NexusGenInputs['SubmissionUpdateInput']; // SubmissionUpdateInput!

@@ -978,6 +978,7 @@ type Mutation {
   createOneVenueMembership(data: VenueMembershipCreateInput!): VenueMembership!
   deleteOneRelation(where: RelationWhereUniqueInput!): Relation
   deleteOneVenueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
+  updateOneReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
   updateOneSubmission(data: SubmissionUpdateInput!, where: SubmissionWhereUniqueInput!): Submission
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateOneVenue(data: VenueUpdateInput!, where: VenueWhereUniqueInput!): Venue
@@ -1665,6 +1666,18 @@ input ReviewScalarWhereInput {
   publishTimestamp: DateTimeNullableFilter
   published: BoolFilter
   rating: IntFilter
+}
+
+input ReviewUpdateInput {
+  anonymized: BoolFieldUpdateOperationsInput
+  article: ArticleUpdateOneRequiredWithoutReviewsInput
+  author: UserUpdateOneRequiredWithoutReviewsInput
+  body: StringFieldUpdateOperationsInput
+  highlights: Json
+  id: StringFieldUpdateOperationsInput
+  publishTimestamp: NullableDateTimeFieldUpdateOperationsInput
+  published: BoolFieldUpdateOperationsInput
+  rating: IntFieldUpdateOperationsInput
 }
 
 input ReviewUpdateManyMutationInput {

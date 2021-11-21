@@ -41,7 +41,7 @@ const UserReviewQuery = gql`
 `;
 
 const CreateReviewMutation = gql`
-  mutation UpsertReviewMutation($data: ReviewCreateInput!) {
+  mutation CreateReviewMutation($data: ReviewCreateInput!) {
     createOneReview(data: $data) {
       id
       body
@@ -51,51 +51,88 @@ const CreateReviewMutation = gql`
   }
 `;
 
+const UpdateReviewMutation = gql`
+  mutation UpdateReviewMutation(
+    $where: ReviewWhereUniqueInput!
+    $data: ReviewUpdateInput!
+  ) {
+    updateOneReview(where: $where, data: $data) {
+      id
+      body
+      highlights
+      rating
+    }
+  }
+`;
+
+function NewReviewButton({ userId, articleId }) {
+  const [createReview, resp] = useMutation(CreateReviewMutation, {
+    refetchQueries: ["UserReviewQuery"],
+  });
+  return (
+    <Button
+      variant="outlined"
+      color="primary"
+      onClick={async () => {
+        createReview({
+          variables: {
+            data: {
+              author: {
+                connect: {
+                  id: userId,
+                },
+              },
+              article: {
+                connect: {
+                  id: articleId,
+                },
+              },
+              body: "",
+              highlights: [],
+            },
+          },
+        });
+      }}
+    >
+      Write Review
+    </Button>
+  );
+}
+
 function NewReview({ userId, articleId }) {
   const variables = { userId, articleId };
   const { loading, error, data } = useQuery(UserReviewQuery, {
     variables,
   });
-  const [createReview, resp] = useMutation(CreateReviewMutation, {
-    refetchQueries: ["UserReviewQuery"],
-  });
-  if (!(data && data.userReview)) {
-    return (
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={async () => {
-          createReview({
-            variables: {
-              data: {
-                author: {
-                  connect: {
-                    id: userId,
-                  },
-                },
-                article: {
-                  connect: {
-                    id: articleId,
-                  },
-                },
-                body: "",
-                highlights: [],
-              },
-            },
-          });
-        }}
-      >
-        Write Review
-      </Button>
-    );
-  }
-
+  const [updateReview, resp] = useMutation(UpdateReviewMutation);
   if (loading) {
     return <></>;
   }
-  const review = data.userReview;
 
-  const update = (review) =>
+  if (!data.userReview) {
+    return <NewReviewButton articleId={articleId} userId={userId} />;
+  }
+
+  const review = data.userReview;
+  console.log(review);
+
+  const update = (review) => {
+    updateReview({
+      variables: {
+        where: {
+          id: review.id,
+        },
+        data: {
+          body: {
+            set: review.body,
+          },
+          highlights: review.highlights,
+        },
+      },
+      context: {
+        debounceKey: review.id,
+      },
+    });
     apolloClient.writeQuery({
       query: UserReviewQuery,
       variables,
@@ -103,6 +140,7 @@ function NewReview({ userId, articleId }) {
         userReview: review,
       },
     });
+  };
   const addHighlight = (highlight) => {
     const data = apolloClient.readQuery({
       query: UserReviewQuery,

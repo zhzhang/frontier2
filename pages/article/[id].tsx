@@ -90,6 +90,8 @@ function Index() {
   const { loading, error, data } = useQuery(ArticleQuery, {
     variables: { id },
   });
+  console.log("HIT");
+  console.log(error);
   if (loading) {
     return (
       <Layout>

@@ -8,7 +8,7 @@ import { useState } from "react";
 import Comments from "./Comments";
 import Reviews from "./Reviews";
 
-function DiscussionSidebar({ articleVersion }) {
+function DiscussionSidebar() {
   const router = useRouter();
   const [view, setView] = useState("reviews");
 

@@ -1,9 +1,8 @@
 import Spinner from "@/components/FixedSpinner";
 import { auth, useAuth } from "@/lib/firebase";
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { createUploadLink } from "apollo-upload-client";
 import React from "react";
 
 export let apolloClient = null;
@@ -88,7 +87,8 @@ function createApolloClient(initialState = {}, typePolicies = {}) {
   });
 
   return new ApolloClient({
-    link: authLink.concat(createUploadLink({ uri: "/api" })),
+    // link: authLink.concat(new DebounceLink(1000)),
+    link: authLink.concat(new HttpLink({ uri: "/api" })),
     cache,
   });
 }
