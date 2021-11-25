@@ -1,10 +1,10 @@
 import Spinner from "@/components/CenteredSpinner";
 import MarkdownEditor from "@/components/MarkdownEditor";
-import Review from "@/components/Review";
+import Review, { REVIEW_CARD_FIELDS } from "@/components/Review";
 import { apolloClient } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import gql from "graphql-tag";
 import {
   addHighlightVar,
@@ -14,53 +14,41 @@ import {
 } from "./vars";
 
 const ReviewsQuery = gql`
+  ${REVIEW_CARD_FIELDS}
   query ReviewsQuery($where: ReviewWhereInput!) {
     reviews(where: $where) {
-      id
-      author {
-        id
-        name
-      }
-      body
-      highlights
-      rating
+      ...ReviewCardFields
     }
     article @client
   }
 `;
 
 const UserReviewQuery = gql`
+  ${REVIEW_CARD_FIELDS}
   query UserReviewQuery($userId: String!, $articleId: String!) {
     userReview(userId: $userId, articleId: $articleId) {
-      id
-      body
-      highlights
-      rating
+      ...ReviewCardFields
     }
   }
 `;
 
 const CreateReviewMutation = gql`
+  ${REVIEW_CARD_FIELDS}
   mutation CreateReviewMutation($data: ReviewCreateInput!) {
     createOneReview(data: $data) {
-      id
-      body
-      highlights
-      rating
+      ...ReviewCardFields
     }
   }
 `;
 
 const UpdateReviewMutation = gql`
+  ${REVIEW_CARD_FIELDS}
   mutation UpdateReviewMutation(
     $where: ReviewWhereUniqueInput!
     $data: ReviewUpdateInput!
   ) {
     updateOneReview(where: $where, data: $data) {
-      id
-      body
-      highlights
-      rating
+      ...ReviewCardFields
     }
   }
 `;
@@ -114,7 +102,10 @@ function NewReview({ userId, articleId }) {
   }
 
   const review = data.userReview;
-  console.log(review);
+
+  if (review.published) {
+    return null;
+  }
 
   const update = (review) => {
     updateReview({
@@ -158,29 +149,59 @@ function NewReview({ userId, articleId }) {
     });
   };
   return (
-    <MarkdownEditor
-      articleMode
-      body={review.body}
-      highlights={review.highlights}
-      deleteHighlight={deleteHighlight}
-      onFocus={() => {
-        highlightsVar(review.highlights);
-        addHighlightVar(addHighlight);
-      }}
-      onChange={(body) => {
-        update({ ...review, body });
-      }}
-      updateArticleAndScroll={updateArticleAndScroll}
-      placeholder="Write a review!"
-    />
+    <>
+      <MarkdownEditor
+        articleMode
+        body={review.body}
+        highlights={review.highlights}
+        deleteHighlight={deleteHighlight}
+        onFocus={() => {
+          highlightsVar(review.highlights);
+          addHighlightVar(addHighlight);
+        }}
+        onChange={(body) => {
+          update({ ...review, body });
+        }}
+        updateArticleAndScroll={updateArticleAndScroll}
+        placeholder="Write a review!"
+      />
+      <div style={{ textAlign: "right" }}>
+        <Button
+          onClick={() =>
+            updateReview({
+              variables: {
+                where: {
+                  id: review.id,
+                },
+                data: {
+                  published: {
+                    set: true,
+                  },
+                },
+              },
+            })
+          }
+        >
+          Publish
+        </Button>
+        <Button color="error">Delete</Button>
+      </div>
+    </>
   );
 }
 
-export default function Reviews({ articleId }) {
+export default function Reviews() {
   const auth = useAuth();
   const article = articleVar();
   const { loading, error, data } = useQuery(ReviewsQuery, {
-    variables: { where: { articleId: { equals: article.id } } },
+    variables: {
+      where: {
+        articleId: { equals: article.id },
+        published: {
+          equals: true,
+        },
+      },
+    },
   });
   if (loading) {
     return (

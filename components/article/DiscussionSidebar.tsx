@@ -17,10 +17,7 @@ function DiscussionSidebar() {
   };
 
   const contentSx = {
-    paddingTop: "theme.spacing(2)",
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingBottom: 0,
+    padding: 0,
   };
 
   return (

@@ -1,10 +1,25 @@
 import AuthorPopover from "@/components/AuthorPopover";
 import Thread from "@/components/Thread";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
 import gql from "graphql-tag";
 import { updateArticleAndScroll } from "./article/vars";
 import Markdown from "./Markdown";
 import ProfilePicturePopover from "./ProfilePicturePopover";
+
+export const REVIEW_CARD_FIELDS = gql`
+  fragment ReviewCardFields on Review {
+    id
+    author {
+      id
+      name
+    }
+    body
+    highlights
+    rating
+    published
+    publishTimestamp
+  }
+`;
 
 const UpdateReviewMutation = gql`
   mutation UpdateReviewMutation(
@@ -19,21 +34,6 @@ const UpdateReviewMutation = gql`
   }
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    typography: {
-      padding: theme.spacing(2),
-    },
-    review: {
-      display: "flex",
-      marginTop: theme.spacing(2),
-    },
-    picture: {
-      marginRight: theme.spacing(1),
-    },
-  })
-);
-
 function Rating({ rating }) {
   switch (rating) {
     case 0:
@@ -47,16 +47,15 @@ function Rating({ rating }) {
   }
 }
 
-const Review = ({ review }) => {
-  const classes = useStyles();
+export default function Review({ review }) {
   const { highlights, body } = review;
   return (
-    <>
-      <div className={classes.review}>
-        <div className={classes.picture}>
+    <Box sx={{ marginTop: 1 }}>
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ marginRight: 1 }}>
           <ProfilePicturePopover user={review.author} />
-        </div>
-        <div>
+        </Box>
+        <Box>
           <AuthorPopover user={review.author} />
           <Markdown
             highlights={highlights}
@@ -64,11 +63,9 @@ const Review = ({ review }) => {
           >
             {body}
           </Markdown>
-        </div>
-      </div>
+        </Box>
+      </Box>
       <Thread headId={review.id} />
-    </>
+    </Box>
   );
-};
-
-export default Review;
+}
