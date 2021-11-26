@@ -1,6 +1,6 @@
 import { Auth } from "@/components/Auth";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
 import { useState } from "react";
 
 export default function LoginButton() {

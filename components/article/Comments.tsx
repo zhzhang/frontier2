@@ -1,7 +1,7 @@
 import MarkdownEditor from "@/components/MarkdownEditor";
 import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/client";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import gql from "graphql-tag";
 import { useState } from "react";
 import CenteredSpinner from "../CenteredSpinner";

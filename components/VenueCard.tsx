@@ -1,9 +1,9 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import VenueDatesBar from "@/components/VenueDatesBar";
-import Avatar from "@material-ui/core/Avatar";
-import Link from "@material-ui/core/Link";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Avatar from "@mui/material/Avatar";
+import Link from "@mui/material/Link";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

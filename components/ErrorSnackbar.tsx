@@ -1,8 +1,8 @@
 import { ApolloError } from "@apollo/client";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Snackbar from "@mui/material/Snackbar";
 import { useState } from "react";
 
 export default function ErrorSnackbar({ error }: { error: ApolloError }) {

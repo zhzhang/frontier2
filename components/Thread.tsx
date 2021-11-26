@@ -2,7 +2,7 @@ import AuthorPopover from "@/components/AuthorPopover";
 import CenteredSpinner from "@/components/CenteredSpinner";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import { useQuery } from "@apollo/react-hooks";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
 import Markdown from "./Markdown";

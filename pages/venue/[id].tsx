@@ -6,11 +6,11 @@ import ArticlesPane from "@/components/venue/ArticlesPane";
 import InfoPane from "@/components/venue/InfoPane";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import Typography from "@material-ui/core/Typography";
+import Button from "@mui/material/Button";
+import { makeStyles } from "@mui/material/styles";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 

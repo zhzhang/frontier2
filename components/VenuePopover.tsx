@@ -1,29 +1,10 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
-import Link from "@material-ui/core/Link";
-import Popover from "@material-ui/core/Popover";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
 import Router from "next/router";
 import { useState } from "react";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    popover: {
-      pointerEvents: "none",
-    },
-    paper: {
-      padding: theme.spacing(2),
-      maxWidth: 600,
-    },
-    header: {
-      display: "flex",
-    },
-    typography: {
-      marginLeft: theme.spacing(2),
-      paddingTop: 6,
-    },
-  })
-);
 
 export default function VenuePopover({
   venue,
@@ -31,7 +12,6 @@ export default function VenuePopover({
   variant = "span",
 }) {
   const { id, name, abbreviation, description, venueDate, logoRef } = venue;
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,9 +42,11 @@ export default function VenuePopover({
       </Typography>
       <Popover
         id={id}
-        className={classes.popover}
-        classes={{
-          paper: classes.paper,
+        sx={{
+          pointerEvents: "none",
+
+          padding: 2,
+          maxWidth: 600,
         }}
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -78,12 +60,18 @@ export default function VenuePopover({
         }}
         disableRestoreFocus
       >
-        <div className={classes.header}>
+        <Box sx={{ display: "flex" }}>
           <FirebaseAvatar variant="rounded" name={name} storeRef={logoRef} />
-          <Typography variant="h6" className={classes.typography}>
+          <Typography
+            variant="h6"
+            sx={{
+              marginLeft: 2,
+              paddingTop: 6,
+            }}
+          >
             {name}
           </Typography>
-        </div>
+        </Box>
         {description}
       </Popover>
     </>

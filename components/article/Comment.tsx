@@ -3,7 +3,7 @@ import Markdown from "@/components/Markdown";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import Thread from "@/components/Thread";
 import { useMutation } from "@apollo/react-hooks";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
 

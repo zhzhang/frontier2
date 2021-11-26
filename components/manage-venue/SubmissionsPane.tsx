@@ -2,7 +2,7 @@ import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import gql from "graphql-tag";
 import { USER_CHIP_FIELDS } from "../UserChip";
 import SubmissionCard from "./SubmissionCard";

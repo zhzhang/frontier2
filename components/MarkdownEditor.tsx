@@ -1,7 +1,4 @@
 import Markdown from "@/components/Markdown";
-import Popover from "@material-ui/core/Popover";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import Code from "@material-ui/icons/Code";
 import FormatBold from "@material-ui/icons/FormatBold";
 import FormatItalic from "@material-ui/icons/FormatItalic";
@@ -17,6 +14,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
+import Popover from "@mui/material/Popover";
+import { makeStyles, Theme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import { useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) => ({

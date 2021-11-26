@@ -4,7 +4,6 @@ import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import gql from "graphql-tag";
 import React from "react";
 
@@ -17,16 +16,7 @@ const GetArticlesQuery = gql`
   }
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    article: {
-      marginBottom: theme.spacing(1),
-    },
-  })
-);
-
 function Articles() {
-  const classes = useStyles();
   const { loading, error, data } = useQuery(GetArticlesQuery, {});
   if (loading) {
     return (
@@ -41,7 +31,7 @@ function Articles() {
   return (
     <Layout>
       {data.articles.map((article) => (
-        <ArticleCard article={article} className={classes.article} />
+        <ArticleCard article={article} sx={{ marginBottom: 2 }} />
       ))}
     </Layout>
   );

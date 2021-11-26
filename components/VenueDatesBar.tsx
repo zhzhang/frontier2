@@ -1,9 +1,9 @@
-import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import EventIcon from "@material-ui/icons/Event";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import dateformat from "dateformat";
 import { useRouter } from "next/router";
 

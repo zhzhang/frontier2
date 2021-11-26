@@ -3,7 +3,7 @@ import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import gql from "graphql-tag";
 
 const useStyles = makeStyles((theme: Theme) =>

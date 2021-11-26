@@ -1,8 +1,8 @@
-import Tab from "@material-ui/core/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Comments from "./Comments";

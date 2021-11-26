@@ -8,20 +8,20 @@ import { getCroppedImg } from "@/lib/crop";
 import { uploadFile, useAuth } from "@/lib/firebase";
 import { RelationEnum, UploadTypeEnum } from "@/lib/types";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import Grid from "@material-ui/core/Grid";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableRow from "@material-ui/core/TableRow";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableRow from "@mui/material/TableRow";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import Router from "next/router";
 import { useCallback, useRef, useState } from "react";
@@ -77,22 +77,6 @@ const DeleteRelationMutation = gql`
     }
   }
 `;
-
-const useStyles = makeStyles((theme) => ({
-  header: {
-    display: "flex",
-  },
-  editButton: {
-    marginLeft: "auto",
-  },
-  dropzone: {
-    border: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRadius: "4px",
-    borderStyle: "dashed",
-    padding: theme.spacing(1),
-    height: "150px",
-  },
-}));
 
 function Relations({ userId, relations }) {
   const [target, setTarget] = useState();
@@ -250,7 +234,6 @@ function Relations({ userId, relations }) {
 }
 
 function Editor({ user }) {
-  const classes = useStyles();
   const [name, setName] = useState(user.name);
   const [bio, setBio] = useState(user.bio);
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
@@ -320,6 +303,7 @@ function Editor({ user }) {
           multiline
           variant="outlined"
           label="Bio"
+          minRows={3}
           onChange={(event) => setBio(event.target.value)}
         />
       </Grid>
@@ -340,13 +324,22 @@ function Editor({ user }) {
             accept={["image/png", "image/jpeg"]}
           >
             {({ getRootProps, getInputProps }) => (
-              <div {...getRootProps()} className={classes.dropzone}>
+              <Box
+                {...getRootProps()}
+                style={{
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                  borderRadius: "4px",
+                  borderStyle: "dashed",
+                  padding: 1,
+                  height: "150px",
+                }}
+              >
                 <input {...getInputProps()} />
                 <p>
                   (Optional) Drag and drop a logo image here, or click to select
                   file.
                 </p>
-              </div>
+              </Box>
             )}
           </Dropzone>
         )}

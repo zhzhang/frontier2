@@ -2,11 +2,11 @@ import ArticleCard from "@/components/ArticleCard";
 import UserChip from "@/components/UserChip";
 import UserTypeahead from "@/components/UserTypeahead";
 import { useMutation } from "@apollo/react-hooks";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
 

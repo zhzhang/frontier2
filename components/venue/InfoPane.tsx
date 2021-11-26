@@ -1,6 +1,6 @@
 import Markdown from "@/components/Markdown";
-import { Grid } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Grid } from "@mui/material";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import VenueDatesBar from "../VenueDatesBar";
 
 const useStyles = makeStyles((theme: Theme) =>

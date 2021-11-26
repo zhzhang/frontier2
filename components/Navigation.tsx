@@ -1,84 +1,22 @@
 import LoginButton from "@/components/LoginButton";
 import { signOut, useAuth } from "@/lib/firebase";
-import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Menu, { MenuProps } from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-  withStyles,
-} from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
+import AppBar from "@mui/material/AppBar";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      flexGrow: 1,
-    },
-    links: {
-      position: "relative",
-      borderRadius: theme.shape.borderRadius,
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing(3),
-        width: "auto",
-      },
-    },
-    button: {
-      "&:hover": {
-        color: theme.palette.common.white,
-      },
-    },
-  })
-);
-
-const StyledMenu = withStyles({
-  paper: {
-    border: "1px solid #d3d4d5",
-  },
-})((props: MenuProps) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "center",
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "center",
-    }}
-    {...props}
-  />
-));
-
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    "&:focus": {
-      backgroundColor: theme.palette.primary.main,
-      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
-
-const Navigation = () => {
+export default function Navigation() {
   const { user, loading } = useAuth();
-  const classes = useStyles();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -91,21 +29,15 @@ const Navigation = () => {
   return (
     <AppBar position="fixed" elevation={0}>
       <Toolbar variant="dense">
-        <Typography variant="h6" className={classes.title}>
-          Frontier
-        </Typography>
-        <div className={classes.links}>
-          <Button color="inherit" href="/articles" className={classes.button}>
+        <Typography variant="h6">Frontier</Typography>
+        <div>
+          <Button color="inherit" href="/articles">
             Articles
           </Button>
-          <Button color="inherit" href="/venues" className={classes.button}>
+          <Button color="inherit" href="/venues">
             Venues
           </Button>
-          <Button
-            color="inherit"
-            href="/new-article"
-            className={classes.button}
-          >
+          <Button color="inherit" href="/new-article">
             Submit
           </Button>
         </div>
@@ -120,14 +52,14 @@ const Navigation = () => {
             >
               <AccountCircle />
             </IconButton>
-            <StyledMenu
+            <Menu
               id="customized-menu"
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <StyledMenuItem
+              <MenuItem
                 onClick={async () => {
                   router.push(`/user/${user.uid}`);
                 }}
@@ -136,8 +68,8 @@ const Navigation = () => {
                   <AccountCircle />
                 </ListItemIcon>
                 <ListItemText primary="Profile" />
-              </StyledMenuItem>
-              <StyledMenuItem
+              </MenuItem>
+              <MenuItem
                 onClick={async () => {
                   router.push(`/review-requests/${user.uid}`);
                 }}
@@ -146,8 +78,8 @@ const Navigation = () => {
                   <InboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Review Requests" />
-              </StyledMenuItem>
-              <StyledMenuItem
+              </MenuItem>
+              <MenuItem
                 onClick={async () => {
                   await signOut();
                   router.reload(window.location.pathname);
@@ -157,8 +89,8 @@ const Navigation = () => {
                   <LogoutIcon />
                 </ListItemIcon>
                 <ListItemText primary="Logout" />
-              </StyledMenuItem>
-            </StyledMenu>
+              </MenuItem>
+            </Menu>
           </div>
         ) : (
           <LoginButton />
@@ -166,6 +98,4 @@ const Navigation = () => {
       </Toolbar>
     </AppBar>
   );
-};
-
-export default Navigation;
+}

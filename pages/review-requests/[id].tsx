@@ -6,8 +6,8 @@ import SubmissionCard from "@/components/review-requests/SubmissionCard";
 import { USER_CHIP_FIELDS } from "@/components/UserChip";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 

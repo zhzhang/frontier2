@@ -1,7 +1,7 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
-import Popover from "@material-ui/core/Popover";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Popover from "@mui/material/Popover";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import Router from "next/router";
 import { useState } from "react";
 

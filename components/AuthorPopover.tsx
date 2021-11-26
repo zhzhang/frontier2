@@ -1,33 +1,15 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
-import Popover from "@material-ui/core/Popover";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Box from "@mui/material/Box";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
 import Router from "next/router";
 import { useState } from "react";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    typography: {
-      padding: theme.spacing(2),
-    },
-    popover: {
-      pointerEvents: "none",
-    },
-    paper: {
-      padding: theme.spacing(1),
-    },
-    header: {
-      display: "flex",
-    },
-  })
-);
 
 export default function AuthorPopover({
   user,
   color = "textSecondary",
   variant = "span",
 }) {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const { id, name, profilePictureUrl } = user;
   const anonymized = id === "anonymous";
@@ -58,9 +40,9 @@ export default function AuthorPopover({
       </Typography>
       <Popover
         id={id}
-        className={classes.popover}
-        classes={{
-          paper: classes.paper,
+        sx={{
+          pointerEvents: "none",
+          p: 1,
         }}
         open={Boolean(anchorEl) && !anonymized}
         anchorEl={anchorEl}
@@ -74,12 +56,21 @@ export default function AuthorPopover({
         }}
         disableRestoreFocus
       >
-        <div className={classes.header}>
+        <Box
+          sx={{
+            display: "flex",
+          }}
+        >
           <FirebaseAvatar name={name} storeRef={profilePictureUrl} />
-          <Typography variant="h6" className={classes.typography}>
+          <Typography
+            variant="h6"
+            sx={{
+              p: 1,
+            }}
+          >
             {name}
           </Typography>
-        </div>
+        </Box>
       </Popover>
     </span>
   );

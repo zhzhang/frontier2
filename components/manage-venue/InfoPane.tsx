@@ -1,9 +1,9 @@
 import MarkdownEditor from "@/components/MarkdownEditor";
 import { useMutation } from "@apollo/react-hooks";
-import { Grid } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import { Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
 import gql from "graphql-tag";
 import { useCallback, useRef, useState } from "react";
 import Dropzone from "react-dropzone";

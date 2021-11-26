@@ -7,7 +7,7 @@ import math from "remark-math";
 import visit from "unist-util-visit";
 import { BlockMath, InlineMath } from "./react-katex";
 
-const Highlight = ({ highlight, highlights, text, updateArticleAndScroll }) => {
+function Highlight({ highlight, highlights, text, updateArticleAndScroll }) {
   return (
     <a
       style={{ color: "blue" }}
@@ -18,7 +18,7 @@ const Highlight = ({ highlight, highlights, text, updateArticleAndScroll }) => {
       {text}
     </a>
   );
-};
+}
 
 const HIGHLIGHT_RE = /\[[^\]]+\]\{\d+\}/g;
 
@@ -91,12 +91,12 @@ const highlightPlugin = () => {
   return transformer;
 };
 
-const Markdown = ({
+function Markdown({
   children,
   updateArticleAndScroll = null,
   articleMode = true,
   highlights = [],
-}) => {
+}) {
   const renderers = {
     math: ({ value }) => <BlockMath math={value} />,
     inlineMath: ({ value }) => <InlineMath math={value} />,
@@ -123,6 +123,6 @@ const Markdown = ({
       className="markdown"
     />
   );
-};
+}
 
 export default Markdown;

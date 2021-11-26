@@ -7,12 +7,12 @@ import MembersPane from "@/components/manage-venue/MembersPane";
 import SubmissionsPane from "@/components/manage-venue/SubmissionsPane";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
-import Grid from "@material-ui/core/Grid";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import { createStyles, makeStyles, Theme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 

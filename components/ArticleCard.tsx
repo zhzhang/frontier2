@@ -1,7 +1,7 @@
 import Authors from "@/components/Authors";
 import Markdown from "@/components/Markdown";
 import VenuePopover from "@/components/VenuePopover";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
 import gql from "graphql-tag";
 
 export const ARTICLE_CARD_FIELDS = gql`
@@ -28,18 +28,6 @@ export const ARTICLE_CARD_FIELDS = gql`
   }
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    chips: {
-      display: "flex",
-      flexWrap: "wrap",
-      "& > *": {
-        margin: theme.spacing(0.5),
-      },
-    },
-  })
-);
-
 function AcceptedVenues({ venues, ...props }) {
   if (venues.length === 0) {
     return null;
@@ -55,16 +43,15 @@ function AcceptedVenues({ venues, ...props }) {
   return <div>{children}</div>;
 }
 
-export default function ArticleCard({ article, className = null }) {
+export default function ArticleCard({ article, sx = null }) {
   const { id, title, versions, authors, acceptedVenues } = article;
-  const classes = useStyles();
 
   return (
-    <div className={className}>
+    <Box sx={sx}>
       <a href={`/article/${id}`}>{title}</a>
       <Authors authors={authors} />
       <Markdown>{versions[0].abstract}</Markdown>
       <AcceptedVenues venues={acceptedVenues} />
-    </div>
+    </Box>
   );
 }
