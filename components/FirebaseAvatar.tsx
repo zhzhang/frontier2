@@ -1,5 +1,5 @@
 import { useRef } from "@/lib/firebase";
-import PersonIcon from "@material-ui/icons/Person";
+import PersonIcon from "@mui/icons-material/Person";
 import Avatar from "@mui/material/Avatar";
 
 export default function FirebaseAvatar({

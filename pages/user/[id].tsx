@@ -1,14 +1,14 @@
+import Spinner from "@/components/CenteredSpinner";
 import FirebaseAvatar from "@/components/FirebaseAvatar";
+import Layout from "@/components/Layout";
+import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { makeStyles } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import "react-datepicker/dist/react-datepicker.css";
-import Spinner from "../../components/CenteredSpinner";
-import Layout from "../../components/Layout";
-import { withApollo } from "../../lib/apollo";
 
 const UserQuery = gql`
   query UserQuery($where: UserWhereUniqueInput!) {
@@ -43,22 +43,7 @@ const UserArticlesQuery = gql`
   }
 `;
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    display: "flex",
-  },
-  editButton: {
-    marginLeft: "auto",
-  },
-  avatar: {
-    height: theme.spacing(10),
-    width: theme.spacing(10),
-    marginRight: theme.spacing(2),
-  },
-}));
-
 function User() {
-  const classes = useStyles();
   const router = useRouter();
   const id = router.query.id;
   const { loading, error, data } = useQuery(UserQuery, {
@@ -80,9 +65,13 @@ function User() {
 
   return (
     <Layout>
-      <div className={classes.header}>
+      <Box sx={{ display: "flex" }}>
         <FirebaseAvatar
-          className={classes.avatar}
+          sx={{
+            h: 10,
+            w: 10,
+            marginRight: 2,
+          }}
           storeRef={profilePictureUrl}
           name={name}
         />
@@ -90,16 +79,15 @@ function User() {
           <Typography variant="h5">{name}</Typography>
           {bio}
         </div>
-        <div className={classes.editButton}>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => router.push("/edit-profile")}
-          >
-            Edit
-          </Button>
-        </div>
-      </div>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => router.push("/edit-profile")}
+          sx={{ marginLeft: "auto" }}
+        >
+          Edit
+        </Button>
+      </Box>
     </Layout>
   );
 }

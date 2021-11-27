@@ -9,7 +9,7 @@ import { withApollo } from "@/lib/apollo";
 import { uploadFile } from "@/lib/firebase";
 import { UploadTypeEnum } from "@/lib/types";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";

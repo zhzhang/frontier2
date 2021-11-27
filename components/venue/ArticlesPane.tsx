@@ -3,16 +3,7 @@ import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import gql from "graphql-tag";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    body: {
-      marginTop: theme.spacing(1),
-    },
-  })
-);
 
 const AcceptedArticlesQuery = gql`
   query AcceptedArticlesQuery($where: DecisionWhereInput!) {
@@ -32,7 +23,6 @@ const AcceptedArticlesQuery = gql`
 `;
 
 const ArticlesPane = ({ id }) => {
-  const classes = useStyles();
   const { loading, error, data } = useQuery(AcceptedArticlesQuery, {
     variables: {
       where: {
@@ -55,11 +45,9 @@ const ArticlesPane = ({ id }) => {
     return <Spinner />;
   } else if (error) {
     return (
-      <div className={classes.body}>
-        <Error>
-          There was a problem loading this venue's accepted articles.
-        </Error>
-      </div>
+      <Error sx={{ mt: 1 }}>
+        There was a problem loading this venue's accepted articles.
+      </Error>
     );
   }
   const { decisions } = data;

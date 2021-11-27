@@ -1,27 +1,11 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import VenueDatesBar from "@/components/VenueDatesBar";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    header: {
-      display: "flex",
-      "& > *": {
-        margin: theme.spacing(1),
-      },
-    },
-    logo: {
-      width: theme.spacing(7),
-      height: theme.spacing(7),
-    },
-  })
-);
-
 export default function VenueCard({ venue }) {
-  const classes = useStyles();
   const { id, name, abbreviation, logoRef, venueDate, submissionDeadline } =
     venue;
 
@@ -44,7 +28,14 @@ export default function VenueCard({ venue }) {
 
   return (
     <>
-      <div className={classes.header}>
+      <Box
+        sx={{
+          display: "flex",
+          "& > *": {
+            m: 1,
+          },
+        }}
+      >
         {logoRef === null ? (
           <Avatar variant="rounded">T</Avatar>
         ) : (
@@ -54,7 +45,7 @@ export default function VenueCard({ venue }) {
           <Header />
           <VenueDatesBar venue={venue} />
         </div>
-      </div>
+      </Box>
       {/* <Typography>{description}</Typography> */}
     </>
   );

@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import VenueCard from "@/components/VenueCard";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import Box from "@mui/material/Box";
 import gql from "graphql-tag";
 
 const VenueQuery = gql`
@@ -41,9 +42,9 @@ function Venues() {
   return (
     <Layout>
       {data.venues.map((venue) => (
-        <div className="mt-3">
+        <Box sx={{ mt: 2 }}>
           <VenueCard venue={venue} />
-        </div>
+        </Box>
       ))}
     </Layout>
   );

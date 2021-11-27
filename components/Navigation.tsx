@@ -1,8 +1,8 @@
 import LoginButton from "@/components/LoginButton";
 import { signOut, useAuth } from "@/lib/firebase";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/ExitToApp";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -29,20 +29,20 @@ export default function Navigation() {
   return (
     <AppBar position="fixed" elevation={0}>
       <Toolbar variant="dense">
-        <Typography variant="h6">Frontier</Typography>
-        <div>
-          <Button color="inherit" href="/articles">
-            Articles
-          </Button>
-          <Button color="inherit" href="/venues">
-            Venues
-          </Button>
-          <Button color="inherit" href="/new-article">
-            Submit
-          </Button>
-        </div>
+        <Typography variant="h6" sx={{ flex: 1 }}>
+          FRONTIER
+        </Typography>
+        <Button color="inherit" href="/articles">
+          Articles
+        </Button>
+        <Button color="inherit" href="/venues">
+          Venues
+        </Button>
+        <Button color="inherit" href="/new-article">
+          Submit
+        </Button>
         {user ? (
-          <div>
+          <>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -91,7 +91,7 @@ export default function Navigation() {
                 <ListItemText primary="Logout" />
               </MenuItem>
             </Menu>
-          </div>
+          </>
         ) : (
           <LoginButton />
         )}

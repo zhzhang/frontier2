@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/react-hooks";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import TextField from "@mui/material/TextField";
 import gql from "graphql-tag";

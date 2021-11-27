@@ -42,23 +42,19 @@ export default function AuthorPopover({
         id={id}
         sx={{
           pointerEvents: "none",
-          p: 1,
         }}
         open={Boolean(anchorEl) && !anonymized}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
+          horizontal: "center",
         }}
         disableRestoreFocus
       >
         <Box
           sx={{
             display: "flex",
+            p: 1,
           }}
         >
           <FirebaseAvatar name={name} storeRef={profilePictureUrl} />

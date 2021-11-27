@@ -60,19 +60,20 @@ export default function VenuePopover({
         }}
         disableRestoreFocus
       >
-        <Box sx={{ display: "flex" }}>
-          <FirebaseAvatar variant="rounded" name={name} storeRef={logoRef} />
-          <Typography
-            variant="h6"
-            sx={{
-              marginLeft: 2,
-              paddingTop: 6,
-            }}
-          >
-            {name}
-          </Typography>
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ display: "flex" }}>
+            <FirebaseAvatar variant="rounded" name={name} storeRef={logoRef} />
+            <Typography
+              variant="h6"
+              sx={{
+                marginLeft: 2,
+              }}
+            >
+              {name}
+            </Typography>
+          </Box>
+          {description}
         </Box>
-        {description}
       </Popover>
     </>
   );

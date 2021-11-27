@@ -1,16 +1,14 @@
-import MuiAlert from "@material-ui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import { useState } from "react";
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
-const Error = ({ children, dismissible = true }) => {
+export default function Error({ children, ...props }) {
   const [show, setShow] = useState(true);
   if (show) {
-    return <Alert severity="error">{children}</Alert>;
+    return (
+      <Alert severity="error" {...props}>
+        {children}
+      </Alert>
+    );
   }
   return null;
-};
-
-export default Error;
+}

@@ -6,8 +6,8 @@ import ArticlesPane from "@/components/venue/ArticlesPane";
 import InfoPane from "@/components/venue/InfoPane";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { makeStyles } from "@mui/material/styles";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
@@ -30,20 +30,6 @@ const VenueQuery = gql`
   }
 `;
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    display: "flex",
-  },
-  editButton: {
-    marginLeft: "auto",
-  },
-  logo: {
-    width: theme.spacing(7),
-    height: theme.spacing(7),
-    marginRight: theme.spacing(2),
-  },
-}));
-
 function Venue() {
   const router = useRouter();
   const id = router.query.id;
@@ -51,7 +37,6 @@ function Venue() {
   const { loading, error, data } = useQuery(VenueQuery, {
     variables: { where: { id } },
   });
-  const classes = useStyles();
 
   if (loading) {
     return <Spinner animation="border" />;
@@ -79,24 +64,29 @@ function Venue() {
 
   return (
     <Layout>
-      <div className={classes.header}>
+      <Box sx={{ display: "flex" }}>
         <FirebaseAvatar
           storeRef={logoRef}
-          className={classes.logo}
           variant="rounded"
           name={name}
+          sx={{
+            w: 7,
+            h: 7,
+            mr: 2,
+          }}
         />
         <Typography variant="h5">{name}</Typography>
-        <div className={classes.editButton}>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => router.push(`/manage-venue/${id}`)}
-          >
-            Manage
-          </Button>
-        </div>
-      </div>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => router.push(`/manage-venue/${id}`)}
+          sx={{
+            marginLeft: "auto",
+          }}
+        >
+          Manage
+        </Button>
+      </Box>
       <Tabs
         value={tab}
         indicatorColor="primary"

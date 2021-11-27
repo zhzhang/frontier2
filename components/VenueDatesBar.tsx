@@ -1,62 +1,59 @@
-import EventIcon from "@material-ui/icons/Event";
-import EventAvailableIcon from "@material-ui/icons/EventAvailable";
-import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import EventIcon from "@mui/icons-material/Event";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import dateformat from "dateformat";
 import { useRouter } from "next/router";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    headerItem: {
-      marginRight: theme.spacing(2),
-    },
-    icon: {
-      height: 18,
-    },
-    container: {
-      display: "flex",
-      alignItems: "center",
-    },
-  })
-);
+function HeaderItem(props) {
+  return <Box component="span" sx={{ mr: 2 }} {...props} />;
+}
 
 export default function VenueDatesBar({ venue }) {
-  const classes = useStyles();
   const router = useRouter();
   const { id, venueDate, websiteUrl, submissionOpen, submissionDeadline } =
     venue;
   const canSubmit =
     !submissionDeadline || new Date(submissionDeadline) > new Date(Date.now());
+  const iconSx = { height: 18 };
+  const headerItemSx = {
+    mr: 2,
+  };
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
       {venueDate && (
-        <span className={classes.headerItem}>
-          <EventIcon className={classes.icon} />
+        <HeaderItem>
+          <EventIcon sx={{ iconSx }} />
           {dateformat(venueDate, "longDate")}
-        </span>
+        </HeaderItem>
       )}
-      <span className={classes.headerItem}>
-        <OpenInNewIcon className={classes.icon} />
+      <HeaderItem>
+        <OpenInNewIcon sx={iconSx} />
         <Link href={websiteUrl} target="_blank">
           {websiteUrl}
         </Link>
-      </span>
+      </HeaderItem>
       {submissionOpen && (
-        <span className={classes.headerItem}>
-          <EventAvailableIcon className={classes.icon} />
+        <HeaderItem>
+          <EventAvailableIcon sx={iconSx} />
           {`Submissions Open: ${dateformat(submissionOpen, "longDate")} `}
-        </span>
+        </HeaderItem>
       )}
       {submissionDeadline && (
-        <span className={classes.headerItem}>
-          <EventAvailableIcon className={classes.icon} />
+        <HeaderItem>
+          <EventAvailableIcon sx={iconSx} />
           {`Submissions Deadline: ${dateformat(
             submissionDeadline,
             "longDate"
           )}`}
-        </span>
+        </HeaderItem>
       )}
       {canSubmit && (
         <Button
@@ -68,6 +65,6 @@ export default function VenueDatesBar({ venue }) {
           Submit
         </Button>
       )}
-    </div>
+    </Box>
   );
 }
