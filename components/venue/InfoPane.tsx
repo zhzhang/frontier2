@@ -1,6 +1,5 @@
 import Markdown from "@/components/Markdown";
 import { Grid } from "@mui/material";
-import VenueDatesBar from "../VenueDatesBar";
 
 const InfoPane = ({ venue }) => {
   const { description } = venue;
@@ -13,7 +12,6 @@ const InfoPane = ({ venue }) => {
       }}
     >
       <Grid item>
-        <VenueDatesBar venue={venue} />
         <Markdown>{description}</Markdown>
       </Grid>
     </Grid>

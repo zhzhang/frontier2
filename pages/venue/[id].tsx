@@ -4,6 +4,7 @@ import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import ArticlesPane from "@/components/venue/ArticlesPane";
 import InfoPane from "@/components/venue/InfoPane";
+import VenueDatesBar from "@/components/VenueDatesBar";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
@@ -43,22 +44,27 @@ function Venue() {
     return <ErrorPage>Error loading this venue.</ErrorPage>;
   }
 
-  const { name, description, role, logoRef } = data.venue;
+  const { name, logoRef } = data.venue;
 
   return (
     <Layout>
       <Box sx={{ display: "flex" }}>
-        <FirebaseAvatar
-          storeRef={logoRef}
-          variant="rounded"
-          name={name}
-          sx={{
-            w: 7,
-            h: 7,
-            mr: 2,
-          }}
-        />
-        <Typography variant="h5">{name}</Typography>
+        <Box>
+          <FirebaseAvatar
+            storeRef={logoRef}
+            variant="rounded"
+            name={name}
+            sx={{
+              w: 7,
+              h: 7,
+              mr: 2,
+            }}
+          />
+        </Box>
+        <Box>
+          <Typography variant="h5">{name}</Typography>
+          <VenueDatesBar venue={data.venue} />
+        </Box>
         <Button
           variant="outlined"
           color="primary"
