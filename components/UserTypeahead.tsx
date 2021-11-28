@@ -25,6 +25,10 @@ export default function UserTypeahead({
   const [query, setQuery] = useState("");
   const { loading, error, data } = useQuery(gqlQuery, {
     variables: { query },
+    context: {
+      debounceKey: "user-typeahead",
+      debounceTimeout: 300,
+    },
   });
   const options = data ? data.searchUsers : [];
 
@@ -43,11 +47,12 @@ export default function UserTypeahead({
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.name === value.name}
       getOptionLabel={(option) => option.name}
       options={options}
       loading={loading}
-      renderOption={(user) => <UserChip user={user} canInteract={false} />}
+      renderOption={(props, user) => (
+        <UserChip user={user} canInteract={false} {...props} />
+      )}
       renderInput={(params) => (
         <TextField
           {...params}

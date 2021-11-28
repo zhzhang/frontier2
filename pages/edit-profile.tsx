@@ -34,7 +34,6 @@ const UserQuery = gql`
       id
       name
       email
-      bio
       relations {
         id
         target {
@@ -196,17 +195,16 @@ function Relations({ userId, relations }) {
                 <UserTypeahead
                   id="add-relation-typeahead"
                   selected={target}
-                  onChange={(_, selected) => {
-                    setTarget(selected);
+                  onChange={(all) => {
+                    console.log(all);
                   }}
                 />
               </TableCell>
               <TableCell>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel id="demo-controlled-open-select-label">
-                    Relationship
-                  </InputLabel>
+                  <InputLabel id="relationship-type">Relationship</InputLabel>
                   <Select
+                    label="Relationship"
                     value={relationType}
                     onChange={handleRelationTypeChange}
                   >
@@ -235,7 +233,8 @@ function Relations({ userId, relations }) {
 
 function Editor({ user }) {
   const [name, setName] = useState(user.name);
-  const [bio, setBio] = useState(user.bio);
+  const [twitter, setTwitter] = useState(user.twitter);
+  const [website, setWebsite] = useState(user.website);
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
   const imgRef = useRef(null);
@@ -246,7 +245,6 @@ function Editor({ user }) {
     },
     data: {
       name: { set: name },
-      bio: { set: bio },
     },
   };
   const handleUpdateUser = async () => {
@@ -283,68 +281,83 @@ function Editor({ user }) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Typography variant="h4">Editing Profile</Typography>
+        <Typography variant="h4">Edit Your Profile</Typography>
       </Grid>
-      <Grid item xs={5}>
-        <TextField
-          required
-          value={name}
-          fullWidth
-          variant="outlined"
-          label="Name"
-          onChange={(event) => setName(event.target.value)}
-        />
-      </Grid>
-      <Grid item xs={7} />
-      <Grid item xs={5}>
-        <TextField
-          value={bio}
-          fullWidth
-          multiline
-          variant="outlined"
-          label="Bio"
-          minRows={3}
-          onChange={(event) => setBio(event.target.value)}
-        />
-      </Grid>
-      <Grid item xs={7} />
-      <Grid item xs={3}>
-        {profilePictureUrl ? (
-          <ReactCrop
-            src={profilePictureUrl}
-            crop={crop}
-            onChange={(newCrop) => setCrop(newCrop)}
-            onImageLoaded={onLoad}
+      <Grid item container xs={2} spacing={3}>
+        <Grid item>
+          {profilePictureUrl ? (
+            <ReactCrop
+              src={profilePictureUrl}
+              crop={crop}
+              onChange={(newCrop) => setCrop(newCrop)}
+              onImageLoaded={onLoad}
+            />
+          ) : (
+            <Dropzone
+              onDrop={(acceptedFiles) => {
+                setProfilePictureUrl(URL.createObjectURL(acceptedFiles[0]));
+              }}
+              accept={["image/png", "image/jpeg"]}
+            >
+              {({ getRootProps, getInputProps }) => (
+                <Box
+                  {...getRootProps()}
+                  style={{
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
+                    borderRadius: "4px",
+                    borderStyle: "dashed",
+                    padding: 1,
+                    height: "150px",
+                  }}
+                >
+                  <input {...getInputProps()} />
+                  <p>
+                    (Optional) Drag and drop a logo image here, or click to
+                    select file.
+                  </p>
+                </Box>
+              )}
+            </Dropzone>
+          )}
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            value={name}
+            fullWidth
+            variant="outlined"
+            label="Name"
+            onChange={(event) => setName(event.target.value)}
           />
-        ) : (
-          <Dropzone
-            onDrop={(acceptedFiles) => {
-              setProfilePictureUrl(URL.createObjectURL(acceptedFiles[0]));
-            }}
-            accept={["image/png", "image/jpeg"]}
-          >
-            {({ getRootProps, getInputProps }) => (
-              <Box
-                {...getRootProps()}
-                style={{
-                  border: "1px solid rgba(0, 0, 0, 0.23)",
-                  borderRadius: "4px",
-                  borderStyle: "dashed",
-                  padding: 1,
-                  height: "150px",
-                }}
-              >
-                <input {...getInputProps()} />
-                <p>
-                  (Optional) Drag and drop a logo image here, or click to select
-                  file.
-                </p>
-              </Box>
-            )}
-          </Dropzone>
-        )}
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            value={website}
+            fullWidth
+            variant="outlined"
+            label="Website"
+            onChange={(event) => setWebsite(event.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            value={twitter}
+            fullWidth
+            variant="outlined"
+            label="Twitter"
+            onChange={(event) => setTwitter(event.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            value={name}
+            fullWidth
+            variant="outlined"
+            label="Current Institution"
+            onChange={(event) => setName(event.target.value)}
+          />
+        </Grid>
       </Grid>
-
       <Grid item xs={12}>
         <Button variant="contained" color="primary" onClick={handleUpdateUser}>
           Save
@@ -353,7 +366,6 @@ function Editor({ user }) {
       <Grid item xs={12}>
         <Typography variant="h5">Relations</Typography>
       </Grid>
-
       <Relations userId={user.id} relations={user.relations} />
     </Grid>
   );

@@ -1,6 +1,6 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
+import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import Router from "next/router";
@@ -14,31 +14,7 @@ export const USER_CHIP_FIELDS = gql`
   }
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    chip: {
-      display: "flex",
-      alignItems: "center",
-    },
-    avatar: {
-      width: 30,
-      height: 30,
-      marginRight: theme.spacing(0.5),
-    },
-    popover: {
-      pointerEvents: "none",
-    },
-    paper: {
-      padding: theme.spacing(1),
-    },
-    header: {
-      display: "flex",
-    },
-  })
-);
-
 export default function UserChip({ user, canInteract = true }) {
-  const classes = useStyles();
   const { id, name, profilePictureUrl } = user;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
@@ -51,23 +27,29 @@ export default function UserChip({ user, canInteract = true }) {
     canInteract && Router.push(`/user/${id}`);
   };
   return (
-    <div
-      className={classes.chip}
+    <Box
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onClick={handleClick}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+      }}
     >
       <FirebaseAvatar
         storeRef={profilePictureUrl}
         name={name}
-        className={classes.avatar}
+        sx={{
+          width: 30,
+          height: 30,
+          marginRight: 0.5,
+        }}
       />
       <Typography>{name}</Typography>
       <Popover
         id={id}
-        className={classes.popover}
-        classes={{
-          paper: classes.paper,
+        sx={{
+          pointerEvents: "none",
         }}
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -81,13 +63,16 @@ export default function UserChip({ user, canInteract = true }) {
         }}
         disableRestoreFocus
       >
-        <div className={classes.header}>
+        <Box
+          sx={{
+            display: "flex",
+            p: 1,
+          }}
+        >
           <FirebaseAvatar name={name} storeRef={profilePictureUrl} />
-          <Typography variant="h6" className={classes.typography}>
-            {name}
-          </Typography>
-        </div>
+          <Typography variant="h6">{name}</Typography>
+        </Box>
       </Popover>
-    </div>
+    </Box>
   );
 }

@@ -1,7 +1,25 @@
 import Box from "@mui/material/Box";
+import { createTheme } from "@mui/material/styles";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 import Navigation from "./Navigation";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+  },
+});
 
 export default function Layout({ children, padded = true }) {
   if (typeof window !== "undefined") {

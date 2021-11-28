@@ -11,8 +11,10 @@ model User {
   id                String            @id
   email             String            @unique
   name              String
-  bio               String            @default("")
-  profilePictureUrl String?
+  twitter           String?           @unique
+  website           String?           @unique
+  profilePictureUrl String?           @unique
+  institution       String?
   reviews           Review[]
   venueMemberships  VenueMembership[]
   decisions         Decision[]        @relation("chair")

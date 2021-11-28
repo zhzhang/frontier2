@@ -1,13 +1,13 @@
-import AcceptedArticleCard from "@/components/AcceptedArticleCard";
-import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
+import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
+import Box from "@mui/material/Box";
 import gql from "graphql-tag";
 
 const AcceptedArticlesQuery = gql`
+  ${ARTICLE_CARD_FIELDS}
   query AcceptedArticlesQuery($where: DecisionWhereInput!) {
-    ${ARTICLE_CARD_FIELDS}
     decisions(where: $where) {
       id
       body
@@ -22,7 +22,7 @@ const AcceptedArticlesQuery = gql`
   }
 `;
 
-const ArticlesPane = ({ id }) => {
+function ArticlesPane({ id }) {
   const { loading, error, data } = useQuery(AcceptedArticlesQuery, {
     variables: {
       where: {
@@ -56,11 +56,11 @@ const ArticlesPane = ({ id }) => {
     interiorComponent = "No accepted articles yet.";
   } else {
     interiorComponent = decisions.map((decision) => (
-      <AcceptedArticleCard key={decision.id} decision={decision} />
+      <ArticleCard key={decision.id} article={decision.article} />
     ));
   }
 
-  return <div className={classes.body}>{interiorComponent}</div>;
-};
+  return <Box sx={{ mt: 1 }}>{interiorComponent}</Box>;
+}
 
 export default ArticlesPane;

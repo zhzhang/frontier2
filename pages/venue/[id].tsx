@@ -8,8 +8,6 @@ import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
@@ -46,21 +44,6 @@ function Venue() {
   }
 
   const { name, description, role, logoRef } = data.venue;
-  const getTab = () => {
-    switch (view) {
-      case "articles":
-        return {
-          body: <ArticlesPane id={id} />,
-          tab: 1,
-        };
-      default:
-        return {
-          body: <InfoPane venue={data.venue} />,
-          tab: 0,
-        };
-    }
-  };
-  const { tab, body } = getTab();
 
   return (
     <Layout>
@@ -87,23 +70,9 @@ function Venue() {
           Manage
         </Button>
       </Box>
-      <Tabs
-        value={tab}
-        indicatorColor="primary"
-        textColor="primary"
-        onChange={(event, newIndex) => {
-          let newTabKey = "info";
-          if (newIndex === 1) {
-            newTabKey = "articles";
-          }
-          router.query.view = newTabKey;
-          router.push(router, undefined, { shallow: true });
-        }}
-      >
-        <Tab label="info" />
-        <Tab label="articles" />
-      </Tabs>
-      {body}
+      <InfoPane venue={data.venue} />
+      <Typography variant="h6">Articles</Typography>
+      <ArticlesPane id={id} />
     </Layout>
   );
 }
