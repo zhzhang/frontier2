@@ -81,16 +81,14 @@ async function main() {
       websiteUrl: "https://iclr.cc/",
     },
   });
-  const acl = await prisma.venue.create({
+  const arr = await prisma.venue.create({
     data: {
-      name: "Annual Meeting of the Association for Computational Linguistics",
-      abbreviation: "ACL",
-      logoRef: "logos/b501498d-a03f-4e8d-9aaf-0d5068cd59cd",
-      websiteUrl: "https://acl2020.org/",
+      name: "ACL Rolling Review",
+      abbreviation: "ARR",
+      logoRef: "logos/ARR.png",
+      websiteUrl: "https://aclrollingreview.org/",
       description:
-        "ACL is the premier conference of the field of computational linguistics, covering a broad spectrum of diverse research areas that are concerned with computational approaches to natural language.",
-      submissionDeadline: "2022-06-05T10:00:00.000Z",
-      venueDate: "2022-06-10T10:00:00.000Z",
+        "A new rolling review initiative of the Association for Computational Linguistics.",
     },
   });
 
@@ -420,7 +418,7 @@ async function main() {
       authorId: reviewer.id,
       body: `This is an example meta-review. Reviews that an author cites in writing the meta-review are attached to the meta-review, and directly credit the reviewer. Reviews `,
       highlights: [],
-      venueId: acl.id,
+      venueId: arr.id,
       decision: true,
       articleId: article.id,
     },

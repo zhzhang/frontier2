@@ -15,37 +15,8 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
 import Popover from "@mui/material/Popover";
-import { makeStyles, Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
-  icon: {
-    color: "gray",
-    margin: theme.spacing(0.5),
-  },
-  formField: {
-    marginTop: theme.spacing(2),
-  },
-  alert: {
-    marginBottom: theme.spacing(2),
-  },
-  showPreviewButton: {
-    marginLeft: "auto",
-  },
-  popover: {
-    pointerEvents: "none",
-  },
-  paper: {
-    padding: theme.spacing(1),
-  },
-}));
 
 const STYLES = [
   { Icon: Title, style: "Headers", example: "### Header Level 3" },
@@ -85,7 +56,6 @@ const HIGHLIGHT_STYLE = {
 };
 
 function StyleButton({ Icon, style, example }) {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handlePopoverOpen = (
@@ -101,15 +71,18 @@ function StyleButton({ Icon, style, example }) {
   return (
     <>
       <Icon
-        className={classes.icon}
+        sx={{
+          color: "gray",
+          m: 0.5,
+        }}
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       />
       <Popover
         id="mouse-over-popover"
-        className={classes.popover}
-        classes={{
-          paper: classes.paper,
+        sx={{
+          pointerEvents: "none",
+          p: 1,
         }}
         open={open}
         anchorEl={anchorEl}
@@ -181,30 +154,32 @@ export default function MarkdownEditor({
   placeholder = null,
   onFocus = null,
   onBlur = null,
+  sx = {},
   highlights = [],
   deleteHighlight = (id: number) => {},
   updateArticleAndScroll = () => {},
 }) {
-  const classes = useStyles();
   const [previewOpen, toggleShowPreview] = useState(false);
   const [focused, setFocused] = useState(false);
+  const focusStyle = focused
+    ? {
+        border: "1px solid rgba(0, 0, 0, 0.23)",
+        borderRadius: "4px",
+      }
+    : {
+        border: "1px solid rgba(0, 0, 0, 0.23)",
+        borderRadius: "4px",
+      };
   return (
     <Box
       component="form"
       noValidate
       autoComplete="off"
       key={key}
-      sx={
-        focused
-          ? {
-              border: "1px solid rgba(0, 0, 0, 0.23)",
-              borderRadius: "4px",
-            }
-          : {
-              border: "1px solid rgba(0, 0, 0, 0.23)",
-              borderRadius: "4px",
-            }
-      }
+      sx={{
+        ...sx,
+        ...focusStyle,
+      }}
     >
       <FormControl
         fullWidth
@@ -233,11 +208,12 @@ export default function MarkdownEditor({
         ))}
         {articleMode && <StyleButton {...HIGHLIGHT_STYLE} />}
         <Button
-          className={classes.showPreviewButton}
+          sx={{
+            marginLeft: "auto",
+          }}
           onClick={() => toggleShowPreview(!previewOpen)}
           size="small"
           fullWidth={false}
-          sx={{ flex: 1 }}
         >
           {previewOpen ? "Hide Preview" : "Show Preview"}
         </Button>

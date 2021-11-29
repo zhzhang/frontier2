@@ -4,6 +4,9 @@ import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import SearchIcon from "@mui/icons-material/Search";
+import Input from "@mui/material/Input";
+import InputAdornment from "@mui/material/InputAdornment";
 import gql from "graphql-tag";
 import React from "react";
 
@@ -30,8 +33,19 @@ function Articles() {
   }
   return (
     <Layout>
+      <Input
+        fullWidth
+        disabled
+        sx={{ mb: 2 }}
+        placeholder="Article search coming soon!"
+        startAdornment={
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        }
+      />
       {data.articles.map((article) => (
-        <ArticleCard article={article} sx={{ marginBottom: 2 }} />
+        <ArticleCard article={article} sx={{ mb: 2, width: 900 }} />
       ))}
     </Layout>
   );

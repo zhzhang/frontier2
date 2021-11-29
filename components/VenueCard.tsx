@@ -18,7 +18,7 @@ export default function VenueCard({ venue }) {
     abbrev += " - ";
     return (
       <Typography variant="h5" color="textSecondary">
-        <Link href={`/venue/${id}`} color="inherit">
+        <Link href={`/venue/${id}`} color="inherit" underline="none">
           {abbrev}
           {name}
         </Link>

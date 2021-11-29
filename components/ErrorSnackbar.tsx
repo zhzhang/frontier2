@@ -6,7 +6,6 @@ import Snackbar from "@mui/material/Snackbar";
 import { useState } from "react";
 
 export default function ErrorSnackbar({ error }: { error: ApolloError }) {
-  console.log(error);
   const [open, setOpen] = useState(Boolean(error));
   const handleClose = () => {};
   return (

@@ -8,7 +8,6 @@ const User = objectType({
     t.model.email({
       authorize: ({ id }, _, ctx) => ctx.user.id === id,
     });
-    t.model.bio();
     t.model.profilePictureUrl();
     t.list.field("articles", {
       type: "Article",

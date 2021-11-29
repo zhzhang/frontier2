@@ -14,7 +14,7 @@ export const USER_CHIP_FIELDS = gql`
   }
 `;
 
-export default function UserChip({ user, canInteract = true }) {
+export default function UserChip({ user, canInteract = true, ...props }) {
   const { id, name, profilePictureUrl } = user;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
@@ -35,6 +35,7 @@ export default function UserChip({ user, canInteract = true }) {
         display: "flex",
         alignItems: "center",
       }}
+      {...props}
     >
       <FirebaseAvatar
         storeRef={profilePictureUrl}

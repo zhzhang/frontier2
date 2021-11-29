@@ -14,7 +14,6 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
@@ -56,33 +55,7 @@ const VenueQuery = gql`
   }
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      "& .MuiTextField-root": {
-        margin: theme.spacing(1),
-        width: "25ch",
-      },
-    },
-    formField: {
-      marginTop: theme.spacing(2),
-    },
-    alert: {
-      marginBottom: theme.spacing(2),
-    },
-    dropzone: {
-      border: "1px solid rgba(0, 0, 0, 0.23)",
-      borderRadius: "4px",
-      borderStyle: "dashed",
-      padding: theme.spacing(1),
-      height: "302px",
-    },
-  })
-);
-
 function NewArticle({ venue }) {
-  const classes = useStyles();
-  const router = useRouter();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [submissionTarget, setSubmissionTarget] = useState(venue);
@@ -132,7 +105,7 @@ function NewArticle({ venue }) {
             onChange={(event) => setTitle(event.target.value)}
           />
           <UserTypeahead
-            className={classes.formField}
+            sx={{ mt: 2 }}
             label="Authors (In Order)"
             multiple
             value={authors}
@@ -151,37 +124,36 @@ function NewArticle({ venue }) {
             label="Anonymize Authors"
           />
           {!anonymous && (
-            <div className={classes.alert}>
-              <Alert severity="warning">
-                Submitting without anonymization will disqualify this
-                publication for review with many organizations and venues.
-              </Alert>
-            </div>
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              Submitting without anonymization will disqualify this publication
+              for review with many venues.
+            </Alert>
           )}
           <MarkdownEditor
             body={abstract}
             onChange={(abstract) => setAbstract(abstract)}
             label="Abstract"
-            placeholder="Write an abstract."
+            placeholder="Abstract"
+            sx={{
+              mb: 2,
+            }}
           />
           <SubmissionTargetTypeahed
-            className={classes.formField}
+            sx={{ mb: 2 }}
             label="Submit to..."
             onChange={(_, selected) => {
               setSubmissionTarget(selected);
             }}
             value={submissionTarget}
           />
-          <div className={classes.formField}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleSubmit()}
-              disabled={!canSubmit}
-            >
-              Submit
-            </Button>
-          </div>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleSubmit()}
+            disabled={!canSubmit}
+          >
+            Submit
+          </Button>
         </Grid>
         <Grid item xs={7}>
           {file ? (
@@ -207,7 +179,16 @@ function NewArticle({ venue }) {
               accept={["application/pdf"]}
             >
               {({ getRootProps, getInputProps }) => (
-                <div {...getRootProps()} className={classes.dropzone}>
+                <div
+                  {...getRootProps()}
+                  style={{
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
+                    borderRadius: "4px",
+                    borderStyle: "dashed",
+                    padding: 8,
+                    height: "302px",
+                  }}
+                >
                   <input {...getInputProps()} />
                   <p>
                     Drag and drop a PDF file here, or click to select PDF file.

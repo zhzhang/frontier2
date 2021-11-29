@@ -4,7 +4,10 @@ import Layout from "@/components/Layout";
 import VenueCard from "@/components/VenueCard";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
+import Input from "@mui/material/Input";
+import InputAdornment from "@mui/material/InputAdornment";
 import gql from "graphql-tag";
 
 const VenueQuery = gql`
@@ -41,6 +44,17 @@ function Venues() {
 
   return (
     <Layout>
+      <Input
+        fullWidth
+        disabled
+        sx={{ mb: 2 }}
+        placeholder="Venue search coming soon!"
+        startAdornment={
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        }
+      />
       {data.venues.map((venue) => (
         <Box sx={{ mt: 2 }}>
           <VenueCard venue={venue} />

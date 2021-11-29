@@ -2359,7 +2359,6 @@ scalar Upload
 
 type User {
   articles: [Article]
-  bio: String!
   email: String!
   id: String!
   name: String!
@@ -2468,11 +2467,11 @@ input UserCreateOrConnectWithoutVenueMembershipsInput {
 }
 
 input UserCreateWithoutAuthorshipsInput {
-  bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations: RelationCreateNestedManyWithoutUserInput
@@ -2480,15 +2479,17 @@ input UserCreateWithoutAuthorshipsInput {
   reviewRequests: ReviewRequestCreateNestedManyWithoutUserInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  twitter: String
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+  website: String
 }
 
 input UserCreateWithoutChairSubmissionsInput {
   authorships: AuthorshipCreateNestedManyWithoutUserInput
-  bio: String
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations: RelationCreateNestedManyWithoutUserInput
@@ -2496,15 +2497,17 @@ input UserCreateWithoutChairSubmissionsInput {
   reviewRequests: ReviewRequestCreateNestedManyWithoutUserInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  twitter: String
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+  website: String
 }
 
 input UserCreateWithoutDecisionsInput {
   authorships: AuthorshipCreateNestedManyWithoutUserInput
-  bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations: RelationCreateNestedManyWithoutUserInput
@@ -2512,96 +2515,108 @@ input UserCreateWithoutDecisionsInput {
   reviewRequests: ReviewRequestCreateNestedManyWithoutUserInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  twitter: String
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+  website: String
 }
 
 input UserCreateWithoutRelationsAsTargetInput {
   authorships: AuthorshipCreateNestedManyWithoutUserInput
-  bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations: RelationCreateNestedManyWithoutUserInput
   reviewRequests: ReviewRequestCreateNestedManyWithoutUserInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  twitter: String
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+  website: String
 }
 
 input UserCreateWithoutRelationsInput {
   authorships: AuthorshipCreateNestedManyWithoutUserInput
-  bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   reviewRequests: ReviewRequestCreateNestedManyWithoutUserInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  twitter: String
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+  website: String
 }
 
 input UserCreateWithoutReviewRequestsInput {
   authorships: AuthorshipCreateNestedManyWithoutUserInput
-  bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations: RelationCreateNestedManyWithoutUserInput
   relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  twitter: String
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+  website: String
 }
 
 input UserCreateWithoutReviewsInput {
   authorships: AuthorshipCreateNestedManyWithoutUserInput
-  bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations: RelationCreateNestedManyWithoutUserInput
   relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   reviewRequests: ReviewRequestCreateNestedManyWithoutUserInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  twitter: String
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+  website: String
 }
 
 input UserCreateWithoutThreadMessageInput {
   authorships: AuthorshipCreateNestedManyWithoutUserInput
-  bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations: RelationCreateNestedManyWithoutUserInput
   relationsAsTarget: RelationCreateNestedManyWithoutTargetInput
   reviewRequests: ReviewRequestCreateNestedManyWithoutUserInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
+  twitter: String
   venueMemberships: VenueMembershipCreateNestedManyWithoutUserInput
+  website: String
 }
 
 input UserCreateWithoutVenueMembershipsInput {
   authorships: AuthorshipCreateNestedManyWithoutUserInput
-  bio: String
   chairSubmissions: SubmissionCreateNestedManyWithoutOwnerInput
   decisions: DecisionCreateNestedManyWithoutAuthorInput
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations: RelationCreateNestedManyWithoutUserInput
@@ -2609,15 +2624,17 @@ input UserCreateWithoutVenueMembershipsInput {
   reviewRequests: ReviewRequestCreateNestedManyWithoutUserInput
   reviews: ReviewCreateNestedManyWithoutAuthorInput
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  twitter: String
+  website: String
 }
 
 input UserUpdateInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
@@ -2625,7 +2642,9 @@ input UserUpdateInput {
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateOneRequiredWithoutAuthorshipsInput {
@@ -2703,11 +2722,11 @@ input UserUpdateOneWithoutChairSubmissionsInput {
 }
 
 input UserUpdateWithoutAuthorshipsInput {
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
@@ -2715,15 +2734,17 @@ input UserUpdateWithoutAuthorshipsInput {
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutChairSubmissionsInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
@@ -2731,15 +2752,17 @@ input UserUpdateWithoutChairSubmissionsInput {
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutDecisionsInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
@@ -2747,96 +2770,108 @@ input UserUpdateWithoutDecisionsInput {
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutRelationsAsTargetInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutRelationsInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relationsAsTarget: RelationUpdateManyWithoutTargetInput
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutReviewRequestsInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
   relationsAsTarget: RelationUpdateManyWithoutTargetInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutReviewsInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
   relationsAsTarget: RelationUpdateManyWithoutTargetInput
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutThreadMessageInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
   relationsAsTarget: RelationUpdateManyWithoutTargetInput
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
   venueMemberships: VenueMembershipUpdateManyWithoutUserInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutVenueMembershipsInput {
   authorships: AuthorshipUpdateManyWithoutUserInput
-  bio: StringFieldUpdateOperationsInput
   chairSubmissions: SubmissionUpdateManyWithoutOwnerInput
   decisions: DecisionUpdateManyWithoutAuthorInput
   email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  institution: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   profilePictureUrl: NullableStringFieldUpdateOperationsInput
   relations: RelationUpdateManyWithoutUserInput
@@ -2844,6 +2879,8 @@ input UserUpdateWithoutVenueMembershipsInput {
   reviewRequests: ReviewRequestUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  twitter: NullableStringFieldUpdateOperationsInput
+  website: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpsertWithoutAuthorshipsInput {
@@ -2896,11 +2933,11 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   authorships: AuthorshipListRelationFilter
-  bio: StringFilter
   chairSubmissions: SubmissionListRelationFilter
   decisions: DecisionListRelationFilter
   email: StringFilter
   id: StringFilter
+  institution: StringNullableFilter
   name: StringFilter
   profilePictureUrl: StringNullableFilter
   relations: RelationListRelationFilter
@@ -2908,12 +2945,17 @@ input UserWhereInput {
   reviewRequests: ReviewRequestListRelationFilter
   reviews: ReviewListRelationFilter
   threadMessage: ThreadMessageListRelationFilter
+  twitter: StringNullableFilter
   venueMemberships: VenueMembershipListRelationFilter
+  website: StringNullableFilter
 }
 
 input UserWhereUniqueInput {
   email: String
   id: String
+  profilePictureUrl: String
+  twitter: String
+  website: String
 }
 
 type Venue {
