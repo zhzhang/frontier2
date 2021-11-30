@@ -1,29 +1,9 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Popover from "@mui/material/Popover";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
 import Router from "next/router";
 import { useState } from "react";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    typography: {
-      padding: theme.spacing(2),
-    },
-    popover: {
-      pointerEvents: "none",
-    },
-    paper: {
-      padding: theme.spacing(1),
-    },
-    header: {
-      display: "flex",
-    },
-  })
-);
-
-export default function ProfilePicturePopover({ user }) {
-  const classes = useStyles();
+export default function ProfilePicturePopover({ user, sx = null }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const { id, name, profilePictureUrl } = user;
   const anonymous = id === "anonymous";
@@ -40,22 +20,19 @@ export default function ProfilePicturePopover({ user }) {
   };
   return (
     <>
-      <div
+      <FirebaseAvatar
         onClick={handleClick}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-      >
-        <FirebaseAvatar
-          storeRef={profilePictureUrl}
-          anonymous={anonymous}
-          name={name}
-        />
-      </div>
+        storeRef={profilePictureUrl}
+        anonymous={anonymous}
+        name={name}
+        sx={sx}
+      />
       <Popover
         id={id}
-        className={classes.popover}
-        classes={{
-          paper: classes.paper,
+        sx={{
+          pointerEvents: "none",
         }}
         open={Boolean(anchorEl) && !anonymous}
         anchorEl={anchorEl}
@@ -68,14 +45,7 @@ export default function ProfilePicturePopover({ user }) {
           horizontal: "left",
         }}
         disableRestoreFocus
-      >
-        <div className={classes.header}>
-          <FirebaseAvatar name={name} storeRef={profilePictureUrl} />
-          <Typography variant="h6" className={classes.typography}>
-            {name}
-          </Typography>
-        </div>
-      </Popover>
+      ></Popover>
     </>
   );
 }

@@ -2,7 +2,7 @@ import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import ErrorPage from "@/components/ErrorPage";
 import Layout from "@/components/Layout";
-import { USER_CHIP_FIELDS } from "@/components/UserChip";
+import { USER_CARD_FIELDS } from "@/components/UserCard";
 import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
 import { getCroppedImg } from "@/lib/crop";
@@ -30,10 +30,10 @@ import Dropzone from "react-dropzone";
 import ReactCrop from "react-image-crop";
 
 const UserQuery = gql`
-  ${USER_CHIP_FIELDS}
+  ${USER_CARD_FIELDS}
   query UserQuery($where: UserWhereUniqueInput!) {
     user(where: $where) {
-      ...UserChipFields
+      ...UserCardFields
       relations {
         id
         target {
@@ -233,7 +233,6 @@ function Relations({ userId, relations }) {
 
 function Editor({ user }) {
   const [name, setName] = useState(user.name);
-  const [twitter, setTwitter] = useState(user.twitter);
   const [website, setWebsite] = useState(user.website);
   const [institution, setInstitution] = useState(user.institution);
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
@@ -347,15 +346,6 @@ function Editor({ user }) {
             variant="outlined"
             label="Website"
             onChange={(event) => setWebsite(event.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            value={twitter}
-            fullWidth
-            variant="outlined"
-            label="Twitter"
-            onChange={(event) => setTwitter(event.target.value)}
           />
         </Grid>
         <Grid item>

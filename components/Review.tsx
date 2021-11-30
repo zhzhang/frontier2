@@ -47,7 +47,7 @@ function Rating({ rating }) {
   }
 }
 
-export default function Review({ review }) {
+export default function Review({ review, renderThread = true }) {
   const { highlights, body } = review;
   return (
     <Box sx={{ marginTop: 1 }}>
@@ -65,7 +65,7 @@ export default function Review({ review }) {
           </Markdown>
         </Box>
       </Box>
-      <Thread headId={review.id} />
+      {renderThread && <Thread headId={review.id} />}
     </Box>
   );
 }

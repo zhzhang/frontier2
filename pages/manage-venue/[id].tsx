@@ -7,36 +7,14 @@ import MembersPane from "@/components/manage-venue/MembersPane";
 import SubmissionsPane from "@/components/manage-venue/SubmissionsPane";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    header: {
-      display: "flex",
-      "& > *": {
-        margin: theme.spacing(1),
-      },
-    },
-    logo: {
-      width: theme.spacing(7),
-      height: theme.spacing(7),
-    },
-    nav: {
-      marginRight: theme.spacing(1),
-    },
-    body: {
-      overflowY: "scroll",
-      height: "100%",
-    },
-  })
-);
 
 const VenueQuery = gql`
   query VenueQuery($where: VenueWhereUniqueInput!) {
@@ -53,26 +31,31 @@ const VenueQuery = gql`
 `;
 
 function Header({ name, logoRef }) {
-  const classes = useStyles();
   return (
-    <div className={classes.header}>
+    <Box
+      sx={{
+        display: "flex",
+        "& > *": {
+          m: 1,
+        },
+      }}
+    >
       <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
       <Typography variant="h5">{name}</Typography>
-    </div>
+    </Box>
   );
 }
 
 const TABS = [
+  { name: "Venue Info", key: "info" },
   { name: "Submissions", key: "submissions" },
   { name: "Members", key: "members" },
-  { name: "Venue Info", key: "info" },
 ];
 
 function Venue() {
-  const classes = useStyles();
   const router = useRouter();
   const id = router.query.id;
-  const view = router.query.view ? router.query.view : "submissions";
+  const view = router.query.view ? router.query.view : "info";
   const { loading, error, data } = useQuery(VenueQuery, {
     variables: { where: { id } },
   });
@@ -108,7 +91,7 @@ function Venue() {
       <Header name={name} logoRef={logoRef} />
       <Grid container>
         <Grid item xs={2}>
-          <List className={classes.nav}>
+          <List sx={{ mr: 1 }}>
             {TABS.map(({ name, key }) => (
               <ListItem
                 button
@@ -121,7 +104,16 @@ function Venue() {
             ))}
           </List>
         </Grid>
-        <Grid item container xs={10} spacing={2} className={classes.body}>
+        <Grid
+          item
+          container
+          xs={10}
+          spacing={2}
+          sx={{
+            overflowY: "scroll",
+            height: "100%",
+          }}
+        >
           {renderedView}
         </Grid>
       </Grid>

@@ -1,41 +1,28 @@
 import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
-import UserChip, { USER_CHIP_FIELDS } from "@/components/UserChip";
+import UserChip from "@/components/UserChip";
 import UserTypeahead from "@/components/UserTypeahead";
 import { useMutation } from "@apollo/react-hooks";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useState } from "react";
+import { USER_CARD_FIELDS } from "../UserCard";
 
 const MembershipsQuery = gql`
-  ${USER_CHIP_FIELDS}
+  ${USER_CARD_FIELDS}
   query MembershipsQuery($where: VenueMembershipWhereInput!) {
     venueMemberships(where: $where) {
       id
       role
       user {
-        ...UserChipFields
+        ...UserCardFields
       }
     }
   }
 `;
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      marginBottom: theme.spacing(1),
-      padding: theme.spacing(1),
-    },
-    divider: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
-    },
-  })
-);
 
 const AssignOwnerMutation = gql`
   ${ARTICLE_CARD_FIELDS}
@@ -57,7 +44,6 @@ const AssignOwnerMutation = gql`
 `;
 
 export default function SubmissionCard({ submission, venueId }) {
-  const classes = useStyles();
   const { id, owner, article } = submission;
   const [newOwner, setNewOwner] = useState(owner);
   const [assignOwner, { loading, error, data }] =
@@ -110,13 +96,23 @@ export default function SubmissionCard({ submission, venueId }) {
     );
   };
   return (
-    <Card className={classes.card}>
+    <Card
+      sx={{
+        mb: 1,
+        p: 1,
+      }}
+    >
       <Grid container spacing={2}>
         <Grid item>
           <ArticleCard article={article} />
         </Grid>
         <Grid item xs={12}>
-          <Divider className={classes.divider} />
+          <Divider
+            sx={{
+              mt: 1,
+              mb: 1,
+            }}
+          />
         </Grid>
         <Grid item xs={1}>
           <Typography> Editor</Typography>

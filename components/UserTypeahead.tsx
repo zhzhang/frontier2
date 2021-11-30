@@ -1,5 +1,6 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
-import UserChip, { USER_CHIP_FIELDS } from "@/components/UserChip";
+import { USER_CARD_FIELDS } from "@/components/UserCard";
+import UserChip from "@/components/UserChip";
 import { useQuery } from "@apollo/react-hooks";
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
@@ -9,10 +10,10 @@ import gql from "graphql-tag";
 import { useState } from "react";
 
 const SearchUsersQuery = gql`
-  ${USER_CHIP_FIELDS}
+  ${USER_CARD_FIELDS}
   query SearchUsers($query: String!) {
     searchUsers(query: $query) {
-      ...UserChipFields
+      ...UserCardFields
     }
   }
 `;

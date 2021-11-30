@@ -1,15 +1,15 @@
 import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
+import { USER_CARD_FIELDS } from "@/components/UserCard";
 import { useQuery } from "@apollo/react-hooks";
 import { Grid } from "@mui/material";
 import gql from "graphql-tag";
-import { USER_CHIP_FIELDS } from "../UserChip";
 import SubmissionCard from "./SubmissionCard";
 
 const SubmissionsQuery = gql`
   ${ARTICLE_CARD_FIELDS}
-  ${USER_CHIP_FIELDS}
+  ${USER_CARD_FIELDS}
   query SubmissionsQuery($where: SubmissionWhereInput!) {
     submissions(where: $where) {
       id
@@ -22,7 +22,7 @@ const SubmissionsQuery = gql`
       }
       reviewRequests {
         user {
-          ...UserChipFields
+          ...UserCardFields
         }
         submission {
           venue {

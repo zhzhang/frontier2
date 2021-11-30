@@ -1,8 +1,8 @@
 import MarkdownEditor from "@/components/MarkdownEditor";
 import { useMutation } from "@apollo/react-hooks";
 import { Grid } from "@mui/material";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import gql from "graphql-tag";
 import { useCallback, useRef, useState } from "react";
@@ -26,23 +26,7 @@ const UpdateVenueMutation = gql`
   }
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    body: {
-      margin: theme.spacing(1),
-    },
-    dropzone: {
-      border: "1px solid rgba(0, 0, 0, 0.23)",
-      borderRadius: "4px",
-      borderStyle: "dashed",
-      padding: theme.spacing(1),
-      height: "150px",
-    },
-  })
-);
-
 export default function InfoPane({ venue }) {
-  const classes = useStyles();
   const [name, setName] = useState(venue.name);
   const [abbrev, setAbbrev] = useState(venue.abbreviation);
   const [logoUrl, setLogoUrl] = useState("");
@@ -109,13 +93,22 @@ export default function InfoPane({ venue }) {
             accept={["image/png", "image/jpeg"]}
           >
             {({ getRootProps, getInputProps }) => (
-              <div {...getRootProps()} className={classes.dropzone}>
+              <Box
+                {...getRootProps()}
+                sx={{
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                  borderRadius: "4px",
+                  borderStyle: "dashed",
+                  p: 1,
+                  height: "150px",
+                }}
+              >
                 <input {...getInputProps()} />
                 <p>
                   (Optional) Drag and drop a logo image here, or click to select
                   file.
                 </p>
-              </div>
+              </Box>
             )}
           </Dropzone>
         )}

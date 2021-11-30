@@ -3,6 +3,7 @@ import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 
 const AcceptedArticlesQuery = gql`
@@ -53,7 +54,9 @@ function ArticlesPane({ id }) {
   const { decisions } = data;
   let interiorComponent;
   if (decisions.length === 0) {
-    interiorComponent = "No accepted articles yet.";
+    interiorComponent = (
+      <Typography>This venue has not accepted any articles.</Typography>
+    );
   } else {
     interiorComponent = decisions.map((decision) => (
       <ArticleCard key={decision.id} article={decision.article} />

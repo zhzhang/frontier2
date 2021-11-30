@@ -4,7 +4,6 @@ import UserTypeahead from "@/components/UserTypeahead";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,20 +11,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import gql from "graphql-tag";
 import { useState } from "react";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    search: {
-      display: "flex",
-    },
-    headerItem: {
-      marginRight: theme.spacing(2),
-    },
-    nav: {
-      padding: theme.spacing(1),
-    },
-  })
-);
 
 const MembershipsQuery = gql`
   query MembershipsQuery($where: VenueMembershipWhereInput!) {
@@ -64,7 +49,6 @@ const DeleteOneVenueMembershipMutation = gql`
 `;
 
 function MembersSelector({ id, role }) {
-  const classes = useStyles();
   const { loading, error, data } = useQuery(MembershipsQuery, {
     variables: {
       where: { venueId: { equals: id }, role: { equals: role } },

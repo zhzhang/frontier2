@@ -55,8 +55,8 @@ function Venue() {
             variant="rounded"
             name={name}
             sx={{
-              w: 7,
-              h: 7,
+              width: "3.5rem",
+              height: "3.5rem",
               mr: 2,
             }}
           />
@@ -71,13 +71,16 @@ function Venue() {
           onClick={() => router.push(`/manage-venue/${id}`)}
           sx={{
             marginLeft: "auto",
+            height: 36,
           }}
         >
           Manage
         </Button>
       </Box>
       <InfoPane venue={data.venue} />
-      <Typography variant="h6">Articles</Typography>
+      <Typography variant="h6" sx={{ mt: 2 }}>
+        Articles
+      </Typography>
       <ArticlesPane id={id} />
     </Layout>
   );
