@@ -2358,13 +2358,16 @@ input ThreadMessageWhereUniqueInput {
 scalar Upload
 
 type User {
-  articles: [Article]
+  authorships(after: AuthorshipWhereUniqueInput, before: AuthorshipWhereUniqueInput, first: Int, last: Int): [Authorship!]!
   email: String!
   id: String!
+  institution: String
   name: String!
   profilePictureUrl: String
   relations(after: RelationWhereUniqueInput, before: RelationWhereUniqueInput, first: Int, last: Int): [Relation!]!
   relationsAsTarget(after: RelationWhereUniqueInput, before: RelationWhereUniqueInput, first: Int, last: Int): [Relation!]!
+  twitter: String
+  website: String
 }
 
 input UserCreateNestedOneWithoutAuthorshipsInput {

@@ -1,15 +1,11 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import Router from "next/router";
 import { useState } from "react";
 
-export default function AuthorPopover({
-  user,
-  color = "textSecondary",
-  variant = "body1",
-}) {
+export default function AuthorPopover({ user, color = "textSecondary" }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const { id, name, profilePictureUrl } = user;
   const anonymized = id === "anonymous";
@@ -19,25 +15,19 @@ export default function AuthorPopover({
   const handleLeave = () => {
     setAnchorEl(null);
   };
-  const handleClick = () => {
-    if (!anonymized) {
-      Router.push(`/user/${id}`);
-    }
-  };
   return (
-    <span
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
-      onClick={handleClick}
-    >
-      <Typography
-        aria-owns={open ? "mouse-over-popover" : undefined}
-        aria-haspopup="true"
+    <>
+      <Link
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
+        href={`/user/${id}`}
+        underline="hover"
+        component="span"
         color={color}
-        variant={variant}
+        variant="body1"
       >
         {name}
-      </Typography>
+      </Link>
       <Popover
         id={id}
         sx={{
@@ -68,6 +58,6 @@ export default function AuthorPopover({
           </Typography>
         </Box>
       </Popover>
-    </span>
+    </>
   );
 }

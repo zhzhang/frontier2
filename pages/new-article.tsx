@@ -117,6 +117,7 @@ function NewArticle({ venue }) {
             variant="outlined"
             label="Title"
             onChange={(event) => setTitle(event.target.value)}
+            sx={{ mt: 2 }}
           />
           <UserTypeahead
             sx={{ mt: 2 }}
@@ -209,9 +210,9 @@ function NewArticle({ venue }) {
                   }}
                 >
                   <input {...getInputProps()} />
-                  <p>
+                  <Typography>
                     Drag and drop a PDF file here, or click to select PDF file.
-                  </p>
+                  </Typography>
                 </div>
               )}
             </Dropzone>

@@ -11,6 +11,10 @@ export const USER_CHIP_FIELDS = gql`
     id
     name
     profilePictureUrl
+    email
+    twitter
+    website
+    institution
   }
 `;
 

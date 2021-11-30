@@ -5,16 +5,14 @@ const User = objectType({
   definition(t) {
     t.model.id();
     t.model.name();
+    t.model.profilePictureUrl();
     t.model.email({
       authorize: ({ id }, _, ctx) => ctx.user.id === id,
     });
-    t.model.profilePictureUrl();
-    t.list.field("articles", {
-      type: "Article",
-      resolve: (parent) => {
-        return parent.articles;
-      },
-    });
+    t.model.institution();
+    t.model.twitter();
+    t.model.website();
+    t.model.authorships();
     t.model.relations();
     t.model.relationsAsTarget();
   },

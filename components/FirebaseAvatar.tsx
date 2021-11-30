@@ -1,5 +1,4 @@
 import { useRef } from "@/lib/firebase";
-import PersonIcon from "@mui/icons-material/Person";
 import Avatar from "@mui/material/Avatar";
 
 export default function FirebaseAvatar({
@@ -9,14 +8,10 @@ export default function FirebaseAvatar({
   ...props
 }) {
   if (anonymous) {
-    return (
-      <Avatar {...props}>
-        <PersonIcon />
-      </Avatar>
-    );
+    return <Avatar {...props} />;
   } else if (storeRef) {
     const url = useRef(storeRef);
-    return <Avatar {...props} src={url} />;
+    return <Avatar {...props} src={url} alt={name} />;
   }
-  return <Avatar {...props}>{name[0]}</Avatar>;
+  return <Avatar {...props} />;
 }

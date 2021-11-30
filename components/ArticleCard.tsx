@@ -4,6 +4,7 @@ import VenuePopover from "@/components/VenuePopover";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useState } from "react";
 
@@ -35,7 +36,7 @@ function AcceptedVenues({ venues, ...props }) {
   if (venues.length === 0) {
     return null;
   }
-  const children = [<>Accepted by: </>];
+  const children = [<Typography component="span">Accepted by: </Typography>];
   for (let i = 0; i < venues.length; i++) {
     const venue = venues[i];
     children.push(<VenuePopover venue={venue} key={venue.id} {...props} />);
@@ -43,7 +44,7 @@ function AcceptedVenues({ venues, ...props }) {
       children.push(<>, </>);
     }
   }
-  return <div>{children}</div>;
+  return <Box>{children}</Box>;
 }
 
 export default function ArticleCard({ article, sx = null }) {
@@ -52,7 +53,7 @@ export default function ArticleCard({ article, sx = null }) {
 
   return (
     <Box sx={sx}>
-      <Link underline="none" variant="h6" href={`/article/${id}`}>
+      <Link underline="hover" variant="h6" href={`/article/${id}`}>
         {title}
       </Link>
       <Authors authors={authors} />

@@ -2,6 +2,7 @@ import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import ErrorPage from "@/components/ErrorPage";
 import Layout from "@/components/Layout";
+import { USER_CHIP_FIELDS } from "@/components/UserChip";
 import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
 import { getCroppedImg } from "@/lib/crop";
@@ -29,11 +30,10 @@ import Dropzone from "react-dropzone";
 import ReactCrop from "react-image-crop";
 
 const UserQuery = gql`
+  ${USER_CHIP_FIELDS}
   query UserQuery($where: UserWhereUniqueInput!) {
     user(where: $where) {
-      id
-      name
-      email
+      ...UserChipFields
       relations {
         id
         target {
@@ -235,6 +235,7 @@ function Editor({ user }) {
   const [name, setName] = useState(user.name);
   const [twitter, setTwitter] = useState(user.twitter);
   const [website, setWebsite] = useState(user.website);
+  const [institution, setInstitution] = useState(user.institution);
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [crop, setCrop] = useState({ aspect: 1, width: 30 });
   const imgRef = useRef(null);
@@ -247,6 +248,15 @@ function Editor({ user }) {
       name: { set: name },
     },
   };
+  if (twitter) {
+    variables.data.twitter = { set: twitter };
+  }
+  if (website) {
+    variables.data.website = { set: website };
+  }
+  if (institution) {
+    variables.data.institution = { set: institution };
+  }
   const handleUpdateUser = async () => {
     if (!imgRef.current) {
       await updateUser({
@@ -283,7 +293,7 @@ function Editor({ user }) {
       <Grid item xs={12}>
         <Typography variant="h4">Edit Your Profile</Typography>
       </Grid>
-      <Grid item container xs={2} spacing={3}>
+      <Grid item container sm={3} spacing={3}>
         <Grid item>
           {profilePictureUrl ? (
             <ReactCrop
@@ -320,7 +330,7 @@ function Editor({ user }) {
             </Dropzone>
           )}
         </Grid>
-        <Grid item xs={12}>
+        <Grid item>
           <TextField
             required
             value={name}
@@ -330,7 +340,7 @@ function Editor({ user }) {
             onChange={(event) => setName(event.target.value)}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item>
           <TextField
             value={website}
             fullWidth
@@ -339,7 +349,7 @@ function Editor({ user }) {
             onChange={(event) => setWebsite(event.target.value)}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item>
           <TextField
             value={twitter}
             fullWidth
@@ -348,13 +358,13 @@ function Editor({ user }) {
             onChange={(event) => setTwitter(event.target.value)}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item>
           <TextField
-            value={name}
+            value={institution}
             fullWidth
             variant="outlined"
             label="Current Institution"
-            onChange={(event) => setName(event.target.value)}
+            onChange={(event) => setInstitution(event.target.value)}
           />
         </Grid>
       </Grid>

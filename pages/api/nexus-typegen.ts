@@ -2895,8 +2895,11 @@ export interface NexusGenObjects {
   User: { // root type
     email: string; // String!
     id: string; // String!
+    institution?: string | null; // String
     name: string; // String!
     profilePictureUrl?: string | null; // String
+    twitter?: string | null; // String
+    website?: string | null; // String
   }
   Venue: { // root type
     abbreviation?: string | null; // String
@@ -3028,13 +3031,16 @@ export interface NexusGenFieldTypes {
     id: string; // String!
   }
   User: { // field return type
-    articles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
+    authorships: NexusGenRootTypes['Authorship'][]; // [Authorship!]!
     email: string; // String!
     id: string; // String!
+    institution: string | null; // String
     name: string; // String!
     profilePictureUrl: string | null; // String
     relations: NexusGenRootTypes['Relation'][]; // [Relation!]!
     relationsAsTarget: NexusGenRootTypes['Relation'][]; // [Relation!]!
+    twitter: string | null; // String
+    website: string | null; // String
   }
   Venue: { // field return type
     abbreviation: string | null; // String
@@ -3159,13 +3165,16 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
   }
   User: { // field return type name
-    articles: 'Article'
+    authorships: 'Authorship'
     email: 'String'
     id: 'String'
+    institution: 'String'
     name: 'String'
     profilePictureUrl: 'String'
     relations: 'Relation'
     relationsAsTarget: 'Relation'
+    twitter: 'String'
+    website: 'String'
   }
   Venue: { // field return type name
     abbreviation: 'String'
@@ -3352,6 +3361,12 @@ export interface NexusGenArgTypes {
     }
   }
   User: {
+    authorships: { // args
+      after?: NexusGenInputs['AuthorshipWhereUniqueInput'] | null; // AuthorshipWhereUniqueInput
+      before?: NexusGenInputs['AuthorshipWhereUniqueInput'] | null; // AuthorshipWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
     relations: { // args
       after?: NexusGenInputs['RelationWhereUniqueInput'] | null; // RelationWhereUniqueInput
       before?: NexusGenInputs['RelationWhereUniqueInput'] | null; // RelationWhereUniqueInput

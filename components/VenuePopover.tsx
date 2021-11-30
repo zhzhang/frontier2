@@ -3,14 +3,9 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import Router from "next/router";
 import { useState } from "react";
 
-export default function VenuePopover({
-  venue,
-  color = "textSecondary",
-  variant = "span",
-}) {
+export default function VenuePopover({ venue, color = "textSecondary" }) {
   const { id, name, abbreviation, description, venueDate, logoRef } = venue;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
@@ -28,18 +23,18 @@ export default function VenuePopover({
 
   return (
     <>
-      <Typography
-        color="textSecondary"
+      <Link
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
+        href={`/venue/${id}`}
+        color="inherit"
+        underline="hover"
+        component="span"
+        variant="body1"
         color={color}
-        variant={variant}
-        onClick={() => Router.push(`/venue/${id}`)}
       >
-        <Link href={`/venue/${id}`} color="inherit">
-          {abbrev}
-        </Link>
-      </Typography>
+        {abbrev}
+      </Link>
       <Popover
         id={id}
         sx={{

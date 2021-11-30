@@ -6,8 +6,11 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
 export default function VenueCard({ venue }) {
-  const { id, name, abbreviation, logoRef, venueDate, submissionDeadline } =
-    venue;
+  const { id, name, abbreviation, logoRef, venueDate } = venue;
+  const logoSx = {
+    height: "3.5rem",
+    width: "3.5rem",
+  };
 
   const Header = () => {
     const parsedVenueDate = new Date(venueDate);
@@ -37,16 +40,22 @@ export default function VenueCard({ venue }) {
         }}
       >
         {logoRef === null ? (
-          <Avatar variant="rounded">T</Avatar>
+          <Avatar sx={logoSx} variant="rounded">
+            T
+          </Avatar>
         ) : (
-          <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
+          <FirebaseAvatar
+            sx={logoSx}
+            storeRef={logoRef}
+            variant="rounded"
+            name={name}
+          />
         )}
         <div>
           <Header />
           <VenueDatesBar venue={venue} />
         </div>
       </Box>
-      {/* <Typography>{description}</Typography> */}
     </>
   );
 }
