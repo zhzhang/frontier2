@@ -3,6 +3,7 @@ import Markdown from "@/components/Markdown";
 import VenuePopover from "@/components/VenuePopover";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
 import gql from "graphql-tag";
 import { useState } from "react";
 
@@ -51,7 +52,9 @@ export default function ArticleCard({ article, sx = null }) {
 
   return (
     <Box sx={sx}>
-      <a href={`/article/${id}`}>{title}</a>
+      <Link underline="none" variant="h6" href={`/article/${id}`}>
+        {title}
+      </Link>
       <Authors authors={authors} />
       <Button
         size="small"

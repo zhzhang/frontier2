@@ -10,8 +10,10 @@ import { uploadFile } from "@/lib/firebase";
 import { UploadTypeEnum } from "@/lib/types";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import CircularProgress from "@mui/material/CircularProgress";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -56,34 +58,46 @@ const VenueQuery = gql`
 `;
 
 function NewArticle({ venue }) {
+  const router = useRouter();
   const [file, setFile] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [title, setTitle] = useState("");
   const [submissionTarget, setSubmissionTarget] = useState(venue);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [abstract, setAbstract] = useState("");
   const [authors, setAuthors] = useState([]);
   const [anonymous, setAnonymous] = useState(true);
-  const [createArticle, { loading, error, data }] = useMutation(
-    CreateArticleMutation
-  );
+  const [createArticle, { error, data }] = useMutation(CreateArticleMutation);
 
   const handleSubmit = () => {
     const { uploadTask, refPath } = uploadFile(file, UploadTypeEnum.ARTICLE);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
-      (error) => {},
+      (snapshot) => {
+        setUploadProgress(
+          (100 * snapshot.bytesTransferred) / snapshot.totalBytes
+        );
+      },
+      (error) => {
+        setErrorMessage(error);
+      },
       async () => {
-        createArticle({
-          variables: {
-            title,
-            abstract,
-            anonymous,
-            ref: refPath,
-            authorIds: authors.map((a) => a.id),
-            venueId: submissionTarget && submissionTarget.id,
-          },
-        });
-        // router.push(`/article/${data.article.id}`);
+        setUploadProgress(0);
+        try {
+          const { data } = await createArticle({
+            variables: {
+              title,
+              abstract,
+              anonymous,
+              ref: refPath,
+              authorIds: authors.map((a) => a.id),
+              venueId: submissionTarget && submissionTarget.id,
+            },
+          });
+          router.push(`/article/${data.createArticle.id}`);
+        } catch (error) {
+          setErrorMessage(error.message);
+        }
       }
     );
   };
@@ -146,14 +160,19 @@ function NewArticle({ venue }) {
             }}
             value={submissionTarget}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleSubmit()}
-            disabled={!canSubmit}
-          >
-            Submit
-          </Button>
+          <Box sx={{ display: "flex", mb: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleSubmit()}
+              disabled={!canSubmit}
+              sx={{ mr: 2 }}
+            >
+              Submit
+            </Button>
+            <CircularProgress variant="determinate" value={uploadProgress} />
+          </Box>
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         </Grid>
         <Grid item xs={7}>
           {file ? (

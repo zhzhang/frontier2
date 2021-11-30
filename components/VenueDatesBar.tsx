@@ -61,6 +61,7 @@ export default function VenueDatesBar({ venue }) {
           size="small"
           variant="outlined"
           onClick={() => router.push(`/new-article?venue=${id}`)}
+          sx={{ p: 0 }}
         >
           Submit
         </Button>

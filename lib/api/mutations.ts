@@ -68,9 +68,8 @@ export default objectType({
         { title, abstract, authorIds, anonymous, ref, venueId },
         ctx
       ) => {
-        throw Error("Test Error");
         if (!authorIds.includes(ctx.user.id)) {
-          throw Error("User must be an author.");
+          throw Error("The submitter of the article must be an author.");
         }
         let authorCreationArgs = [];
         for (const [index, authorId] of authorIds.entries()) {
@@ -98,7 +97,6 @@ export default objectType({
           },
         };
         const article = await ctx.prisma.article.create(input);
-        console.log(venueId);
         if (venueId) {
           const sub = await ctx.prisma.submission.create({
             data: {
@@ -106,7 +104,6 @@ export default objectType({
               venueId,
             },
           });
-          console.log("hit");
         }
         return article;
       },

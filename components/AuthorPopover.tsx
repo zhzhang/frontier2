@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function AuthorPopover({
   user,
   color = "textSecondary",
-  variant = "span",
+  variant = "body1",
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const { id, name, profilePictureUrl } = user;

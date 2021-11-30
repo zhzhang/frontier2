@@ -1,11 +1,15 @@
 import AuthorPopover from "@/components/AuthorPopover";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
-export default function Authors({ authors, className = null, ...props }) {
+export default function Authors({ authors, sx = null, ...props }) {
   if (authors === null) {
     return (
-      <div className={className}>
-        <em>Anonymized</em>
-      </div>
+      <Box sx={sx}>
+        <Typography>
+          <em>Anonymized</em>
+        </Typography>
+      </Box>
     );
   }
   const children = [];
@@ -17,5 +21,5 @@ export default function Authors({ authors, className = null, ...props }) {
     }
   }
 
-  return <div className={className}>{children}</div>;
+  return <Box sx={sx}>{children}</Box>;
 }

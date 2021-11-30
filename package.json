@@ -32,8 +32,6 @@
     "apollo-link-debounce": "^3.0.0",
     "apollo-link-schema": "1.2.5",
     "apollo-server-micro": "^2.25.0",
-    "aws-sdk": "^2.859.0",
-    "bootstrap": "^4.6.0",
     "dateformat": "^4.5.1",
     "express": "4.17.1",
     "firebase": "^8.2.6",
