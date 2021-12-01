@@ -2966,6 +2966,7 @@ export interface NexusGenFieldTypes {
     createOneVenue: NexusGenRootTypes['Venue']; // Venue!
     createOneVenueMembership: NexusGenRootTypes['VenueMembership']; // VenueMembership!
     deleteOneRelation: NexusGenRootTypes['Relation'] | null; // Relation
+    deleteOneReview: NexusGenRootTypes['Review'] | null; // Review
     deleteOneVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
     updateOneReview: NexusGenRootTypes['Review'] | null; // Review
     updateOneSubmission: NexusGenRootTypes['Submission'] | null; // Submission
@@ -3100,6 +3101,7 @@ export interface NexusGenFieldTypeNames {
     createOneVenue: 'Venue'
     createOneVenueMembership: 'VenueMembership'
     deleteOneRelation: 'Relation'
+    deleteOneReview: 'Review'
     deleteOneVenueMembership: 'VenueMembership'
     updateOneReview: 'Review'
     updateOneSubmission: 'Submission'
@@ -3235,6 +3237,9 @@ export interface NexusGenArgTypes {
     }
     deleteOneRelation: { // args
       where: NexusGenInputs['RelationWhereUniqueInput']; // RelationWhereUniqueInput!
+    }
+    deleteOneReview: { // args
+      where: NexusGenInputs['ReviewWhereUniqueInput']; // ReviewWhereUniqueInput!
     }
     deleteOneVenueMembership: { // args
       where: NexusGenInputs['VenueMembershipWhereUniqueInput']; // VenueMembershipWhereUniqueInput!

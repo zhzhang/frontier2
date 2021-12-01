@@ -1,9 +1,10 @@
 import styles from "./Tip.module.css";
+import Typography from "@mui/material/Typography"
 
 const Tip = ({ onConfirm }) => {
   return (
     <div className={styles.TipCompact} onClick={onConfirm}>
-      Add reference
+      <Typography>Add reference</Typography>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import {
   onRenderedCallbackVar,
   selectedVersionVar,
   selectVersion,
+  threadRepliesVar,
   viewerVar,
 } from "@/components/article/vars";
 import Authors from "@/components/Authors";
@@ -14,6 +15,7 @@ import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import Markdown from "@/components/Markdown";
 import PdfViewer from "@/components/PDFViewer";
+import { USER_CARD_FIELDS } from "@/components/UserCard";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
@@ -66,13 +68,13 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 const ArticleQuery = gql`
+  ${USER_CARD_FIELDS}
   query ArticleQuery($id: String!) {
     article(where: { id: $id }) {
       id
       title
       authors {
-        id
-        name
+        ...UserCardFields
       }
       versions {
         id
@@ -237,6 +239,11 @@ export default withApollo(Index, {
       article: {
         read() {
           return articleVar();
+        },
+      },
+      threadReplies: {
+        read() {
+          return threadRepliesVar();
         },
       },
     },

@@ -1,4 +1,5 @@
 import { makeVar } from "@apollo/client";
+import { Map } from "immutable";
 
 export const highlightsVar = makeVar([]);
 export const addHighlightVar = makeVar(null);
@@ -6,6 +7,7 @@ export const articleVar = makeVar({});
 export const selectedVersionVar = makeVar({});
 export const viewerVar = makeVar(null);
 export const onRenderedCallbackVar = makeVar(null);
+export const threadRepliesVar = makeVar(Map());
 
 export function selectVersion(versionNumber) {
   const versions = articleVar().versions;

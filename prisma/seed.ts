@@ -27,6 +27,7 @@ async function main() {
       id: cuid(),
       email: "andrew.caines@cl.cam.ac.uk",
       name: "Andrew Caines",
+      institution: "University of Cambridge",
     },
   });
   const user2 = await prisma.user.create({
@@ -34,6 +35,7 @@ async function main() {
       id: cuid(),
       email: "hjc68@cl.cam.ac.uk",
       name: "Hannah Craighead",
+      institution: "University of Cambridge",
     },
   });
   const user3 = await prisma.user.create({
@@ -41,6 +43,7 @@ async function main() {
       id: cuid(),
       email: "paula.buttery@cl.cam.ac.uk",
       name: "Paula Buttery",
+      institution: "University of Cambridge",
     },
   });
   const user4 = await prisma.user.create({
@@ -48,6 +51,7 @@ async function main() {
       id: cuid(),
       email: "hellen.yannakoudakis@cl.cam.ac.uk",
       name: "Helen Yannakoudakis",
+      institution: "University of Cambridge",
     },
   });
   const user5 = await prisma.user.create({
@@ -128,7 +132,7 @@ async function main() {
   });
 
   const reviewBody =
-    "Easily write your reviews with a fully featured markdown text editor:\n\n - Rich text formatting: *italics* **bold**. \n\n - Formulas $f(x) = x^{2}$ \n $$\nH(p,q)=-\\sum\\limits_{x\\in\\chi}p(x)\\log q(x)\n$$\n - PDF annotation. [This]{1} highlight refers to the most recent version of the article, while [this]{2} highlight refers to a previous version.";
+    "Easily write your reviews with a fully featured markdown text editor:\n\n - Rich text formatting: *italics* **bold**. \n\n - Formulas $f(x) = x^{2}$ \n $$\nH(p,q)=-\\sum\\limits_{x\\in\\chi}p(x)\\log q(x)\n$$\n - PDF annotation. [This]{1} highlight refers to the most recent version of the article, while [this]{2} highlight refers to a previous version. Click on the blue highlight link to be taken to highlighted text.";
   const highlights = [
     {
       boundingRect: {
@@ -372,18 +376,6 @@ async function main() {
     },
   ];
 
-  const review1 = await prisma.review.create({
-    data: {
-      authorId: reviewer.id,
-      publishTimestamp: new Date(),
-      articleId: article.id,
-      published: true,
-      rating: 1,
-      anonymized: false,
-      highlights: [],
-      body: "Test review!!!",
-    },
-  });
   const review2 = await prisma.review.create({
     data: {
       authorId: reviewer.id,

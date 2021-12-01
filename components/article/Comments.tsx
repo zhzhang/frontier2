@@ -94,7 +94,11 @@ function NewComment({ userId, articleId, highlights, updateArticleAndScroll }) {
         placeholder="Write a comment!"
         sx={{ mt: 1 }}
       />
-      <Button variant="contained" color="primary" onClick={handleCreate}>
+      <Button
+        color="primary"
+        onClick={handleCreate}
+        sx={{ textAlign: "right", marginLeft: "auto" }}
+      >
         Comment
       </Button>
     </>

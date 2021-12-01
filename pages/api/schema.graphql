@@ -977,6 +977,7 @@ type Mutation {
   createOneVenue(data: VenueCreateInput!): Venue!
   createOneVenueMembership(data: VenueMembershipCreateInput!): VenueMembership!
   deleteOneRelation(where: RelationWhereUniqueInput!): Relation
+  deleteOneReview(where: ReviewWhereUniqueInput!): Review
   deleteOneVenueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
   updateOneReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
   updateOneSubmission(data: SubmissionUpdateInput!, where: SubmissionWhereUniqueInput!): Submission

@@ -23,19 +23,24 @@ export default function UserCard({ user }) {
   return (
     <Box
       sx={{
-        display: "flex",
         p: 1,
       }}
     >
-      <FirebaseAvatar name={name} storeRef={profilePictureUrl} />
-      <Typography
-        variant="h6"
+      <Box
         sx={{
-          p: 1,
+          display: "flex",
         }}
       >
-        {name}
-      </Typography>
+        <FirebaseAvatar name={name} storeRef={profilePictureUrl} />
+        <Typography
+          variant="h6"
+          sx={{
+            p: 1,
+          }}
+        >
+          {name}
+        </Typography>
+      </Box>
       {institution && (
         <Typography sx={{ mt: 1 }}>
           <BusinessIcon sx={iconSx} />

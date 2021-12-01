@@ -41,6 +41,14 @@ const CreateReviewMutation = gql`
   }
 `;
 
+const DeleteReviewMutation = gql`
+  mutation DeleteReviewMutation($where: ReviewWhereUniqueInput!) {
+    deleteOneReview(where: $where) {
+      id
+    }
+  }
+`;
+
 const UpdateReviewMutation = gql`
   ${REVIEW_CARD_FIELDS}
   mutation UpdateReviewMutation(
@@ -61,6 +69,9 @@ function NewReviewButton({ userId, articleId }) {
     <Button
       variant="outlined"
       color="primary"
+      sx={{
+        mt: 1,
+      }}
       onClick={async () => {
         createReview({
           variables: {
@@ -92,7 +103,8 @@ function NewReview({ userId, articleId }) {
   const { loading, error, data } = useQuery(UserReviewQuery, {
     variables,
   });
-  const [updateReview, resp] = useMutation(UpdateReviewMutation);
+  const [updateReview, updateResp] = useMutation(UpdateReviewMutation);
+  const [deleteReview, deleteResp] = useMutation(DeleteReviewMutation);
   if (loading) {
     return <></>;
   }
@@ -185,7 +197,27 @@ function NewReview({ userId, articleId }) {
         >
           Publish
         </Button>
-        <Button color="error">Delete</Button>
+        <Button
+          color="error"
+          onClick={async () => {
+            await deleteReview({
+              variables: {
+                where: {
+                  id: review.id,
+                },
+              },
+            });
+            apolloClient.writeQuery({
+              query: UserReviewQuery,
+              variables,
+              data: {
+                userReview: null,
+              },
+            });
+          }}
+        >
+          Delete
+        </Button>
       </div>
     </>
   );

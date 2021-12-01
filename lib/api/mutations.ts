@@ -53,6 +53,7 @@ export default objectType({
     t.crud.upsertOneThreadMessage();
     t.crud.createOneReview();
     t.crud.updateOneReview();
+    t.crud.deleteOneReview();
     t.field("createArticle", {
       type: "Article",
       args: {

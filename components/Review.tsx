@@ -1,17 +1,19 @@
 import AuthorPopover from "@/components/AuthorPopover";
 import Thread from "@/components/Thread";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import gql from "graphql-tag";
 import { updateArticleAndScroll } from "./article/vars";
 import Markdown from "./Markdown";
 import ProfilePicturePopover from "./ProfilePicturePopover";
+import { USER_CARD_FIELDS } from "./UserCard";
 
 export const REVIEW_CARD_FIELDS = gql`
+  ${USER_CARD_FIELDS}
   fragment ReviewCardFields on Review {
     id
     author {
-      id
-      name
+      ...UserCardFields
     }
     body
     highlights
@@ -63,6 +65,9 @@ export default function Review({ review, renderThread = true }) {
           >
             {body}
           </Markdown>
+          <Button size="small" sx={{ p: 0, minWidth: 0 }}>
+            Reply
+          </Button>
         </Box>
       </Box>
       {renderThread && <Thread headId={review.id} />}
