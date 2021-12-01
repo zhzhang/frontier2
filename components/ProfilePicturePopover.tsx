@@ -1,5 +1,5 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
-import Popover from "@mui/material/Popover";
+import UserPopover from "@/components/UserPopover";
 import Router from "next/router";
 import { useState } from "react";
 
@@ -8,7 +8,9 @@ export default function ProfilePicturePopover({ user, sx = null }) {
   const { id, name, profilePictureUrl } = user;
   const anonymous = id === "anonymous";
   const handleEnter = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (id !== "anonymous") {
+      setAnchorEl(event.currentTarget);
+    }
   };
   const handleLeave = () => {
     setAnchorEl(null);
@@ -29,23 +31,7 @@ export default function ProfilePicturePopover({ user, sx = null }) {
         name={name}
         sx={sx}
       />
-      <Popover
-        id={id}
-        sx={{
-          pointerEvents: "none",
-        }}
-        open={Boolean(anchorEl) && !anonymous}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        disableRestoreFocus
-      ></Popover>
+      <UserPopover user={user} anchorEl={anchorEl} />
     </>
   );
 }

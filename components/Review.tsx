@@ -50,7 +50,7 @@ function Rating({ rating }) {
 export default function Review({ review, renderThread = true }) {
   const { highlights, body } = review;
   return (
-    <Box sx={{ marginTop: 1 }}>
+    <Box sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ marginRight: 1 }}>
           <ProfilePicturePopover user={review.author} />

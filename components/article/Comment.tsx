@@ -3,7 +3,7 @@ import Markdown from "@/components/Markdown";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import Thread from "@/components/Thread";
 import { useMutation } from "@apollo/react-hooks";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 import gql from "graphql-tag";
 import { useState } from "react";
 
@@ -19,21 +19,6 @@ const UpdateReviewMutation = gql`
     }
   }
 `;
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    typography: {
-      padding: theme.spacing(2),
-    },
-    review: {
-      display: "flex",
-      marginTop: theme.spacing(2),
-    },
-    picture: {
-      marginRight: theme.spacing(1),
-    },
-  })
-);
 
 function Rating({ rating }) {
   switch (rating) {
@@ -55,18 +40,26 @@ export default function Comment({
   updateArticleAndScroll,
   articleMode,
 }) {
-  const classes = useStyles();
   const { highlights } = comment;
   const [body, setBody] = useState(comment.body);
   const [updateReview, { loading, error, data }] =
     useMutation(UpdateReviewMutation);
   return (
     <>
-      <div className={classes.review}>
-        <div className={classes.picture}>
+      <Box
+        sx={{
+          display: "flex",
+          mt: 2,
+        }}
+      >
+        <Box
+          sx={{
+            mr: 1,
+          }}
+        >
           <ProfilePicturePopover user={comment.author} />
-        </div>
-        <div>
+        </Box>
+        <Box>
           <AuthorPopover user={comment.author} />
           <Markdown
             highlights={highlights}
@@ -74,8 +67,8 @@ export default function Comment({
           >
             {body}
           </Markdown>
-        </div>
-      </div>
+        </Box>
+      </Box>
       <Thread headId={comment.id} />
     </>
   );

@@ -90,8 +90,6 @@ function Index() {
   const { loading, error, data } = useQuery(ArticleQuery, {
     variables: { id },
   });
-  console.log("HIT");
-  console.log(error);
   if (loading) {
     return (
       <Layout>
@@ -121,16 +119,23 @@ function ArticleView() {
 
   return (
     <Layout padded={false}>
-      <SplitPane
-        split="vertical"
-        defaultSize={50}
-        onChange={(size) => setPaneSize(size)}
-      >
-        <Pane initialSize="40%" minSize="20%" maxSize="80%" size={paneSize[0]}>
-          <LeftPane />
-        </Pane>
-        <PdfViewerWrapper />
-      </SplitPane>
+      <Box sx={{ height: "calc(100vh - 48px)" }}>
+        <SplitPane
+          split="vertical"
+          defaultSize={50}
+          onChange={(size) => setPaneSize(size)}
+        >
+          <Pane
+            initialSize="40%"
+            minSize="20%"
+            maxSize="80%"
+            size={paneSize[0]}
+          >
+            <LeftPane />
+          </Pane>
+          <PdfViewerWrapper />
+        </SplitPane>
+      </Box>
     </Layout>
   );
 }
@@ -153,7 +158,7 @@ function LeftPane() {
   const { title, authors, versions } = data.article;
   const { selectedVersion } = data;
   return (
-    <Box sx={{ margin: 1 }}>
+    <Box sx={{ margin: 1, height: "calc(100vh - 56px)", overflowY: "scroll" }}>
       <Typography variant="h6">{title}</Typography>
       <Authors authors={authors} />
       <FormControl fullWidth sx={{ mt: 1 }}>
@@ -180,7 +185,7 @@ function LeftPane() {
           <Markdown>{selectedVersion.abstract}</Markdown>
         </AccordionDetails>
       </Accordion>
-      <Box sx={{ marginTop: 1 }}>
+      <Box sx={{ mt: 1, mb: 1 }}>
         <DiscussionSidebar />
       </Box>
     </Box>

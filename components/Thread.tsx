@@ -1,5 +1,6 @@
 import AuthorPopover from "@/components/AuthorPopover";
 import CenteredSpinner from "@/components/CenteredSpinner";
+import Error from "@/components/Error";
 import Markdown from "@/components/Markdown";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import { useQuery } from "@apollo/react-hooks";
@@ -28,26 +29,33 @@ export default function Thread({ headId }) {
   if (loading) {
     return <CenteredSpinner />;
   }
+  if (error) {
+    return (
+      <Box
+        sx={{
+          mt: 2,
+          ml: 5, // Centers to the profile picture.
+        }}
+      >
+        <Error>There was a problem loading replies to this thread.</Error>
+      </Box>
+    );
+  }
   const { threadMessages } = data;
-  return (
-    <div>
-      {threadMessages.map((message) => (
-        <Box
-          key={message.id}
-          sx={{
-            display: "flex",
-            mt: 2,
-            marginLeft: 20, // Centers to the profile picture.
-            paddingLeft: 20,
-          }}
-        >
-          <ProfilePicturePopover user={message.author} />
-          <Box>
-            <AuthorPopover user={message.author} />
-            <Markdown>{message.body}</Markdown>
-          </Box>
-        </Box>
-      ))}
-    </div>
-  );
+  return threadMessages.map((message) => (
+    <Box
+      key={message.id}
+      sx={{
+        display: "flex",
+        ml: 3, // Centers to the profile picture.
+        pl: 2,
+      }}
+    >
+      <ProfilePicturePopover user={message.author} sx={{ mr: 1 }} />
+      <Box>
+        <AuthorPopover user={message.author} />
+        <Markdown>{message.body}</Markdown>
+      </Box>
+    </Box>
+  ));
 }

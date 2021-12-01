@@ -164,6 +164,7 @@ function NewReview({ userId, articleId }) {
         }}
         updateArticleAndScroll={updateArticleAndScroll}
         placeholder="Write a review!"
+        sx={{ mt: 1 }}
       />
       <div style={{ textAlign: "right" }}>
         <Button
@@ -218,9 +219,7 @@ export default function Reviews() {
     <>
       {auth.user && <NewReview userId={auth.user.uid} articleId={article.id} />}
       {reviews.map((review) => (
-        <div className="pb-2" key={review.id}>
-          <Review review={review} startOpen={true} articleMode />
-        </div>
+        <Review key={review.id} review={review} startOpen={true} articleMode />
       ))}
     </>
   );

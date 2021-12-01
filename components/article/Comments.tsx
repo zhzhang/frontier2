@@ -1,21 +1,21 @@
+import CenteredSpinner from "@/components/CenteredSpinner";
+import Error from "@/components/Error";
 import MarkdownEditor from "@/components/MarkdownEditor";
 import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/client";
 import Button from "@mui/material/Button";
 import gql from "graphql-tag";
 import { useState } from "react";
-import CenteredSpinner from "../CenteredSpinner";
+import { USER_CARD_FIELDS } from "../UserCard";
 import Comment from "./Comment";
 
 const CommentsQuery = gql`
+  ${USER_CARD_FIELDS}
   query CommentsQuery($where: ThreadMessageWhereInput!) {
     threadMessages(where: $where) {
       id
       author {
-        id
-        name
-        profilePictureUrl
-        bio
+        ...UserCardFields
       }
       body
       highlights
@@ -92,6 +92,7 @@ function NewComment({ userId, articleId, highlights, updateArticleAndScroll }) {
         onChange={(body) => setBody(body)}
         updateArticleAndScroll={updateArticleAndScroll}
         placeholder="Write a comment!"
+        sx={{ mt: 1 }}
       />
       <Button variant="contained" color="primary" onClick={handleCreate}>
         Comment
@@ -121,6 +122,13 @@ export default function Comments({
   });
   if (auth.loading || loading) {
     return <CenteredSpinner />;
+  }
+  if (error) {
+    return (
+      <Error sx={{ m: 1 }}>
+        There was a problem loading the comments for this article.
+      </Error>
+    );
   }
 
   return (

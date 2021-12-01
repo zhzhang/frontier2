@@ -1,3 +1,5 @@
+import ZoomIn from "@mui/icons-material/ZoomIn";
+import ZoomOut from "@mui/icons-material/ZoomOut";
 import _ from "lodash";
 import * as pdfjsWeb from "pdfjs-dist/web/pdf_viewer";
 import "pdfjs-dist/web/pdf_viewer.css";
@@ -33,6 +35,7 @@ export default class PdfArticle extends React.Component {
     tip: null,
     tipPosition: null,
     tipChildren: null,
+    scale: 0.9,
   };
 
   unsubscribe = () => {};
@@ -127,7 +130,7 @@ export default class PdfArticle extends React.Component {
 
   handleScaleValue = () => {
     if (this.viewer) {
-      this.viewer.currentScaleValue = 0.9; //"page-width";
+      this.viewer.currentScaleValue = this.state.scale; //"page-width";
     }
   };
 
@@ -211,6 +214,10 @@ export default class PdfArticle extends React.Component {
     this.linkService.setDocument(document);
     this.linkService.setViewer(this.viewer);
     this.viewer.setDocument(document);
+  }
+
+  componentDidUpdate() {
+    this.handleScaleValue();
   }
 
   componentWillUnmount() {
@@ -376,10 +383,24 @@ export default class PdfArticle extends React.Component {
 
   render() {
     return (
-      <div ref={this.attachRef} className={styles.PdfAnnotator}>
-        {this.renderTip()}
-        <div className="pdfViewer" onMouseDown={this.onMouseDown} />
-      </div>
+      <>
+        <div style={{ position: "absolute", zIndex: 100000, margin: 10 }}>
+          <div>
+            <ZoomIn
+              onClick={() => this.setState({ scale: this.state.scale + 0.1 })}
+            />
+          </div>
+          <div>
+            <ZoomOut
+              onClick={() => this.setState({ scale: this.state.scale - 0.1 })}
+            />
+          </div>
+        </div>
+        <div ref={this.attachRef} className={styles.PdfAnnotator}>
+          {this.renderTip()}
+          <div className="pdfViewer" onMouseDown={this.onMouseDown} />
+        </div>
+      </>
     );
   }
 }

@@ -4,16 +4,15 @@ import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import Comments from "./Comments";
 import Reviews from "./Reviews";
 
 function DiscussionSidebar() {
   const router = useRouter();
-  const [view, setView] = useState("reviews");
-
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-    setView(newValue);
+  const view = router.query.view ? router.query.view : "reviews";
+  const handleChange = (_, newValue: string) => {
+    router.query.view = newValue;
+    router.push(router, undefined, { shallow: true });
   };
 
   const contentSx = {

@@ -247,9 +247,6 @@ function Editor({ user }) {
       name: { set: name },
     },
   };
-  if (twitter) {
-    variables.data.twitter = { set: twitter };
-  }
   if (website) {
     variables.data.website = { set: website };
   }
