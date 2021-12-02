@@ -10,9 +10,10 @@ import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import gql from "graphql-tag";
-import { useState } from "react";
+import _ from "lodash";
 import {
   addHighlightVar,
+  focusedEditorVar,
   highlightsVar,
   threadRepliesVar,
   updateArticleAndScroll,
@@ -37,6 +38,7 @@ const ThreadMessagesQuery = gql`
 const OpenReplyQuery = gql`
   query OpenReplyQuery {
     threadReplies @client
+    focusedEditor @client
   }
 `;
 
@@ -68,12 +70,16 @@ function OpenReply({ headId }) {
     const comment = data.threadReplies.get(headId);
     const highlights = [...comment.highlights, highlight];
     const updatedComment = { ...comment, highlights };
+    console.log(highlights);
+    highlightsVar(highlights);
     update(updatedComment);
   };
   const deleteHighlight = (id: number) => {
+    const newHighlights = _.reject(comment.highlights, { id });
+    highlightsVar(newHighlights);
     update({
       ...comment,
-      highlights: _.reject(comment.highlights, { id }),
+      highlights: newHighlights,
     });
   };
 
@@ -89,9 +95,11 @@ function OpenReply({ headId }) {
         body={comment.body}
         highlights={comment.highlights}
         deleteHighlight={deleteHighlight}
+        focused={data.focusedEditor === headId}
         onFocus={() => {
-          highlightsVar(comment.highlights);
+          focusedEditorVar(headId);
           addHighlightVar(addHighlight);
+          highlightsVar(comment.highlights);
         }}
         onChange={(body) => {
           update({ ...comment, body });
@@ -102,6 +110,7 @@ function OpenReply({ headId }) {
       />
       <div style={{ textAlign: "right" }}>
         <Button
+          size="small"
           onClick={() =>
             updateReview({
               variables: {
@@ -120,6 +129,7 @@ function OpenReply({ headId }) {
           Publish
         </Button>
         <Button
+          size="small"
           color="error"
           onClick={async () => {
             await deleteReview({
@@ -147,7 +157,6 @@ function OpenReply({ headId }) {
 
 export default function Thread({ headId }) {
   const auth = useAuth();
-  const [cursor, setCursor] = useState(null);
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
     variables: { where: { headId: { equals: headId } } },
   });
@@ -192,10 +201,6 @@ export default function Thread({ headId }) {
                   size="small"
                   sx={{ p: 0, minWidth: 0 }}
                   onClick={() => {
-                    const tmp = data.threadReplies.set(headId, {
-                      body: "",
-                      highlights: [],
-                    });
                     threadRepliesVar(
                       data.threadReplies.set(headId, {
                         body: "",

@@ -9,6 +9,7 @@ import gql from "graphql-tag";
 import {
   addHighlightVar,
   articleVar,
+  focusedEditorVar,
   highlightsVar,
   updateArticleAndScroll,
 } from "./vars";
@@ -29,6 +30,7 @@ const UserReviewQuery = gql`
     userReview(userId: $userId, articleId: $articleId) {
       ...ReviewCardFields
     }
+    focusedEditor @client
   }
 `;
 
@@ -167,7 +169,9 @@ function NewReview({ userId, articleId }) {
         body={review.body}
         highlights={review.highlights}
         deleteHighlight={deleteHighlight}
+        focused={data.focusedEditor === review.id}
         onFocus={() => {
+          focusedEditorVar(review.id);
           highlightsVar(review.highlights);
           addHighlightVar(addHighlight);
         }}

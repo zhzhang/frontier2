@@ -3,6 +3,7 @@ import { Map } from "immutable";
 
 export const highlightsVar = makeVar([]);
 export const addHighlightVar = makeVar(null);
+export const focusedEditorVar = makeVar(null);
 export const articleVar = makeVar({});
 export const selectedVersionVar = makeVar({});
 export const viewerVar = makeVar(null);

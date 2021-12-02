@@ -3,7 +3,7 @@ import Thread from "@/components/Thread";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import gql from "graphql-tag";
-import { updateArticleAndScroll } from "./article/vars";
+import { threadRepliesVar, updateArticleAndScroll } from "./article/vars";
 import Markdown from "./Markdown";
 import ProfilePicturePopover from "./ProfilePicturePopover";
 import { USER_CARD_FIELDS } from "./UserCard";
@@ -65,7 +65,19 @@ export default function Review({ review, renderThread = true }) {
           >
             {body}
           </Markdown>
-          <Button size="small" sx={{ p: 0, minWidth: 0 }}>
+          <Button
+            size="small"
+            sx={{ p: 0, minWidth: 0 }}
+            onClick={() => {
+              const threadReplies = threadRepliesVar();
+              threadRepliesVar(
+                threadReplies.set(review.id, {
+                  body: "",
+                  highlights: [],
+                })
+              );
+            }}
+          >
             Reply
           </Button>
         </Box>

@@ -218,6 +218,7 @@ export default class PdfArticle extends React.Component {
 
   componentDidUpdate() {
     this.handleScaleValue();
+    this.renderHighlights();
   }
 
   componentWillUnmount() {

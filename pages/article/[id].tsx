@@ -2,6 +2,7 @@ import DiscussionSidebar from "@/components/article/DiscussionSidebar";
 import {
   addHighlightVar,
   articleVar,
+  focusedEditorVar,
   highlightsVar,
   onRenderedCallbackVar,
   selectedVersionVar,
@@ -107,7 +108,7 @@ function Index() {
   }
   const { versions } = data.article;
   const selectedVersion = !version
-    ? versions[0]
+    ? _.maxBy(versions, "createdAt")
     : _.find(versions, function (o) {
         return o.versionNumber === version;
       });
@@ -173,7 +174,7 @@ function LeftPane() {
               key={version.versionNumber}
               value={version.versionNumber}
             >{`Version ${version.versionNumber} - ${dateFormat(
-              new Date(parseInt(version.createdAt)),
+              new Date(version.createdAt),
               "mmm d, yyyy"
             )}`}</MenuItem>
           ))}
@@ -244,6 +245,11 @@ export default withApollo(Index, {
       threadReplies: {
         read() {
           return threadRepliesVar();
+        },
+      },
+      focusedEditor: {
+        read() {
+          return focusedEditorVar();
         },
       },
     },

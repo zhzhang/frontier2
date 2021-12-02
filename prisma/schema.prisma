@@ -54,7 +54,7 @@ model Article {
   decisions     Decision[]
   submissions   Submission[]
   anonymous     Boolean          @default(true)
-  ReviewRequest ReviewRequest[]
+  reviewRequest ReviewRequest[]
 }
 
 model Authorship {

@@ -6,11 +6,14 @@ import Tab from "@mui/material/Tab";
 import { useRouter } from "next/router";
 import Comments from "./Comments";
 import Reviews from "./Reviews";
+import { addHighlightVar, focusedEditorVar } from "./vars";
 
 function DiscussionSidebar() {
   const router = useRouter();
   const view = router.query.view ? router.query.view : "reviews";
   const handleChange = (_, newValue: string) => {
+    focusedEditorVar(null);
+    addHighlightVar(null);
     router.query.view = newValue;
     router.push(router, undefined, { shallow: true });
   };

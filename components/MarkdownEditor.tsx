@@ -74,6 +74,8 @@ function StyleButton({ Icon, style, example }) {
         sx={{
           color: "gray",
           m: 0.5,
+          height: 22,
+          width: 22,
         }}
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
@@ -113,32 +115,42 @@ function Highlight({
 }) {
   return (
     <Box
-      onClick={() =>
-        updateArticleAndScroll({
-          highlights,
-          highlight,
-        })
-      }
       sx={{
         borderTop: "1px solid rgba(0, 0, 0, 0.23)",
-        padding: 1,
+        p: 0.5,
         display: "flex",
-        fontSize: 14,
       }}
     >
-      <Box>{highlight.id}</Box>
       <Box
+        sx={{ borderRight: 1, mr: 0.5, width: 20 }}
+        onClick={() =>
+          updateArticleAndScroll({
+            highlights,
+            highlight,
+          })
+        }
+      >
+        <Typography sx={{ fontSize: 12 }}>{highlight.id} </Typography>
+      </Box>
+      <Typography
+        onClick={() =>
+          updateArticleAndScroll({
+            highlights,
+            highlight,
+          })
+        }
         sx={{
           flex: 1,
           textOverflow: "ellipsis",
           overflow: "hidden",
           whiteSpace: "nowrap",
+          fontSize: 12,
         }}
       >
         {highlight.text}
-      </Box>
+      </Typography>
       <CloseRounded
-        sx={{ height: 21, width: 21 }}
+        sx={{ height: 18, width: 18 }}
         onClick={() => deleteHighlight(highlight.id)}
       />
     </Box>
@@ -150,8 +162,8 @@ export default function MarkdownEditor({
   onChange,
   articleMode = false,
   key = null,
-  label = null,
   placeholder = null,
+  focused = false,
   onFocus = null,
   onBlur = null,
   sx = {},
@@ -160,10 +172,10 @@ export default function MarkdownEditor({
   updateArticleAndScroll = () => {},
 }) {
   const [previewOpen, toggleShowPreview] = useState(false);
-  const [focused, setFocused] = useState(false);
   const focusStyle = focused
     ? {
-        border: "1px solid rgba(0, 0, 0, 0.23)",
+        border: "2px solid rgba(0, 0, 0, 0.23)",
+        borderColor: "primary.main",
         borderRadius: "4px",
       }
     : {
@@ -184,11 +196,9 @@ export default function MarkdownEditor({
       <FormControl
         fullWidth
         onFocus={() => {
-          setFocused(true);
           onFocus && onFocus();
         }}
         onBlur={() => {
-          setFocused(false);
           onBlur && onBlur();
         }}
       >
@@ -202,7 +212,7 @@ export default function MarkdownEditor({
           onChange={({ target }) => onChange(target.value)}
         />
       </FormControl>
-      <Box sx={{ display: "flex", padding: 0.5 }}>
+      <Box sx={{ display: "flex", pr: 0.5 }}>
         {STYLES.map((style) => (
           <StyleButton {...style} key={style.style} />
         ))}
@@ -210,6 +220,7 @@ export default function MarkdownEditor({
         <Button
           sx={{
             marginLeft: "auto",
+            p: 0,
           }}
           onClick={() => toggleShowPreview(!previewOpen)}
           size="small"
