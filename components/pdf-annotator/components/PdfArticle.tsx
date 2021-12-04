@@ -388,11 +388,13 @@ export default class PdfArticle extends React.Component {
         <div style={{ position: "absolute", zIndex: 100000, margin: 10 }}>
           <div>
             <ZoomIn
+              sx={{ height: 30, width: 30 }}
               onClick={() => this.setState({ scale: this.state.scale + 0.1 })}
             />
           </div>
           <div>
             <ZoomOut
+              sx={{ height: 30, width: 30 }}
               onClick={() => this.setState({ scale: this.state.scale - 0.1 })}
             />
           </div>
