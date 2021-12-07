@@ -24,7 +24,6 @@ export function updateArticleAndScroll({ highlight, highlights }) {
   } else {
     highlightsVar(highlights);
     const onRenderedCallback = (viewer) => {
-      console.log("hit");
       viewer.scrollTo(highlight);
       onRenderedCallbackVar(null);
     };

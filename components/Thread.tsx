@@ -70,7 +70,6 @@ function OpenReply({ headId }) {
     const comment = data.threadReplies.get(headId);
     const highlights = [...comment.highlights, highlight];
     const updatedComment = { ...comment, highlights };
-    console.log(highlights);
     highlightsVar(highlights);
     update(updatedComment);
   };
