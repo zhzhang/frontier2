@@ -13,7 +13,7 @@ import Title from "@mui/icons-material/Title";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
-import Input from "@mui/material/Input";
+import InputBase from "@mui/material/InputBase";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
@@ -122,7 +122,11 @@ function Highlight({
       }}
     >
       <Box
-        sx={{ borderRight: 1, mr: 0.5, width: 20 }}
+        sx={{
+          borderRight: "1px solid rgba(0, 0, 0, 0.23)",
+          mr: 0.5,
+          width: 20,
+        }}
         onClick={() =>
           updateArticleAndScroll({
             highlights,
@@ -172,16 +176,21 @@ export default function MarkdownEditor({
   updateArticleAndScroll = () => {},
 }) {
   const [previewOpen, toggleShowPreview] = useState(false);
-  const focusStyle = focused
-    ? {
-        border: "2px solid rgba(0, 0, 0, 0.23)",
-        borderColor: "primary.main",
-        borderRadius: "4px",
-      }
-    : {
-        border: "1px solid rgba(0, 0, 0, 0.23)",
-        borderRadius: "4px",
-      };
+  const [hover, setHover] = useState(false);
+  let style = {
+    border: "1px solid rgba(0, 0, 0, 0.23)",
+    borderRadius: "4px",
+    m: "1px",
+  };
+  if (focused || hover) {
+    style.border = "2px solid rgba(0, 0, 0, 0.23)";
+    style.m = 0;
+  }
+  if (focused) {
+    style.borderColor = "primary.main";
+  } else if (hover) {
+    style.borderColor = "black";
+  }
   return (
     <Box
       component="form"
@@ -190,8 +199,10 @@ export default function MarkdownEditor({
       key={key}
       sx={{
         ...sx,
-        ...focusStyle,
+        ...style,
       }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       <FormControl
         fullWidth
@@ -201,14 +212,20 @@ export default function MarkdownEditor({
         onBlur={() => {
           onBlur && onBlur();
         }}
+        sx={{
+          borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
+        }}
+        focused={false}
       >
-        <Input
+        <InputBase
           multiline
           required
           placeholder={placeholder}
           value={body}
+          onMouseEnter={null}
+          onMouseLeave={null}
           maxRows={20}
-          sx={{ padding: 2 }}
+          sx={{ p: 1.5 }}
           onChange={({ target }) => onChange(target.value)}
         />
       </FormControl>

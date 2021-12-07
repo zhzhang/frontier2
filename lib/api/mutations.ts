@@ -51,6 +51,7 @@ export default objectType({
     t.crud.updateOneSubmission();
     t.crud.createOneReviewRequest();
     t.crud.upsertOneThreadMessage();
+    t.crud.updateOneThreadMessage();
     t.crud.createOneReview();
     t.crud.updateOneReview();
     t.crud.deleteOneReview();

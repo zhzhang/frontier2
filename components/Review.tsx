@@ -1,7 +1,9 @@
 import AuthorPopover from "@/components/AuthorPopover";
 import Thread from "@/components/Thread";
+import TimeAgo from "@/components/TimeAgo";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { threadRepliesVar, updateArticleAndScroll } from "./article/vars";
 import Markdown from "./Markdown";
@@ -50,7 +52,14 @@ function Rating({ rating }) {
 }
 
 export default function Review({ review, renderThread = true }) {
-  const { highlights, body } = review;
+  const { highlights, body, publishTimestamp } = review;
+  const typographyProps = {
+    component: "span",
+    sx: {
+      fontSize: "0.8rem",
+      color: "gray",
+    },
+  };
   return (
     <Box sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex" }}>
@@ -59,6 +68,8 @@ export default function Review({ review, renderThread = true }) {
         </Box>
         <Box>
           <AuthorPopover user={review.author} />
+          <Typography {...typographyProps}>{" • "}</Typography>
+          <TimeAgo {...typographyProps} time={publishTimestamp} />
           <Markdown
             highlights={highlights}
             updateArticleAndScroll={updateArticleAndScroll}

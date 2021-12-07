@@ -4,11 +4,12 @@ import Error from "@/components/Error";
 import Markdown from "@/components/Markdown";
 import MarkdownEditor from "@/components/MarkdownEditor";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
+import TimeAgo from "@/components/TimeAgo";
 import { apolloClient } from "@/lib/apollo";
-import { useAuth } from "@/lib/firebase";
 import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import _ from "lodash";
 import {
@@ -30,8 +31,21 @@ const ThreadMessagesQuery = gql`
       }
       body
       highlights
+      createdAt
     }
     threadReplies @client
+  }
+`;
+
+const UpdateThreadMessageMutation = gql`
+  ${USER_CARD_FIELDS}
+  mutation UpdateThreadMessageMutation(
+    $where: ThreadMessageWhereUniqueInput!
+    $data: ThreadMessageUpdateInput!
+  ) {
+    updateOneThreadMessage(where: $where, data: $data) {
+      ...ReviewCardFields
+    }
   }
 `;
 
@@ -120,6 +134,9 @@ function OpenReply({ headId }) {
                   published: {
                     set: true,
                   },
+                  publishedTimestamp: {
+                    set: new Date(Date.now()),
+                  },
                 },
               },
             })
@@ -131,20 +148,8 @@ function OpenReply({ headId }) {
           size="small"
           color="error"
           onClick={async () => {
-            await deleteReview({
-              variables: {
-                where: {
-                  id: review.id,
-                },
-              },
-            });
-            apolloClient.writeQuery({
-              query: UserReviewQuery,
-              variables,
-              data: {
-                userReview: null,
-              },
-            });
+            highlightsVar([]);
+            threadRepliesVar(data.threadReplies.set(headId, null));
           }}
         >
           Cancel
@@ -155,11 +160,10 @@ function OpenReply({ headId }) {
 }
 
 export default function Thread({ headId }) {
-  const auth = useAuth();
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
     variables: { where: { headId: { equals: headId } } },
   });
-  if (loading || auth.loading) {
+  if (loading) {
     return <CenteredSpinner />;
   }
   if (error) {
@@ -175,6 +179,13 @@ export default function Thread({ headId }) {
     );
   }
   const { threadMessages } = data;
+  const typographyProps = {
+    component: "span",
+    sx: {
+      fontSize: "0.8rem",
+      color: "gray",
+    },
+  };
   return (
     <>
       {threadMessages.map((message) => (
@@ -195,6 +206,8 @@ export default function Thread({ headId }) {
               <ProfilePicturePopover user={message.author} sx={{ mr: 1 }} />
               <Box>
                 <AuthorPopover user={message.author} />
+                <Typography {...typographyProps}>{" • "}</Typography>
+                <TimeAgo {...typographyProps} time={message.createdAt} />
                 <Markdown>{message.body}</Markdown>
                 <Button
                   size="small"
@@ -215,7 +228,7 @@ export default function Thread({ headId }) {
           }
         </Box>
       ))}
-      <OpenReply headId={headId} userId={auth.user.uid} />
+      <OpenReply headId={headId} />
     </>
   );
 }

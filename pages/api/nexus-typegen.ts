@@ -2970,6 +2970,7 @@ export interface NexusGenFieldTypes {
     deleteOneVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
     updateOneReview: NexusGenRootTypes['Review'] | null; // Review
     updateOneSubmission: NexusGenRootTypes['Submission'] | null; // Submission
+    updateOneThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     updateOneUser: NexusGenRootTypes['User'] | null; // User
     updateOneVenue: NexusGenRootTypes['Venue'] | null; // Venue
     upsertOneThreadMessage: NexusGenRootTypes['ThreadMessage']; // ThreadMessage!
@@ -3105,6 +3106,7 @@ export interface NexusGenFieldTypeNames {
     deleteOneVenueMembership: 'VenueMembership'
     updateOneReview: 'Review'
     updateOneSubmission: 'Submission'
+    updateOneThreadMessage: 'ThreadMessage'
     updateOneUser: 'User'
     updateOneVenue: 'Venue'
     upsertOneThreadMessage: 'ThreadMessage'
@@ -3251,6 +3253,10 @@ export interface NexusGenArgTypes {
     updateOneSubmission: { // args
       data: NexusGenInputs['SubmissionUpdateInput']; // SubmissionUpdateInput!
       where: NexusGenInputs['SubmissionWhereUniqueInput']; // SubmissionWhereUniqueInput!
+    }
+    updateOneThreadMessage: { // args
+      data: NexusGenInputs['ThreadMessageUpdateInput']; // ThreadMessageUpdateInput!
+      where: NexusGenInputs['ThreadMessageWhereUniqueInput']; // ThreadMessageWhereUniqueInput!
     }
     updateOneUser: { // args
       data: NexusGenInputs['UserUpdateInput']; // UserUpdateInput!

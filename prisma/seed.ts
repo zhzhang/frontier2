@@ -379,7 +379,7 @@ async function main() {
   const review2 = await prisma.review.create({
     data: {
       authorId: reviewer.id,
-      publishTimestamp: new Date(),
+      publishTimestamp: new Date("2021-10-20T12:00:00"),
       articleId: article.id,
       published: true,
       body: reviewBody,

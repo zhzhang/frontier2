@@ -981,6 +981,7 @@ type Mutation {
   deleteOneVenueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
   updateOneReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
   updateOneSubmission(data: SubmissionUpdateInput!, where: SubmissionWhereUniqueInput!): Submission
+  updateOneThreadMessage(data: ThreadMessageUpdateInput!, where: ThreadMessageWhereUniqueInput!): ThreadMessage
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateOneVenue(data: VenueUpdateInput!, where: VenueWhereUniqueInput!): Venue
   upsertOneThreadMessage(create: ThreadMessageCreateInput!, update: ThreadMessageUpdateInput!, where: ThreadMessageWhereUniqueInput!): ThreadMessage!

@@ -194,6 +194,9 @@ function NewReview({ userId, articleId }) {
                   published: {
                     set: true,
                   },
+                  publishTimestamp: {
+                    set: new Date(Date.now()),
+                  },
                 },
               },
             })
