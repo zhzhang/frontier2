@@ -50,6 +50,7 @@ export default objectType({
     t.crud.deleteOneVenueMembership();
     t.crud.updateOneSubmission();
     t.crud.createOneReviewRequest();
+    t.crud.createOneThreadMessage();
     t.crud.upsertOneThreadMessage();
     t.crud.updateOneThreadMessage();
     t.crud.createOneReview();

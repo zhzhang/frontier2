@@ -6,7 +6,8 @@ import MarkdownEditor from "@/components/MarkdownEditor";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import TimeAgo from "@/components/TimeAgo";
 import { apolloClient } from "@/lib/apollo";
-import { useQuery } from "@apollo/react-hooks";
+import { useAuth } from "@/lib/firebase";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -37,14 +38,17 @@ const ThreadMessagesQuery = gql`
   }
 `;
 
-const UpdateThreadMessageMutation = gql`
+const CreateThreadMessageMutation = gql`
   ${USER_CARD_FIELDS}
-  mutation UpdateThreadMessageMutation(
-    $where: ThreadMessageWhereUniqueInput!
-    $data: ThreadMessageUpdateInput!
-  ) {
-    updateOneThreadMessage(where: $where, data: $data) {
-      ...ReviewCardFields
+  mutation CreateThreadMessageMutation($data: ThreadMessageCreateInput!) {
+    createOneThreadMessage(data: $data) {
+      id
+      author {
+        ...UserCardFields
+      }
+      body
+      highlights
+      createdAt
     }
   }
 `;
@@ -53,11 +57,15 @@ const OpenReplyQuery = gql`
   query OpenReplyQuery {
     threadReplies @client
     focusedEditor @client
+    article @client
   }
 `;
 
-function OpenReply({ headId }) {
+function OpenReply({ headId, userId }) {
   const { loading, error, data } = useQuery(OpenReplyQuery);
+  const [createThreadMessage, updateResp] = useMutation(
+    CreateThreadMessageMutation
+  );
   if (loading || error) {
     return null;
   }
@@ -125,18 +133,19 @@ function OpenReply({ headId }) {
         <Button
           size="small"
           onClick={() =>
-            updateReview({
+            createThreadMessage({
               variables: {
-                where: {
-                  id: review.id,
-                },
                 data: {
-                  published: {
-                    set: true,
+                  author: {
+                    connect: {
+                      id: userId,
+                    },
                   },
-                  publishedTimestamp: {
-                    set: new Date(Date.now()),
-                  },
+                  headId,
+                  articleId: data.article.id,
+                  body: comment.body,
+                  highlights: comment.highlights,
+                  published: true,
                 },
               },
             })
@@ -160,10 +169,11 @@ function OpenReply({ headId }) {
 }
 
 export default function Thread({ headId }) {
+  const auth = useAuth();
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
     variables: { where: { headId: { equals: headId } } },
   });
-  if (loading) {
+  if (loading || auth.loading) {
     return <CenteredSpinner />;
   }
   if (error) {
@@ -191,7 +201,7 @@ export default function Thread({ headId }) {
       {threadMessages.map((message) => (
         <Box
           sx={{
-            mt: 1,
+            mt: 2,
             ml: 4, // Centers to the profile picture.
           }}
         >
@@ -208,7 +218,12 @@ export default function Thread({ headId }) {
                 <AuthorPopover user={message.author} />
                 <Typography {...typographyProps}>{" • "}</Typography>
                 <TimeAgo {...typographyProps} time={message.createdAt} />
-                <Markdown>{message.body}</Markdown>
+                <Markdown
+                  highlights={message.highlights}
+                  updateArticleAndScroll={updateArticleAndScroll}
+                >
+                  {message.body}
+                </Markdown>
                 <Button
                   size="small"
                   sx={{ p: 0, minWidth: 0 }}
@@ -228,7 +243,7 @@ export default function Thread({ headId }) {
           }
         </Box>
       ))}
-      <OpenReply headId={headId} />
+      <OpenReply headId={headId} userId={auth.user.uid} />
     </>
   );
 }

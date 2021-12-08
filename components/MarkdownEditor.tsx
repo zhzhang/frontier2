@@ -84,7 +84,6 @@ function StyleButton({ Icon, style, example }) {
         id="mouse-over-popover"
         sx={{
           pointerEvents: "none",
-          p: 1,
         }}
         open={open}
         anchorEl={anchorEl}
@@ -99,9 +98,11 @@ function StyleButton({ Icon, style, example }) {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography variant="h6">{style}</Typography>
-        {example}
-        <Markdown>{example}</Markdown>
+        <Box sx={{ p: 1 }}>
+          <Typography variant="h6">{style}</Typography>
+          <Typography>{example}</Typography>
+          <Markdown>{example}</Markdown>
+        </Box>
       </Popover>
     </>
   );
@@ -215,15 +216,12 @@ export default function MarkdownEditor({
         sx={{
           borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
         }}
-        focused={false}
       >
         <InputBase
           multiline
           required
           placeholder={placeholder}
-          value={body}
-          onMouseEnter={null}
-          onMouseLeave={null}
+          defaultValue={body}
           maxRows={20}
           sx={{ p: 1.5 }}
           onChange={({ target }) => onChange(target.value)}
