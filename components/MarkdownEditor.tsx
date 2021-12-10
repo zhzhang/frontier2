@@ -6,10 +6,11 @@ import FormatItalic from "@mui/icons-material/FormatItalic";
 import FormatListBulleted from "@mui/icons-material/FormatListBulleted";
 import FormatListNumbered from "@mui/icons-material/FormatListNumbered";
 import FormatQuote from "@mui/icons-material/FormatQuote";
-import FormatUnderlined from "@mui/icons-material/FormatUnderlined";
 import Functions from "@mui/icons-material/Functions";
+import FormatLink from "@mui/icons-material/Link";
 import RateReview from "@mui/icons-material/RateReview";
 import Title from "@mui/icons-material/Title";
+import { Divider } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -21,11 +22,6 @@ import { useState } from "react";
 const STYLES = [
   { Icon: Title, style: "Headers", example: "### Header Level 3" },
   {
-    Icon: FormatQuote,
-    style: "Quotes",
-    example: "`Inline quote` and\n```Block quote```",
-  },
-  {
     Icon: FormatListBulleted,
     style: "Bulleted List",
     example: "- List item one.\n- List item two.",
@@ -36,23 +32,36 @@ const STYLES = [
     example: "1. List item one.\n2. List item two.",
   },
   {
+    Icon: FormatQuote,
+    style: "Quotes",
+    example: "For a block quotation:\n> Block quote",
+  },
+  {
     Icon: Code,
     style: "Code",
-    example: "`Inline code` and\n```Block code```",
+    example:
+      "For inline code: `Inline code`\nFor block code\n```\nBlock code\n```\nplace the preceding and trailing ``` in their own lines.",
   },
   {
     Icon: Functions,
     style: "Math",
-    example: "$$x = y$$\nor block math\n$$\nx = y\n$$",
+    example:
+      "Inline math: $$x = y$$.\nFor block math\n$$\nx = y\n$$\nplace the preceding and trailing $$ signs in their own lines.",
   },
   { Icon: FormatBold, style: "Bold", example: "**Bold**" },
   { Icon: FormatItalic, style: "Italic", example: "*Italic*" },
-  { Icon: FormatUnderlined, style: "Underline", example: "Hello" },
+  {
+    Icon: FormatLink,
+    style: "Link",
+    example:
+      "To link a URL, place the [link text](frontier.pub/articles) in square brackets, followed by the URL in parentheses.",
+  },
 ];
 const HIGHLIGHT_STYLE = {
   Icon: RateReview,
   style: "Highlight",
-  example: "Hello",
+  example:
+    "To add a highlight, select a portion of the PDF and click the 'Add Reference' popup. Then, refer to the created highlight by placing the [desired highlight text]{1} in square brackets, and the highlight ID number in curly brackets.",
 };
 
 function StyleButton({ Icon, style, example }) {
@@ -98,9 +107,10 @@ function StyleButton({ Icon, style, example }) {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Box sx={{ p: 1 }}>
+        <Box sx={{ p: 1, width: 400 }}>
           <Typography variant="h6">{style}</Typography>
-          <Typography>{example}</Typography>
+          <Typography sx={{ whiteSpace: "pre-line" }}>{example}</Typography>
+          <Divider sx={{ mt: 1, mb: 1 }} />
           <Markdown>{example}</Markdown>
         </Box>
       </Popover>

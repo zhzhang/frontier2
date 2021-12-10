@@ -64,7 +64,24 @@ const OpenReplyQuery = gql`
 function OpenReply({ headId, userId }) {
   const { loading, error, data } = useQuery(OpenReplyQuery);
   const [createThreadMessage, updateResp] = useMutation(
-    CreateThreadMessageMutation
+    CreateThreadMessageMutation,
+    {
+      update(cache, { data: { createOneThreadMessage } }) {
+        const replies = threadRepliesVar();
+        threadRepliesVar(replies.set(headId, null));
+        const { threadMessages } = cache.readQuery({
+          query: ThreadMessagesQuery,
+          variables: { where: { headId: { equals: headId } } },
+        });
+        cache.writeQuery({
+          query: ThreadMessagesQuery,
+          variables: { where: { headId: { equals: headId } } },
+          data: {
+            threadMessages: [...threadMessages, createOneThreadMessage],
+          },
+        });
+      },
+    }
   );
   if (loading || error) {
     return null;

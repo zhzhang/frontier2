@@ -68,10 +68,10 @@ input ArticleCreateOrConnectWithoutSubmissionsInput {
 }
 
 input ArticleCreateWithoutAuthorsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   anonymous: Boolean
   decisions: DecisionCreateNestedManyWithoutArticleInput
   id: String
-  reviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   reviews: ReviewCreateNestedManyWithoutArticleInput
   submissions: SubmissionCreateNestedManyWithoutArticleInput
   title: String!
@@ -79,10 +79,10 @@ input ArticleCreateWithoutAuthorsInput {
 }
 
 input ArticleCreateWithoutDecisionsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   anonymous: Boolean
   authors: AuthorshipCreateNestedManyWithoutArticleInput
   id: String
-  reviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   reviews: ReviewCreateNestedManyWithoutArticleInput
   submissions: SubmissionCreateNestedManyWithoutArticleInput
   title: String!
@@ -101,22 +101,22 @@ input ArticleCreateWithoutReviewRequestInput {
 }
 
 input ArticleCreateWithoutReviewsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   anonymous: Boolean
   authors: AuthorshipCreateNestedManyWithoutArticleInput
   decisions: DecisionCreateNestedManyWithoutArticleInput
   id: String
-  reviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   submissions: SubmissionCreateNestedManyWithoutArticleInput
   title: String!
   versions: ArticleVersionCreateNestedManyWithoutArticleInput
 }
 
 input ArticleCreateWithoutSubmissionsInput {
+  ReviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   anonymous: Boolean
   authors: AuthorshipCreateNestedManyWithoutArticleInput
   decisions: DecisionCreateNestedManyWithoutArticleInput
   id: String
-  reviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
   reviews: ReviewCreateNestedManyWithoutArticleInput
   title: String!
   versions: ArticleVersionCreateNestedManyWithoutArticleInput
@@ -167,10 +167,10 @@ input ArticleUpdateOneRequiredWithoutSubmissionsInput {
 }
 
 input ArticleUpdateWithoutAuthorsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   anonymous: BoolFieldUpdateOperationsInput
   decisions: DecisionUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
-  reviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   reviews: ReviewUpdateManyWithoutArticleInput
   submissions: SubmissionUpdateManyWithoutArticleInput
   title: StringFieldUpdateOperationsInput
@@ -178,10 +178,10 @@ input ArticleUpdateWithoutAuthorsInput {
 }
 
 input ArticleUpdateWithoutDecisionsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: AuthorshipUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
-  reviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   reviews: ReviewUpdateManyWithoutArticleInput
   submissions: SubmissionUpdateManyWithoutArticleInput
   title: StringFieldUpdateOperationsInput
@@ -200,22 +200,22 @@ input ArticleUpdateWithoutReviewRequestInput {
 }
 
 input ArticleUpdateWithoutReviewsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: AuthorshipUpdateManyWithoutArticleInput
   decisions: DecisionUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
-  reviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   submissions: SubmissionUpdateManyWithoutArticleInput
   title: StringFieldUpdateOperationsInput
   versions: ArticleVersionUpdateManyWithoutArticleInput
 }
 
 input ArticleUpdateWithoutSubmissionsInput {
+  ReviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: AuthorshipUpdateManyWithoutArticleInput
   decisions: DecisionUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
-  reviewRequest: ReviewRequestUpdateManyWithoutArticleInput
   reviews: ReviewUpdateManyWithoutArticleInput
   title: StringFieldUpdateOperationsInput
   versions: ArticleVersionUpdateManyWithoutArticleInput
@@ -372,11 +372,11 @@ input ArticleWhereInput {
   AND: [ArticleWhereInput!]
   NOT: [ArticleWhereInput!]
   OR: [ArticleWhereInput!]
+  ReviewRequest: ReviewRequestListRelationFilter
   anonymous: BoolFilter
   authors: AuthorshipListRelationFilter
   decisions: DecisionListRelationFilter
   id: StringFilter
-  reviewRequest: ReviewRequestListRelationFilter
   reviews: ReviewListRelationFilter
   submissions: SubmissionListRelationFilter
   title: StringFilter
