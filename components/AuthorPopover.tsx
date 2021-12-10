@@ -4,7 +4,8 @@ import UserPopover from "./UserPopover";
 
 export default function AuthorPopover({ user, color = "textSecondary" }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { id, name, profilePictureUrl } = user;
+  console.log(user);
+  const { id, name } = user;
   const handleEnter = (event) => {
     setAnchorEl(event.currentTarget);
   };

@@ -1291,7 +1291,8 @@ input RelationWhereUniqueInput {
 }
 
 type Review {
-  author: User!
+  anonymized: Boolean!
+  author: User
   body: String!
   highlights: Json!
   id: String!

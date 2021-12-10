@@ -82,9 +82,9 @@ function StyleButton({ Icon, style, example }) {
       <Icon
         sx={{
           color: "gray",
-          m: 0.5,
-          height: 22,
-          width: 22,
+          m: 0.3,
+          height: 20,
+          width: 20,
         }}
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
@@ -246,6 +246,9 @@ export default function MarkdownEditor({
           sx={{
             marginLeft: "auto",
             p: 0,
+            height: 20,
+            mb: 0.3,
+            mt: 0.3,
           }}
           onClick={() => toggleShowPreview(!previewOpen)}
           size="small"

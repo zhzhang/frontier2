@@ -2872,6 +2872,7 @@ export interface NexusGenObjects {
     relation: NexusGenEnums['RelationType']; // RelationType!
   }
   Review: { // root type
+    anonymized: boolean; // Boolean!
     body: string; // String!
     highlights: NexusGenScalars['Json']; // Json!
     id: string; // String!
@@ -3003,7 +3004,8 @@ export interface NexusGenFieldTypes {
     target: NexusGenRootTypes['User']; // User!
   }
   Review: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    anonymized: boolean; // Boolean!
+    author: NexusGenRootTypes['User'] | null; // User
     body: string; // String!
     highlights: NexusGenScalars['Json']; // Json!
     id: string; // String!
@@ -3139,6 +3141,7 @@ export interface NexusGenFieldTypeNames {
     target: 'User'
   }
   Review: { // field return type name
+    anonymized: 'Boolean'
     author: 'User'
     body: 'String'
     highlights: 'Json'
