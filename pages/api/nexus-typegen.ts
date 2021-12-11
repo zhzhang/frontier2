@@ -80,20 +80,20 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ArticleWhereUniqueInput']; // ArticleWhereUniqueInput!
   }
   ArticleCreateWithoutAuthorsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
     anonymous?: boolean | null; // Boolean
     decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutArticleInput'] | null; // DecisionCreateNestedManyWithoutArticleInput
     id?: string | null; // String
+    reviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutArticleInput'] | null; // ReviewCreateNestedManyWithoutArticleInput
     submissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutArticleInput'] | null; // SubmissionCreateNestedManyWithoutArticleInput
     title: string; // String!
     versions?: NexusGenInputs['ArticleVersionCreateNestedManyWithoutArticleInput'] | null; // ArticleVersionCreateNestedManyWithoutArticleInput
   }
   ArticleCreateWithoutDecisionsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
     anonymous?: boolean | null; // Boolean
-    authors?: NexusGenInputs['AuthorshipCreateNestedManyWithoutArticleInput'] | null; // AuthorshipCreateNestedManyWithoutArticleInput
+    authors?: NexusGenInputs['IdentityCreateNestedManyWithoutArticleInput'] | null; // IdentityCreateNestedManyWithoutArticleInput
     id?: string | null; // String
+    reviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutArticleInput'] | null; // ReviewCreateNestedManyWithoutArticleInput
     submissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutArticleInput'] | null; // SubmissionCreateNestedManyWithoutArticleInput
     title: string; // String!
@@ -101,7 +101,7 @@ export interface NexusGenInputs {
   }
   ArticleCreateWithoutReviewRequestInput: { // input type
     anonymous?: boolean | null; // Boolean
-    authors?: NexusGenInputs['AuthorshipCreateNestedManyWithoutArticleInput'] | null; // AuthorshipCreateNestedManyWithoutArticleInput
+    authors?: NexusGenInputs['IdentityCreateNestedManyWithoutArticleInput'] | null; // IdentityCreateNestedManyWithoutArticleInput
     decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutArticleInput'] | null; // DecisionCreateNestedManyWithoutArticleInput
     id?: string | null; // String
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutArticleInput'] | null; // ReviewCreateNestedManyWithoutArticleInput
@@ -110,21 +110,21 @@ export interface NexusGenInputs {
     versions?: NexusGenInputs['ArticleVersionCreateNestedManyWithoutArticleInput'] | null; // ArticleVersionCreateNestedManyWithoutArticleInput
   }
   ArticleCreateWithoutReviewsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
     anonymous?: boolean | null; // Boolean
-    authors?: NexusGenInputs['AuthorshipCreateNestedManyWithoutArticleInput'] | null; // AuthorshipCreateNestedManyWithoutArticleInput
+    authors?: NexusGenInputs['IdentityCreateNestedManyWithoutArticleInput'] | null; // IdentityCreateNestedManyWithoutArticleInput
     decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutArticleInput'] | null; // DecisionCreateNestedManyWithoutArticleInput
     id?: string | null; // String
+    reviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
     submissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutArticleInput'] | null; // SubmissionCreateNestedManyWithoutArticleInput
     title: string; // String!
     versions?: NexusGenInputs['ArticleVersionCreateNestedManyWithoutArticleInput'] | null; // ArticleVersionCreateNestedManyWithoutArticleInput
   }
   ArticleCreateWithoutSubmissionsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
     anonymous?: boolean | null; // Boolean
-    authors?: NexusGenInputs['AuthorshipCreateNestedManyWithoutArticleInput'] | null; // AuthorshipCreateNestedManyWithoutArticleInput
+    authors?: NexusGenInputs['IdentityCreateNestedManyWithoutArticleInput'] | null; // IdentityCreateNestedManyWithoutArticleInput
     decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutArticleInput'] | null; // DecisionCreateNestedManyWithoutArticleInput
     id?: string | null; // String
+    reviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
     reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutArticleInput'] | null; // ReviewCreateNestedManyWithoutArticleInput
     title: string; // String!
     versions?: NexusGenInputs['ArticleVersionCreateNestedManyWithoutArticleInput'] | null; // ArticleVersionCreateNestedManyWithoutArticleInput
@@ -168,20 +168,20 @@ export interface NexusGenInputs {
     upsert?: NexusGenInputs['ArticleUpsertWithoutSubmissionsInput'] | null; // ArticleUpsertWithoutSubmissionsInput
   }
   ArticleUpdateWithoutAuthorsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     decisions?: NexusGenInputs['DecisionUpdateManyWithoutArticleInput'] | null; // DecisionUpdateManyWithoutArticleInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    reviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutArticleInput'] | null; // ReviewUpdateManyWithoutArticleInput
     submissions?: NexusGenInputs['SubmissionUpdateManyWithoutArticleInput'] | null; // SubmissionUpdateManyWithoutArticleInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     versions?: NexusGenInputs['ArticleVersionUpdateManyWithoutArticleInput'] | null; // ArticleVersionUpdateManyWithoutArticleInput
   }
   ArticleUpdateWithoutDecisionsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
-    authors?: NexusGenInputs['AuthorshipUpdateManyWithoutArticleInput'] | null; // AuthorshipUpdateManyWithoutArticleInput
+    authors?: NexusGenInputs['IdentityUpdateManyWithoutArticleInput'] | null; // IdentityUpdateManyWithoutArticleInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    reviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutArticleInput'] | null; // ReviewUpdateManyWithoutArticleInput
     submissions?: NexusGenInputs['SubmissionUpdateManyWithoutArticleInput'] | null; // SubmissionUpdateManyWithoutArticleInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -189,7 +189,7 @@ export interface NexusGenInputs {
   }
   ArticleUpdateWithoutReviewRequestInput: { // input type
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
-    authors?: NexusGenInputs['AuthorshipUpdateManyWithoutArticleInput'] | null; // AuthorshipUpdateManyWithoutArticleInput
+    authors?: NexusGenInputs['IdentityUpdateManyWithoutArticleInput'] | null; // IdentityUpdateManyWithoutArticleInput
     decisions?: NexusGenInputs['DecisionUpdateManyWithoutArticleInput'] | null; // DecisionUpdateManyWithoutArticleInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutArticleInput'] | null; // ReviewUpdateManyWithoutArticleInput
@@ -198,21 +198,21 @@ export interface NexusGenInputs {
     versions?: NexusGenInputs['ArticleVersionUpdateManyWithoutArticleInput'] | null; // ArticleVersionUpdateManyWithoutArticleInput
   }
   ArticleUpdateWithoutReviewsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
-    authors?: NexusGenInputs['AuthorshipUpdateManyWithoutArticleInput'] | null; // AuthorshipUpdateManyWithoutArticleInput
+    authors?: NexusGenInputs['IdentityUpdateManyWithoutArticleInput'] | null; // IdentityUpdateManyWithoutArticleInput
     decisions?: NexusGenInputs['DecisionUpdateManyWithoutArticleInput'] | null; // DecisionUpdateManyWithoutArticleInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    reviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
     submissions?: NexusGenInputs['SubmissionUpdateManyWithoutArticleInput'] | null; // SubmissionUpdateManyWithoutArticleInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     versions?: NexusGenInputs['ArticleVersionUpdateManyWithoutArticleInput'] | null; // ArticleVersionUpdateManyWithoutArticleInput
   }
   ArticleUpdateWithoutSubmissionsInput: { // input type
-    ReviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
-    authors?: NexusGenInputs['AuthorshipUpdateManyWithoutArticleInput'] | null; // AuthorshipUpdateManyWithoutArticleInput
+    authors?: NexusGenInputs['IdentityUpdateManyWithoutArticleInput'] | null; // IdentityUpdateManyWithoutArticleInput
     decisions?: NexusGenInputs['DecisionUpdateManyWithoutArticleInput'] | null; // DecisionUpdateManyWithoutArticleInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    reviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
     reviews?: NexusGenInputs['ReviewUpdateManyWithoutArticleInput'] | null; // ReviewUpdateManyWithoutArticleInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     versions?: NexusGenInputs['ArticleVersionUpdateManyWithoutArticleInput'] | null; // ArticleVersionUpdateManyWithoutArticleInput
@@ -340,11 +340,11 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ArticleWhereInput'][] | null; // [ArticleWhereInput!]
     NOT?: NexusGenInputs['ArticleWhereInput'][] | null; // [ArticleWhereInput!]
     OR?: NexusGenInputs['ArticleWhereInput'][] | null; // [ArticleWhereInput!]
-    ReviewRequest?: NexusGenInputs['ReviewRequestListRelationFilter'] | null; // ReviewRequestListRelationFilter
     anonymous?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
-    authors?: NexusGenInputs['AuthorshipListRelationFilter'] | null; // AuthorshipListRelationFilter
+    authors?: NexusGenInputs['IdentityListRelationFilter'] | null; // IdentityListRelationFilter
     decisions?: NexusGenInputs['DecisionListRelationFilter'] | null; // DecisionListRelationFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    reviewRequest?: NexusGenInputs['ReviewRequestListRelationFilter'] | null; // ReviewRequestListRelationFilter
     reviews?: NexusGenInputs['ReviewListRelationFilter'] | null; // ReviewListRelationFilter
     submissions?: NexusGenInputs['SubmissionListRelationFilter'] | null; // SubmissionListRelationFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -352,143 +352,6 @@ export interface NexusGenInputs {
   }
   ArticleWhereUniqueInput: { // input type
     id?: string | null; // String
-  }
-  AuthorshipCreateManyArticleInput: { // input type
-    authorNumber: number; // Int!
-    id?: number | null; // Int
-    userId: string; // String!
-  }
-  AuthorshipCreateManyArticleInputEnvelope: { // input type
-    data?: NexusGenInputs['AuthorshipCreateManyArticleInput'][] | null; // [AuthorshipCreateManyArticleInput!]
-    skipDuplicates?: boolean | null; // Boolean
-  }
-  AuthorshipCreateManyUserInput: { // input type
-    articleId: string; // String!
-    authorNumber: number; // Int!
-    id?: number | null; // Int
-  }
-  AuthorshipCreateManyUserInputEnvelope: { // input type
-    data?: NexusGenInputs['AuthorshipCreateManyUserInput'][] | null; // [AuthorshipCreateManyUserInput!]
-    skipDuplicates?: boolean | null; // Boolean
-  }
-  AuthorshipCreateNestedManyWithoutArticleInput: { // input type
-    connect?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['AuthorshipCreateOrConnectWithoutArticleInput'][] | null; // [AuthorshipCreateOrConnectWithoutArticleInput!]
-    create?: NexusGenInputs['AuthorshipCreateWithoutArticleInput'][] | null; // [AuthorshipCreateWithoutArticleInput!]
-    createMany?: NexusGenInputs['AuthorshipCreateManyArticleInputEnvelope'] | null; // AuthorshipCreateManyArticleInputEnvelope
-  }
-  AuthorshipCreateNestedManyWithoutUserInput: { // input type
-    connect?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['AuthorshipCreateOrConnectWithoutUserInput'][] | null; // [AuthorshipCreateOrConnectWithoutUserInput!]
-    create?: NexusGenInputs['AuthorshipCreateWithoutUserInput'][] | null; // [AuthorshipCreateWithoutUserInput!]
-    createMany?: NexusGenInputs['AuthorshipCreateManyUserInputEnvelope'] | null; // AuthorshipCreateManyUserInputEnvelope
-  }
-  AuthorshipCreateOrConnectWithoutArticleInput: { // input type
-    create: NexusGenInputs['AuthorshipCreateWithoutArticleInput']; // AuthorshipCreateWithoutArticleInput!
-    where: NexusGenInputs['AuthorshipWhereUniqueInput']; // AuthorshipWhereUniqueInput!
-  }
-  AuthorshipCreateOrConnectWithoutUserInput: { // input type
-    create: NexusGenInputs['AuthorshipCreateWithoutUserInput']; // AuthorshipCreateWithoutUserInput!
-    where: NexusGenInputs['AuthorshipWhereUniqueInput']; // AuthorshipWhereUniqueInput!
-  }
-  AuthorshipCreateWithoutArticleInput: { // input type
-    authorNumber: number; // Int!
-    user: NexusGenInputs['UserCreateNestedOneWithoutAuthorshipsInput']; // UserCreateNestedOneWithoutAuthorshipsInput!
-  }
-  AuthorshipCreateWithoutUserInput: { // input type
-    article: NexusGenInputs['ArticleCreateNestedOneWithoutAuthorsInput']; // ArticleCreateNestedOneWithoutAuthorsInput!
-    authorNumber: number; // Int!
-  }
-  AuthorshipListRelationFilter: { // input type
-    every?: NexusGenInputs['AuthorshipWhereInput'] | null; // AuthorshipWhereInput
-    none?: NexusGenInputs['AuthorshipWhereInput'] | null; // AuthorshipWhereInput
-    some?: NexusGenInputs['AuthorshipWhereInput'] | null; // AuthorshipWhereInput
-  }
-  AuthorshipScalarWhereInput: { // input type
-    AND?: NexusGenInputs['AuthorshipScalarWhereInput'][] | null; // [AuthorshipScalarWhereInput!]
-    NOT?: NexusGenInputs['AuthorshipScalarWhereInput'][] | null; // [AuthorshipScalarWhereInput!]
-    OR?: NexusGenInputs['AuthorshipScalarWhereInput'][] | null; // [AuthorshipScalarWhereInput!]
-    articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    authorNumber?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    id?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-  }
-  AuthorshipUpdateManyMutationInput: { // input type
-    authorNumber?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-  }
-  AuthorshipUpdateManyWithWhereWithoutArticleInput: { // input type
-    data: NexusGenInputs['AuthorshipUpdateManyMutationInput']; // AuthorshipUpdateManyMutationInput!
-    where: NexusGenInputs['AuthorshipScalarWhereInput']; // AuthorshipScalarWhereInput!
-  }
-  AuthorshipUpdateManyWithWhereWithoutUserInput: { // input type
-    data: NexusGenInputs['AuthorshipUpdateManyMutationInput']; // AuthorshipUpdateManyMutationInput!
-    where: NexusGenInputs['AuthorshipScalarWhereInput']; // AuthorshipScalarWhereInput!
-  }
-  AuthorshipUpdateManyWithoutArticleInput: { // input type
-    connect?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['AuthorshipCreateOrConnectWithoutArticleInput'][] | null; // [AuthorshipCreateOrConnectWithoutArticleInput!]
-    create?: NexusGenInputs['AuthorshipCreateWithoutArticleInput'][] | null; // [AuthorshipCreateWithoutArticleInput!]
-    createMany?: NexusGenInputs['AuthorshipCreateManyArticleInputEnvelope'] | null; // AuthorshipCreateManyArticleInputEnvelope
-    delete?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    deleteMany?: NexusGenInputs['AuthorshipScalarWhereInput'][] | null; // [AuthorshipScalarWhereInput!]
-    disconnect?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    set?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    update?: NexusGenInputs['AuthorshipUpdateWithWhereUniqueWithoutArticleInput'][] | null; // [AuthorshipUpdateWithWhereUniqueWithoutArticleInput!]
-    updateMany?: NexusGenInputs['AuthorshipUpdateManyWithWhereWithoutArticleInput'][] | null; // [AuthorshipUpdateManyWithWhereWithoutArticleInput!]
-    upsert?: NexusGenInputs['AuthorshipUpsertWithWhereUniqueWithoutArticleInput'][] | null; // [AuthorshipUpsertWithWhereUniqueWithoutArticleInput!]
-  }
-  AuthorshipUpdateManyWithoutUserInput: { // input type
-    connect?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['AuthorshipCreateOrConnectWithoutUserInput'][] | null; // [AuthorshipCreateOrConnectWithoutUserInput!]
-    create?: NexusGenInputs['AuthorshipCreateWithoutUserInput'][] | null; // [AuthorshipCreateWithoutUserInput!]
-    createMany?: NexusGenInputs['AuthorshipCreateManyUserInputEnvelope'] | null; // AuthorshipCreateManyUserInputEnvelope
-    delete?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    deleteMany?: NexusGenInputs['AuthorshipScalarWhereInput'][] | null; // [AuthorshipScalarWhereInput!]
-    disconnect?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    set?: NexusGenInputs['AuthorshipWhereUniqueInput'][] | null; // [AuthorshipWhereUniqueInput!]
-    update?: NexusGenInputs['AuthorshipUpdateWithWhereUniqueWithoutUserInput'][] | null; // [AuthorshipUpdateWithWhereUniqueWithoutUserInput!]
-    updateMany?: NexusGenInputs['AuthorshipUpdateManyWithWhereWithoutUserInput'][] | null; // [AuthorshipUpdateManyWithWhereWithoutUserInput!]
-    upsert?: NexusGenInputs['AuthorshipUpsertWithWhereUniqueWithoutUserInput'][] | null; // [AuthorshipUpsertWithWhereUniqueWithoutUserInput!]
-  }
-  AuthorshipUpdateWithWhereUniqueWithoutArticleInput: { // input type
-    data: NexusGenInputs['AuthorshipUpdateWithoutArticleInput']; // AuthorshipUpdateWithoutArticleInput!
-    where: NexusGenInputs['AuthorshipWhereUniqueInput']; // AuthorshipWhereUniqueInput!
-  }
-  AuthorshipUpdateWithWhereUniqueWithoutUserInput: { // input type
-    data: NexusGenInputs['AuthorshipUpdateWithoutUserInput']; // AuthorshipUpdateWithoutUserInput!
-    where: NexusGenInputs['AuthorshipWhereUniqueInput']; // AuthorshipWhereUniqueInput!
-  }
-  AuthorshipUpdateWithoutArticleInput: { // input type
-    authorNumber?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-    user?: NexusGenInputs['UserUpdateOneRequiredWithoutAuthorshipsInput'] | null; // UserUpdateOneRequiredWithoutAuthorshipsInput
-  }
-  AuthorshipUpdateWithoutUserInput: { // input type
-    article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutAuthorsInput'] | null; // ArticleUpdateOneRequiredWithoutAuthorsInput
-    authorNumber?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-  }
-  AuthorshipUpsertWithWhereUniqueWithoutArticleInput: { // input type
-    create: NexusGenInputs['AuthorshipCreateWithoutArticleInput']; // AuthorshipCreateWithoutArticleInput!
-    update: NexusGenInputs['AuthorshipUpdateWithoutArticleInput']; // AuthorshipUpdateWithoutArticleInput!
-    where: NexusGenInputs['AuthorshipWhereUniqueInput']; // AuthorshipWhereUniqueInput!
-  }
-  AuthorshipUpsertWithWhereUniqueWithoutUserInput: { // input type
-    create: NexusGenInputs['AuthorshipCreateWithoutUserInput']; // AuthorshipCreateWithoutUserInput!
-    update: NexusGenInputs['AuthorshipUpdateWithoutUserInput']; // AuthorshipUpdateWithoutUserInput!
-    where: NexusGenInputs['AuthorshipWhereUniqueInput']; // AuthorshipWhereUniqueInput!
-  }
-  AuthorshipWhereInput: { // input type
-    AND?: NexusGenInputs['AuthorshipWhereInput'][] | null; // [AuthorshipWhereInput!]
-    NOT?: NexusGenInputs['AuthorshipWhereInput'][] | null; // [AuthorshipWhereInput!]
-    OR?: NexusGenInputs['AuthorshipWhereInput'][] | null; // [AuthorshipWhereInput!]
-    article?: NexusGenInputs['ArticleWhereInput'] | null; // ArticleWhereInput
-    articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    authorNumber?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    id?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
-    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-  }
-  AuthorshipWhereUniqueInput: { // input type
-    id?: number | null; // Int
   }
   BoolFieldUpdateOperationsInput: { // input type
     set?: boolean | null; // Boolean
@@ -599,7 +462,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['DecisionWhereUniqueInput']; // DecisionWhereUniqueInput!
   }
   DecisionCreateWithoutArticleInput: { // input type
-    author: NexusGenInputs['UserCreateNestedOneWithoutDecisionsInput']; // UserCreateNestedOneWithoutDecisionsInput!
+    author: NexusGenInputs['IdentityCreateNestedOneWithoutDecisionsInput']; // IdentityCreateNestedOneWithoutDecisionsInput!
     body: string; // String!
     decision?: boolean | null; // Boolean
     highlights: NexusGenScalars['Json']; // Json!
@@ -620,7 +483,7 @@ export interface NexusGenInputs {
   }
   DecisionCreateWithoutSubmissionInput: { // input type
     article: NexusGenInputs['ArticleCreateNestedOneWithoutDecisionsInput']; // ArticleCreateNestedOneWithoutDecisionsInput!
-    author: NexusGenInputs['UserCreateNestedOneWithoutDecisionsInput']; // UserCreateNestedOneWithoutDecisionsInput!
+    author: NexusGenInputs['IdentityCreateNestedOneWithoutDecisionsInput']; // IdentityCreateNestedOneWithoutDecisionsInput!
     body: string; // String!
     decision?: boolean | null; // Boolean
     highlights: NexusGenScalars['Json']; // Json!
@@ -630,7 +493,7 @@ export interface NexusGenInputs {
   }
   DecisionCreateWithoutVenueInput: { // input type
     article: NexusGenInputs['ArticleCreateNestedOneWithoutDecisionsInput']; // ArticleCreateNestedOneWithoutDecisionsInput!
-    author: NexusGenInputs['UserCreateNestedOneWithoutDecisionsInput']; // UserCreateNestedOneWithoutDecisionsInput!
+    author: NexusGenInputs['IdentityCreateNestedOneWithoutDecisionsInput']; // IdentityCreateNestedOneWithoutDecisionsInput!
     body: string; // String!
     decision?: boolean | null; // Boolean
     highlights: NexusGenScalars['Json']; // Json!
@@ -735,7 +598,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['DecisionWhereUniqueInput']; // DecisionWhereUniqueInput!
   }
   DecisionUpdateWithoutArticleInput: { // input type
-    author?: NexusGenInputs['UserUpdateOneRequiredWithoutDecisionsInput'] | null; // UserUpdateOneRequiredWithoutDecisionsInput
+    author?: NexusGenInputs['IdentityUpdateOneRequiredWithoutDecisionsInput'] | null; // IdentityUpdateOneRequiredWithoutDecisionsInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     decision?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     highlights?: NexusGenScalars['Json'] | null; // Json
@@ -756,7 +619,7 @@ export interface NexusGenInputs {
   }
   DecisionUpdateWithoutSubmissionInput: { // input type
     article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutDecisionsInput'] | null; // ArticleUpdateOneRequiredWithoutDecisionsInput
-    author?: NexusGenInputs['UserUpdateOneRequiredWithoutDecisionsInput'] | null; // UserUpdateOneRequiredWithoutDecisionsInput
+    author?: NexusGenInputs['IdentityUpdateOneRequiredWithoutDecisionsInput'] | null; // IdentityUpdateOneRequiredWithoutDecisionsInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     decision?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     highlights?: NexusGenScalars['Json'] | null; // Json
@@ -766,7 +629,7 @@ export interface NexusGenInputs {
   }
   DecisionUpdateWithoutVenueInput: { // input type
     article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutDecisionsInput'] | null; // ArticleUpdateOneRequiredWithoutDecisionsInput
-    author?: NexusGenInputs['UserUpdateOneRequiredWithoutDecisionsInput'] | null; // UserUpdateOneRequiredWithoutDecisionsInput
+    author?: NexusGenInputs['IdentityUpdateOneRequiredWithoutDecisionsInput'] | null; // IdentityUpdateOneRequiredWithoutDecisionsInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     decision?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     highlights?: NexusGenScalars['Json'] | null; // Json
@@ -799,7 +662,7 @@ export interface NexusGenInputs {
     OR?: NexusGenInputs['DecisionWhereInput'][] | null; // [DecisionWhereInput!]
     article?: NexusGenInputs['ArticleWhereInput'] | null; // ArticleWhereInput
     articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    author?: NexusGenInputs['IdentityWhereInput'] | null; // IdentityWhereInput
     authorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     body?: NexusGenInputs['StringFilter'] | null; // StringFilter
     decision?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
@@ -812,6 +675,15 @@ export interface NexusGenInputs {
   DecisionWhereUniqueInput: { // input type
     id?: string | null; // String
   }
+  EnumIdentityContextFieldUpdateOperationsInput: { // input type
+    set?: NexusGenEnums['IdentityContext'] | null; // IdentityContext
+  }
+  EnumIdentityContextFilter: { // input type
+    equals?: NexusGenEnums['IdentityContext'] | null; // IdentityContext
+    in?: NexusGenEnums['IdentityContext'][] | null; // [IdentityContext!]
+    not?: NexusGenInputs['NestedEnumIdentityContextFilter'] | null; // NestedEnumIdentityContextFilter
+    notIn?: NexusGenEnums['IdentityContext'][] | null; // [IdentityContext!]
+  }
   EnumRelationTypeFieldUpdateOperationsInput: { // input type
     set?: NexusGenEnums['RelationType'] | null; // RelationType
   }
@@ -820,6 +692,301 @@ export interface NexusGenInputs {
     in?: NexusGenEnums['RelationType'][] | null; // [RelationType!]
     not?: NexusGenInputs['NestedEnumRelationTypeFilter'] | null; // NestedEnumRelationTypeFilter
     notIn?: NexusGenEnums['RelationType'][] | null; // [RelationType!]
+  }
+  IdentityCreateManyArticleInput: { // input type
+    anonymized?: boolean | null; // Boolean
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    id?: string | null; // String
+    number: number; // Int!
+    userId: string; // String!
+  }
+  IdentityCreateManyArticleInputEnvelope: { // input type
+    data?: NexusGenInputs['IdentityCreateManyArticleInput'][] | null; // [IdentityCreateManyArticleInput!]
+    skipDuplicates?: boolean | null; // Boolean
+  }
+  IdentityCreateManyUserInput: { // input type
+    anonymized?: boolean | null; // Boolean
+    articleId: string; // String!
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    id?: string | null; // String
+    number: number; // Int!
+  }
+  IdentityCreateManyUserInputEnvelope: { // input type
+    data?: NexusGenInputs['IdentityCreateManyUserInput'][] | null; // [IdentityCreateManyUserInput!]
+    skipDuplicates?: boolean | null; // Boolean
+  }
+  IdentityCreateNestedManyWithoutArticleInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutArticleInput'][] | null; // [IdentityCreateOrConnectWithoutArticleInput!]
+    create?: NexusGenInputs['IdentityCreateWithoutArticleInput'][] | null; // [IdentityCreateWithoutArticleInput!]
+    createMany?: NexusGenInputs['IdentityCreateManyArticleInputEnvelope'] | null; // IdentityCreateManyArticleInputEnvelope
+  }
+  IdentityCreateNestedManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutUserInput'][] | null; // [IdentityCreateOrConnectWithoutUserInput!]
+    create?: NexusGenInputs['IdentityCreateWithoutUserInput'][] | null; // [IdentityCreateWithoutUserInput!]
+    createMany?: NexusGenInputs['IdentityCreateManyUserInputEnvelope'] | null; // IdentityCreateManyUserInputEnvelope
+  }
+  IdentityCreateNestedOneWithoutDecisionsInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutDecisionsInput'] | null; // IdentityCreateOrConnectWithoutDecisionsInput
+    create?: NexusGenInputs['IdentityCreateWithoutDecisionsInput'] | null; // IdentityCreateWithoutDecisionsInput
+  }
+  IdentityCreateNestedOneWithoutReviewsInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutReviewsInput'] | null; // IdentityCreateOrConnectWithoutReviewsInput
+    create?: NexusGenInputs['IdentityCreateWithoutReviewsInput'] | null; // IdentityCreateWithoutReviewsInput
+  }
+  IdentityCreateNestedOneWithoutThreadMessageInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutThreadMessageInput'] | null; // IdentityCreateOrConnectWithoutThreadMessageInput
+    create?: NexusGenInputs['IdentityCreateWithoutThreadMessageInput'] | null; // IdentityCreateWithoutThreadMessageInput
+  }
+  IdentityCreateOrConnectWithoutArticleInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutArticleInput']; // IdentityCreateWithoutArticleInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityCreateOrConnectWithoutDecisionsInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutDecisionsInput']; // IdentityCreateWithoutDecisionsInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityCreateOrConnectWithoutReviewsInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutReviewsInput']; // IdentityCreateWithoutReviewsInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityCreateOrConnectWithoutThreadMessageInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutThreadMessageInput']; // IdentityCreateWithoutThreadMessageInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityCreateOrConnectWithoutUserInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutUserInput']; // IdentityCreateWithoutUserInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityCreateWithoutArticleInput: { // input type
+    anonymized?: boolean | null; // Boolean
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
+    id?: string | null; // String
+    number: number; // Int!
+    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
+    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
+    user: NexusGenInputs['UserCreateNestedOneWithoutIdentitiesInput']; // UserCreateNestedOneWithoutIdentitiesInput!
+  }
+  IdentityCreateWithoutDecisionsInput: { // input type
+    anonymized?: boolean | null; // Boolean
+    article: NexusGenInputs['ArticleCreateNestedOneWithoutAuthorsInput']; // ArticleCreateNestedOneWithoutAuthorsInput!
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    id?: string | null; // String
+    number: number; // Int!
+    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
+    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
+    user: NexusGenInputs['UserCreateNestedOneWithoutIdentitiesInput']; // UserCreateNestedOneWithoutIdentitiesInput!
+  }
+  IdentityCreateWithoutReviewsInput: { // input type
+    anonymized?: boolean | null; // Boolean
+    article: NexusGenInputs['ArticleCreateNestedOneWithoutAuthorsInput']; // ArticleCreateNestedOneWithoutAuthorsInput!
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
+    id?: string | null; // String
+    number: number; // Int!
+    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
+    user: NexusGenInputs['UserCreateNestedOneWithoutIdentitiesInput']; // UserCreateNestedOneWithoutIdentitiesInput!
+  }
+  IdentityCreateWithoutThreadMessageInput: { // input type
+    anonymized?: boolean | null; // Boolean
+    article: NexusGenInputs['ArticleCreateNestedOneWithoutAuthorsInput']; // ArticleCreateNestedOneWithoutAuthorsInput!
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
+    id?: string | null; // String
+    number: number; // Int!
+    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
+    user: NexusGenInputs['UserCreateNestedOneWithoutIdentitiesInput']; // UserCreateNestedOneWithoutIdentitiesInput!
+  }
+  IdentityCreateWithoutUserInput: { // input type
+    anonymized?: boolean | null; // Boolean
+    article: NexusGenInputs['ArticleCreateNestedOneWithoutAuthorsInput']; // ArticleCreateNestedOneWithoutAuthorsInput!
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
+    id?: string | null; // String
+    number: number; // Int!
+    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
+    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
+  }
+  IdentityListRelationFilter: { // input type
+    every?: NexusGenInputs['IdentityWhereInput'] | null; // IdentityWhereInput
+    none?: NexusGenInputs['IdentityWhereInput'] | null; // IdentityWhereInput
+    some?: NexusGenInputs['IdentityWhereInput'] | null; // IdentityWhereInput
+  }
+  IdentityScalarWhereInput: { // input type
+    AND?: NexusGenInputs['IdentityScalarWhereInput'][] | null; // [IdentityScalarWhereInput!]
+    NOT?: NexusGenInputs['IdentityScalarWhereInput'][] | null; // [IdentityScalarWhereInput!]
+    OR?: NexusGenInputs['IdentityScalarWhereInput'][] | null; // [IdentityScalarWhereInput!]
+    anonymized?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
+    articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    context?: NexusGenInputs['EnumIdentityContextFilter'] | null; // EnumIdentityContextFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    number?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  IdentityUpdateManyMutationInput: { // input type
+    anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
+    context?: NexusGenInputs['EnumIdentityContextFieldUpdateOperationsInput'] | null; // EnumIdentityContextFieldUpdateOperationsInput
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    number?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+  }
+  IdentityUpdateManyWithWhereWithoutArticleInput: { // input type
+    data: NexusGenInputs['IdentityUpdateManyMutationInput']; // IdentityUpdateManyMutationInput!
+    where: NexusGenInputs['IdentityScalarWhereInput']; // IdentityScalarWhereInput!
+  }
+  IdentityUpdateManyWithWhereWithoutUserInput: { // input type
+    data: NexusGenInputs['IdentityUpdateManyMutationInput']; // IdentityUpdateManyMutationInput!
+    where: NexusGenInputs['IdentityScalarWhereInput']; // IdentityScalarWhereInput!
+  }
+  IdentityUpdateManyWithoutArticleInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutArticleInput'][] | null; // [IdentityCreateOrConnectWithoutArticleInput!]
+    create?: NexusGenInputs['IdentityCreateWithoutArticleInput'][] | null; // [IdentityCreateWithoutArticleInput!]
+    createMany?: NexusGenInputs['IdentityCreateManyArticleInputEnvelope'] | null; // IdentityCreateManyArticleInputEnvelope
+    delete?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['IdentityScalarWhereInput'][] | null; // [IdentityScalarWhereInput!]
+    disconnect?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    set?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    update?: NexusGenInputs['IdentityUpdateWithWhereUniqueWithoutArticleInput'][] | null; // [IdentityUpdateWithWhereUniqueWithoutArticleInput!]
+    updateMany?: NexusGenInputs['IdentityUpdateManyWithWhereWithoutArticleInput'][] | null; // [IdentityUpdateManyWithWhereWithoutArticleInput!]
+    upsert?: NexusGenInputs['IdentityUpsertWithWhereUniqueWithoutArticleInput'][] | null; // [IdentityUpsertWithWhereUniqueWithoutArticleInput!]
+  }
+  IdentityUpdateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutUserInput'][] | null; // [IdentityCreateOrConnectWithoutUserInput!]
+    create?: NexusGenInputs['IdentityCreateWithoutUserInput'][] | null; // [IdentityCreateWithoutUserInput!]
+    createMany?: NexusGenInputs['IdentityCreateManyUserInputEnvelope'] | null; // IdentityCreateManyUserInputEnvelope
+    delete?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['IdentityScalarWhereInput'][] | null; // [IdentityScalarWhereInput!]
+    disconnect?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    set?: NexusGenInputs['IdentityWhereUniqueInput'][] | null; // [IdentityWhereUniqueInput!]
+    update?: NexusGenInputs['IdentityUpdateWithWhereUniqueWithoutUserInput'][] | null; // [IdentityUpdateWithWhereUniqueWithoutUserInput!]
+    updateMany?: NexusGenInputs['IdentityUpdateManyWithWhereWithoutUserInput'][] | null; // [IdentityUpdateManyWithWhereWithoutUserInput!]
+    upsert?: NexusGenInputs['IdentityUpsertWithWhereUniqueWithoutUserInput'][] | null; // [IdentityUpsertWithWhereUniqueWithoutUserInput!]
+  }
+  IdentityUpdateOneRequiredWithoutDecisionsInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutDecisionsInput'] | null; // IdentityCreateOrConnectWithoutDecisionsInput
+    create?: NexusGenInputs['IdentityCreateWithoutDecisionsInput'] | null; // IdentityCreateWithoutDecisionsInput
+    update?: NexusGenInputs['IdentityUpdateWithoutDecisionsInput'] | null; // IdentityUpdateWithoutDecisionsInput
+    upsert?: NexusGenInputs['IdentityUpsertWithoutDecisionsInput'] | null; // IdentityUpsertWithoutDecisionsInput
+  }
+  IdentityUpdateOneRequiredWithoutReviewsInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutReviewsInput'] | null; // IdentityCreateOrConnectWithoutReviewsInput
+    create?: NexusGenInputs['IdentityCreateWithoutReviewsInput'] | null; // IdentityCreateWithoutReviewsInput
+    update?: NexusGenInputs['IdentityUpdateWithoutReviewsInput'] | null; // IdentityUpdateWithoutReviewsInput
+    upsert?: NexusGenInputs['IdentityUpsertWithoutReviewsInput'] | null; // IdentityUpsertWithoutReviewsInput
+  }
+  IdentityUpdateOneRequiredWithoutThreadMessageInput: { // input type
+    connect?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['IdentityCreateOrConnectWithoutThreadMessageInput'] | null; // IdentityCreateOrConnectWithoutThreadMessageInput
+    create?: NexusGenInputs['IdentityCreateWithoutThreadMessageInput'] | null; // IdentityCreateWithoutThreadMessageInput
+    update?: NexusGenInputs['IdentityUpdateWithoutThreadMessageInput'] | null; // IdentityUpdateWithoutThreadMessageInput
+    upsert?: NexusGenInputs['IdentityUpsertWithoutThreadMessageInput'] | null; // IdentityUpsertWithoutThreadMessageInput
+  }
+  IdentityUpdateWithWhereUniqueWithoutArticleInput: { // input type
+    data: NexusGenInputs['IdentityUpdateWithoutArticleInput']; // IdentityUpdateWithoutArticleInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityUpdateWithWhereUniqueWithoutUserInput: { // input type
+    data: NexusGenInputs['IdentityUpdateWithoutUserInput']; // IdentityUpdateWithoutUserInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityUpdateWithoutArticleInput: { // input type
+    anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
+    context?: NexusGenInputs['EnumIdentityContextFieldUpdateOperationsInput'] | null; // EnumIdentityContextFieldUpdateOperationsInput
+    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    number?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
+    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutIdentitiesInput'] | null; // UserUpdateOneRequiredWithoutIdentitiesInput
+  }
+  IdentityUpdateWithoutDecisionsInput: { // input type
+    anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
+    article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutAuthorsInput'] | null; // ArticleUpdateOneRequiredWithoutAuthorsInput
+    context?: NexusGenInputs['EnumIdentityContextFieldUpdateOperationsInput'] | null; // EnumIdentityContextFieldUpdateOperationsInput
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    number?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
+    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutIdentitiesInput'] | null; // UserUpdateOneRequiredWithoutIdentitiesInput
+  }
+  IdentityUpdateWithoutReviewsInput: { // input type
+    anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
+    article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutAuthorsInput'] | null; // ArticleUpdateOneRequiredWithoutAuthorsInput
+    context?: NexusGenInputs['EnumIdentityContextFieldUpdateOperationsInput'] | null; // EnumIdentityContextFieldUpdateOperationsInput
+    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    number?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutIdentitiesInput'] | null; // UserUpdateOneRequiredWithoutIdentitiesInput
+  }
+  IdentityUpdateWithoutThreadMessageInput: { // input type
+    anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
+    article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutAuthorsInput'] | null; // ArticleUpdateOneRequiredWithoutAuthorsInput
+    context?: NexusGenInputs['EnumIdentityContextFieldUpdateOperationsInput'] | null; // EnumIdentityContextFieldUpdateOperationsInput
+    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    number?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutIdentitiesInput'] | null; // UserUpdateOneRequiredWithoutIdentitiesInput
+  }
+  IdentityUpdateWithoutUserInput: { // input type
+    anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
+    article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutAuthorsInput'] | null; // ArticleUpdateOneRequiredWithoutAuthorsInput
+    context?: NexusGenInputs['EnumIdentityContextFieldUpdateOperationsInput'] | null; // EnumIdentityContextFieldUpdateOperationsInput
+    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    number?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
+    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
+  }
+  IdentityUpsertWithWhereUniqueWithoutArticleInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutArticleInput']; // IdentityCreateWithoutArticleInput!
+    update: NexusGenInputs['IdentityUpdateWithoutArticleInput']; // IdentityUpdateWithoutArticleInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityUpsertWithWhereUniqueWithoutUserInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutUserInput']; // IdentityCreateWithoutUserInput!
+    update: NexusGenInputs['IdentityUpdateWithoutUserInput']; // IdentityUpdateWithoutUserInput!
+    where: NexusGenInputs['IdentityWhereUniqueInput']; // IdentityWhereUniqueInput!
+  }
+  IdentityUpsertWithoutDecisionsInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutDecisionsInput']; // IdentityCreateWithoutDecisionsInput!
+    update: NexusGenInputs['IdentityUpdateWithoutDecisionsInput']; // IdentityUpdateWithoutDecisionsInput!
+  }
+  IdentityUpsertWithoutReviewsInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutReviewsInput']; // IdentityCreateWithoutReviewsInput!
+    update: NexusGenInputs['IdentityUpdateWithoutReviewsInput']; // IdentityUpdateWithoutReviewsInput!
+  }
+  IdentityUpsertWithoutThreadMessageInput: { // input type
+    create: NexusGenInputs['IdentityCreateWithoutThreadMessageInput']; // IdentityCreateWithoutThreadMessageInput!
+    update: NexusGenInputs['IdentityUpdateWithoutThreadMessageInput']; // IdentityUpdateWithoutThreadMessageInput!
+  }
+  IdentityWhereInput: { // input type
+    AND?: NexusGenInputs['IdentityWhereInput'][] | null; // [IdentityWhereInput!]
+    NOT?: NexusGenInputs['IdentityWhereInput'][] | null; // [IdentityWhereInput!]
+    OR?: NexusGenInputs['IdentityWhereInput'][] | null; // [IdentityWhereInput!]
+    anonymized?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
+    article?: NexusGenInputs['ArticleWhereInput'] | null; // ArticleWhereInput
+    articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    context?: NexusGenInputs['EnumIdentityContextFilter'] | null; // EnumIdentityContextFilter
+    decisions?: NexusGenInputs['DecisionListRelationFilter'] | null; // DecisionListRelationFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    number?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    reviews?: NexusGenInputs['ReviewListRelationFilter'] | null; // ReviewListRelationFilter
+    threadMessage?: NexusGenInputs['ThreadMessageListRelationFilter'] | null; // ThreadMessageListRelationFilter
+    user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  IdentityWhereUniqueInput: { // input type
+    id?: string | null; // String
   }
   IntFieldUpdateOperationsInput: { // input type
     decrement?: number | null; // Int
@@ -861,6 +1028,12 @@ export interface NexusGenInputs {
     lte?: NexusGenScalars['DateTime'] | null; // DateTime
     not?: NexusGenInputs['NestedDateTimeNullableFilter'] | null; // NestedDateTimeNullableFilter
     notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+  }
+  NestedEnumIdentityContextFilter: { // input type
+    equals?: NexusGenEnums['IdentityContext'] | null; // IdentityContext
+    in?: NexusGenEnums['IdentityContext'][] | null; // [IdentityContext!]
+    not?: NexusGenInputs['NestedEnumIdentityContextFilter'] | null; // NestedEnumIdentityContextFilter
+    notIn?: NexusGenEnums['IdentityContext'][] | null; // [IdentityContext!]
   }
   NestedEnumRelationTypeFilter: { // input type
     equals?: NexusGenEnums['RelationType'] | null; // RelationType
@@ -1071,7 +1244,7 @@ export interface NexusGenInputs {
   ReviewCreateInput: { // input type
     anonymized?: boolean | null; // Boolean
     article: NexusGenInputs['ArticleCreateNestedOneWithoutReviewsInput']; // ArticleCreateNestedOneWithoutReviewsInput!
-    author: NexusGenInputs['UserCreateNestedOneWithoutReviewsInput']; // UserCreateNestedOneWithoutReviewsInput!
+    author: NexusGenInputs['IdentityCreateNestedOneWithoutReviewsInput']; // IdentityCreateNestedOneWithoutReviewsInput!
     body: string; // String!
     highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
@@ -1129,7 +1302,7 @@ export interface NexusGenInputs {
   }
   ReviewCreateWithoutArticleInput: { // input type
     anonymized?: boolean | null; // Boolean
-    author: NexusGenInputs['UserCreateNestedOneWithoutReviewsInput']; // UserCreateNestedOneWithoutReviewsInput!
+    author: NexusGenInputs['IdentityCreateNestedOneWithoutReviewsInput']; // IdentityCreateNestedOneWithoutReviewsInput!
     body: string; // String!
     highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
@@ -1384,7 +1557,7 @@ export interface NexusGenInputs {
   ReviewUpdateInput: { // input type
     anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     article?: NexusGenInputs['ArticleUpdateOneRequiredWithoutReviewsInput'] | null; // ArticleUpdateOneRequiredWithoutReviewsInput
-    author?: NexusGenInputs['UserUpdateOneRequiredWithoutReviewsInput'] | null; // UserUpdateOneRequiredWithoutReviewsInput
+    author?: NexusGenInputs['IdentityUpdateOneRequiredWithoutReviewsInput'] | null; // IdentityUpdateOneRequiredWithoutReviewsInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     highlights?: NexusGenScalars['Json'] | null; // Json
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -1445,7 +1618,7 @@ export interface NexusGenInputs {
   }
   ReviewUpdateWithoutArticleInput: { // input type
     anonymized?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
-    author?: NexusGenInputs['UserUpdateOneRequiredWithoutReviewsInput'] | null; // UserUpdateOneRequiredWithoutReviewsInput
+    author?: NexusGenInputs['IdentityUpdateOneRequiredWithoutReviewsInput'] | null; // IdentityUpdateOneRequiredWithoutReviewsInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     highlights?: NexusGenScalars['Json'] | null; // Json
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -1480,7 +1653,7 @@ export interface NexusGenInputs {
     anonymized?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     article?: NexusGenInputs['ArticleWhereInput'] | null; // ArticleWhereInput
     articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    author?: NexusGenInputs['IdentityWhereInput'] | null; // IdentityWhereInput
     authorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     body?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -1836,7 +2009,7 @@ export interface NexusGenInputs {
   }
   ThreadMessageCreateInput: { // input type
     articleId: string; // String!
-    author: NexusGenInputs['UserCreateNestedOneWithoutThreadMessageInput']; // UserCreateNestedOneWithoutThreadMessageInput!
+    author: NexusGenInputs['IdentityCreateNestedOneWithoutThreadMessageInput']; // IdentityCreateNestedOneWithoutThreadMessageInput!
     body: string; // String!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     headId?: string | null; // String
@@ -1895,7 +2068,7 @@ export interface NexusGenInputs {
   }
   ThreadMessageUpdateInput: { // input type
     articleId?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    author?: NexusGenInputs['UserUpdateOneRequiredWithoutThreadMessageInput'] | null; // UserUpdateOneRequiredWithoutThreadMessageInput
+    author?: NexusGenInputs['IdentityUpdateOneRequiredWithoutThreadMessageInput'] | null; // IdentityUpdateOneRequiredWithoutThreadMessageInput
     body?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     headId?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -1952,7 +2125,7 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['ThreadMessageWhereInput'][] | null; // [ThreadMessageWhereInput!]
     OR?: NexusGenInputs['ThreadMessageWhereInput'][] | null; // [ThreadMessageWhereInput!]
     articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    author?: NexusGenInputs['IdentityWhereInput'] | null; // IdentityWhereInput
     authorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     body?: NexusGenInputs['StringFilter'] | null; // StringFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -1963,20 +2136,15 @@ export interface NexusGenInputs {
   ThreadMessageWhereUniqueInput: { // input type
     id?: string | null; // String
   }
-  UserCreateNestedOneWithoutAuthorshipsInput: { // input type
-    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutAuthorshipsInput'] | null; // UserCreateOrConnectWithoutAuthorshipsInput
-    create?: NexusGenInputs['UserCreateWithoutAuthorshipsInput'] | null; // UserCreateWithoutAuthorshipsInput
-  }
   UserCreateNestedOneWithoutChairSubmissionsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutChairSubmissionsInput'] | null; // UserCreateOrConnectWithoutChairSubmissionsInput
     create?: NexusGenInputs['UserCreateWithoutChairSubmissionsInput'] | null; // UserCreateWithoutChairSubmissionsInput
   }
-  UserCreateNestedOneWithoutDecisionsInput: { // input type
+  UserCreateNestedOneWithoutIdentitiesInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutDecisionsInput'] | null; // UserCreateOrConnectWithoutDecisionsInput
-    create?: NexusGenInputs['UserCreateWithoutDecisionsInput'] | null; // UserCreateWithoutDecisionsInput
+    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutIdentitiesInput'] | null; // UserCreateOrConnectWithoutIdentitiesInput
+    create?: NexusGenInputs['UserCreateWithoutIdentitiesInput'] | null; // UserCreateWithoutIdentitiesInput
   }
   UserCreateNestedOneWithoutRelationsAsTargetInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
@@ -1993,31 +2161,17 @@ export interface NexusGenInputs {
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutReviewRequestsInput'] | null; // UserCreateOrConnectWithoutReviewRequestsInput
     create?: NexusGenInputs['UserCreateWithoutReviewRequestsInput'] | null; // UserCreateWithoutReviewRequestsInput
   }
-  UserCreateNestedOneWithoutReviewsInput: { // input type
-    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutReviewsInput'] | null; // UserCreateOrConnectWithoutReviewsInput
-    create?: NexusGenInputs['UserCreateWithoutReviewsInput'] | null; // UserCreateWithoutReviewsInput
-  }
-  UserCreateNestedOneWithoutThreadMessageInput: { // input type
-    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutThreadMessageInput'] | null; // UserCreateOrConnectWithoutThreadMessageInput
-    create?: NexusGenInputs['UserCreateWithoutThreadMessageInput'] | null; // UserCreateWithoutThreadMessageInput
-  }
   UserCreateNestedOneWithoutVenueMembershipsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutVenueMembershipsInput'] | null; // UserCreateOrConnectWithoutVenueMembershipsInput
     create?: NexusGenInputs['UserCreateWithoutVenueMembershipsInput'] | null; // UserCreateWithoutVenueMembershipsInput
   }
-  UserCreateOrConnectWithoutAuthorshipsInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutAuthorshipsInput']; // UserCreateWithoutAuthorshipsInput!
-    where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
-  }
   UserCreateOrConnectWithoutChairSubmissionsInput: { // input type
     create: NexusGenInputs['UserCreateWithoutChairSubmissionsInput']; // UserCreateWithoutChairSubmissionsInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
-  UserCreateOrConnectWithoutDecisionsInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutDecisionsInput']; // UserCreateWithoutDecisionsInput!
+  UserCreateOrConnectWithoutIdentitiesInput: { // input type
+    create: NexusGenInputs['UserCreateWithoutIdentitiesInput']; // UserCreateWithoutIdentitiesInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
   UserCreateOrConnectWithoutRelationsAsTargetInput: { // input type
@@ -2032,54 +2186,25 @@ export interface NexusGenInputs {
     create: NexusGenInputs['UserCreateWithoutReviewRequestsInput']; // UserCreateWithoutReviewRequestsInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
-  UserCreateOrConnectWithoutReviewsInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutReviewsInput']; // UserCreateWithoutReviewsInput!
-    where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
-  }
-  UserCreateOrConnectWithoutThreadMessageInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutThreadMessageInput']; // UserCreateWithoutThreadMessageInput!
-    where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
-  }
   UserCreateOrConnectWithoutVenueMembershipsInput: { // input type
     create: NexusGenInputs['UserCreateWithoutVenueMembershipsInput']; // UserCreateWithoutVenueMembershipsInput!
     where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
   }
-  UserCreateWithoutAuthorshipsInput: { // input type
-    chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
-    email: string; // String!
-    id: string; // String!
-    institution?: string | null; // String
-    name: string; // String!
-    profilePictureUrl?: string | null; // String
-    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
-    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
-    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
-    twitter?: string | null; // String
-    venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
-    website?: string | null; // String
-  }
   UserCreateWithoutChairSubmissionsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
-    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
     email: string; // String!
     id: string; // String!
+    identities?: NexusGenInputs['IdentityCreateNestedManyWithoutUserInput'] | null; // IdentityCreateNestedManyWithoutUserInput
     institution?: string | null; // String
     name: string; // String!
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     twitter?: string | null; // String
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
     website?: string | null; // String
   }
-  UserCreateWithoutDecisionsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
+  UserCreateWithoutIdentitiesInput: { // input type
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
     email: string; // String!
     id: string; // String!
@@ -2089,145 +2214,87 @@ export interface NexusGenInputs {
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     twitter?: string | null; // String
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
     website?: string | null; // String
   }
   UserCreateWithoutRelationsAsTargetInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
     email: string; // String!
     id: string; // String!
+    identities?: NexusGenInputs['IdentityCreateNestedManyWithoutUserInput'] | null; // IdentityCreateNestedManyWithoutUserInput
     institution?: string | null; // String
     name: string; // String!
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     twitter?: string | null; // String
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
     website?: string | null; // String
   }
   UserCreateWithoutRelationsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
     email: string; // String!
     id: string; // String!
+    identities?: NexusGenInputs['IdentityCreateNestedManyWithoutUserInput'] | null; // IdentityCreateNestedManyWithoutUserInput
     institution?: string | null; // String
     name: string; // String!
     profilePictureUrl?: string | null; // String
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     twitter?: string | null; // String
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
     website?: string | null; // String
   }
   UserCreateWithoutReviewRequestsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
     email: string; // String!
     id: string; // String!
+    identities?: NexusGenInputs['IdentityCreateNestedManyWithoutUserInput'] | null; // IdentityCreateNestedManyWithoutUserInput
     institution?: string | null; // String
     name: string; // String!
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
-    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
-    twitter?: string | null; // String
-    venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
-    website?: string | null; // String
-  }
-  UserCreateWithoutReviewsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
-    chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
-    email: string; // String!
-    id: string; // String!
-    institution?: string | null; // String
-    name: string; // String!
-    profilePictureUrl?: string | null; // String
-    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
-    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
-    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
-    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
-    twitter?: string | null; // String
-    venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
-    website?: string | null; // String
-  }
-  UserCreateWithoutThreadMessageInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
-    chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
-    email: string; // String!
-    id: string; // String!
-    institution?: string | null; // String
-    name: string; // String!
-    profilePictureUrl?: string | null; // String
-    relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
-    relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
-    reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
     twitter?: string | null; // String
     venueMemberships?: NexusGenInputs['VenueMembershipCreateNestedManyWithoutUserInput'] | null; // VenueMembershipCreateNestedManyWithoutUserInput
     website?: string | null; // String
   }
   UserCreateWithoutVenueMembershipsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipCreateNestedManyWithoutUserInput'] | null; // AuthorshipCreateNestedManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionCreateNestedManyWithoutOwnerInput'] | null; // SubmissionCreateNestedManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionCreateNestedManyWithoutAuthorInput'] | null; // DecisionCreateNestedManyWithoutAuthorInput
     email: string; // String!
     id: string; // String!
+    identities?: NexusGenInputs['IdentityCreateNestedManyWithoutUserInput'] | null; // IdentityCreateNestedManyWithoutUserInput
     institution?: string | null; // String
     name: string; // String!
     profilePictureUrl?: string | null; // String
     relations?: NexusGenInputs['RelationCreateNestedManyWithoutUserInput'] | null; // RelationCreateNestedManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationCreateNestedManyWithoutTargetInput'] | null; // RelationCreateNestedManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutUserInput'] | null; // ReviewRequestCreateNestedManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewCreateNestedManyWithoutAuthorInput'] | null; // ReviewCreateNestedManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageCreateNestedManyWithoutAuthorInput'] | null; // ThreadMessageCreateNestedManyWithoutAuthorInput
     twitter?: string | null; // String
     website?: string | null; // String
   }
   UserUpdateInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    identities?: NexusGenInputs['IdentityUpdateManyWithoutUserInput'] | null; // IdentityUpdateManyWithoutUserInput
     institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
     website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
-  UserUpdateOneRequiredWithoutAuthorshipsInput: { // input type
+  UserUpdateOneRequiredWithoutIdentitiesInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutAuthorshipsInput'] | null; // UserCreateOrConnectWithoutAuthorshipsInput
-    create?: NexusGenInputs['UserCreateWithoutAuthorshipsInput'] | null; // UserCreateWithoutAuthorshipsInput
-    update?: NexusGenInputs['UserUpdateWithoutAuthorshipsInput'] | null; // UserUpdateWithoutAuthorshipsInput
-    upsert?: NexusGenInputs['UserUpsertWithoutAuthorshipsInput'] | null; // UserUpsertWithoutAuthorshipsInput
-  }
-  UserUpdateOneRequiredWithoutDecisionsInput: { // input type
-    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutDecisionsInput'] | null; // UserCreateOrConnectWithoutDecisionsInput
-    create?: NexusGenInputs['UserCreateWithoutDecisionsInput'] | null; // UserCreateWithoutDecisionsInput
-    update?: NexusGenInputs['UserUpdateWithoutDecisionsInput'] | null; // UserUpdateWithoutDecisionsInput
-    upsert?: NexusGenInputs['UserUpsertWithoutDecisionsInput'] | null; // UserUpsertWithoutDecisionsInput
+    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutIdentitiesInput'] | null; // UserCreateOrConnectWithoutIdentitiesInput
+    create?: NexusGenInputs['UserCreateWithoutIdentitiesInput'] | null; // UserCreateWithoutIdentitiesInput
+    update?: NexusGenInputs['UserUpdateWithoutIdentitiesInput'] | null; // UserUpdateWithoutIdentitiesInput
+    upsert?: NexusGenInputs['UserUpsertWithoutIdentitiesInput'] | null; // UserUpsertWithoutIdentitiesInput
   }
   UserUpdateOneRequiredWithoutRelationsAsTargetInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
@@ -2250,20 +2317,6 @@ export interface NexusGenInputs {
     update?: NexusGenInputs['UserUpdateWithoutReviewRequestsInput'] | null; // UserUpdateWithoutReviewRequestsInput
     upsert?: NexusGenInputs['UserUpsertWithoutReviewRequestsInput'] | null; // UserUpsertWithoutReviewRequestsInput
   }
-  UserUpdateOneRequiredWithoutReviewsInput: { // input type
-    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutReviewsInput'] | null; // UserCreateOrConnectWithoutReviewsInput
-    create?: NexusGenInputs['UserCreateWithoutReviewsInput'] | null; // UserCreateWithoutReviewsInput
-    update?: NexusGenInputs['UserUpdateWithoutReviewsInput'] | null; // UserUpdateWithoutReviewsInput
-    upsert?: NexusGenInputs['UserUpsertWithoutReviewsInput'] | null; // UserUpsertWithoutReviewsInput
-  }
-  UserUpdateOneRequiredWithoutThreadMessageInput: { // input type
-    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutThreadMessageInput'] | null; // UserCreateOrConnectWithoutThreadMessageInput
-    create?: NexusGenInputs['UserCreateWithoutThreadMessageInput'] | null; // UserCreateWithoutThreadMessageInput
-    update?: NexusGenInputs['UserUpdateWithoutThreadMessageInput'] | null; // UserUpdateWithoutThreadMessageInput
-    upsert?: NexusGenInputs['UserUpsertWithoutThreadMessageInput'] | null; // UserUpsertWithoutThreadMessageInput
-  }
   UserUpdateOneRequiredWithoutVenueMembershipsInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
     connectOrCreate?: NexusGenInputs['UserCreateOrConnectWithoutVenueMembershipsInput'] | null; // UserCreateOrConnectWithoutVenueMembershipsInput
@@ -2280,42 +2333,21 @@ export interface NexusGenInputs {
     update?: NexusGenInputs['UserUpdateWithoutChairSubmissionsInput'] | null; // UserUpdateWithoutChairSubmissionsInput
     upsert?: NexusGenInputs['UserUpsertWithoutChairSubmissionsInput'] | null; // UserUpsertWithoutChairSubmissionsInput
   }
-  UserUpdateWithoutAuthorshipsInput: { // input type
-    chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
-    email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
-    relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
-    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
-    twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
-    website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-  }
   UserUpdateWithoutChairSubmissionsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    identities?: NexusGenInputs['IdentityUpdateManyWithoutUserInput'] | null; // IdentityUpdateManyWithoutUserInput
     institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
     website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
-  UserUpdateWithoutDecisionsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
+  UserUpdateWithoutIdentitiesInput: { // input type
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -2325,125 +2357,73 @@ export interface NexusGenInputs {
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
     website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUpdateWithoutRelationsAsTargetInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    identities?: NexusGenInputs['IdentityUpdateManyWithoutUserInput'] | null; // IdentityUpdateManyWithoutUserInput
     institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
     website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUpdateWithoutRelationsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    identities?: NexusGenInputs['IdentityUpdateManyWithoutUserInput'] | null; // IdentityUpdateManyWithoutUserInput
     institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
     website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUpdateWithoutReviewRequestsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    identities?: NexusGenInputs['IdentityUpdateManyWithoutUserInput'] | null; // IdentityUpdateManyWithoutUserInput
     institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
-    twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
-    website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-  }
-  UserUpdateWithoutReviewsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
-    chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
-    email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
-    relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
-    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
-    twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
-    website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-  }
-  UserUpdateWithoutThreadMessageInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
-    chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
-    email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
-    relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
-    reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
     twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     venueMemberships?: NexusGenInputs['VenueMembershipUpdateManyWithoutUserInput'] | null; // VenueMembershipUpdateManyWithoutUserInput
     website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUpdateWithoutVenueMembershipsInput: { // input type
-    authorships?: NexusGenInputs['AuthorshipUpdateManyWithoutUserInput'] | null; // AuthorshipUpdateManyWithoutUserInput
     chairSubmissions?: NexusGenInputs['SubmissionUpdateManyWithoutOwnerInput'] | null; // SubmissionUpdateManyWithoutOwnerInput
-    decisions?: NexusGenInputs['DecisionUpdateManyWithoutAuthorInput'] | null; // DecisionUpdateManyWithoutAuthorInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    identities?: NexusGenInputs['IdentityUpdateManyWithoutUserInput'] | null; // IdentityUpdateManyWithoutUserInput
     institution?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     profilePictureUrl?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     relations?: NexusGenInputs['RelationUpdateManyWithoutUserInput'] | null; // RelationUpdateManyWithoutUserInput
     relationsAsTarget?: NexusGenInputs['RelationUpdateManyWithoutTargetInput'] | null; // RelationUpdateManyWithoutTargetInput
     reviewRequests?: NexusGenInputs['ReviewRequestUpdateManyWithoutUserInput'] | null; // ReviewRequestUpdateManyWithoutUserInput
-    reviews?: NexusGenInputs['ReviewUpdateManyWithoutAuthorInput'] | null; // ReviewUpdateManyWithoutAuthorInput
-    threadMessage?: NexusGenInputs['ThreadMessageUpdateManyWithoutAuthorInput'] | null; // ThreadMessageUpdateManyWithoutAuthorInput
     twitter?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     website?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-  }
-  UserUpsertWithoutAuthorshipsInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutAuthorshipsInput']; // UserCreateWithoutAuthorshipsInput!
-    update: NexusGenInputs['UserUpdateWithoutAuthorshipsInput']; // UserUpdateWithoutAuthorshipsInput!
   }
   UserUpsertWithoutChairSubmissionsInput: { // input type
     create: NexusGenInputs['UserCreateWithoutChairSubmissionsInput']; // UserCreateWithoutChairSubmissionsInput!
     update: NexusGenInputs['UserUpdateWithoutChairSubmissionsInput']; // UserUpdateWithoutChairSubmissionsInput!
   }
-  UserUpsertWithoutDecisionsInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutDecisionsInput']; // UserCreateWithoutDecisionsInput!
-    update: NexusGenInputs['UserUpdateWithoutDecisionsInput']; // UserUpdateWithoutDecisionsInput!
+  UserUpsertWithoutIdentitiesInput: { // input type
+    create: NexusGenInputs['UserCreateWithoutIdentitiesInput']; // UserCreateWithoutIdentitiesInput!
+    update: NexusGenInputs['UserUpdateWithoutIdentitiesInput']; // UserUpdateWithoutIdentitiesInput!
   }
   UserUpsertWithoutRelationsAsTargetInput: { // input type
     create: NexusGenInputs['UserCreateWithoutRelationsAsTargetInput']; // UserCreateWithoutRelationsAsTargetInput!
@@ -2457,14 +2437,6 @@ export interface NexusGenInputs {
     create: NexusGenInputs['UserCreateWithoutReviewRequestsInput']; // UserCreateWithoutReviewRequestsInput!
     update: NexusGenInputs['UserUpdateWithoutReviewRequestsInput']; // UserUpdateWithoutReviewRequestsInput!
   }
-  UserUpsertWithoutReviewsInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutReviewsInput']; // UserCreateWithoutReviewsInput!
-    update: NexusGenInputs['UserUpdateWithoutReviewsInput']; // UserUpdateWithoutReviewsInput!
-  }
-  UserUpsertWithoutThreadMessageInput: { // input type
-    create: NexusGenInputs['UserCreateWithoutThreadMessageInput']; // UserCreateWithoutThreadMessageInput!
-    update: NexusGenInputs['UserUpdateWithoutThreadMessageInput']; // UserUpdateWithoutThreadMessageInput!
-  }
   UserUpsertWithoutVenueMembershipsInput: { // input type
     create: NexusGenInputs['UserCreateWithoutVenueMembershipsInput']; // UserCreateWithoutVenueMembershipsInput!
     update: NexusGenInputs['UserUpdateWithoutVenueMembershipsInput']; // UserUpdateWithoutVenueMembershipsInput!
@@ -2473,19 +2445,16 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
-    authorships?: NexusGenInputs['AuthorshipListRelationFilter'] | null; // AuthorshipListRelationFilter
     chairSubmissions?: NexusGenInputs['SubmissionListRelationFilter'] | null; // SubmissionListRelationFilter
-    decisions?: NexusGenInputs['DecisionListRelationFilter'] | null; // DecisionListRelationFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    identities?: NexusGenInputs['IdentityListRelationFilter'] | null; // IdentityListRelationFilter
     institution?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     profilePictureUrl?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     relations?: NexusGenInputs['RelationListRelationFilter'] | null; // RelationListRelationFilter
     relationsAsTarget?: NexusGenInputs['RelationListRelationFilter'] | null; // RelationListRelationFilter
     reviewRequests?: NexusGenInputs['ReviewRequestListRelationFilter'] | null; // ReviewRequestListRelationFilter
-    reviews?: NexusGenInputs['ReviewListRelationFilter'] | null; // ReviewListRelationFilter
-    threadMessage?: NexusGenInputs['ThreadMessageListRelationFilter'] | null; // ThreadMessageListRelationFilter
     twitter?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     venueMemberships?: NexusGenInputs['VenueMembershipListRelationFilter'] | null; // VenueMembershipListRelationFilter
     website?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
@@ -2828,6 +2797,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  IdentityContext: "AUTHOR" | "CHAIR" | "REVIEWER"
   RelationType: "ADVISEE" | "ADVISOR" | "COAUTHOR" | "COWORKER" | "FAMILY" | "SOCIAL"
   Role: "ACTION_EDITOR" | "ADMIN" | "NONE"
 }
@@ -2856,13 +2826,14 @@ export interface NexusGenObjects {
     ref?: string | null; // String
     versionNumber: number; // Int!
   }
-  Authorship: { // root type
-    authorNumber: number; // Int!
-    id: number; // Int!
-  }
   Decision: { // root type
     body: string; // String!
     id: string; // String!
+  }
+  Identity: { // root type
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    id: string; // String!
+    number: number; // Int!
   }
   Mutation: {};
   Query: {};
@@ -2872,7 +2843,6 @@ export interface NexusGenObjects {
     relation: NexusGenEnums['RelationType']; // RelationType!
   }
   Review: { // root type
-    anonymized: boolean; // Boolean!
     body: string; // String!
     highlights: NexusGenScalars['Json']; // Json!
     id: string; // String!
@@ -2946,17 +2916,18 @@ export interface NexusGenFieldTypes {
     ref: string | null; // String
     versionNumber: number; // Int!
   }
-  Authorship: { // field return type
-    article: NexusGenRootTypes['Article']; // Article!
-    authorNumber: number; // Int!
-    id: number; // Int!
-    user: NexusGenRootTypes['User']; // User!
-  }
   Decision: { // field return type
     article: NexusGenRootTypes['Article']; // Article!
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Identity']; // Identity!
     body: string; // String!
     id: string; // String!
+  }
+  Identity: { // field return type
+    article: NexusGenRootTypes['Article']; // Article!
+    context: NexusGenEnums['IdentityContext']; // IdentityContext!
+    id: string; // String!
+    number: number; // Int!
+    user: NexusGenRootTypes['User'] | null; // User
   }
   Mutation: { // field return type
     createArticle: NexusGenRootTypes['Article'] | null; // Article
@@ -2969,6 +2940,7 @@ export interface NexusGenFieldTypes {
     deleteOneRelation: NexusGenRootTypes['Relation'] | null; // Relation
     deleteOneReview: NexusGenRootTypes['Review'] | null; // Review
     deleteOneVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
+    publishReview: NexusGenRootTypes['Review'] | null; // Review
     updateOneReview: NexusGenRootTypes['Review'] | null; // Review
     updateOneSubmission: NexusGenRootTypes['Submission'] | null; // Submission
     updateOneThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
@@ -2980,8 +2952,8 @@ export interface NexusGenFieldTypes {
     article: NexusGenRootTypes['Article'] | null; // Article
     articleVersions: Array<NexusGenRootTypes['ArticleVersion'] | null> | null; // [ArticleVersion]
     articles: NexusGenRootTypes['Article'][]; // [Article!]!
-    authorships: NexusGenRootTypes['Authorship'][]; // [Authorship!]!
     decisions: NexusGenRootTypes['Decision'][]; // [Decision!]!
+    identities: NexusGenRootTypes['Identity'][]; // [Identity!]!
     reviewRequests: NexusGenRootTypes['ReviewRequest'][]; // [ReviewRequest!]!
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     reviews: NexusGenRootTypes['Review'][]; // [Review!]!
@@ -3004,8 +2976,7 @@ export interface NexusGenFieldTypes {
     target: NexusGenRootTypes['User']; // User!
   }
   Review: { // field return type
-    anonymized: boolean; // Boolean!
-    author: NexusGenRootTypes['User'] | null; // User
+    author: NexusGenRootTypes['Identity']; // Identity!
     body: string; // String!
     highlights: NexusGenScalars['Json']; // Json!
     id: string; // String!
@@ -3028,16 +2999,16 @@ export interface NexusGenFieldTypes {
     venue: NexusGenRootTypes['Venue']; // Venue!
   }
   ThreadMessage: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Identity']; // Identity!
     body: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     highlights: NexusGenScalars['Json']; // Json!
     id: string; // String!
   }
   User: { // field return type
-    authorships: NexusGenRootTypes['Authorship'][]; // [Authorship!]!
     email: string; // String!
     id: string; // String!
+    identities: NexusGenRootTypes['Identity'][]; // [Identity!]!
     institution: string | null; // String
     name: string; // String!
     profilePictureUrl: string | null; // String
@@ -3083,17 +3054,18 @@ export interface NexusGenFieldTypeNames {
     ref: 'String'
     versionNumber: 'Int'
   }
-  Authorship: { // field return type name
-    article: 'Article'
-    authorNumber: 'Int'
-    id: 'Int'
-    user: 'User'
-  }
   Decision: { // field return type name
     article: 'Article'
-    author: 'User'
+    author: 'Identity'
     body: 'String'
     id: 'String'
+  }
+  Identity: { // field return type name
+    article: 'Article'
+    context: 'IdentityContext'
+    id: 'String'
+    number: 'Int'
+    user: 'User'
   }
   Mutation: { // field return type name
     createArticle: 'Article'
@@ -3106,6 +3078,7 @@ export interface NexusGenFieldTypeNames {
     deleteOneRelation: 'Relation'
     deleteOneReview: 'Review'
     deleteOneVenueMembership: 'VenueMembership'
+    publishReview: 'Review'
     updateOneReview: 'Review'
     updateOneSubmission: 'Submission'
     updateOneThreadMessage: 'ThreadMessage'
@@ -3117,8 +3090,8 @@ export interface NexusGenFieldTypeNames {
     article: 'Article'
     articleVersions: 'ArticleVersion'
     articles: 'Article'
-    authorships: 'Authorship'
     decisions: 'Decision'
+    identities: 'Identity'
     reviewRequests: 'ReviewRequest'
     reviewerAssignedSubmissions: 'Submission'
     reviews: 'Review'
@@ -3141,8 +3114,7 @@ export interface NexusGenFieldTypeNames {
     target: 'User'
   }
   Review: { // field return type name
-    anonymized: 'Boolean'
-    author: 'User'
+    author: 'Identity'
     body: 'String'
     highlights: 'Json'
     id: 'String'
@@ -3165,16 +3137,16 @@ export interface NexusGenFieldTypeNames {
     venue: 'Venue'
   }
   ThreadMessage: { // field return type name
-    author: 'User'
+    author: 'Identity'
     body: 'String'
     createdAt: 'DateTime'
     highlights: 'Json'
     id: 'String'
   }
   User: { // field return type name
-    authorships: 'Authorship'
     email: 'String'
     id: 'String'
+    identities: 'Identity'
     institution: 'String'
     name: 'String'
     profilePictureUrl: 'String'
@@ -3249,6 +3221,9 @@ export interface NexusGenArgTypes {
     deleteOneVenueMembership: { // args
       where: NexusGenInputs['VenueMembershipWhereUniqueInput']; // VenueMembershipWhereUniqueInput!
     }
+    publishReview: { // args
+      reviewId: string; // String!
+    }
     updateOneReview: { // args
       data: NexusGenInputs['ReviewUpdateInput']; // ReviewUpdateInput!
       where: NexusGenInputs['ReviewWhereUniqueInput']; // ReviewWhereUniqueInput!
@@ -3286,19 +3261,19 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
       where?: NexusGenInputs['ArticleWhereInput'] | null; // ArticleWhereInput
     }
-    authorships: { // args
-      after?: NexusGenInputs['AuthorshipWhereUniqueInput'] | null; // AuthorshipWhereUniqueInput
-      before?: NexusGenInputs['AuthorshipWhereUniqueInput'] | null; // AuthorshipWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
-      where?: NexusGenInputs['AuthorshipWhereInput'] | null; // AuthorshipWhereInput
-    }
     decisions: { // args
       after?: NexusGenInputs['DecisionWhereUniqueInput'] | null; // DecisionWhereUniqueInput
       before?: NexusGenInputs['DecisionWhereUniqueInput'] | null; // DecisionWhereUniqueInput
       first?: number | null; // Int
       last?: number | null; // Int
       where?: NexusGenInputs['DecisionWhereInput'] | null; // DecisionWhereInput
+    }
+    identities: { // args
+      after?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+      before?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      where?: NexusGenInputs['IdentityWhereInput'] | null; // IdentityWhereInput
     }
     reviewRequests: { // args
       after?: NexusGenInputs['ReviewRequestWhereUniqueInput'] | null; // ReviewRequestWhereUniqueInput
@@ -3375,9 +3350,9 @@ export interface NexusGenArgTypes {
     }
   }
   User: {
-    authorships: { // args
-      after?: NexusGenInputs['AuthorshipWhereUniqueInput'] | null; // AuthorshipWhereUniqueInput
-      before?: NexusGenInputs['AuthorshipWhereUniqueInput'] | null; // AuthorshipWhereUniqueInput
+    identities: { // args
+      after?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
+      before?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
       first?: number | null; // Int
       last?: number | null; // Int
     }

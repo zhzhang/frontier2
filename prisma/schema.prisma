@@ -15,15 +15,12 @@ model User {
   website           String?           @unique
   profilePictureUrl String?           @unique
   institution       String?
-  reviews           Review[]
   venueMemberships  VenueMembership[]
-  decisions         Decision[]        @relation("chair")
-  threadMessage     ThreadMessage[]
-  authorships       Authorship[]
   chairSubmissions  Submission[]
   relations         Relation[]
   relationsAsTarget Relation[]        @relation("target")
   reviewRequests    ReviewRequest[]
+  identities        Identity[]
 }
 
 enum RelationType {
@@ -48,7 +45,7 @@ model Relation {
 model Article {
   id            String           @id @default(cuid())
   title         String
-  authors       Authorship[]
+  authors       Identity[]
   reviews       Review[]
   versions      ArticleVersion[]
   decisions     Decision[]
@@ -57,13 +54,24 @@ model Article {
   reviewRequest ReviewRequest[]
 }
 
-model Authorship {
-  id           Int     @id @default(autoincrement())
-  user         User    @relation(fields: [userId], references: [id])
-  authorNumber Int
-  userId       String
-  article      Article @relation(fields: [articleId], references: [id])
-  articleId    String
+enum IdentityContext {
+  AUTHOR
+  REVIEWER
+  CHAIR
+}
+
+model Identity {
+  id            String          @id @default(cuid())
+  user          User            @relation(fields: [userId], references: [id])
+  context       IdentityContext
+  number        Int
+  userId        String
+  article       Article         @relation(fields: [articleId], references: [id])
+  anonymized    Boolean         @default(true)
+  articleId     String
+  reviews       Review[]
+  decisions     Decision[]
+  threadMessage ThreadMessage[]
 }
 
 model ArticleVersion {
@@ -82,7 +90,7 @@ model ThreadMessage {
   articleId  String
   headId     String?
   authorId   String
-  author     User     @relation(fields: [authorId], references: [id])
+  author     Identity @relation(fields: [authorId], references: [id])
   highlights Json
   createdAt  DateTime @default(now())
   published  Boolean  @default(false)
@@ -131,13 +139,12 @@ model Review {
   body             String    @db.MediumText
   rating           Int       @default(0)
   article          Article   @relation(fields: [articleId], references: [id])
-  author           User      @relation(fields: [authorId], references: [id])
+  author           Identity  @relation(fields: [authorId], references: [id])
   highlights       Json
   articleId        String
   authorId         String
   publishTimestamp DateTime?
   published        Boolean   @default(false)
-  anonymized       Boolean   @default(true)
 }
 
 model ReviewRequest {
@@ -160,7 +167,7 @@ model Decision {
   articleId  String
   venue      Venue       @relation(fields: [venueId], references: [id])
   venueId    String
-  author     User        @relation("chair", fields: [authorId], references: [id])
+  author     Identity    @relation(fields: [authorId], references: [id])
   authorId   String
   submission Submission?
   published  Boolean     @default(false)

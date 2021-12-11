@@ -26,11 +26,10 @@ import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 
 const AuthorshipsQuery = gql`
   ${ARTICLE_CARD_FIELDS}
-  query AuthorshipsQuery($where: AuthorshipWhereInput!) {
+  query AuthorshipsQuery($where: IdentityWhereInput!) {
     authorships(where: $where) {
       article {
         ...ArticleCardFields

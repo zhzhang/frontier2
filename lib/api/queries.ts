@@ -9,7 +9,7 @@ export default objectType({
     t.crud.user();
     t.crud.article();
     t.crud.articles({ filtering: true });
-    t.crud.authorships({ filtering: true });
+    t.crud.identities({ filtering: true });
     t.crud.venue();
     t.crud.venues({
       filtering: true,

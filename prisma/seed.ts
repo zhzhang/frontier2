@@ -105,10 +105,24 @@ async function main() {
         "Investigating the Effect of Auxiliary Objectives for the Automated Grading of Learner English Speech Transcriptions",
       authors: {
         create: [
-          { authorNumber: 1, user: { connect: { id: user2.id } } },
-          { authorNumber: 2, user: { connect: { id: andrew.id } } },
-          { authorNumber: 3, user: { connect: { id: user3.id } } },
-          { authorNumber: 4, user: { connect: { id: user4.id } } },
+          {
+            number: 2,
+            context: "AUTHOR",
+            user: { connect: { id: user2.id } },
+            anonymized: false,
+          },
+          {
+            number: 3,
+            context: "AUTHOR",
+            user: { connect: { id: user3.id } },
+            anonymized: false,
+          },
+          {
+            number: 4,
+            context: "AUTHOR",
+            user: { connect: { id: user4.id } },
+            anonymized: false,
+          },
         ],
       },
       versions: {
@@ -128,6 +142,15 @@ async function main() {
         ],
       },
       anonymous: false,
+    },
+  });
+  const andrewAuthorIdentity = await prisma.identity.create({
+    data: {
+      number: 1,
+      context: "AUTHOR",
+      user: { connect: { id: andrew.id } },
+      article: { connect: { id: article.id } },
+      anonymized: false,
     },
   });
 
@@ -378,9 +401,28 @@ async function main() {
 
   const review2 = await prisma.review.create({
     data: {
-      authorId: reviewer.id,
+      author: {
+        create: {
+          user: {
+            connect: {
+              id: reviewer.id,
+            },
+          },
+          article: {
+            connect: {
+              id: article.id,
+            },
+          },
+          context: "REVIEWER",
+          number: 1,
+        },
+      },
       publishTimestamp: new Date("2021-10-20T12:00:00"),
-      articleId: article.id,
+      article: {
+        connect: {
+          id: article.id,
+        },
+      },
       published: true,
       body: reviewBody,
       rating: 3,
@@ -391,7 +433,11 @@ async function main() {
     data: {
       articleId: article.id,
       headId: review2.id,
-      authorId: andrew.id,
+      author: {
+        connect: {
+          id: andrewAuthorIdentity.id,
+        },
+      },
       body: `Author responses and other discussion on public reviews can be viewed in a thread below the review.`,
       highlights: [],
       published: true,
@@ -407,12 +453,35 @@ async function main() {
 
   const decision = await prisma.decision.create({
     data: {
-      authorId: reviewer.id,
+      author: {
+        create: {
+          number: 1,
+          user: {
+            connect: {
+              id: reviewer.id,
+            },
+          },
+          article: {
+            connect: {
+              id: article.id,
+            },
+          },
+          context: "CHAIR",
+        },
+      },
       body: `This is an example meta-review. Reviews that an author cites in writing the meta-review are attached to the meta-review, and directly credit the reviewer. Reviews `,
       highlights: [],
-      venueId: arr.id,
+      venue: {
+        connect: {
+          id: arr.id,
+        },
+      },
       decision: true,
-      articleId: article.id,
+      article: {
+        connect: {
+          id: article.id,
+        },
+      },
     },
   });
 
@@ -422,11 +491,15 @@ async function main() {
       title: "Grammatical Error Detection in Transcriptions of Spoken English",
       authors: {
         create: [
-          { authorNumber: 1, user: { connect: { id: andrew.id } } },
-          { authorNumber: 2, user: { connect: { id: user5.id } } },
-          { authorNumber: 3, user: { connect: { id: user6.id } } },
-          { authorNumber: 4, user: { connect: { id: user7.id } } },
-          { authorNumber: 5, user: { connect: { id: user3.id } } },
+          {
+            number: 1,
+            context: "AUTHOR",
+            user: { connect: { id: andrew.id } },
+          },
+          { number: 2, context: "AUTHOR", user: { connect: { id: user5.id } } },
+          { number: 3, context: "AUTHOR", user: { connect: { id: user6.id } } },
+          { number: 4, context: "AUTHOR", user: { connect: { id: user7.id } } },
+          { number: 5, context: "AUTHOR", user: { connect: { id: user3.id } } },
         ],
       },
       versions: {
@@ -485,12 +558,35 @@ async function main() {
 
   await prisma.decision.create({
     data: {
-      authorId: reviewer.id,
+      author: {
+        create: {
+          number: 2,
+          user: {
+            connect: {
+              id: reviewer.id,
+            },
+          },
+          article: {
+            connect: {
+              id: article.id,
+            },
+          },
+          context: "CHAIR",
+        },
+      },
       body: `Articles can be accepted by multiple venues.`,
       highlights: [],
-      venueId: pastACL.id,
+      venue: {
+        connect: {
+          id: pastACL.id,
+        },
+      },
       decision: true,
-      articleId: article.id,
+      article: {
+        connect: {
+          id: article.id,
+        },
+      },
     },
   });
 

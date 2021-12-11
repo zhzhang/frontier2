@@ -1,5 +1,5 @@
-import { RoleEnum } from "../types";
 import prisma from "../prisma";
+import { RoleEnum } from "../types";
 
 export async function isOrganizationAdmin(
   userId: string,

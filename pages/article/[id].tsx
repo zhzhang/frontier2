@@ -106,6 +106,7 @@ function Index() {
       </Layout>
     );
   }
+  console.log(data.article);
   const { versions } = data.article;
   const selectedVersion = !version
     ? _.maxBy(versions, "createdAt")

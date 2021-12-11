@@ -56,6 +56,15 @@ export default objectType({
     t.crud.createOneReview();
     t.crud.updateOneReview();
     t.crud.deleteOneReview();
+    t.field("publishReview", {
+      type: "Review",
+      args: {
+        reviewId: nonNull(stringArg()),
+      },
+      resolve: async (_, { id }, ctx) => {
+        await ctx.prisma.reviews.find;
+      },
+    });
     t.field("createArticle", {
       type: "Article",
       args: {

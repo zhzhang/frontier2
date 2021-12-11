@@ -8,30 +8,28 @@ const Article = objectType({
     t.model.id();
     t.model.title();
     t.model.anonymous();
-    t.list.field("authors", {
+    t.model.versions({ pagination: false });
+    t.model.reviews({ filtering: { published: true } });
+    t.nullable.list.field("authors", {
       type: "User",
-      resolve: async (root, _args, ctx) => {
-        const authorships = await ctx.prisma.authorship.findMany({
+      resolve: async ({ id, anonymous }, _args, ctx) => {
+        if (anonymous) {
+          return null;
+        }
+        const authorships = await ctx.prisma.identity.findMany({
           where: {
-            articleId: root.id,
+            articleId: id,
+            context: "AUTHOR",
           },
           include: {
             user: true,
           },
         });
-        const isAuthor = Boolean(
-          _.findLast(authorships, (o) => o.userId === ctx.user?.id)
-        );
-        if (root.anonymous && !isAuthor) {
-          return null;
-        }
-        return _.sortBy(authorships, ["authorNumber"]).map(
+        return _.sortBy(authorships, ["number"]).map(
           (authorship) => authorship.user
         );
       },
     });
-    t.model.versions({ pagination: false });
-    t.model.reviews({ filtering: { published: true } });
     t.list.field("acceptedVenues", {
       type: "Venue",
       resolve: async (parent) => {

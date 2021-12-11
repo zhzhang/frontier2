@@ -9,24 +9,7 @@ const Review = objectType({
     t.model.rating();
     t.model.publishTimestamp();
     t.model.published();
-    t.model.anonymized();
-    t.field("author", {
-      type: "User",
-      resolve: async (root, _args, ctx) => {
-        if (root.anonymized) {
-          return {
-            id: "anonymous",
-            name: "Anonymous Reviewer",
-          };
-        }
-        const author = await ctx.prisma.user.findUnique({
-          where: {
-            id: root.authorId,
-          },
-        });
-        return author;
-      },
-    });
+    t.model.author();
   },
 });
 

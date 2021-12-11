@@ -15,7 +15,11 @@ export const REVIEW_CARD_FIELDS = gql`
   fragment ReviewCardFields on Review {
     id
     author {
-      ...UserCardFields
+      context
+      number
+      user {
+        ...UserCardFields
+      }
     }
     body
     highlights
@@ -52,7 +56,7 @@ function Rating({ rating }) {
 }
 
 export default function Review({ review, renderThread = true }) {
-  const { highlights, body, publishTimestamp } = review;
+  const { id, author, highlights, body, publishTimestamp } = review;
   const typographyProps = {
     component: "span",
     sx: {
@@ -64,10 +68,10 @@ export default function Review({ review, renderThread = true }) {
     <Box sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ marginRight: 1 }}>
-          <ProfilePicturePopover user={review.author} />
+          <ProfilePicturePopover identity={author} />
         </Box>
         <Box>
-          <AuthorPopover user={review.author} />
+          <AuthorPopover identity={author} />
           <Typography {...typographyProps}>{" • "}</Typography>
           <TimeAgo {...typographyProps} time={publishTimestamp} />
           <Markdown
@@ -82,7 +86,7 @@ export default function Review({ review, renderThread = true }) {
             onClick={() => {
               const threadReplies = threadRepliesVar();
               threadRepliesVar(
-                threadReplies.set(review.id, {
+                threadReplies.set(id, {
                   body: "",
                   highlights: [],
                 })
@@ -93,7 +97,7 @@ export default function Review({ review, renderThread = true }) {
           </Button>
         </Box>
       </Box>
-      {renderThread && <Thread headId={review.id} />}
+      {renderThread && <Thread headId={id} />}
     </Box>
   );
 }

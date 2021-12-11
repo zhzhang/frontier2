@@ -12,7 +12,7 @@ const User = objectType({
     t.model.institution();
     t.model.twitter();
     t.model.website();
-    t.model.authorships();
+    t.model.identities();
     t.model.relations();
     t.model.relationsAsTarget();
   },

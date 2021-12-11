@@ -28,7 +28,11 @@ const ThreadMessagesQuery = gql`
     threadMessages(where: $where) {
       id
       author {
-        ...UserCardFields
+        context
+        number
+        user {
+          ...UserCardFields
+        }
       }
       body
       highlights
@@ -230,9 +234,9 @@ export default function Thread({ headId }) {
                 pl: 2,
               }}
             >
-              <ProfilePicturePopover user={message.author} sx={{ mr: 1 }} />
+              <ProfilePicturePopover identity={message.author} sx={{ mr: 1 }} />
               <Box>
-                <AuthorPopover user={message.author} />
+                <AuthorPopover identity={message.author} />
                 <Typography {...typographyProps}>{" • "}</Typography>
                 <TimeAgo {...typographyProps} time={message.createdAt} />
                 <Markdown
