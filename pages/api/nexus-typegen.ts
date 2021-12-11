@@ -2903,7 +2903,7 @@ export interface NexusGenFieldTypes {
   Article: { // field return type
     acceptedVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     anonymous: boolean; // Boolean!
-    authors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    authors: Array<NexusGenRootTypes['Identity'] | null> | null; // [Identity]
     id: string; // String!
     reviews: NexusGenRootTypes['Review'][]; // [Review!]!
     title: string; // String!
@@ -3041,7 +3041,7 @@ export interface NexusGenFieldTypeNames {
   Article: { // field return type name
     acceptedVenues: 'Venue'
     anonymous: 'Boolean'
-    authors: 'User'
+    authors: 'Identity'
     id: 'String'
     reviews: 'Review'
     title: 'String'

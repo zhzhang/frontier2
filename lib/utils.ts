@@ -4,6 +4,6 @@ export function userFromIdentity({ user, context, number }) {
   }
   return {
     id: "anonymous",
-    name: `${context} ${number}`,
+    name: `${context[0] + context.substring(1).toLowerCase()} ${number}`,
   };
 }

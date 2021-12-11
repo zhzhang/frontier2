@@ -79,8 +79,18 @@ function NewReviewButton({ userId, articleId }) {
           variables: {
             data: {
               author: {
-                connect: {
-                  id: userId,
+                create: {
+                  context: "REVIEWER",
+                  user: {
+                    connect: {
+                      id: userId,
+                    },
+                  },
+                  article: {
+                    connect: {
+                      id: articleId,
+                    },
+                  },
                 },
               },
               article: {

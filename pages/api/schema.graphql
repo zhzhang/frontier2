@@ -5,7 +5,7 @@
 type Article {
   acceptedVenues: [Venue]
   anonymous: Boolean!
-  authors: [User]
+  authors: [Identity]
   id: String!
   reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, where: ArticleReviewsWhereInput): [Review!]!
   title: String!

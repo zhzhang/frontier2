@@ -75,7 +75,9 @@ const ArticleQuery = gql`
       id
       title
       authors {
-        ...UserCardFields
+        user {
+          ...UserCardFields
+        }
       }
       versions {
         id

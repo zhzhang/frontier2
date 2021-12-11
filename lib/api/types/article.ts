@@ -11,7 +11,7 @@ const Article = objectType({
     t.model.versions({ pagination: false });
     t.model.reviews({ filtering: { published: true } });
     t.nullable.list.field("authors", {
-      type: "User",
+      type: "Identity",
       resolve: async ({ id, anonymous }, _args, ctx) => {
         if (anonymous) {
           return null;
@@ -25,9 +25,7 @@ const Article = objectType({
             user: true,
           },
         });
-        return _.sortBy(authorships, ["number"]).map(
-          (authorship) => authorship.user
-        );
+        return _.sortBy(authorships, ["number"]);
       },
     });
     t.list.field("acceptedVenues", {
