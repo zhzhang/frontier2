@@ -1,15 +1,13 @@
 import Mutation from "@/lib/api/mutations";
 import Query from "@/lib/api/queries";
 import Article from "@/lib/api/types/article";
-import ArticleVersion from "@/lib/api/types/article-version";
-import Decision from "@/lib/api/types/decision";
+import ArticleVersion from "@/lib/api/types/articleVersion";
 import Identity from "@/lib/api/types/identity";
 import Relation, { RelationType } from "@/lib/api/types/relation";
-import Review from "@/lib/api/types/review";
 import ReviewRequest from "@/lib/api/types/reviewRequest";
 import Role from "@/lib/api/types/role";
 import Submission from "@/lib/api/types/submission";
-import ThreadMessage from "@/lib/api/types/thread_message";
+import ThreadMessage from "@/lib/api/types/threadMessage";
 import User from "@/lib/api/types/user";
 import Venue from "@/lib/api/types/venue";
 import VenueMembership from "@/lib/api/types/venueMembership";
@@ -56,12 +54,10 @@ export const schema = makeSchema({
     Identity,
     Venue,
     Submission,
-    Review,
     ReviewRequest,
     Relation,
     RelationType,
     ThreadMessage,
-    Decision,
     VenueMembership,
     Role,
     Upload,

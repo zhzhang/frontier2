@@ -5,8 +5,8 @@ export default function CenteredSpinner(props) {
     <CircularProgress
       style={{
         position: "relative",
-        top: "calc(50% - 16px)",
-        left: "calc(50% - 16px)",
+        top: "calc(50% - 20px)",
+        left: "calc(50% - 20px)",
       }}
       {...props}
     />

@@ -9,7 +9,6 @@ const Article = objectType({
     t.model.title();
     t.model.anonymous();
     t.model.versions({ pagination: false });
-    t.model.reviews({ filtering: { published: true } });
     t.nullable.list.field("authors", {
       type: "Identity",
       resolve: async ({ id, anonymous }, _args, ctx) => {

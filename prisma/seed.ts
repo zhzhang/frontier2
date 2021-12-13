@@ -399,8 +399,9 @@ async function main() {
     },
   ];
 
-  const review2 = await prisma.review.create({
+  const review2 = await prisma.threadMessage.create({
     data: {
+      type: "REVIEW",
       author: {
         create: {
           user: {
@@ -423,7 +424,6 @@ async function main() {
           id: article.id,
         },
       },
-      published: true,
       body: reviewBody,
       rating: 3,
       highlights: highlights,
@@ -431,7 +431,12 @@ async function main() {
   });
   await prisma.threadMessage.create({
     data: {
-      articleId: article.id,
+      type: "COMMENT",
+      article: {
+        connect: {
+          id: article.id,
+        },
+      },
       headId: review2.id,
       author: {
         connect: {
@@ -440,7 +445,7 @@ async function main() {
       },
       body: `Author responses and other discussion on public reviews can be viewed in a thread below the review.`,
       highlights: [],
-      published: true,
+      publishTimestamp: new Date("2021-10-20T14:00:00"),
     },
   });
 
@@ -451,8 +456,9 @@ async function main() {
     },
   });
 
-  const decision = await prisma.decision.create({
+  const decision = await prisma.threadMessage.create({
     data: {
+      type: "DECISION",
       author: {
         create: {
           number: 1,
@@ -556,8 +562,9 @@ async function main() {
     },
   });
 
-  await prisma.decision.create({
+  await prisma.threadMessage.create({
     data: {
+      type: "DECISION",
       author: {
         create: {
           number: 2,

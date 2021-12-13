@@ -22,6 +22,27 @@ import {
 } from "./article/vars";
 import { USER_CARD_FIELDS } from "./UserCard";
 
+export const THREAD_MESSAGE_FIELDS = gql`
+  ${USER_CARD_FIELDS}
+  fragment ThreadMessageFields on ThreadMessage {
+    id
+    type
+    author {
+      context
+      number
+      user {
+        ...UserCardFields
+      }
+    }
+    body
+    highlights
+    rating
+    decision
+    publishedAt
+    released
+  }
+`;
+
 const ThreadMessagesQuery = gql`
   ${USER_CARD_FIELDS}
   query ThreadMessagesQuery($where: ThreadMessageWhereInput!) {

@@ -14,14 +14,7 @@ export default objectType({
     t.crud.venues({
       filtering: true,
     });
-    t.crud.reviews({
-      filtering: true,
-      authorize: (root, a, b) => {
-        return true;
-      },
-    });
     t.crud.threadMessages({ filtering: true });
-    t.crud.decisions({ filtering: true });
     t.crud.submissions({ filtering: true });
     t.crud.venueMembership();
     t.crud.venueMemberships({ filtering: true });
@@ -95,19 +88,6 @@ export default objectType({
           ["versionNumber"],
           ["desc"]
         );
-      },
-    });
-    t.field("userReview", {
-      type: "Review",
-      args: { userId: nonNull(stringArg()), articleId: nonNull(stringArg()) },
-      resolve: async (_, { userId, articleId }, ctx) => {
-        const reviews = await ctx.prisma.review.findMany({
-          where: {
-            authorId: userId,
-            articleId,
-          },
-        });
-        return reviews[0];
       },
     });
     t.list.field("searchUsers", {

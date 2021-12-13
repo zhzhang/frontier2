@@ -4,10 +4,15 @@ const ThreadMessage = objectType({
   name: "ThreadMessage",
   definition(t) {
     t.model.id();
+    t.model.type();
     t.model.body();
     t.model.highlights();
     t.model.author();
-    t.model.createdAt();
+    t.model.article();
+    t.model.rating();
+    t.model.decision();
+    t.model.publishTimestamp();
+    t.model.released();
   },
 });
 

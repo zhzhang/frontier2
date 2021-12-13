@@ -43,15 +43,14 @@ model Relation {
 }
 
 model Article {
-  id            String           @id @default(cuid())
-  title         String
-  authors       Identity[]
-  reviews       Review[]
-  versions      ArticleVersion[]
-  decisions     Decision[]
-  submissions   Submission[]
-  anonymous     Boolean          @default(true)
-  reviewRequest ReviewRequest[]
+  id             String           @id @default(cuid())
+  title          String
+  authors        Identity[]
+  versions       ArticleVersion[]
+  submissions    Submission[]
+  anonymous      Boolean          @default(true)
+  reviewRequest  ReviewRequest[]
+  threadMessages ThreadMessage[]
 }
 
 enum IdentityContext {
@@ -69,8 +68,6 @@ model Identity {
   article       Article         @relation(fields: [articleId], references: [id])
   anonymized    Boolean         @default(true)
   articleId     String
-  reviews       Review[]
-  decisions     Decision[]
   threadMessage ThreadMessage[]
 }
 
@@ -84,16 +81,28 @@ model ArticleVersion {
   createdAt     DateTime @default(now())
 }
 
+enum ThreadMessageType {
+  COMMENT
+  REVIEW
+  DECISION
+}
+
 model ThreadMessage {
-  id         String   @id @default(cuid())
-  body       String   @db.MediumText
-  articleId  String
-  headId     String?
-  authorId   String
-  author     Identity @relation(fields: [authorId], references: [id])
-  highlights Json
-  createdAt  DateTime @default(now())
-  published  Boolean  @default(false)
+  id               String            @id @default(cuid())
+  type             ThreadMessageType
+  body             String            @db.MediumText
+  highlights       Json
+  author           Identity          @relation(fields: [authorId], references: [id])
+  authorId         String
+  article          Article           @relation(fields: [articleId], references: [id])
+  articleId        String
+  headId           String?
+  venue            Venue?            @relation(fields: [venueId], references: [id])
+  venueId          String?
+  rating           Int               @default(0)
+  decision         Boolean           @default(false)
+  publishTimestamp DateTime?         @default(now())
+  released         Boolean           @default(true)
 }
 
 model Submission {
@@ -104,8 +113,6 @@ model Submission {
   venueId        String
   owner          User?           @relation(fields: [ownerId], references: [id])
   ownerId        String?
-  decision       Decision?       @relation(fields: [decisionId], references: [id])
-  decisionId     String?         @unique
   createdAt      DateTime        @default(now())
   reviewRequests ReviewRequest[]
 }
@@ -121,8 +128,8 @@ model Venue {
   submissionOpen     DateTime?
   submissionDeadline DateTime?
   memberships        VenueMembership[]
-  decisions          Decision[]
   submissions        Submission[]
+  threadMessage      ThreadMessage[]
 }
 
 model VenueMembership {
@@ -134,19 +141,6 @@ model VenueMembership {
   venueId String
 }
 
-model Review {
-  id               String    @id @default(cuid())
-  body             String    @db.MediumText
-  rating           Int       @default(0)
-  article          Article   @relation(fields: [articleId], references: [id])
-  author           Identity  @relation(fields: [authorId], references: [id])
-  highlights       Json
-  articleId        String
-  authorId         String
-  publishTimestamp DateTime?
-  published        Boolean   @default(false)
-}
-
 model ReviewRequest {
   id           String      @id @default(cuid())
   articleId    String
@@ -156,19 +150,4 @@ model ReviewRequest {
   user         User        @relation(fields: [userId], references: [id])
   status       String
   submissionId String?
-}
-
-model Decision {
-  id         String      @id @default(cuid())
-  body       String      @db.MediumText
-  decision   Boolean     @default(false)
-  highlights Json
-  article    Article     @relation(fields: [articleId], references: [id])
-  articleId  String
-  venue      Venue       @relation(fields: [venueId], references: [id])
-  venueId    String
-  author     Identity    @relation(fields: [authorId], references: [id])
-  authorId   String
-  submission Submission?
-  published  Boolean     @default(false)
 }

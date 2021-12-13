@@ -1,52 +1,35 @@
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
+import CenteredSpinner from "@/components/CenteredSpinner";
+import Error from "@/components/Error";
+import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
-import Tab from "@mui/material/Tab";
-import { useRouter } from "next/router";
-import Comments from "./Comments";
-import Reviews from "./Reviews";
-import { addHighlightVar, focusedEditorVar } from "./vars";
+import gql from "graphql-tag";
+import { THREAD_MESSAGE_FIELDS } from "../Thread";
 
-function DiscussionSidebar() {
-  const router = useRouter();
-  const view = router.query.view ? router.query.view : "reviews";
-  const handleChange = (_, newValue: string) => {
-    focusedEditorVar(null);
-    addHighlightVar(null);
-    router.query.view = newValue;
-    router.push(router, undefined, { shallow: true });
-  };
+const ThreadMessagesQuery = gql`
+  ${THREAD_MESSAGE_FIELDS}
+  query ThreadMessages($where: ReviewWhereInput!) {
+    threadMessages(where: $where) {
+      ...ThreadMessageFields
+    }
+    article @client
+  }
+`;
 
+function DiscussionSidebar({ articleId }) {
+  const { loading, error, data } = useQuery(ThreadMessagesQuery, {
+    variables: { where: { articleId: { equals: articleId } } },
+  });
+  if (loading) {
+    return <CenteredSpinner sx={{ mt: 2 }} />;
+  }
+  if (error) {
+    return <Error>{error.message}</Error>;
+  }
   const contentSx = {
     padding: 0,
   };
 
-  return (
-    <Box sx={{ width: "100%" }}>
-      <TabContext value={view}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList
-            value={view}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={handleChange}
-            aria-label="disabled tabs example"
-            variant="fullWidth"
-          >
-            <Tab label="Reviews" value="reviews" />
-            <Tab label="Discussion" value="discussion" />
-          </TabList>
-        </Box>
-        <TabPanel value="reviews" sx={contentSx}>
-          <Reviews />
-        </TabPanel>
-        <TabPanel value="discussion" sx={contentSx}>
-          <Comments />
-        </TabPanel>
-      </TabContext>
-    </Box>
-  );
+  return <Box sx={{ width: "100%" }}>tmp</Box>;
 }
 
 export default DiscussionSidebar;

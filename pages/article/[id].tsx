@@ -75,6 +75,7 @@ const ArticleQuery = gql`
       id
       title
       authors {
+        number
         user {
           ...UserCardFields
         }
