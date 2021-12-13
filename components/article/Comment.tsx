@@ -57,10 +57,10 @@ export default function Comment({
             mr: 1,
           }}
         >
-          <ProfilePicturePopover user={comment.author} />
+          <ProfilePicturePopover identity={comment.author} />
         </Box>
         <Box>
-          <AuthorPopover user={comment.author} />
+          <AuthorPopover identity={comment.author} />
           <Markdown
             highlights={highlights}
             updateArticleAndScroll={updateArticleAndScroll}

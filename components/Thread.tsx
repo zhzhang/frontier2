@@ -38,7 +38,7 @@ export const THREAD_MESSAGE_FIELDS = gql`
     highlights
     rating
     decision
-    publishedAt
+    publishTimestamp
     released
   }
 `;
