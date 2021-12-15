@@ -19,7 +19,6 @@ const ThreadMessagesQuery = gql`
 `;
 
 function RenderRoot({ message }) {
-  let head;
   switch (message.type) {
     case "REVIEW":
       return <Review review={message} />;

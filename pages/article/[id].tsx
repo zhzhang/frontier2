@@ -1,4 +1,5 @@
 import DiscussionSidebar from "@/components/article/DiscussionSidebar";
+import NewThread from "@/components/article/NewThread";
 import {
   addHighlightVar,
   articleVar,
@@ -162,7 +163,7 @@ function LeftPane() {
   if (!data) {
     return null;
   }
-  const { title, authors, versions } = data.article;
+  const { id, title, authors, versions } = data.article;
   const { selectedVersion } = data;
   return (
     <Box sx={{ margin: 1, height: "calc(100vh - 56px)", overflowY: "scroll" }}>
@@ -193,6 +194,7 @@ function LeftPane() {
         </AccordionDetails>
       </Accordion>
       <Box sx={{ mt: 1, mb: 1 }}>
+        <NewThread articleId={id} />
         <DiscussionSidebar />
       </Box>
     </Box>

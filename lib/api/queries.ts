@@ -19,6 +19,27 @@ export default objectType({
     t.crud.venueMembership();
     t.crud.venueMemberships({ filtering: true });
     t.crud.reviewRequests({ filtering: true });
+    t.nullable.field("draftMessage", {
+      type: "ThreadMessage",
+      args: { articleId: stringArg(), userId: stringArg() },
+      resolve: async (_, { articleId, userId }, ctx) => {
+        const draftMessage = await ctx.prisma.threadMessage.findFirst({
+          where: {
+            articleId,
+            author: {
+              user: {
+                id: userId,
+              },
+            },
+            publishTimestamp: null,
+          },
+        });
+        if (draftMessage) {
+          return draftMessage;
+        }
+        return null;
+      },
+    });
     t.list.field("searchOpenVenues", {
       type: "Venue",
       args: { query: stringArg() },

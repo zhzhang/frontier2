@@ -2579,6 +2579,7 @@ export interface NexusGenFieldTypes {
     article: NexusGenRootTypes['Article'] | null; // Article
     articleVersions: Array<NexusGenRootTypes['ArticleVersion'] | null> | null; // [ArticleVersion]
     articles: NexusGenRootTypes['Article'][]; // [Article!]!
+    draftMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     identities: NexusGenRootTypes['Identity'][]; // [Identity!]!
     reviewRequests: NexusGenRootTypes['ReviewRequest'][]; // [ReviewRequest!]!
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
@@ -2701,6 +2702,7 @@ export interface NexusGenFieldTypeNames {
     article: 'Article'
     articleVersions: 'ArticleVersion'
     articles: 'Article'
+    draftMessage: 'ThreadMessage'
     identities: 'Identity'
     reviewRequests: 'ReviewRequest'
     reviewerAssignedSubmissions: 'Submission'
@@ -2843,6 +2845,10 @@ export interface NexusGenArgTypes {
       first?: number | null; // Int
       last?: number | null; // Int
       where?: NexusGenInputs['ArticleWhereInput'] | null; // ArticleWhereInput
+    }
+    draftMessage: { // args
+      articleId?: string | null; // String
+      userId?: string | null; // String
     }
     identities: { // args
       after?: NexusGenInputs['IdentityWhereUniqueInput'] | null; // IdentityWhereUniqueInput
