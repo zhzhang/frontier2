@@ -1,5 +1,4 @@
 import AuthorPopover from "@/components/AuthorPopover";
-import Thread from "@/components/Thread";
 import TimeAgo from "@/components/TimeAgo";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -29,19 +28,6 @@ export const REVIEW_CARD_FIELDS = gql`
   }
 `;
 
-const UpdateReviewMutation = gql`
-  mutation UpdateReviewMutation(
-    $id: String!
-    $body: String!
-    $rating: Int!
-    $published: Boolean!
-  ) {
-    updateReview(id: $id, body: $body, rating: $rating, published: $published) {
-      id
-    }
-  }
-`;
-
 function Rating({ rating }) {
   switch (rating) {
     case 0:
@@ -55,7 +41,7 @@ function Rating({ rating }) {
   }
 }
 
-export default function Review({ review, renderThread = true }) {
+export default function Review({ review }) {
   const { id, author, highlights, body, publishTimestamp } = review;
   const typographyProps = {
     component: "span",
@@ -97,7 +83,6 @@ export default function Review({ review, renderThread = true }) {
           </Button>
         </Box>
       </Box>
-      {renderThread && <Thread headId={id} />}
     </Box>
   );
 }

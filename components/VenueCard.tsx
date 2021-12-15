@@ -4,6 +4,19 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import gql from "graphql-tag";
+
+export const VENUE_CARD_FIELDS = gql`
+  fragment VenueCardFields on Venue {
+    id
+    name
+    abbreviation
+    description
+    websiteUrl
+    logoRef
+    venueDate
+  }
+`;
 
 export default function VenueCard({ venue }) {
   const { id, name, abbreviation, logoRef, venueDate } = venue;

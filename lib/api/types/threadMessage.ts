@@ -9,6 +9,7 @@ const ThreadMessage = objectType({
     t.model.highlights();
     t.model.author();
     t.model.article();
+    t.model.venue();
     t.model.rating();
     t.model.decision();
     t.model.publishTimestamp();

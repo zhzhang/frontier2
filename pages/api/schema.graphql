@@ -406,6 +406,7 @@ type Identity {
   id: String!
   number: Int!
   user: User
+  venue: Venue
 }
 
 enum IdentityContext {
@@ -420,6 +421,7 @@ input IdentityCreateManyArticleInput {
   id: String
   number: Int!
   userId: String!
+  venueId: String
 }
 
 input IdentityCreateManyArticleInputEnvelope {
@@ -433,10 +435,25 @@ input IdentityCreateManyUserInput {
   context: IdentityContext!
   id: String
   number: Int!
+  venueId: String
 }
 
 input IdentityCreateManyUserInputEnvelope {
   data: [IdentityCreateManyUserInput!]
+  skipDuplicates: Boolean
+}
+
+input IdentityCreateManyVenueInput {
+  anonymized: Boolean
+  articleId: String!
+  context: IdentityContext!
+  id: String
+  number: Int!
+  userId: String!
+}
+
+input IdentityCreateManyVenueInputEnvelope {
+  data: [IdentityCreateManyVenueInput!]
   skipDuplicates: Boolean
 }
 
@@ -452,6 +469,13 @@ input IdentityCreateNestedManyWithoutUserInput {
   connectOrCreate: [IdentityCreateOrConnectWithoutUserInput!]
   create: [IdentityCreateWithoutUserInput!]
   createMany: IdentityCreateManyUserInputEnvelope
+}
+
+input IdentityCreateNestedManyWithoutVenueInput {
+  connect: [IdentityWhereUniqueInput!]
+  connectOrCreate: [IdentityCreateOrConnectWithoutVenueInput!]
+  create: [IdentityCreateWithoutVenueInput!]
+  createMany: IdentityCreateManyVenueInputEnvelope
 }
 
 input IdentityCreateNestedOneWithoutThreadMessageInput {
@@ -475,6 +499,11 @@ input IdentityCreateOrConnectWithoutUserInput {
   where: IdentityWhereUniqueInput!
 }
 
+input IdentityCreateOrConnectWithoutVenueInput {
+  create: IdentityCreateWithoutVenueInput!
+  where: IdentityWhereUniqueInput!
+}
+
 input IdentityCreateWithoutArticleInput {
   anonymized: Boolean
   context: IdentityContext!
@@ -482,6 +511,7 @@ input IdentityCreateWithoutArticleInput {
   number: Int!
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
   user: UserCreateNestedOneWithoutIdentitiesInput!
+  venue: VenueCreateNestedOneWithoutIdentitiesInput
 }
 
 input IdentityCreateWithoutThreadMessageInput {
@@ -491,6 +521,7 @@ input IdentityCreateWithoutThreadMessageInput {
   id: String
   number: Int!
   user: UserCreateNestedOneWithoutIdentitiesInput!
+  venue: VenueCreateNestedOneWithoutIdentitiesInput
 }
 
 input IdentityCreateWithoutUserInput {
@@ -500,6 +531,17 @@ input IdentityCreateWithoutUserInput {
   id: String
   number: Int!
   threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  venue: VenueCreateNestedOneWithoutIdentitiesInput
+}
+
+input IdentityCreateWithoutVenueInput {
+  anonymized: Boolean
+  article: ArticleCreateNestedOneWithoutAuthorsInput!
+  context: IdentityContext!
+  id: String
+  number: Int!
+  threadMessage: ThreadMessageCreateNestedManyWithoutAuthorInput
+  user: UserCreateNestedOneWithoutIdentitiesInput!
 }
 
 input IdentityListRelationFilter {
@@ -518,6 +560,7 @@ input IdentityScalarWhereInput {
   id: StringFilter
   number: IntFilter
   userId: StringFilter
+  venueId: StringNullableFilter
 }
 
 input IdentityUpdateManyMutationInput {
@@ -533,6 +576,11 @@ input IdentityUpdateManyWithWhereWithoutArticleInput {
 }
 
 input IdentityUpdateManyWithWhereWithoutUserInput {
+  data: IdentityUpdateManyMutationInput!
+  where: IdentityScalarWhereInput!
+}
+
+input IdentityUpdateManyWithWhereWithoutVenueInput {
   data: IdentityUpdateManyMutationInput!
   where: IdentityScalarWhereInput!
 }
@@ -565,6 +613,20 @@ input IdentityUpdateManyWithoutUserInput {
   upsert: [IdentityUpsertWithWhereUniqueWithoutUserInput!]
 }
 
+input IdentityUpdateManyWithoutVenueInput {
+  connect: [IdentityWhereUniqueInput!]
+  connectOrCreate: [IdentityCreateOrConnectWithoutVenueInput!]
+  create: [IdentityCreateWithoutVenueInput!]
+  createMany: IdentityCreateManyVenueInputEnvelope
+  delete: [IdentityWhereUniqueInput!]
+  deleteMany: [IdentityScalarWhereInput!]
+  disconnect: [IdentityWhereUniqueInput!]
+  set: [IdentityWhereUniqueInput!]
+  update: [IdentityUpdateWithWhereUniqueWithoutVenueInput!]
+  updateMany: [IdentityUpdateManyWithWhereWithoutVenueInput!]
+  upsert: [IdentityUpsertWithWhereUniqueWithoutVenueInput!]
+}
+
 input IdentityUpdateOneRequiredWithoutThreadMessageInput {
   connect: IdentityWhereUniqueInput
   connectOrCreate: IdentityCreateOrConnectWithoutThreadMessageInput
@@ -583,6 +645,11 @@ input IdentityUpdateWithWhereUniqueWithoutUserInput {
   where: IdentityWhereUniqueInput!
 }
 
+input IdentityUpdateWithWhereUniqueWithoutVenueInput {
+  data: IdentityUpdateWithoutVenueInput!
+  where: IdentityWhereUniqueInput!
+}
+
 input IdentityUpdateWithoutArticleInput {
   anonymized: BoolFieldUpdateOperationsInput
   context: EnumIdentityContextFieldUpdateOperationsInput
@@ -590,6 +657,7 @@ input IdentityUpdateWithoutArticleInput {
   number: IntFieldUpdateOperationsInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
   user: UserUpdateOneRequiredWithoutIdentitiesInput
+  venue: VenueUpdateOneWithoutIdentitiesInput
 }
 
 input IdentityUpdateWithoutThreadMessageInput {
@@ -599,6 +667,7 @@ input IdentityUpdateWithoutThreadMessageInput {
   id: StringFieldUpdateOperationsInput
   number: IntFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutIdentitiesInput
+  venue: VenueUpdateOneWithoutIdentitiesInput
 }
 
 input IdentityUpdateWithoutUserInput {
@@ -608,6 +677,17 @@ input IdentityUpdateWithoutUserInput {
   id: StringFieldUpdateOperationsInput
   number: IntFieldUpdateOperationsInput
   threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  venue: VenueUpdateOneWithoutIdentitiesInput
+}
+
+input IdentityUpdateWithoutVenueInput {
+  anonymized: BoolFieldUpdateOperationsInput
+  article: ArticleUpdateOneRequiredWithoutAuthorsInput
+  context: EnumIdentityContextFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  threadMessage: ThreadMessageUpdateManyWithoutAuthorInput
+  user: UserUpdateOneRequiredWithoutIdentitiesInput
 }
 
 input IdentityUpsertWithWhereUniqueWithoutArticleInput {
@@ -619,6 +699,12 @@ input IdentityUpsertWithWhereUniqueWithoutArticleInput {
 input IdentityUpsertWithWhereUniqueWithoutUserInput {
   create: IdentityCreateWithoutUserInput!
   update: IdentityUpdateWithoutUserInput!
+  where: IdentityWhereUniqueInput!
+}
+
+input IdentityUpsertWithWhereUniqueWithoutVenueInput {
+  create: IdentityCreateWithoutVenueInput!
+  update: IdentityUpdateWithoutVenueInput!
   where: IdentityWhereUniqueInput!
 }
 
@@ -640,6 +726,8 @@ input IdentityWhereInput {
   threadMessage: ThreadMessageListRelationFilter
   user: UserWhereInput
   userId: StringFilter
+  venue: VenueWhereInput
+  venueId: StringNullableFilter
 }
 
 input IdentityWhereUniqueInput {
@@ -1616,6 +1704,7 @@ type ThreadMessage {
   rating: Int!
   released: Boolean!
   type: ThreadMessageType!
+  venue: Venue
 }
 
 input ThreadMessageCreateInput {
@@ -2382,6 +2471,7 @@ input VenueCreateInput {
   abbreviation: String
   description: String!
   id: String
+  identities: IdentityCreateNestedManyWithoutVenueInput
   logoRef: String
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
@@ -2391,6 +2481,12 @@ input VenueCreateInput {
   threadMessage: ThreadMessageCreateNestedManyWithoutVenueInput
   venueDate: DateTime
   websiteUrl: String
+}
+
+input VenueCreateNestedOneWithoutIdentitiesInput {
+  connect: VenueWhereUniqueInput
+  connectOrCreate: VenueCreateOrConnectWithoutIdentitiesInput
+  create: VenueCreateWithoutIdentitiesInput
 }
 
 input VenueCreateNestedOneWithoutMembershipsInput {
@@ -2411,6 +2507,11 @@ input VenueCreateNestedOneWithoutThreadMessageInput {
   create: VenueCreateWithoutThreadMessageInput
 }
 
+input VenueCreateOrConnectWithoutIdentitiesInput {
+  create: VenueCreateWithoutIdentitiesInput!
+  where: VenueWhereUniqueInput!
+}
+
 input VenueCreateOrConnectWithoutMembershipsInput {
   create: VenueCreateWithoutMembershipsInput!
   where: VenueWhereUniqueInput!
@@ -2426,10 +2527,26 @@ input VenueCreateOrConnectWithoutThreadMessageInput {
   where: VenueWhereUniqueInput!
 }
 
+input VenueCreateWithoutIdentitiesInput {
+  abbreviation: String
+  description: String!
+  id: String
+  logoRef: String
+  memberships: VenueMembershipCreateNestedManyWithoutVenueInput
+  name: String!
+  submissionDeadline: DateTime
+  submissionOpen: DateTime
+  submissions: SubmissionCreateNestedManyWithoutVenueInput
+  threadMessage: ThreadMessageCreateNestedManyWithoutVenueInput
+  venueDate: DateTime
+  websiteUrl: String
+}
+
 input VenueCreateWithoutMembershipsInput {
   abbreviation: String
   description: String!
   id: String
+  identities: IdentityCreateNestedManyWithoutVenueInput
   logoRef: String
   name: String!
   submissionDeadline: DateTime
@@ -2444,6 +2561,7 @@ input VenueCreateWithoutSubmissionsInput {
   abbreviation: String
   description: String!
   id: String
+  identities: IdentityCreateNestedManyWithoutVenueInput
   logoRef: String
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
@@ -2458,6 +2576,7 @@ input VenueCreateWithoutThreadMessageInput {
   abbreviation: String
   description: String!
   id: String
+  identities: IdentityCreateNestedManyWithoutVenueInput
   logoRef: String
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
@@ -2647,6 +2766,7 @@ input VenueUpdateInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  identities: IdentityUpdateManyWithoutVenueInput
   logoRef: NullableStringFieldUpdateOperationsInput
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
@@ -2674,6 +2794,16 @@ input VenueUpdateOneRequiredWithoutSubmissionsInput {
   upsert: VenueUpsertWithoutSubmissionsInput
 }
 
+input VenueUpdateOneWithoutIdentitiesInput {
+  connect: VenueWhereUniqueInput
+  connectOrCreate: VenueCreateOrConnectWithoutIdentitiesInput
+  create: VenueCreateWithoutIdentitiesInput
+  delete: Boolean
+  disconnect: Boolean
+  update: VenueUpdateWithoutIdentitiesInput
+  upsert: VenueUpsertWithoutIdentitiesInput
+}
+
 input VenueUpdateOneWithoutThreadMessageInput {
   connect: VenueWhereUniqueInput
   connectOrCreate: VenueCreateOrConnectWithoutThreadMessageInput
@@ -2684,10 +2814,26 @@ input VenueUpdateOneWithoutThreadMessageInput {
   upsert: VenueUpsertWithoutThreadMessageInput
 }
 
+input VenueUpdateWithoutIdentitiesInput {
+  abbreviation: NullableStringFieldUpdateOperationsInput
+  description: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  logoRef: NullableStringFieldUpdateOperationsInput
+  memberships: VenueMembershipUpdateManyWithoutVenueInput
+  name: StringFieldUpdateOperationsInput
+  submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
+  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
+  submissions: SubmissionUpdateManyWithoutVenueInput
+  threadMessage: ThreadMessageUpdateManyWithoutVenueInput
+  venueDate: NullableDateTimeFieldUpdateOperationsInput
+  websiteUrl: NullableStringFieldUpdateOperationsInput
+}
+
 input VenueUpdateWithoutMembershipsInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  identities: IdentityUpdateManyWithoutVenueInput
   logoRef: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
@@ -2702,6 +2848,7 @@ input VenueUpdateWithoutSubmissionsInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  identities: IdentityUpdateManyWithoutVenueInput
   logoRef: NullableStringFieldUpdateOperationsInput
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
@@ -2716,6 +2863,7 @@ input VenueUpdateWithoutThreadMessageInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  identities: IdentityUpdateManyWithoutVenueInput
   logoRef: NullableStringFieldUpdateOperationsInput
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
@@ -2724,6 +2872,11 @@ input VenueUpdateWithoutThreadMessageInput {
   submissions: SubmissionUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
   websiteUrl: NullableStringFieldUpdateOperationsInput
+}
+
+input VenueUpsertWithoutIdentitiesInput {
+  create: VenueCreateWithoutIdentitiesInput!
+  update: VenueUpdateWithoutIdentitiesInput!
 }
 
 input VenueUpsertWithoutMembershipsInput {
@@ -2748,6 +2901,7 @@ input VenueWhereInput {
   abbreviation: StringNullableFilter
   description: StringFilter
   id: StringFilter
+  identities: IdentityListRelationFilter
   logoRef: StringNullableFilter
   memberships: VenueMembershipListRelationFilter
   name: StringFilter

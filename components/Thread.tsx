@@ -21,9 +21,11 @@ import {
   updateArticleAndScroll,
 } from "./article/vars";
 import { USER_CARD_FIELDS } from "./UserCard";
+import { VENUE_CARD_FIELDS } from "./VenueCard";
 
 export const THREAD_MESSAGE_FIELDS = gql`
   ${USER_CARD_FIELDS}
+  ${VENUE_CARD_FIELDS}
   fragment ThreadMessageFields on ThreadMessage {
     id
     type
@@ -32,6 +34,9 @@ export const THREAD_MESSAGE_FIELDS = gql`
       number
       user {
         ...UserCardFields
+      }
+      venue {
+        ...VenueCardFields
       }
     }
     body
@@ -45,19 +50,10 @@ export const THREAD_MESSAGE_FIELDS = gql`
 
 const ThreadMessagesQuery = gql`
   ${USER_CARD_FIELDS}
+  ${THREAD_MESSAGE_FIELDS}
   query ThreadMessagesQuery($where: ThreadMessageWhereInput!) {
     threadMessages(where: $where) {
-      id
-      author {
-        context
-        number
-        user {
-          ...UserCardFields
-        }
-      }
-      body
-      highlights
-      createdAt
+      ...ThreadMessageFields
     }
     threadReplies @client
   }
@@ -259,7 +255,7 @@ export default function Thread({ headId }) {
               <Box>
                 <AuthorPopover identity={message.author} />
                 <Typography {...typographyProps}>{" • "}</Typography>
-                <TimeAgo {...typographyProps} time={message.createdAt} />
+                <TimeAgo {...typographyProps} time={message.publishTimestamp} />
                 <Markdown
                   highlights={message.highlights}
                   updateArticleAndScroll={updateArticleAndScroll}

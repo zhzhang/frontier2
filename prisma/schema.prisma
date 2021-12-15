@@ -63,6 +63,8 @@ model Identity {
   id            String          @id @default(cuid())
   user          User            @relation(fields: [userId], references: [id])
   context       IdentityContext
+  venue         Venue?          @relation(fields: [venueId], references: [id])
+  venueId       String?
   number        Int
   userId        String
   article       Article         @relation(fields: [articleId], references: [id])
@@ -130,6 +132,7 @@ model Venue {
   memberships        VenueMembership[]
   submissions        Submission[]
   threadMessage      ThreadMessage[]
+  identities         Identity[]
 }
 
 model VenueMembership {

@@ -6,6 +6,7 @@ const Identity = objectType({
     t.model.id();
     t.model.context();
     t.model.number();
+    t.model.venue();
     t.model.article();
     t.nullable.field("user", {
       type: "User",

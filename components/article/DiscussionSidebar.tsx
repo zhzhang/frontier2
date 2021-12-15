@@ -1,5 +1,7 @@
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
+import Review from "@/components/Review";
+import Thread from "@/components/Thread";
 import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import gql from "graphql-tag";
@@ -17,10 +19,10 @@ const ThreadMessagesQuery = gql`
 `;
 
 function RenderRoot({ message }) {
-  console.log(message);
+  let head;
   switch (message.type) {
-    // case "REVIEW":
-    //return <Review review={message} />;
+    case "REVIEW":
+      return <Review review={message} />;
     default:
       return <Comment comment={message} />;
   }
@@ -28,7 +30,9 @@ function RenderRoot({ message }) {
 
 function DiscussionSidebar({ articleId }) {
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
-    variables: { where: { articleId: { equals: articleId } } },
+    variables: {
+      where: { articleId: { equals: articleId }, headId: { equals: null } },
+    },
   });
   if (loading) {
     return <CenteredSpinner sx={{ mt: 2 }} />;
@@ -43,7 +47,10 @@ function DiscussionSidebar({ articleId }) {
   return (
     <Box sx={{ width: "100%" }}>
       {data.threadMessages.map((message) => (
-        <RenderRoot message={message} />
+        <>
+          <RenderRoot message={message} />
+          <Thread headId={message.id} />
+        </>
       ))}
     </Box>
   );

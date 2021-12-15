@@ -7,14 +7,19 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useState } from "react";
+import { USER_CARD_FIELDS } from "./UserCard";
+import { VENUE_CARD_FIELDS } from "./VenueCard";
 
 export const ARTICLE_CARD_FIELDS = gql`
+  ${VENUE_CARD_FIELDS}
+  ${USER_CARD_FIELDS}
   fragment ArticleCardFields on Article {
     id
     title
     authors {
-      id
-      name
+      user {
+        ...UserCardFields
+      }
     }
     versions {
       abstract
@@ -22,12 +27,7 @@ export const ARTICLE_CARD_FIELDS = gql`
       createdAt
     }
     acceptedVenues {
-      id
-      name
-      abbreviation
-      description
-      logoRef
-      venueDate
+      ...VenueCardFields
     }
   }
 `;

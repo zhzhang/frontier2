@@ -414,6 +414,11 @@ async function main() {
               id: article.id,
             },
           },
+          venue: {
+            connect: {
+              id: arr.id,
+            },
+          },
           context: "REVIEWER",
           number: 1,
         },

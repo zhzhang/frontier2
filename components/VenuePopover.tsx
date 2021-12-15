@@ -67,7 +67,7 @@ export default function VenuePopover({ venue, color = "textSecondary" }) {
               {name}
             </Typography>
           </Box>
-          {description}
+          <Typography>{description}</Typography>
         </Box>
       </Popover>
     </>

@@ -30,7 +30,7 @@ const Article = objectType({
     t.list.field("acceptedVenues", {
       type: "Venue",
       resolve: async (parent) => {
-        const acceptances = await prisma.decision.findMany({
+        const acceptances = await prisma.threadMessage.findMany({
           where: { articleId: parent.id, decision: true },
           include: {
             venue: true,
