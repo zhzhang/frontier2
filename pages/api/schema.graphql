@@ -878,7 +878,7 @@ type Query {
   searchOpenVenues(query: String): [Venue]
   searchUsers(query: String): [User]
   submissions(after: SubmissionWhereUniqueInput, before: SubmissionWhereUniqueInput, first: Int, last: Int, where: SubmissionWhereInput): [Submission!]!
-  threadMessages(after: ThreadMessageWhereUniqueInput, before: ThreadMessageWhereUniqueInput, first: Int, last: Int, where: ThreadMessageWhereInput): [ThreadMessage!]!
+  threadMessages(after: ThreadMessageWhereUniqueInput, before: ThreadMessageWhereUniqueInput, first: Int, last: Int, orderBy: [ThreadMessageOrderByInput!], where: ThreadMessageWhereInput): [ThreadMessage!]!
   user(where: UserWhereUniqueInput!): User
   venue(where: VenueWhereUniqueInput!): Venue
   venueMembership(where: VenueMembershipWhereUniqueInput!): VenueMembership
@@ -1352,6 +1352,11 @@ enum Role {
   NONE
 }
 
+enum SortOrder {
+  asc
+  desc
+}
+
 input StringFieldUpdateOperationsInput {
   set: String
 }
@@ -1699,6 +1704,7 @@ type ThreadMessage {
   author: Identity!
   body: String!
   decision: Boolean!
+  headId: String
   highlights: Json!
   id: String!
   publishTimestamp: DateTime
@@ -1862,6 +1868,21 @@ input ThreadMessageListRelationFilter {
   every: ThreadMessageWhereInput
   none: ThreadMessageWhereInput
   some: ThreadMessageWhereInput
+}
+
+input ThreadMessageOrderByInput {
+  articleId: SortOrder
+  authorId: SortOrder
+  body: SortOrder
+  decision: SortOrder
+  headId: SortOrder
+  highlights: SortOrder
+  id: SortOrder
+  publishTimestamp: SortOrder
+  rating: SortOrder
+  released: SortOrder
+  type: SortOrder
+  venueId: SortOrder
 }
 
 input ThreadMessageScalarWhereInput {

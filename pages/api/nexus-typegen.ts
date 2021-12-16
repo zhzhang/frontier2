@@ -1539,6 +1539,20 @@ export interface NexusGenInputs {
     none?: NexusGenInputs['ThreadMessageWhereInput'] | null; // ThreadMessageWhereInput
     some?: NexusGenInputs['ThreadMessageWhereInput'] | null; // ThreadMessageWhereInput
   }
+  ThreadMessageOrderByInput: { // input type
+    articleId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    authorId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    body?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    decision?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    headId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    highlights?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    publishTimestamp?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    rating?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    released?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    type?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    venueId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
   ThreadMessageScalarWhereInput: { // input type
     AND?: NexusGenInputs['ThreadMessageScalarWhereInput'][] | null; // [ThreadMessageScalarWhereInput!]
     NOT?: NexusGenInputs['ThreadMessageScalarWhereInput'][] | null; // [ThreadMessageScalarWhereInput!]
@@ -2444,6 +2458,7 @@ export interface NexusGenEnums {
   IdentityContext: "AUTHOR" | "CHAIR" | "REVIEWER"
   RelationType: "ADVISEE" | "ADVISOR" | "COAUTHOR" | "COWORKER" | "FAMILY" | "SOCIAL"
   Role: "ACTION_EDITOR" | "ADMIN" | "NONE"
+  SortOrder: "asc" | "desc"
   ThreadMessageType: "COMMENT" | "DECISION" | "REVIEW"
 }
 
@@ -2493,6 +2508,7 @@ export interface NexusGenObjects {
   ThreadMessage: { // root type
     body: string; // String!
     decision: boolean; // Boolean!
+    headId?: string | null; // String
     highlights: NexusGenScalars['Json']; // Json!
     id: string; // String!
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -2619,6 +2635,7 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['Identity']; // Identity!
     body: string; // String!
     decision: boolean; // Boolean!
+    headId: string | null; // String
     highlights: NexusGenScalars['Json']; // Json!
     id: string; // String!
     publishTimestamp: NexusGenScalars['DateTime'] | null; // DateTime
@@ -2742,6 +2759,7 @@ export interface NexusGenFieldTypeNames {
     author: 'Identity'
     body: 'String'
     decision: 'Boolean'
+    headId: 'String'
     highlights: 'Json'
     id: 'String'
     publishTimestamp: 'DateTime'
@@ -2886,6 +2904,7 @@ export interface NexusGenArgTypes {
       before?: NexusGenInputs['ThreadMessageWhereUniqueInput'] | null; // ThreadMessageWhereUniqueInput
       first?: number | null; // Int
       last?: number | null; // Int
+      orderBy?: NexusGenInputs['ThreadMessageOrderByInput'][] | null; // [ThreadMessageOrderByInput!]
       where?: NexusGenInputs['ThreadMessageWhereInput'] | null; // ThreadMessageWhereInput
     }
     user: { // args

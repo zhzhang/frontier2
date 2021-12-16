@@ -1,4 +1,3 @@
-import { Auth } from "@/components/Auth";
 import AuthorPopover from "@/components/AuthorPopover";
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
@@ -11,11 +10,11 @@ import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import _ from "lodash";
 import { useState } from "react";
+import ReplyButton from "./article/ReplyButton";
 import {
   addHighlightVar,
   focusedEditorVar,
@@ -42,6 +41,7 @@ export const THREAD_MESSAGE_FIELDS = gql`
         ...VenueCardFields
       }
     }
+    headId
     body
     highlights
     rating
@@ -266,36 +266,13 @@ export default function Thread({ headId }) {
                 >
                   {message.body}
                 </Markdown>
-                <Button
-                  size="small"
-                  sx={{ p: 0, minWidth: 0 }}
-                  onClick={() => {
-                    if (auth.user) {
-                      threadRepliesVar(
-                        data.threadReplies.set(headId, {
-                          body: "",
-                          highlights: [],
-                        })
-                      );
-                    } else {
-                      toggleLoginOpen(true);
-                    }
-                  }}
-                >
-                  Reply
-                </Button>
+                <ReplyButton headId={message.headId} />
               </Box>
             </Box>
           }
         </Box>
       ))}
       {auth.user && <OpenReply headId={headId} userId={auth.user.uid} />}
-      <Dialog
-        open={loginOpen && !auth.user}
-        onClose={() => toggleLoginOpen(false)}
-      >
-        <Auth />
-      </Dialog>
     </>
   );
 }

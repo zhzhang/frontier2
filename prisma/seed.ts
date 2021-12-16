@@ -477,10 +477,16 @@ async function main() {
               id: article.id,
             },
           },
+          venue: {
+            connect: {
+              id: arr.id,
+            },
+          },
           context: "CHAIR",
         },
       },
-      body: `This is an example meta-review. Reviews that an author cites in writing the meta-review are attached to the meta-review, and directly credit the reviewer. Reviews `,
+      body: `This is an example meta-review.`,
+      publishTimestamp: new Date("2021-11-20T12:00:00"),
       highlights: [],
       venue: {
         connect: {
@@ -572,7 +578,7 @@ async function main() {
       type: "DECISION",
       author: {
         create: {
-          number: 2,
+          number: 1,
           user: {
             connect: {
               id: reviewer.id,
@@ -581,6 +587,11 @@ async function main() {
           article: {
             connect: {
               id: article.id,
+            },
+          },
+          venue: {
+            connect: {
+              id: pastACL.id,
             },
           },
           context: "CHAIR",
@@ -593,6 +604,7 @@ async function main() {
           id: pastACL.id,
         },
       },
+      publishTimestamp: new Date("2021-11-27T12:00:00"),
       decision: true,
       article: {
         connect: {

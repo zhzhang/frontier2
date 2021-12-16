@@ -166,7 +166,9 @@ function LeftPane() {
   const { id, title, authors, versions } = data.article;
   const { selectedVersion } = data;
   return (
-    <Box sx={{ margin: 1, height: "calc(100vh - 56px)", overflowY: "scroll" }}>
+    <Box
+      sx={{ pl: 2, pt: 1, height: "calc(100vh - 48px)", overflowY: "scroll" }}
+    >
       <Typography variant="h6">{title}</Typography>
       <Authors authors={authors} />
       <FormControl fullWidth sx={{ mt: 1 }}>

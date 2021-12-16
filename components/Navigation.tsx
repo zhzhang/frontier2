@@ -77,7 +77,7 @@ export default function Navigation() {
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
-                <ListItemText primary="Review Requests" />
+                <ListItemText primary="Work Requests" />
               </MenuItem>
               <MenuItem
                 onClick={async () => {

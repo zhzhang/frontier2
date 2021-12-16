@@ -14,6 +14,7 @@ const ThreadMessage = objectType({
     t.model.decision();
     t.model.publishTimestamp();
     t.model.released();
+    t.model.headId();
   },
 });
 

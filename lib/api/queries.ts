@@ -14,7 +14,7 @@ export default objectType({
     t.crud.venues({
       filtering: true,
     });
-    t.crud.threadMessages({ filtering: true });
+    t.crud.threadMessages({ filtering: true, ordering: true });
     t.crud.submissions({ filtering: true });
     t.crud.venueMembership();
     t.crud.venueMemberships({ filtering: true });

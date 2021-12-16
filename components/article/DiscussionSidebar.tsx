@@ -1,3 +1,4 @@
+import Decison from "@/components/article/Decision";
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import Review from "@/components/Review";
@@ -10,8 +11,11 @@ import Comment from "./Comment";
 
 const ThreadMessagesQuery = gql`
   ${THREAD_MESSAGE_FIELDS}
-  query ThreadMessages($where: ThreadMessageWhereInput!) {
-    threadMessages(where: $where) {
+  query ThreadMessages(
+    $where: ThreadMessageWhereInput!
+    $orderBy: [ThreadMessageOrderByInput!]
+  ) {
+    threadMessages(where: $where, orderBy: $orderBy) {
       ...ThreadMessageFields
     }
     article @client
@@ -22,6 +26,8 @@ function RenderRoot({ message }) {
   switch (message.type) {
     case "REVIEW":
       return <Review review={message} />;
+    case "DECISION":
+      return <Decison decision={message} />;
     default:
       return <Comment comment={message} />;
   }
@@ -31,6 +37,11 @@ function DiscussionSidebar({ articleId }) {
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
     variables: {
       where: { articleId: { equals: articleId }, headId: { equals: null } },
+      orderBy: [
+        {
+          publishTimestamp: "desc",
+        },
+      ],
     },
   });
   if (loading) {

@@ -1,6 +1,7 @@
 import { apolloClient } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/client";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -54,7 +55,7 @@ function NewThreadPrompt({ userId, articleId }) {
     setType(event.target.value as string);
   };
   return (
-    <>
+    <Box>
       <Typography component="span">Write a </Typography>
       <FormControl variant="standard">
         <Select
@@ -68,7 +69,8 @@ function NewThreadPrompt({ userId, articleId }) {
           <MenuItem value={"DECISION"}>Decision</MenuItem>
         </Select>
       </FormControl>
-    </>
+      <Button>Start</Button>
+    </Box>
   );
 }
 

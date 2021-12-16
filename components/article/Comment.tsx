@@ -2,8 +2,9 @@ import AuthorPopover from "@/components/AuthorPopover";
 import Markdown from "@/components/Markdown";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import Box from "@mui/material/Box";
+import { updateArticleAndScroll } from "./vars";
 
-export default function Comment({ comment, updateArticleAndScroll }) {
+export default function Comment({ comment }) {
   const { highlights } = comment;
   const { body } = comment;
   return (
