@@ -39,7 +39,7 @@ export default function Navigation() {
           Venues
         </Button>
         <Button color="inherit" href="/new-article">
-          Submit
+          Publish
         </Button>
         {user ? (
           <>

@@ -155,7 +155,7 @@ async function main() {
   });
 
   const reviewBody =
-    "Easily write your reviews with a fully featured markdown text editor:\n\n - Rich text formatting: *italics* **bold**. \n\n - Formulas $f(x) = x^{2}$ \n $$\nH(p,q)=-\\sum\\limits_{x\\in\\chi}p(x)\\log q(x)\n$$\n - PDF annotation. [This]{1} highlight refers to the most recent version of the article, while [this]{2} highlight refers to a previous version. Click on the blue highlight link to be taken to highlighted text.";
+    "Easily write your reviews with a fully featured markdown text editor:\n\n - Rich text formatting: *italics* **bold**. \n\n - Formulas $f(x) = x^{2}$ \n $$\nH(p,q)=-\\sum\\limits_{x\\in\\chi}p(x)\\log q(x)\n$$\n - PDF annotation. The following highlight refers to [a section of the introduction]{1} in the most recent version of the article. Making comparisons to different versions of the article is also possible, for example referencing the [auxiliary objectives in the original submission]{2}. Click on the blue highlight link to be taken to highlighted text on a previous version of the article.";
   const highlights = [
     {
       boundingRect: {
@@ -586,7 +586,7 @@ async function main() {
           context: "CHAIR",
         },
       },
-      body: `Articles can be accepted by multiple venues.`,
+      body: `Articles can be accepted by multiple venues, meaning that transactions or rolling-review papers may be selected based on prior reviews to be featured at conferences.`,
       highlights: [],
       venue: {
         connect: {

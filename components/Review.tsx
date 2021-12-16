@@ -1,9 +1,13 @@
+import { Auth } from "@/components/Auth";
 import AuthorPopover from "@/components/AuthorPopover";
 import TimeAgo from "@/components/TimeAgo";
+import { useAuth } from "@/lib/firebase";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
+import { useState } from "react";
 import { threadRepliesVar, updateArticleAndScroll } from "./article/vars";
 import Markdown from "./Markdown";
 import ProfilePicturePopover from "./ProfilePicturePopover";
@@ -43,6 +47,8 @@ function Rating({ rating }) {
 
 export default function Review({ review }) {
   const { id, author, highlights, body, publishTimestamp } = review;
+  const auth = useAuth();
+  const [loginOpen, toggleLoginOpen] = useState(false);
   const typographyProps = {
     component: "span",
     sx: {
@@ -70,19 +76,29 @@ export default function Review({ review }) {
             size="small"
             sx={{ p: 0, minWidth: 0 }}
             onClick={() => {
-              const threadReplies = threadRepliesVar();
-              threadRepliesVar(
-                threadReplies.set(id, {
-                  body: "",
-                  highlights: [],
-                })
-              );
+              if (auth.user) {
+                const threadReplies = threadRepliesVar();
+                threadRepliesVar(
+                  threadReplies.set(id, {
+                    body: "",
+                    highlights: [],
+                  })
+                );
+              } else {
+                toggleLoginOpen(true);
+              }
             }}
           >
             Reply
           </Button>
         </Box>
       </Box>
+      <Dialog
+        open={loginOpen && !auth.user}
+        onClose={() => toggleLoginOpen(false)}
+      >
+        <Auth />
+      </Dialog>
     </Box>
   );
 }

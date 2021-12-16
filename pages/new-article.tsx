@@ -154,8 +154,8 @@ function NewArticle({ venue }) {
             }}
           />
           <SubmissionTargetTypeahed
-            sx={{ mb: 2 }}
-            label="Submit to..."
+            sx={{ mb: 2, mt: 2 }}
+            label="Request reviews by..."
             onChange={(_, selected) => {
               setSubmissionTarget(selected);
             }}
@@ -169,7 +169,7 @@ function NewArticle({ venue }) {
               disabled={!canSubmit}
               sx={{ mr: 2 }}
             >
-              Submit
+              Request Review
             </Button>
             <CircularProgress variant="determinate" value={uploadProgress} />
           </Box>

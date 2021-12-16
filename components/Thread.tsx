@@ -1,3 +1,4 @@
+import { Auth } from "@/components/Auth";
 import AuthorPopover from "@/components/AuthorPopover";
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
@@ -10,9 +11,11 @@ import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import _ from "lodash";
+import { useState } from "react";
 import {
   addHighlightVar,
   focusedEditorVar,
@@ -211,6 +214,7 @@ export default function Thread({ headId }) {
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
     variables: { where: { headId: { equals: headId } } },
   });
+  const [loginOpen, toggleLoginOpen] = useState(false);
   if (loading || auth.loading) {
     return <CenteredSpinner />;
   }
@@ -266,12 +270,16 @@ export default function Thread({ headId }) {
                   size="small"
                   sx={{ p: 0, minWidth: 0 }}
                   onClick={() => {
-                    threadRepliesVar(
-                      data.threadReplies.set(headId, {
-                        body: "",
-                        highlights: [],
-                      })
-                    );
+                    if (auth.user) {
+                      threadRepliesVar(
+                        data.threadReplies.set(headId, {
+                          body: "",
+                          highlights: [],
+                        })
+                      );
+                    } else {
+                      toggleLoginOpen(true);
+                    }
                   }}
                 >
                   Reply
@@ -281,7 +289,13 @@ export default function Thread({ headId }) {
           }
         </Box>
       ))}
-      <OpenReply headId={headId} userId={auth.user.uid} />
+      {auth.user && <OpenReply headId={headId} userId={auth.user.uid} />}
+      <Dialog
+        open={loginOpen && !auth.user}
+        onClose={() => toggleLoginOpen(false)}
+      >
+        <Auth />
+      </Dialog>
     </>
   );
 }

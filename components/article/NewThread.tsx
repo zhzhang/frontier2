@@ -2,8 +2,13 @@ import { apolloClient } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/client";
 import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import _ from "lodash";
+import { useState } from "react";
 import MarkdownEditor from "../MarkdownEditor";
 import { THREAD_MESSAGE_FIELDS } from "../Thread";
 import {
@@ -43,6 +48,30 @@ const DeleteOneThreadMessage = gql`
   }
 `;
 
+function NewThreadPrompt({ userId, articleId }) {
+  const [type, setType] = useState("COMMENT");
+  const handleChange = (event) => {
+    setType(event.target.value as string);
+  };
+  return (
+    <>
+      <Typography component="span">Write a </Typography>
+      <FormControl variant="standard">
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={type}
+          onChange={handleChange}
+        >
+          <MenuItem value={"COMMENT"}>Comment</MenuItem>
+          <MenuItem value={"REVIEW"}>Review</MenuItem>
+          <MenuItem value={"DECISION"}>Decision</MenuItem>
+        </Select>
+      </FormControl>
+    </>
+  );
+}
+
 function NewThread({ userId, articleId }) {
   const variables = {
     userId,
@@ -60,11 +89,7 @@ function NewThread({ userId, articleId }) {
     return <></>;
   }
   if (!data.draftMessage) {
-    return (
-      <>
-        Write a<Button>Comment</Button>
-      </>
-    );
+    return <NewThreadPrompt userId={userId} articleId={articleId} />;
   }
 
   const message = data.draftMessage;
@@ -180,8 +205,11 @@ function NewThread({ userId, articleId }) {
 
 export default function AuthenticatedNewThread({ articleId }) {
   const { loading, user } = useAuth();
-  if (loading || !user) {
+  if (loading) {
     return null;
+  }
+  if (!user) {
+    return <>Log in to comment</>;
   }
   return <NewThread userId={user.uid} articleId={articleId} />;
 }
