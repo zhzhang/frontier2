@@ -1,5 +1,4 @@
 import DiscussionSidebar from "@/components/article/DiscussionSidebar";
-import NewThread from "@/components/article/NewThread";
 import {
   addHighlightVar,
   articleVar,
@@ -197,8 +196,7 @@ function LeftPane() {
       </Accordion>
       <Divider sx={{ mt: 2, mb: 1 }} />
       <Box sx={{ mb: 1 }}>
-        <NewThread articleId={id} />
-        <DiscussionSidebar />
+        <DiscussionSidebar articleId={id} />
       </Box>
     </Box>
   );

@@ -1,20 +1,15 @@
-import AuthorPopover from "@/components/AuthorPopover";
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
-import Markdown from "@/components/Markdown";
 import MarkdownEditor from "@/components/MarkdownEditor";
-import ProfilePicturePopover from "@/components/ProfilePicturePopover";
-import TimeAgo from "@/components/TimeAgo";
 import { apolloClient } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import _ from "lodash";
 import { useState } from "react";
-import ReplyButton from "./article/ReplyButton";
+import Comment from "./article/Comment";
 import {
   addHighlightVar,
   focusedEditorVar,
@@ -234,40 +229,7 @@ export default function Thread({ headId }) {
   return (
     <>
       {threadMessages.map((message) => (
-        <Box
-          sx={{
-            mt: 2,
-            ml: 4, // Centers to the profile picture.
-          }}
-          key={message.id}
-        >
-          {
-            <Box
-              key={message.id}
-              sx={{
-                display: "flex",
-                pl: 2,
-              }}
-            >
-              <ProfilePicturePopover
-                identity={message.authorIdentity}
-                sx={{ mr: 1 }}
-              />
-              <Box>
-                <AuthorPopover identity={message.authorIdentity} />
-                <Typography {...typographyProps}>{" • "}</Typography>
-                <TimeAgo {...typographyProps} time={message.publishTimestamp} />
-                <Markdown
-                  highlights={message.highlights}
-                  updateArticleAndScroll={updateArticleAndScroll}
-                >
-                  {message.body}
-                </Markdown>
-                <ReplyButton headId={message.headId} />
-              </Box>
-            </Box>
-          }
-        </Box>
+        <Comment message={message} key={message.id} sx={{ ml: 6 }} />
       ))}
       {auth.user && <OpenReply headId={headId} userId={auth.user.uid} />}
     </>

@@ -70,7 +70,6 @@ export default objectType({
             articleId,
           },
         });
-        let identityStatement;
         if (!identity) {
           const context = messageTypeToIdentityContext(type);
           const articleIdentities = await ctx.prisma.identity.findMany({
@@ -103,6 +102,14 @@ export default objectType({
             publishTimestamp: new Date(Date.now()),
             authorIdentityId: identity.id,
             released: type === "COMMENT" ? true : undefined,
+          },
+          include: {
+            authorIdentity: {
+              include: {
+                user: true,
+                venue: true,
+              },
+            },
           },
         });
       },
