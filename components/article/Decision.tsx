@@ -9,7 +9,7 @@ import ReplyButton from "./ReplyButton";
 import { updateArticleAndScroll } from "./vars";
 
 export default function Decision({ decision }) {
-  const { id, body, highlights, author, publishTimestamp } = decision;
+  const { id, body, highlights, authorIdentity, publishTimestamp } = decision;
   const accept = decision.decision;
   const typographyProps = {
     component: "span",
@@ -30,10 +30,10 @@ export default function Decision({ decision }) {
           mr: 1,
         }}
       >
-        <ProfilePicturePopover identity={author} />
+        <ProfilePicturePopover identity={authorIdentity} />
       </Box>
       <Box>
-        <AuthorPopover identity={author} />
+        <AuthorPopover identity={authorIdentity} />
         <Typography {...typographyProps}>{" • "}</Typography>
         <Chip
           variant="outlined"

@@ -36,7 +36,12 @@ function RenderRoot({ message }) {
 function DiscussionSidebar({ articleId }) {
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
     variables: {
-      where: { articleId: { equals: articleId }, headId: { equals: null } },
+      where: {
+        articleId: { equals: articleId },
+        headId: { equals: null },
+        published: { equals: true },
+        released: { equals: true },
+      },
       orderBy: [
         {
           publishTimestamp: "desc",
@@ -57,10 +62,10 @@ function DiscussionSidebar({ articleId }) {
   return (
     <Box sx={{ width: "100%" }}>
       {data.threadMessages.map((message) => (
-        <>
+        <Box key={message.id}>
           <RenderRoot message={message} />
           <Thread headId={message.id} />
-        </>
+        </Box>
       ))}
     </Box>
   );

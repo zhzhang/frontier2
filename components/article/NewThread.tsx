@@ -1,7 +1,6 @@
 import { apolloClient } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/client";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,7 +8,6 @@ import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import _ from "lodash";
-import { useState } from "react";
 import MarkdownEditor from "../MarkdownEditor";
 import { THREAD_MESSAGE_FIELDS } from "../Thread";
 import {
@@ -25,6 +23,7 @@ const DraftMessagesQuery = gql`
     draftMessage(userId: $userId, articleId: $articleId) {
       ...ThreadMessageFields
     }
+    focusedEditor @client
   }
 `;
 
@@ -35,11 +34,12 @@ const UpsertOneThreadMessage = gql`
     $create: ThreadMessageCreateInput!
     $update: ThreadMessageUpdateInput!
   ) {
-    upsertOneThreadMessage(where: $where, create: $create, upsert: $upsert) {
+    upsertOneThreadMessage(where: $where, create: $create, update: $update) {
       ...ThreadMessageFields
     }
   }
 `;
+
 const DeleteOneThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
   mutation DeleteThreadMessage($where: ThreadMessageWhereUniqueInput!) {
@@ -49,30 +49,14 @@ const DeleteOneThreadMessage = gql`
   }
 `;
 
-function NewThreadPrompt({ userId, articleId }) {
-  const [type, setType] = useState("COMMENT");
-  const handleChange = (event) => {
-    setType(event.target.value as string);
-  };
-  return (
-    <Box>
-      <Typography component="span">Write a </Typography>
-      <FormControl variant="standard">
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={type}
-          onChange={handleChange}
-        >
-          <MenuItem value={"COMMENT"}>Comment</MenuItem>
-          <MenuItem value={"REVIEW"}>Review</MenuItem>
-          <MenuItem value={"DECISION"}>Decision</MenuItem>
-        </Select>
-      </FormControl>
-      <Button>Start</Button>
-    </Box>
-  );
-}
+const PublishThreadMessage = gql`
+  ${THREAD_MESSAGE_FIELDS}
+  mutation PublishThreadMessage($id: String!) {
+    publishMessage(id: $id) {
+      ...ThreadMessageFields
+    }
+  }
+`;
 
 function NewThread({ userId, articleId }) {
   const variables = {
@@ -84,17 +68,23 @@ function NewThread({ userId, articleId }) {
   });
   const [upsertThreadMessage, updateResp] = useMutation(UpsertOneThreadMessage);
   const [deleteThread, deleteResp] = useMutation(DeleteOneThreadMessage);
+  const [publishMessage, publishResp] = useMutation(PublishThreadMessage);
   if (loading) {
-    return <></>;
+    return <>Loading</>;
   }
   if (error) {
-    return <></>;
-  }
-  if (!data.draftMessage) {
-    return <NewThreadPrompt userId={userId} articleId={articleId} />;
+    return <>Error</>;
   }
 
-  const message = data.draftMessage;
+  const message = data.draftMessage
+    ? data.draftMessage
+    : {
+        id: "new",
+        type: "COMMENT",
+        body: "",
+        highlights: [],
+        __typename: "ThreadMessage",
+      };
 
   const update = (message) => {
     upsertThreadMessage({
@@ -102,7 +92,25 @@ function NewThread({ userId, articleId }) {
         where: {
           id: message.id,
         },
-        data: {
+        create: {
+          type: message.type,
+          body: message.body,
+          highlights: message.highlights,
+          author: {
+            connect: {
+              id: userId,
+            },
+          },
+          article: {
+            connect: {
+              id: articleId,
+            },
+          },
+        },
+        update: {
+          type: {
+            set: message.type,
+          },
           body: {
             set: message.body,
           },
@@ -110,6 +118,7 @@ function NewThread({ userId, articleId }) {
         },
       },
       context: {
+        debounceTimeout: 1000,
         debounceKey: message.id,
       },
     });
@@ -119,6 +128,10 @@ function NewThread({ userId, articleId }) {
       data: {
         draftMessage: message,
       },
+    });
+    const data = apolloClient.readQuery({
+      query: DraftMessagesQuery,
+      variables,
     });
   };
   const addHighlight = (highlight) => {
@@ -139,12 +152,29 @@ function NewThread({ userId, articleId }) {
   };
   return (
     <>
+      <Typography component="span">Writing a </Typography>
+      <FormControl variant="standard">
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={message.type}
+          onChange={({ target: { value } }) =>
+            update({ ...message, type: value })
+          }
+          sx={{ height: 25 }}
+        >
+          <MenuItem value={"COMMENT"}>Comment</MenuItem>
+          <MenuItem value={"REVIEW"}>Review</MenuItem>
+        </Select>
+      </FormControl>
       <MarkdownEditor
         articleMode
         body={message.body}
         highlights={message.highlights}
         deleteHighlight={deleteHighlight}
-        focused={data.focusedEditor === message.id}
+        focused={
+          data.focusedEditor === message.id || data.focusedEditor === "new"
+        }
         onFocus={() => {
           focusedEditorVar(message.id);
           highlightsVar(message.highlights);
@@ -154,25 +184,15 @@ function NewThread({ userId, articleId }) {
           update({ ...message, body });
         }}
         updateArticleAndScroll={updateArticleAndScroll}
-        placeholder="Write a review!"
+        placeholder={`Write a ${message.type.toLowerCase()}!`}
         sx={{ mt: 1 }}
       />
       <div style={{ textAlign: "right" }}>
         <Button
           onClick={() =>
-            upsertThreadMessage({
+            publishMessage({
               variables: {
-                where: {
-                  id: message.id,
-                },
-                data: {
-                  published: {
-                    set: true,
-                  },
-                  publishTimestamp: {
-                    set: new Date(Date.now()),
-                  },
-                },
+                id: message.id,
               },
             })
           }
@@ -182,7 +202,7 @@ function NewThread({ userId, articleId }) {
         <Button
           color="error"
           onClick={async () => {
-            await deleteMessage({
+            await deleteThread({
               variables: {
                 where: {
                   id: message.id,
@@ -193,7 +213,7 @@ function NewThread({ userId, articleId }) {
               query: DraftMessagesQuery,
               variables,
               data: {
-                userReview: null,
+                draftMessage: null,
               },
             });
           }}

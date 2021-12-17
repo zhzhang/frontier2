@@ -31,7 +31,7 @@ export const THREAD_MESSAGE_FIELDS = gql`
   fragment ThreadMessageFields on ThreadMessage {
     id
     type
-    author {
+    authorIdentity {
       context
       number
       user {
@@ -52,7 +52,6 @@ export const THREAD_MESSAGE_FIELDS = gql`
 `;
 
 const ThreadMessagesQuery = gql`
-  ${USER_CARD_FIELDS}
   ${THREAD_MESSAGE_FIELDS}
   query ThreadMessagesQuery($where: ThreadMessageWhereInput!) {
     threadMessages(where: $where) {
@@ -63,16 +62,10 @@ const ThreadMessagesQuery = gql`
 `;
 
 const CreateThreadMessageMutation = gql`
-  ${USER_CARD_FIELDS}
+  ${THREAD_MESSAGE_FIELDS}
   mutation CreateThreadMessageMutation($data: ThreadMessageCreateInput!) {
     createOneThreadMessage(data: $data) {
-      id
-      author {
-        ...UserCardFields
-      }
-      body
-      highlights
-      createdAt
+      ...ThreadMessageFields
     }
   }
 `;
@@ -246,6 +239,7 @@ export default function Thread({ headId }) {
             mt: 2,
             ml: 4, // Centers to the profile picture.
           }}
+          key={message.id}
         >
           {
             <Box
@@ -255,9 +249,12 @@ export default function Thread({ headId }) {
                 pl: 2,
               }}
             >
-              <ProfilePicturePopover identity={message.author} sx={{ mr: 1 }} />
+              <ProfilePicturePopover
+                identity={message.authorIdentity}
+                sx={{ mr: 1 }}
+              />
               <Box>
-                <AuthorPopover identity={message.author} />
+                <AuthorPopover identity={message.authorIdentity} />
                 <Typography {...typographyProps}>{" • "}</Typography>
                 <TimeAgo {...typographyProps} time={message.publishTimestamp} />
                 <Markdown

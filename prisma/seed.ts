@@ -402,7 +402,7 @@ async function main() {
   const review2 = await prisma.threadMessage.create({
     data: {
       type: "REVIEW",
-      author: {
+      authorIdentity: {
         create: {
           user: {
             connect: {
@@ -423,6 +423,12 @@ async function main() {
           number: 1,
         },
       },
+      author: {
+        connect: {
+          id: reviewer.id,
+        },
+      },
+      published: true,
       publishTimestamp: new Date("2021-10-20T12:00:00"),
       article: {
         connect: {
@@ -443,13 +449,19 @@ async function main() {
         },
       },
       headId: review2.id,
-      author: {
+      authorIdentity: {
         connect: {
           id: andrewAuthorIdentity.id,
         },
       },
+      author: {
+        connect: {
+          id: andrew.id,
+        },
+      },
       body: `Author responses and other discussion on public reviews can be viewed in a thread below the review.`,
       highlights: [],
+      published: true,
       publishTimestamp: new Date("2021-10-20T14:00:00"),
     },
   });
@@ -464,7 +476,7 @@ async function main() {
   const decision = await prisma.threadMessage.create({
     data: {
       type: "DECISION",
-      author: {
+      authorIdentity: {
         create: {
           number: 1,
           user: {
@@ -485,7 +497,13 @@ async function main() {
           context: "CHAIR",
         },
       },
+      author: {
+        connect: {
+          id: reviewer.id,
+        },
+      },
       body: `This is an example meta-review.`,
+      published: true,
       publishTimestamp: new Date("2021-11-20T12:00:00"),
       highlights: [],
       venue: {
@@ -576,9 +594,9 @@ async function main() {
   await prisma.threadMessage.create({
     data: {
       type: "DECISION",
-      author: {
+      authorIdentity: {
         create: {
-          number: 1,
+          number: 2,
           user: {
             connect: {
               id: reviewer.id,
@@ -597,6 +615,11 @@ async function main() {
           context: "CHAIR",
         },
       },
+      author: {
+        connect: {
+          id: reviewer.id,
+        },
+      },
       body: `Articles can be accepted by multiple venues, meaning that transactions or rolling-review papers may be selected based on prior reviews to be featured at conferences.`,
       highlights: [],
       venue: {
@@ -604,6 +627,7 @@ async function main() {
           id: pastACL.id,
         },
       },
+      published: true,
       publishTimestamp: new Date("2021-11-27T12:00:00"),
       decision: true,
       article: {

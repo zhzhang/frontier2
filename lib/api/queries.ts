@@ -27,17 +27,12 @@ export default objectType({
           where: {
             articleId,
             author: {
-              user: {
-                id: userId,
-              },
+              id: userId,
             },
-            publishTimestamp: null,
+            published: false,
           },
         });
-        if (draftMessage) {
-          return draftMessage;
-        }
-        return null;
+        return draftMessage;
       },
     });
     t.list.field("searchOpenVenues", {

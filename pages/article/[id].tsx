@@ -25,6 +25,7 @@ import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -110,7 +111,6 @@ function Index() {
       </Layout>
     );
   }
-  console.log(data.article);
   const { versions } = data.article;
   const selectedVersion = !version
     ? _.maxBy(versions, "createdAt")
@@ -195,7 +195,8 @@ function LeftPane() {
           <Markdown>{selectedVersion.abstract}</Markdown>
         </AccordionDetails>
       </Accordion>
-      <Box sx={{ mt: 1, mb: 1 }}>
+      <Divider sx={{ mt: 2, mb: 1 }} />
+      <Box sx={{ mb: 1 }}>
         <NewThread articleId={id} />
         <DiscussionSidebar />
       </Box>

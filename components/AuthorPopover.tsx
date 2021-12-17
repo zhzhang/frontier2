@@ -21,7 +21,7 @@ export default function AuthorPopover({ identity, color = "textSecondary" }) {
       <Link
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-        href={!anonymous && `/user/${id}`}
+        href={anonymous ? undefined : `/user/${id}`}
         underline={anonymous ? "none" : "hover"}
         color={color}
         variant="body1"

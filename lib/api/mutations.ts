@@ -7,6 +7,7 @@ import {
   stringArg,
 } from "nexus";
 import stream from "stream";
+import { messageTypeToIdentityContext } from "./utils";
 
 function s3UploadFromStream(bucket, key) {
   const pass = new stream.PassThrough();
@@ -51,8 +52,64 @@ export default objectType({
     t.crud.updateOneSubmission();
     t.crud.createOneReviewRequest();
     t.crud.createOneThreadMessage();
+    t.field("publishMessage", {
+      type: "ThreadMessage",
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: async (_, { id }, ctx) => {
+        const message = await ctx.prisma.threadMessage.findUnique({
+          where: {
+            id,
+          },
+        });
+        const { authorId, articleId, type, venueId, headId } = message;
+        let identity = await ctx.prisma.identity.findFirst({
+          where: {
+            userId: authorId,
+            articleId,
+          },
+        });
+        let identityStatement;
+        if (!identity) {
+          const context = messageTypeToIdentityContext(type);
+          const articleIdentities = await ctx.prisma.identity.findMany({
+            where: {
+              AND: [
+                {
+                  articleId: { equals: articleId },
+                },
+                {
+                  context: { equals: context },
+                },
+              ],
+            },
+          });
+          identity = await ctx.prisma.identity.create({
+            data: {
+              userId: authorId,
+              articleId,
+              context,
+              number: articleIdentities.length + 1,
+            },
+          });
+        }
+        return await ctx.prisma.threadMessage.update({
+          where: {
+            id,
+          },
+          data: {
+            published: true,
+            publishTimestamp: new Date(Date.now()),
+            authorIdentityId: identity.id,
+            released: type === "COMMENT" ? true : undefined,
+          },
+        });
+      },
+    });
     t.crud.upsertOneThreadMessage();
     t.crud.updateOneThreadMessage();
+    t.crud.deleteOneThreadMessage();
     t.field("createArticle", {
       type: "Article",
       args: {

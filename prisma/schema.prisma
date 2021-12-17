@@ -21,6 +21,7 @@ model User {
   relationsAsTarget Relation[]        @relation("target")
   reviewRequests    ReviewRequest[]
   identities        Identity[]
+  threadMessage     ThreadMessage[]
 }
 
 enum RelationType {
@@ -60,15 +61,15 @@ enum IdentityContext {
 }
 
 model Identity {
-  id            String          @id @default(cuid())
-  user          User            @relation(fields: [userId], references: [id])
-  context       IdentityContext
-  venue         Venue?          @relation(fields: [venueId], references: [id])
+  id            String           @id @default(cuid())
+  user          User             @relation(fields: [userId], references: [id])
+  context       IdentityContext?
+  venue         Venue?           @relation(fields: [venueId], references: [id])
   venueId       String?
   number        Int
   userId        String
-  article       Article         @relation(fields: [articleId], references: [id])
-  anonymized    Boolean         @default(true)
+  article       Article          @relation(fields: [articleId], references: [id])
+  anonymized    Boolean          @default(true)
   articleId     String
   threadMessage ThreadMessage[]
 }
@@ -92,9 +93,11 @@ enum ThreadMessageType {
 model ThreadMessage {
   id               String            @id @default(cuid())
   type             ThreadMessageType
-  body             String            @db.MediumText
-  highlights       Json
-  author           Identity          @relation(fields: [authorId], references: [id])
+  body             String            @default("") @db.MediumText
+  highlights       Json              @default("[]")
+  authorIdentity   Identity?         @relation(fields: [authorIdentityId], references: [id])
+  authorIdentityId String?
+  author           User              @relation(fields: [authorId], references: [id])
   authorId         String
   article          Article           @relation(fields: [articleId], references: [id])
   articleId        String
@@ -103,7 +106,8 @@ model ThreadMessage {
   venueId          String?
   rating           Int               @default(0)
   decision         Boolean           @default(false)
-  publishTimestamp DateTime?         @default(now())
+  published        Boolean           @default(false)
+  publishTimestamp DateTime?
   released         Boolean           @default(true)
 }
 
