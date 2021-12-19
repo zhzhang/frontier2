@@ -93,8 +93,8 @@ enum ThreadMessageType {
 model ThreadMessage {
   id               String            @id @default(cuid())
   type             ThreadMessageType
-  body             String            @default("") @db.MediumText
-  highlights       Json              @default("[]")
+  body             String            @db.MediumText
+  highlights       Json
   authorIdentity   Identity?         @relation(fields: [authorIdentityId], references: [id])
   authorIdentityId String?
   author           User              @relation(fields: [authorId], references: [id])

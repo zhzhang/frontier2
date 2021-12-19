@@ -106,7 +106,7 @@ async function main() {
       authors: {
         create: [
           {
-            number: 2,
+            number: 1,
             context: "AUTHOR",
             user: { connect: { id: user2.id } },
             anonymized: false,
@@ -146,7 +146,7 @@ async function main() {
   });
   const andrewAuthorIdentity = await prisma.identity.create({
     data: {
-      number: 1,
+      number: 2,
       context: "AUTHOR",
       user: { connect: { id: andrew.id } },
       article: { connect: { id: article.id } },

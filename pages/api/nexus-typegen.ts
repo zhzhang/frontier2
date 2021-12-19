@@ -1406,10 +1406,10 @@ export interface NexusGenInputs {
     article: NexusGenInputs['ArticleCreateNestedOneWithoutThreadMessagesInput']; // ArticleCreateNestedOneWithoutThreadMessagesInput!
     author: NexusGenInputs['UserCreateNestedOneWithoutThreadMessageInput']; // UserCreateNestedOneWithoutThreadMessageInput!
     authorIdentity?: NexusGenInputs['IdentityCreateNestedOneWithoutThreadMessageInput'] | null; // IdentityCreateNestedOneWithoutThreadMessageInput
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
@@ -1421,10 +1421,10 @@ export interface NexusGenInputs {
   ThreadMessageCreateManyArticleInput: { // input type
     authorId: string; // String!
     authorIdentityId?: string | null; // String
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
@@ -1440,10 +1440,10 @@ export interface NexusGenInputs {
   ThreadMessageCreateManyAuthorIdentityInput: { // input type
     articleId: string; // String!
     authorId: string; // String!
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
@@ -1459,10 +1459,10 @@ export interface NexusGenInputs {
   ThreadMessageCreateManyAuthorInput: { // input type
     articleId: string; // String!
     authorIdentityId?: string | null; // String
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
@@ -1479,10 +1479,10 @@ export interface NexusGenInputs {
     articleId: string; // String!
     authorId: string; // String!
     authorIdentityId?: string | null; // String
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
@@ -1537,10 +1537,10 @@ export interface NexusGenInputs {
   ThreadMessageCreateWithoutArticleInput: { // input type
     author: NexusGenInputs['UserCreateNestedOneWithoutThreadMessageInput']; // UserCreateNestedOneWithoutThreadMessageInput!
     authorIdentity?: NexusGenInputs['IdentityCreateNestedOneWithoutThreadMessageInput'] | null; // IdentityCreateNestedOneWithoutThreadMessageInput
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
@@ -1552,10 +1552,10 @@ export interface NexusGenInputs {
   ThreadMessageCreateWithoutAuthorIdentityInput: { // input type
     article: NexusGenInputs['ArticleCreateNestedOneWithoutThreadMessagesInput']; // ArticleCreateNestedOneWithoutThreadMessagesInput!
     author: NexusGenInputs['UserCreateNestedOneWithoutThreadMessageInput']; // UserCreateNestedOneWithoutThreadMessageInput!
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
@@ -1567,10 +1567,10 @@ export interface NexusGenInputs {
   ThreadMessageCreateWithoutAuthorInput: { // input type
     article: NexusGenInputs['ArticleCreateNestedOneWithoutThreadMessagesInput']; // ArticleCreateNestedOneWithoutThreadMessagesInput!
     authorIdentity?: NexusGenInputs['IdentityCreateNestedOneWithoutThreadMessageInput'] | null; // IdentityCreateNestedOneWithoutThreadMessageInput
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
@@ -1583,10 +1583,10 @@ export interface NexusGenInputs {
     article: NexusGenInputs['ArticleCreateNestedOneWithoutThreadMessagesInput']; // ArticleCreateNestedOneWithoutThreadMessagesInput!
     author: NexusGenInputs['UserCreateNestedOneWithoutThreadMessageInput']; // UserCreateNestedOneWithoutThreadMessageInput!
     authorIdentity?: NexusGenInputs['IdentityCreateNestedOneWithoutThreadMessageInput'] | null; // IdentityCreateNestedOneWithoutThreadMessageInput
-    body?: string | null; // String
+    body: string; // String!
     decision?: boolean | null; // Boolean
     headId?: string | null; // String
-    highlights?: NexusGenScalars['Json'] | null; // Json
+    highlights: NexusGenScalars['Json']; // Json!
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean

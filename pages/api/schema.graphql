@@ -1723,10 +1723,10 @@ input ThreadMessageCreateInput {
   article: ArticleCreateNestedOneWithoutThreadMessagesInput!
   author: UserCreateNestedOneWithoutThreadMessageInput!
   authorIdentity: IdentityCreateNestedOneWithoutThreadMessageInput
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean
@@ -1739,10 +1739,10 @@ input ThreadMessageCreateInput {
 input ThreadMessageCreateManyArticleInput {
   authorId: String!
   authorIdentityId: String
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean
@@ -1760,10 +1760,10 @@ input ThreadMessageCreateManyArticleInputEnvelope {
 input ThreadMessageCreateManyAuthorIdentityInput {
   articleId: String!
   authorId: String!
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean
@@ -1781,10 +1781,10 @@ input ThreadMessageCreateManyAuthorIdentityInputEnvelope {
 input ThreadMessageCreateManyAuthorInput {
   articleId: String!
   authorIdentityId: String
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean
@@ -1803,10 +1803,10 @@ input ThreadMessageCreateManyVenueInput {
   articleId: String!
   authorId: String!
   authorIdentityId: String
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean
@@ -1871,10 +1871,10 @@ input ThreadMessageCreateOrConnectWithoutVenueInput {
 input ThreadMessageCreateWithoutArticleInput {
   author: UserCreateNestedOneWithoutThreadMessageInput!
   authorIdentity: IdentityCreateNestedOneWithoutThreadMessageInput
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean
@@ -1887,10 +1887,10 @@ input ThreadMessageCreateWithoutArticleInput {
 input ThreadMessageCreateWithoutAuthorIdentityInput {
   article: ArticleCreateNestedOneWithoutThreadMessagesInput!
   author: UserCreateNestedOneWithoutThreadMessageInput!
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean
@@ -1903,10 +1903,10 @@ input ThreadMessageCreateWithoutAuthorIdentityInput {
 input ThreadMessageCreateWithoutAuthorInput {
   article: ArticleCreateNestedOneWithoutThreadMessagesInput!
   authorIdentity: IdentityCreateNestedOneWithoutThreadMessageInput
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean
@@ -1920,10 +1920,10 @@ input ThreadMessageCreateWithoutVenueInput {
   article: ArticleCreateNestedOneWithoutThreadMessagesInput!
   author: UserCreateNestedOneWithoutThreadMessageInput!
   authorIdentity: IdentityCreateNestedOneWithoutThreadMessageInput
-  body: String
+  body: String!
   decision: Boolean
   headId: String
-  highlights: Json
+  highlights: Json!
   id: String
   publishTimestamp: DateTime
   published: Boolean

@@ -113,6 +113,8 @@ function NewThreadPrompt({ userId, articleId }) {
             variables: {
               data: {
                 type,
+                body: "",
+                highlights: [],
                 article: {
                   connect: {
                     id: articleId,
@@ -173,7 +175,6 @@ function NewThread({ userId, articleId }) {
         query: ThreadMessagesQuery,
         variables,
       });
-      console.log(publishMessage);
       cache.writeQuery({
         query: ThreadMessagesQuery,
         variables,

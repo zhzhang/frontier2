@@ -5,5 +5,5 @@ export function messageTypeToIdentityContext(type: string): string {
     case "DECISION":
       return "CHAIR";
   }
-  return "";
+  return null;
 }

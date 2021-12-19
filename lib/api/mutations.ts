@@ -63,7 +63,7 @@ export default objectType({
             id,
           },
         });
-        const { authorId, articleId, type, venueId, headId } = message;
+        const { authorId, articleId, type, venueId } = message;
         let identity = await ctx.prisma.identity.findFirst({
           where: {
             userId: authorId,
@@ -79,7 +79,7 @@ export default objectType({
                   articleId: { equals: articleId },
                 },
                 {
-                  context: { equals: context },
+                  context: context && { equals: context },
                 },
               ],
             },
@@ -90,6 +90,8 @@ export default objectType({
               articleId,
               context,
               number: articleIdentities.length + 1,
+              venueId,
+              anonymized: false,
             },
           });
         }
