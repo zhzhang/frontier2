@@ -63,7 +63,10 @@ export default objectType({
             id,
           },
         });
-        const { authorId, articleId, type, venueId } = message;
+        const { authorId, articleId, type, venueId, body } = message;
+        if (body.length === 0) {
+          throw Error("Cannot publish an empty message.");
+        }
         let identity = await ctx.prisma.identity.findFirst({
           where: {
             userId: authorId,

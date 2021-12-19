@@ -1,13 +1,13 @@
-import ReplyButton from "@/components/article/ReplyButton";
 import AuthorPopover from "@/components/AuthorPopover";
 import Markdown from "@/components/Markdown";
 import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import TimeAgo from "@/components/TimeAgo";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { ReplyButton } from "../Thread";
 import { updateArticleAndScroll } from "./vars";
 
-export default function Comment({ message, sx = null }) {
+export default function Comment({ message, articleId, sx = null }) {
   const typographyProps = {
     component: "span",
     sx: {
@@ -37,7 +37,7 @@ export default function Comment({ message, sx = null }) {
           >
             {message.body}
           </Markdown>
-          <ReplyButton headId={message.headId} />
+          <ReplyButton headId={message.headId} articleId={articleId} />
         </Box>
       </Box>
     </Box>

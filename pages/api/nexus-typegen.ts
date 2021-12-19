@@ -3060,6 +3060,7 @@ export interface NexusGenArgTypes {
     }
     draftMessage: { // args
       articleId?: string | null; // String
+      headId?: string | null; // String
       userId?: string | null; // String
     }
     identities: { // args

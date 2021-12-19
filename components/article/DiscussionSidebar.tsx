@@ -18,7 +18,12 @@ import gql from "graphql-tag";
 import _ from "lodash";
 import { useState } from "react";
 import MarkdownEditor from "../MarkdownEditor";
-import { THREAD_MESSAGE_FIELDS } from "../Thread";
+import {
+  DeleteOneThreadMessage,
+  PublishThreadMessage,
+  THREAD_MESSAGE_FIELDS,
+  UpdateThreadMessage,
+} from "../Thread";
 import Comment from "./Comment";
 import {
   addHighlightVar,
@@ -43,7 +48,7 @@ const ThreadMessagesQuery = gql`
 const DraftMessagesQuery = gql`
   ${THREAD_MESSAGE_FIELDS}
   query DraftMessageQuery($userId: String!, $articleId: String!) {
-    draftMessage(userId: $userId, articleId: $articleId) {
+    draftMessage(userId: $userId, articleId: $articleId, headId: null) {
       ...ThreadMessageFields
     }
     focusedEditor @client
@@ -54,36 +59,6 @@ const CreateThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
   mutation createOneThreadMessage($data: ThreadMessageCreateInput!) {
     createOneThreadMessage(data: $data) {
-      ...ThreadMessageFields
-    }
-  }
-`;
-
-const UpdateThreadMessage = gql`
-  ${THREAD_MESSAGE_FIELDS}
-  mutation UpdateOneThreadMessage(
-    $where: ThreadMessageWhereUniqueInput!
-    $data: ThreadMessageUpdateInput!
-  ) {
-    updateOneThreadMessage(where: $where, data: $data) {
-      ...ThreadMessageFields
-    }
-  }
-`;
-
-const DeleteOneThreadMessage = gql`
-  ${THREAD_MESSAGE_FIELDS}
-  mutation DeleteThreadMessage($where: ThreadMessageWhereUniqueInput!) {
-    deleteOneThreadMessage(where: $where) {
-      ...ThreadMessageFields
-    }
-  }
-`;
-
-const PublishThreadMessage = gql`
-  ${THREAD_MESSAGE_FIELDS}
-  mutation PublishThreadMessage($id: String!) {
-    publishMessage(id: $id) {
       ...ThreadMessageFields
     }
   }
@@ -242,10 +217,6 @@ function NewThread({ userId, articleId }) {
         draftMessage: message,
       },
     });
-    const data = apolloClient.readQuery({
-      query: DraftMessagesQuery,
-      variables,
-    });
   };
   const addHighlight = (highlight) => {
     const data = apolloClient.readQuery({
@@ -334,14 +305,14 @@ function AuthenticatedNewThread({ articleId }) {
   return <NewThread userId={user.uid} articleId={articleId} />;
 }
 
-function RenderRoot({ message }) {
+function RenderRoot({ message, articleId }) {
   switch (message.type) {
     case "REVIEW":
-      return <Review review={message} />;
+      return <Review review={message} articleId={articleId} />;
     case "DECISION":
-      return <Decison decision={message} />;
+      return <Decison decision={message} articleId={articleId} />;
     default:
-      return <Comment message={message} />;
+      return <Comment message={message} articleId={articleId} />;
   }
 }
 
@@ -373,8 +344,8 @@ function DiscussionSidebar({ articleId }) {
       <AuthenticatedNewThread articleId={articleId} />
       {data.threadMessages.map((message) => (
         <Box key={message.id}>
-          <RenderRoot message={message} />
-          <Thread headId={message.id} />
+          <RenderRoot message={message} articleId={articleId} />
+          <Thread headId={message.id} articleId={articleId} />
         </Box>
       ))}
     </Box>

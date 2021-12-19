@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { nonNull, objectType, stringArg } from "nexus";
+import { nonNull, nullable, objectType, stringArg } from "nexus";
 import prisma from "../prisma";
 import { RoleEnum } from "../types";
 
@@ -21,14 +21,20 @@ export default objectType({
     t.crud.reviewRequests({ filtering: true });
     t.nullable.field("draftMessage", {
       type: "ThreadMessage",
-      args: { articleId: stringArg(), userId: stringArg() },
-      resolve: async (_, { articleId, userId }, ctx) => {
+      args: {
+        userId: stringArg(),
+        articleId: stringArg(),
+        headId: nullable(stringArg()),
+      },
+      resolve: async (_, { articleId, userId, headId }, ctx) => {
+        console.log(articleId, userId, headId);
         const draftMessage = await ctx.prisma.threadMessage.findFirst({
           where: {
             articleId,
             author: {
               id: userId,
             },
+            headId,
             published: false,
           },
         });

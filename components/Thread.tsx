@@ -1,3 +1,4 @@
+import { Auth } from "@/components/Auth";
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import MarkdownEditor from "@/components/MarkdownEditor";
@@ -6,6 +7,7 @@ import { useAuth } from "@/lib/firebase";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
 import gql from "graphql-tag";
 import _ from "lodash";
 import { useState } from "react";
@@ -14,7 +16,6 @@ import {
   addHighlightVar,
   focusedEditorVar,
   highlightsVar,
-  threadRepliesVar,
   updateArticleAndScroll,
 } from "./article/vars";
 import { USER_CARD_FIELDS } from "./UserCard";
@@ -65,53 +66,210 @@ const CreateThreadMessageMutation = gql`
   }
 `;
 
+const CreateThreadMessage = gql`
+  ${THREAD_MESSAGE_FIELDS}
+  mutation createOneThreadMessage($data: ThreadMessageCreateInput!) {
+    createOneThreadMessage(data: $data) {
+      ...ThreadMessageFields
+    }
+  }
+`;
+
+export const UpdateThreadMessage = gql`
+  ${THREAD_MESSAGE_FIELDS}
+  mutation UpdateOneThreadMessage(
+    $where: ThreadMessageWhereUniqueInput!
+    $data: ThreadMessageUpdateInput!
+  ) {
+    updateOneThreadMessage(where: $where, data: $data) {
+      ...ThreadMessageFields
+    }
+  }
+`;
+
+export const DeleteOneThreadMessage = gql`
+  ${THREAD_MESSAGE_FIELDS}
+  mutation DeleteThreadMessage($where: ThreadMessageWhereUniqueInput!) {
+    deleteOneThreadMessage(where: $where) {
+      ...ThreadMessageFields
+    }
+  }
+`;
+
+export const PublishThreadMessage = gql`
+  ${THREAD_MESSAGE_FIELDS}
+  mutation PublishThreadMessage($id: String!) {
+    publishMessage(id: $id) {
+      ...ThreadMessageFields
+    }
+  }
+`;
+
 const OpenReplyQuery = gql`
-  query OpenReplyQuery {
-    threadReplies @client
+  ${THREAD_MESSAGE_FIELDS}
+  query DraftMessageQuery(
+    $userId: String!
+    $articleId: String!
+    $headId: String!
+  ) {
+    draftMessage(userId: $userId, articleId: $articleId, headId: $headId) {
+      ...ThreadMessageFields
+    }
     focusedEditor @client
     article @client
   }
 `;
 
-function OpenReply({ headId, userId }) {
-  const { loading, error, data } = useQuery(OpenReplyQuery);
-  const [createThreadMessage, updateResp] = useMutation(
-    CreateThreadMessageMutation,
-    {
-      update(cache, { data: { createOneThreadMessage } }) {
-        const replies = threadRepliesVar();
-        threadRepliesVar(replies.set(headId, null));
-        const { threadMessages } = cache.readQuery({
-          query: ThreadMessagesQuery,
-          variables: { where: { headId: { equals: headId } } },
-        });
-        cache.writeQuery({
-          query: ThreadMessagesQuery,
-          variables: { where: { headId: { equals: headId } } },
-          data: {
-            threadMessages: [...threadMessages, createOneThreadMessage],
-          },
-        });
-      },
-    }
+export function ReplyButton({ headId, articleId }) {
+  const auth = useAuth();
+  const [loginOpen, toggleLoginOpen] = useState(false);
+  const [createThreadMessage, updateResp] = useMutation(CreateThreadMessage, {
+    update(cache, { data: { createOneThreadMessage } }) {
+      cache.writeQuery({
+        query: OpenReplyQuery,
+        variables: {
+          articleId,
+          userId: auth.user.uid,
+          headId,
+        },
+        data: {
+          draftMessage: createOneThreadMessage,
+        },
+      });
+    },
+  });
+  return (
+    <>
+      <Button
+        size="small"
+        sx={{ p: 0, minWidth: 0 }}
+        onClick={() => {
+          if (auth.user) {
+            createThreadMessage({
+              variables: {
+                data: {
+                  type: "COMMENT",
+                  body: "",
+                  highlights: [],
+                  headId,
+                  article: {
+                    connect: {
+                      id: articleId,
+                    },
+                  },
+                  author: {
+                    connect: {
+                      id: auth.user.uid,
+                    },
+                  },
+                },
+              },
+            });
+          } else {
+            toggleLoginOpen(true);
+          }
+        }}
+      >
+        Reply
+      </Button>
+      <Dialog
+        open={loginOpen && !auth.user}
+        onClose={() => toggleLoginOpen(false)}
+      >
+        <Auth />
+      </Dialog>
+    </>
   );
-  if (loading || error) {
+}
+
+function OpenReply({ articleId, headId, userId }) {
+  const { loading, error, data } = useQuery(OpenReplyQuery, {
+    variables: {
+      articleId,
+      userId,
+      headId,
+    },
+  });
+  const [updateThreadMessage, updateResp] = useMutation(UpdateThreadMessage);
+  const [deleteThread, deleteResp] = useMutation(DeleteOneThreadMessage);
+  const [createThreadMessage, createResp] = useMutation(PublishThreadMessage, {
+    update(cache, { data: { publishMessage } }) {
+      const variables = {
+        where: {
+          AND: [
+            { headId: { equals: headId } },
+            { published: { equals: true } },
+          ],
+        },
+        orderBy: [
+          {
+            publishTimestamp: "asc",
+          },
+        ],
+      };
+      const { threadMessages } = cache.readQuery({
+        query: ThreadMessagesQuery,
+        variables,
+      });
+      cache.writeQuery({
+        query: ThreadMessagesQuery,
+        variables,
+        data: {
+          threadMessages: [publishMessage, ...threadMessages],
+        },
+      });
+      cache.writeQuery({
+        query: OpenReplyQuery,
+        variables: {
+          articleId,
+          userId,
+          headId,
+        },
+        data: {
+          draftMessage: null,
+        },
+      });
+    },
+  });
+  if (loading || error || !data.draftMessage) {
     return null;
   }
-  if (error) {
-    return null;
-  }
-  const comment = data.threadReplies.get(headId);
+  const comment = data.draftMessage;
   if (!comment) {
     return null;
   }
 
-  const update = (comment) => {
-    const data = apolloClient.readQuery({
-      query: OpenReplyQuery,
+  const update = (message) => {
+    updateThreadMessage({
+      variables: {
+        where: {
+          id: message.id,
+        },
+        data: {
+          type: {
+            set: message.type,
+          },
+          body: {
+            set: message.body,
+          },
+          highlights: message.highlights,
+        },
+      },
+      context: {
+        debounceTimeout: 1000,
+        debounceKey: message.id,
+      },
     });
-    const newThreadReplies = data.threadReplies.set(headId, comment);
-    threadRepliesVar(newThreadReplies);
+    apolloClient.writeQuery({
+      query: OpenReplyQuery,
+      variables: {
+        userId,
+        headId,
+      },
+      data: {
+        draftMessage: message,
+      },
+    });
   };
 
   const addHighlight = (highlight) => {
@@ -164,18 +322,7 @@ function OpenReply({ headId, userId }) {
           onClick={() =>
             createThreadMessage({
               variables: {
-                data: {
-                  author: {
-                    connect: {
-                      id: userId,
-                    },
-                  },
-                  headId,
-                  articleId: data.article.id,
-                  body: comment.body,
-                  highlights: comment.highlights,
-                  published: true,
-                },
+                id: comment.id,
               },
             })
           }
@@ -186,8 +333,24 @@ function OpenReply({ headId, userId }) {
           size="small"
           color="error"
           onClick={async () => {
-            highlightsVar([]);
-            threadRepliesVar(data.threadReplies.set(headId, null));
+            await deleteThread({
+              variables: {
+                where: {
+                  id: comment.id,
+                },
+              },
+            });
+            apolloClient.writeQuery({
+              query: OpenReplyQuery,
+              variables: {
+                headId,
+                articleId,
+                userId,
+              },
+              data: {
+                draftMessage: null,
+              },
+            });
           }}
         >
           Cancel
@@ -197,12 +360,20 @@ function OpenReply({ headId, userId }) {
   );
 }
 
-export default function Thread({ headId }) {
+export default function Thread({ headId, articleId }) {
   const auth = useAuth();
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
-    variables: { where: { headId: { equals: headId } } },
+    variables: {
+      where: {
+        AND: [{ headId: { equals: headId } }, { published: { equals: true } }],
+      },
+      orderBy: [
+        {
+          publishTimestamp: "asc",
+        },
+      ],
+    },
   });
-  const [loginOpen, toggleLoginOpen] = useState(false);
   if (loading || auth.loading) {
     return <CenteredSpinner />;
   }
@@ -219,19 +390,23 @@ export default function Thread({ headId }) {
     );
   }
   const { threadMessages } = data;
-  const typographyProps = {
-    component: "span",
-    sx: {
-      fontSize: "0.8rem",
-      color: "gray",
-    },
-  };
   return (
     <>
       {threadMessages.map((message) => (
-        <Comment message={message} key={message.id} sx={{ ml: 6 }} />
+        <Comment
+          message={message}
+          key={message.id}
+          sx={{ ml: 6 }}
+          articleId={articleId}
+        />
       ))}
-      {auth.user && <OpenReply headId={headId} userId={auth.user.uid} />}
+      {auth.user && (
+        <OpenReply
+          articleId={articleId}
+          headId={headId}
+          userId={auth.user.uid}
+        />
+      )}
     </>
   );
 }

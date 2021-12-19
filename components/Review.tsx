@@ -1,9 +1,9 @@
 import AuthorPopover from "@/components/AuthorPopover";
+import { ReplyButton } from "@/components/Thread";
 import TimeAgo from "@/components/TimeAgo";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
-import ReplyButton from "./article/ReplyButton";
 import { updateArticleAndScroll } from "./article/vars";
 import Markdown from "./Markdown";
 import ProfilePicturePopover from "./ProfilePicturePopover";
@@ -41,7 +41,7 @@ function Rating({ rating }) {
   }
 }
 
-export default function Review({ review }) {
+export default function Review({ review, articleId }) {
   const { id, authorIdentity, highlights, body, publishTimestamp } = review;
   const typographyProps = {
     component: "span",
@@ -66,7 +66,7 @@ export default function Review({ review }) {
           >
             {body}
           </Markdown>
-          <ReplyButton headId={id} />
+          <ReplyButton headId={id} articleId={articleId} />
         </Box>
       </Box>
     </Box>

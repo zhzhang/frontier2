@@ -4,11 +4,11 @@ import ProfilePicturePopover from "@/components/ProfilePicturePopover";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
+import { ReplyButton } from "../Thread";
 import TimeAgo from "../TimeAgo";
-import ReplyButton from "./ReplyButton";
 import { updateArticleAndScroll } from "./vars";
 
-export default function Decision({ decision }) {
+export default function Decision({ decision, articleId }) {
   const { id, body, highlights, authorIdentity, publishTimestamp } = decision;
   const accept = decision.decision;
   const typographyProps = {
@@ -50,7 +50,7 @@ export default function Decision({ decision }) {
         >
           {body}
         </Markdown>
-        <ReplyButton headId={id} />
+        <ReplyButton headId={id} articleId={articleId} />
       </Box>
     </Box>
   );
