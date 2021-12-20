@@ -2777,7 +2777,6 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
-    articleVersions: Array<NexusGenRootTypes['ArticleVersion'] | null> | null; // [ArticleVersion]
     articles: NexusGenRootTypes['Article'][]; // [Article!]!
     draftMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     identities: NexusGenRootTypes['Identity'][]; // [Identity!]!
@@ -2904,7 +2903,6 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     article: 'Article'
-    articleVersions: 'ArticleVersion'
     articles: 'Article'
     draftMessage: 'ThreadMessage'
     identities: 'Identity'

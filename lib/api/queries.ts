@@ -1,6 +1,4 @@
-import _ from "lodash";
 import { nonNull, nullable, objectType, stringArg } from "nexus";
-import prisma from "../prisma";
 import { RoleEnum } from "../types";
 
 export default objectType({
@@ -8,8 +6,26 @@ export default objectType({
   definition(t) {
     t.crud.user();
     t.crud.article();
-    t.crud.articles({ filtering: true });
-    t.crud.identities({ filtering: true });
+    // t.crud.articles({filtering: true});
+    t.crud.articles({
+      filtering: true,
+      resolve: async (root, args, ctx, info, originalResolve) => {
+        return await originalResolve(root, args, ctx, info);
+      },
+    });
+    t.crud.identities({
+      filtering: true,
+      resolve: async (root, args, ctx, info, originalResolve) => {
+        const initial = await originalResolve(root, args, ctx, info);
+        const output = [];
+        for (const entry of initial) {
+          if (!entry.anonymized || ctx.user?.id === entry.userId) {
+            output.push(entry);
+          }
+        }
+        return output;
+      },
+    });
     t.crud.venue();
     t.crud.venues({
       filtering: true,
@@ -27,7 +43,6 @@ export default objectType({
         headId: nullable(stringArg()),
       },
       resolve: async (_, { articleId, userId, headId }, ctx) => {
-        console.log(articleId, userId, headId);
         const draftMessage = await ctx.prisma.threadMessage.findFirst({
           where: {
             articleId,
@@ -95,21 +110,6 @@ export default objectType({
             ],
           },
         });
-      },
-    });
-    t.list.field("articleVersions", {
-      type: "ArticleVersion",
-      args: {},
-      resolve: async (_parent, { articleId }, ctx) => {
-        return _.orderBy(
-          await prisma.articleVersion.findMany({
-            where: {
-              articleId,
-            },
-          }),
-          ["versionNumber"],
-          ["desc"]
-        );
       },
     });
     t.list.field("searchUsers", {

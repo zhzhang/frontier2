@@ -872,7 +872,6 @@ input NullableStringFieldUpdateOperationsInput {
 
 type Query {
   article(where: ArticleWhereUniqueInput!): Article
-  articleVersions: [ArticleVersion]
   articles(after: ArticleWhereUniqueInput, before: ArticleWhereUniqueInput, first: Int, last: Int, where: ArticleWhereInput): [Article!]!
   draftMessage(articleId: String, headId: String, userId: String): ThreadMessage
   identities(after: IdentityWhereUniqueInput, before: IdentityWhereUniqueInput, first: Int, last: Int, where: IdentityWhereInput): [Identity!]!

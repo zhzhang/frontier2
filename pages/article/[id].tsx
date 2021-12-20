@@ -163,6 +163,7 @@ function LeftPane() {
         p: 2,
         height: "calc(100vh - 48px)",
         overflowY: "scroll",
+        overscrollBehavior: "none",
         boxSizing: "border-box",
       }}
     >
