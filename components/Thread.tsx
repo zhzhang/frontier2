@@ -395,6 +395,7 @@ export default function Thread({ headId, articleId }) {
       {threadMessages.map((message) => (
         <Comment
           message={message}
+          headId={headId}
           key={message.id}
           sx={{ ml: 6 }}
           articleId={articleId}

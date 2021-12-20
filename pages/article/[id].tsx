@@ -126,23 +126,16 @@ function ArticleView() {
 
   return (
     <Layout padded={false}>
-      <Box sx={{ height: "calc(100vh - 48px)" }}>
-        <SplitPane
-          split="vertical"
-          defaultSize={50}
-          onChange={(size) => setPaneSize(size)}
-        >
-          <Pane
-            initialSize="40%"
-            minSize="20%"
-            maxSize="80%"
-            size={paneSize[0]}
-          >
-            <LeftPane />
-          </Pane>
-          <PdfViewerWrapper />
-        </SplitPane>
-      </Box>
+      <SplitPane
+        split="vertical"
+        defaultSize={50}
+        onChange={(size) => setPaneSize(size)}
+      >
+        <Pane initialSize="40%" minSize="20%" maxSize="80%" size={paneSize[0]}>
+          <LeftPane />
+        </Pane>
+        <PdfViewerWrapper />
+      </SplitPane>
     </Layout>
   );
 }
@@ -166,7 +159,12 @@ function LeftPane() {
   const { selectedVersion } = data;
   return (
     <Box
-      sx={{ pl: 2, pt: 1, height: "calc(100vh - 48px)", overflowY: "scroll" }}
+      sx={{
+        p: 2,
+        height: "calc(100vh - 48px)",
+        overflowY: "scroll",
+        boxSizing: "border-box",
+      }}
     >
       <Typography variant="h6">{title}</Typography>
       <Authors authors={authors} />

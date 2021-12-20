@@ -6,7 +6,8 @@ import {
 import Error from "@/components/Error";
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Layout from "@/components/Layout";
-import Review, { REVIEW_CARD_FIELDS } from "@/components/Review";
+import Review from "@/components/Review";
+import { THREAD_MESSAGE_FIELDS } from "@/components/Thread";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
 import { withApollo } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
@@ -25,12 +26,11 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import { useState } from "react";
 
 const AuthorshipsQuery = gql`
   ${ARTICLE_CARD_FIELDS}
   query AuthorshipsQuery($where: IdentityWhereInput!) {
-    authorships(where: $where) {
+    identities(where: $where) {
       article {
         ...ArticleCardFields
       }
@@ -40,7 +40,14 @@ const AuthorshipsQuery = gql`
 
 function ArticlesTab({ userId }) {
   const { loading, error, data } = useQuery(AuthorshipsQuery, {
-    variables: { where: { userId: { equals: userId } } },
+    variables: {
+      where: {
+        AND: [
+          { userId: { equals: userId } },
+          { context: { equals: "AUTHOR" } },
+        ],
+      },
+    },
   });
   if (loading) {
     return <CenteredSpinner />;
@@ -48,12 +55,12 @@ function ArticlesTab({ userId }) {
   if (error) {
     return <Error>{error.message}</Error>;
   }
-  if (data.authorships.length === 0) {
+  if (data.identities.length === 0) {
     return <Typography>This user has no public articles.</Typography>;
   }
   return (
     <>
-      {data.authorships.map((authorship) => {
+      {data.identities.map((authorship) => {
         const { article } = authorship;
         return (
           <ArticleCard article={article} key={article.id} sx={{ mb: 1 }} />
@@ -64,17 +71,25 @@ function ArticlesTab({ userId }) {
 }
 
 const ReviewsQuery = gql`
-  ${REVIEW_CARD_FIELDS}
-  query ReviewsQuery($where: ReviewWhereInput!) {
-    reviews(where: $where) {
-      ...ReviewCardFields
+  ${THREAD_MESSAGE_FIELDS}
+  ${ARTICLE_CARD_FIELDS}
+  query ReviewsQuery($where: ThreadMessageWhereInput!) {
+    threadMessages(where: $where) {
+      ...ThreadMessageFields
+      article {
+        ...ArticleCardFields
+      }
     }
   }
 `;
 
 function ReviewsTab({ userId }) {
   const { loading, error, data } = useQuery(ReviewsQuery, {
-    variables: { where: { authorId: { equals: userId } } },
+    variables: {
+      where: {
+        AND: [{ authorId: { equals: userId } }, { type: { equals: "REVIEW" } }],
+      },
+    },
   });
   if (loading) {
     return <CenteredSpinner />;
@@ -82,14 +97,22 @@ function ReviewsTab({ userId }) {
   if (error) {
     return <Error>{error.message}</Error>;
   }
-  if (data.reviews.length === 0) {
+  if (data.threadMessages.length === 0) {
     return <Typography>This user has no public reviews.</Typography>;
   }
   return (
     <>
-      {data.review.map((review) => {
+      {data.threadMessages.map((review) => {
         return (
-          <Review review key={review.id} sx={{ mb: 1 }} renderThread={false} />
+          <>
+            <Review
+              review={review}
+              key={review.id}
+              sx={{ mb: 1 }}
+              renderThread={false}
+            />
+            <ArticleCard article={review.article} />
+          </>
         );
       })}
     </>
@@ -114,13 +137,10 @@ function User() {
   const router = useRouter();
   const auth = useAuth();
   const id = router.query.id;
+  const view = router.query.view ? router.query.view : "articles";
   const { loading, error, data } = useQuery(UserQuery, {
     variables: { where: { id } },
   });
-  const [tab, setTab] = useState("articles");
-  const handleChange = (_, newValue: number) => {
-    setTab(newValue);
-  };
 
   if (loading) {
     return <Spinner animation="border" />;
@@ -132,12 +152,16 @@ function User() {
   const { name, profilePictureUrl, institution, twitter, website } = data.user;
   const iconSx = { fontSize: "1.2rem", verticalAlign: "middle", mr: 0.3 };
   const contentSx = { p: 0 };
+  const handleSelectTab = (key) => {
+    router.query.view = key;
+    router.push(router, undefined, { shallow: true });
+  };
 
   return (
     <Layout>
-      <TabContext value={tab}>
+      <TabContext value={view}>
         <Grid container spacing={3}>
-          <Grid item sm={3} spacing={3} justifyContent="center">
+          <Grid item sm={3} justifyContent="center">
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <FirebaseAvatar
                 sx={{
@@ -180,9 +204,9 @@ function User() {
               {TABS.map(({ name, key }) => (
                 <ListItem
                   button
-                  selected={tab === key}
+                  selected={view === key}
                   key={key}
-                  onClick={() => setTab(key)}
+                  onClick={() => handleSelectTab(key)}
                 >
                   <ListItemText primary={name} />
                 </ListItem>

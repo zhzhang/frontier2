@@ -7,7 +7,12 @@ import Typography from "@mui/material/Typography";
 import { ReplyButton } from "../Thread";
 import { updateArticleAndScroll } from "./vars";
 
-export default function Comment({ message, articleId, sx = null }) {
+export default function Comment({
+  message,
+  articleId,
+  headId = null,
+  sx = null,
+}) {
   const typographyProps = {
     component: "span",
     sx: {
@@ -37,7 +42,7 @@ export default function Comment({ message, articleId, sx = null }) {
           >
             {message.body}
           </Markdown>
-          <ReplyButton headId={message.headId} articleId={articleId} />
+          <ReplyButton headId={headId || message.id} articleId={articleId} />
         </Box>
       </Box>
     </Box>

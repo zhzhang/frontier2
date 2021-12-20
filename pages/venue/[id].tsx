@@ -32,7 +32,6 @@ const VenueQuery = gql`
 function Venue() {
   const router = useRouter();
   const id = router.query.id;
-  const view = router.query.view ? router.query.view : "info";
   const { loading, error, data } = useQuery(VenueQuery, {
     variables: { where: { id } },
   });
@@ -44,7 +43,7 @@ function Venue() {
     return <ErrorPage>Error loading this venue.</ErrorPage>;
   }
 
-  const { name, logoRef } = data.venue;
+  const { name, logoRef, role } = data.venue;
 
   return (
     <Layout>
@@ -65,17 +64,19 @@ function Venue() {
           <Typography variant="h5">{name}</Typography>
           <VenueDatesBar venue={data.venue} />
         </Box>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => router.push(`/manage-venue/${id}`)}
-          sx={{
-            marginLeft: "auto",
-            height: 36,
-          }}
-        >
-          Manage
-        </Button>
+        {role && (
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => router.push(`/manage-venue/${id}`)}
+            sx={{
+              marginLeft: "auto",
+              height: 36,
+            }}
+          >
+            Manage
+          </Button>
+        )}
       </Box>
       <InfoPane venue={data.venue} />
       <Typography variant="h6" sx={{ mt: 2 }}>

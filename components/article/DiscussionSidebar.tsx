@@ -340,7 +340,7 @@ function DiscussionSidebar({ articleId }) {
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <>
       <AuthenticatedNewThread articleId={articleId} />
       {data.threadMessages.map((message) => (
         <Box key={message.id}>
@@ -348,7 +348,7 @@ function DiscussionSidebar({ articleId }) {
           <Thread headId={message.id} articleId={articleId} />
         </Box>
       ))}
-    </Box>
+    </>
   );
 }
 

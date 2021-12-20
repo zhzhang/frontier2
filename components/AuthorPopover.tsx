@@ -34,7 +34,7 @@ export default function AuthorPopover({ identity, color = "textSecondary" }) {
           <VenuePopover venue={venue} />
         </>
       )}
-      <UserPopover user={identity} anchorEl={anchorEl} />
+      {user !== "anonymous" && <UserPopover user={user} anchorEl={anchorEl} />}
     </>
   );
 }

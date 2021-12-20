@@ -56,7 +56,7 @@ function Venues() {
         }
       />
       {data.venues.map((venue) => (
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{ mt: 2 }} key={venue.id}>
           <VenueCard venue={venue} />
         </Box>
       ))}

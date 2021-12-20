@@ -155,7 +155,7 @@ function NewArticle({ venue }) {
           />
           <SubmissionTargetTypeahed
             sx={{ mb: 2, mt: 2 }}
-            label="Request reviews by..."
+            label="Request review by..."
             onChange={(_, selected) => {
               setSubmissionTarget(selected);
             }}

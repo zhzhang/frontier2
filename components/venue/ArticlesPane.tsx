@@ -8,16 +8,18 @@ import gql from "graphql-tag";
 
 const AcceptedArticlesQuery = gql`
   ${ARTICLE_CARD_FIELDS}
-  query AcceptedArticlesQuery($where: DecisionWhereInput!) {
-    decisions(where: $where) {
+  query AcceptedArticlesQuery($where: ThreadMessageWhereInput!) {
+    threadMessages(where: $where) {
       id
       body
       article {
         ...ArticleCardFields
       }
-      author {
-        id
-        name
+      authorIdentity {
+        user {
+          id
+          name
+        }
       }
     }
   }
@@ -38,6 +40,11 @@ function ArticlesPane({ id }) {
               equals: true,
             },
           },
+          {
+            released: {
+              equals: true,
+            },
+          },
         ],
       },
     },
@@ -51,7 +58,7 @@ function ArticlesPane({ id }) {
       </Error>
     );
   }
-  const { decisions } = data;
+  const decisions = data.threadMessages;
   let interiorComponent;
   if (decisions.length === 0) {
     interiorComponent = (
