@@ -202,7 +202,7 @@ function LeftPane() {
 }
 
 function PdfViewerWrapper() {
-  const { loading, data } = useQuery(LocalVarsQuery);
+  const { loading, data, error } = useQuery(LocalVarsQuery);
   if (loading) {
     return null;
   }

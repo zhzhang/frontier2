@@ -148,8 +148,9 @@ export default objectType({
         let authorCreationArgs = [];
         for (const [index, authorId] of authorIds.entries()) {
           authorCreationArgs.push({
+            context: "AUTHOR",
             userId: authorId,
-            authorNumber: index + 1,
+            number: index + 1,
           });
         }
         const input = {

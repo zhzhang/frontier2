@@ -121,6 +121,7 @@ function Relations({ userId, relations }) {
       });
     },
   });
+  console.log(target);
   const handleAddRelation = () => {
     addRelation({
       variables: {
@@ -178,7 +179,7 @@ function Relations({ userId, relations }) {
                 <TableCell>{endYear}</TableCell>
                 <TableCell>
                   <Button
-                    color="secondary"
+                    color="error"
                     onClick={() =>
                       deleteRelation({
                         variables: { where: { id } },
@@ -195,8 +196,8 @@ function Relations({ userId, relations }) {
                 <UserTypeahead
                   id="add-relation-typeahead"
                   selected={target}
-                  onChange={(all) => {
-                    console.log(all);
+                  onChange={(_, selected) => {
+                    setTarget(selected);
                   }}
                 />
               </TableCell>
@@ -326,7 +327,7 @@ function Editor({ user }) {
             </Dropzone>
           )}
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <TextField
             required
             value={name}
@@ -336,7 +337,7 @@ function Editor({ user }) {
             onChange={(event) => setName(event.target.value)}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <TextField
             value={website}
             fullWidth
@@ -345,7 +346,7 @@ function Editor({ user }) {
             onChange={(event) => setWebsite(event.target.value)}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <TextField
             value={institution}
             fullWidth

@@ -67,7 +67,7 @@ function NewArticle({ venue }) {
   const [abstract, setAbstract] = useState("");
   const [authors, setAuthors] = useState([]);
   const [anonymous, setAnonymous] = useState(true);
-  const [createArticle, { error, data }] = useMutation(CreateArticleMutation);
+  const [createArticle, { error }] = useMutation(CreateArticleMutation);
 
   const handleSubmit = () => {
     const { uploadTask, refPath } = uploadFile(file, UploadTypeEnum.ARTICLE);
@@ -94,7 +94,7 @@ function NewArticle({ venue }) {
               venueId: submissionTarget && submissionTarget.id,
             },
           });
-          router.push(`/article/${data.createArticle.id}`);
+          window.location.href = `/article/${data.createArticle.id}`;
         } catch (error) {
           setErrorMessage(error.message);
         }
@@ -169,7 +169,7 @@ function NewArticle({ venue }) {
               disabled={!canSubmit}
               sx={{ mr: 2 }}
             >
-              Request Review
+              Publish
             </Button>
             <CircularProgress variant="determinate" value={uploadProgress} />
           </Box>
