@@ -49,6 +49,7 @@
     "next": "^12.0.4",
     "nexus": "1.0.0",
     "nexus-plugin-prisma": "^0.35.0",
+    "normalize-url": "^7.0.2",
     "parchment": "^2.0.0-dev.2",
     "pdfjs-dist": "2.6.347",
     "react": "^17.0.2",

@@ -233,10 +233,10 @@ function Relations({ userId, relations }) {
 
 function Editor({ user }) {
   const [name, setName] = useState(user.name);
-  const [website, setWebsite] = useState(user.website);
-  const [institution, setInstitution] = useState(user.institution);
+  const [website, setWebsite] = useState(user.website || "");
+  const [institution, setInstitution] = useState(user.institution || "");
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
-  const [crop, setCrop] = useState({ aspect: 1, width: 30 });
+  const [crop, setCrop] = useState({ aspect: 1, width: 10000 });
   const imgRef = useRef(null);
   const [updateUser, result] = useMutation(UpdateUserMutation);
   let variables = {
@@ -317,10 +317,10 @@ function Editor({ user }) {
                   }}
                 >
                   <input {...getInputProps()} />
-                  <p>
+                  <Typography>
                     (Optional) Drag and drop a logo image here, or click to
                     select file.
-                  </p>
+                  </Typography>
                 </Box>
               )}
             </Dropzone>

@@ -6,13 +6,6 @@ function createEditorState(text: string) {
 }
 
 async function main() {
-  const user = await prisma.user.create({
-    data: {
-      id: "DO66T35YeDSS15NQga5XYOeGqyg2",
-      email: "jordan@frontier.pub",
-      name: "Jordan Zhang",
-    },
-  });
   const reviewer = await prisma.user.create({
     data: {
       id: "DO66T35YeDSS15NQga5XYOeGqyg4",
@@ -24,7 +17,7 @@ async function main() {
   // Andrew Caines
   const andrew = await prisma.user.create({
     data: {
-      id: cuid(),
+      id: "m5doYUaWDUP236fnuBdHQzM0ScC2",
       email: "andrew.caines@cl.cam.ac.uk",
       name: "Andrew Caines",
       institution: "University of Cambridge",
@@ -73,6 +66,15 @@ async function main() {
       id: cuid(),
       email: "marek.rei@imperial.ac.uk",
       name: "Marek Rei",
+    },
+  });
+  const jordan = await prisma.user.create({
+    data: {
+      id: "7T5S1rejsiW3QDu0SZx6R1lXEt82",
+      email: "jordan@frontier.pub",
+      name: "Jordan Zhang",
+      profilePictureUrl: "profile-images/8bac04a4-c5b3-49d5-af11-2e56dd737746",
+      website: "github.com/zhzhang",
     },
   });
 
@@ -450,13 +452,24 @@ async function main() {
       },
       headId: review2.id,
       authorIdentity: {
-        connect: {
-          id: andrewAuthorIdentity.id,
+        create: {
+          user: {
+            connect: {
+              id: jordan.id,
+            },
+          },
+          article: {
+            connect: {
+              id: article.id,
+            },
+          },
+          number: 0,
+          anonymized: false,
         },
       },
       author: {
         connect: {
-          id: andrew.id,
+          id: jordan.id,
         },
       },
       body: `Author responses and other discussion on public reviews can be viewed in a thread below the review.`,

@@ -26,6 +26,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
+import normalizeUrl from "normalize-url";
 
 const AuthorshipsQuery = gql`
   ${ARTICLE_CARD_FIELDS}
@@ -142,6 +143,7 @@ function User() {
     variables: { where: { id } },
   });
 
+  console.log(data);
   if (loading) {
     return <Spinner animation="border" />;
   }
@@ -185,7 +187,9 @@ function User() {
             {website && (
               <Box sx={{ mt: 1 }}>
                 <OpenInNewIcon sx={iconSx} />
-                <Link variant="body1">{website}</Link>
+                <Link variant="body1" href={normalizeUrl(website)}>
+                  {website}
+                </Link>
               </Box>
             )}
             {id === auth.user?.uid && (
