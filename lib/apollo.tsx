@@ -4,6 +4,7 @@ import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ApolloProvider } from "@apollo/react-hooks";
 import DebounceLink from "apollo-link-debounce";
+import jwtDecode from "jwt-decode";
 import React from "react";
 
 export let apolloClient = null;
@@ -77,12 +78,27 @@ function createApolloClient(initialState = {}, typePolicies = {}) {
   }).restore(initialState);
   const authLink = setContext(async (_, { headers }) => {
     const user = auth().currentUser;
-    const token = user == null ? "" : await auth().currentUser.getIdToken();
+    if (!user) {
+      return {
+        headers: {
+          ...headers,
+          authorization: "",
+        },
+      };
+    }
+    let token;
+    token = await auth().currentUser.getIdToken();
+    let decoded = jwtDecode(token);
+    while (!decoded.name) {
+      // Force refetch token to include the name.
+      token = await auth().currentUser.getIdToken(true);
+      decoded = jwtDecode(token);
+    }
     // return the headers to the context so httpLink can read them
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : "",
+        authorization: `Bearer ${token}`,
       },
     };
   });

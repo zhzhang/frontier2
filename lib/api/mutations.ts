@@ -7,6 +7,7 @@ import {
   stringArg,
 } from "nexus";
 import stream from "stream";
+import { jsonArg } from "./types/json";
 import { messageTypeToIdentityContext } from "./utils";
 
 function s3UploadFromStream(bucket, key) {
@@ -56,14 +57,16 @@ export default objectType({
       type: "ThreadMessage",
       args: {
         id: nonNull(stringArg()),
+        body: nonNull(stringArg()),
+        highlights: nonNull(jsonArg()),
       },
-      resolve: async (_, { id }, ctx) => {
+      resolve: async (_, { id, body, highlights }, ctx) => {
         const message = await ctx.prisma.threadMessage.findUnique({
           where: {
             id,
           },
         });
-        const { authorId, articleId, type, venueId, body } = message;
+        const { authorId, articleId, type, venueId } = message;
         if (body.length === 0) {
           throw Error("Cannot publish an empty message.");
         }
@@ -104,6 +107,8 @@ export default objectType({
           },
           data: {
             published: true,
+            body,
+            highlights,
             publishTimestamp: new Date(Date.now()),
             authorIdentityId: identity.id,
             released: type === "COMMENT" ? true : undefined,

@@ -3,6 +3,7 @@ import Query from "@/lib/api/queries";
 import Article from "@/lib/api/types/article";
 import ArticleVersion from "@/lib/api/types/articleVersion";
 import Identity from "@/lib/api/types/identity";
+import { JSON } from "@/lib/api/types/json";
 import Relation, { RelationType } from "@/lib/api/types/relation";
 import ReviewRequest from "@/lib/api/types/reviewRequest";
 import Role from "@/lib/api/types/role";
@@ -61,6 +62,7 @@ export const schema = makeSchema({
     VenueMembership,
     Role,
     Upload,
+    JSON,
   ],
   outputs: {
     typegen: path.join(process.cwd(), "pages/api/nexus-typegen.ts"),

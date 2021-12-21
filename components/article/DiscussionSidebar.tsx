@@ -1,4 +1,5 @@
 import Decison from "@/components/article/Decision";
+import { Auth } from "@/components/Auth";
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import Review from "@/components/Review";
@@ -10,7 +11,9 @@ import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import Dialog from "@mui/material/Dialog";
 import FormControl from "@mui/material/FormControl";
+import Link from "@mui/material/Link";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
@@ -262,6 +265,8 @@ function NewThread({ userId, articleId }) {
             publishMessage({
               variables: {
                 id: message.id,
+                body: message.body,
+                highlights: message.highlights,
               },
             })
           }
@@ -296,11 +301,21 @@ function NewThread({ userId, articleId }) {
 
 function AuthenticatedNewThread({ articleId }) {
   const { loading, user } = useAuth();
+  const [loginOpen, toggleLoginOpen] = useState(false);
   if (loading) {
     return null;
   }
   if (!user) {
-    return <>Log in to comment</>;
+    return (
+      <Card sx={{ p: 1 }}>
+        <Typography>
+          <Link onClick={() => toggleLoginOpen(true)}>Log in</Link> to comment
+        </Typography>
+        <Dialog open={loginOpen} onClose={() => toggleLoginOpen(false)}>
+          <Auth />
+        </Dialog>
+      </Card>
+    );
   }
   return <NewThread userId={user.uid} articleId={articleId} />;
 }

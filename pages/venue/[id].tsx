@@ -7,8 +7,12 @@ import InfoPane from "@/components/venue/InfoPane";
 import VenueDatesBar from "@/components/VenueDatesBar";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
@@ -79,10 +83,16 @@ function Venue() {
         )}
       </Box>
       <InfoPane venue={data.venue} />
-      <Typography variant="h6" sx={{ mt: 2 }}>
-        Articles
-      </Typography>
-      <ArticlesPane id={id} />
+      <TabContext value={"1"}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 2 }}>
+          <TabList onChange={() => {}} aria-label="lab API tabs example">
+            <Tab label="Articles" value="3" />
+          </TabList>
+        </Box>
+        <TabPanel value="1" sx={{ p: 0 }}>
+          <ArticlesPane id={id} />
+        </TabPanel>
+      </TabContext>
     </Layout>
   );
 }

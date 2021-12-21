@@ -188,7 +188,7 @@ function User() {
                 <Link variant="body1">{website}</Link>
               </Box>
             )}
-            {id === auth.user.uid && (
+            {id === auth.user?.uid && (
               <Button
                 variant="outlined"
                 color="primary"

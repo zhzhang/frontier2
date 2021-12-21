@@ -57,15 +57,6 @@ const ThreadMessagesQuery = gql`
   }
 `;
 
-const CreateThreadMessageMutation = gql`
-  ${THREAD_MESSAGE_FIELDS}
-  mutation CreateThreadMessageMutation($data: ThreadMessageCreateInput!) {
-    createOneThreadMessage(data: $data) {
-      ...ThreadMessageFields
-    }
-  }
-`;
-
 const CreateThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
   mutation createOneThreadMessage($data: ThreadMessageCreateInput!) {
@@ -98,8 +89,12 @@ export const DeleteOneThreadMessage = gql`
 
 export const PublishThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
-  mutation PublishThreadMessage($id: String!) {
-    publishMessage(id: $id) {
+  mutation PublishThreadMessage(
+    $id: String!
+    $body: String!
+    $highlights: JSON!
+  ) {
+    publishMessage(id: $id, body: $body, highlights: $highlights) {
       ...ThreadMessageFields
     }
   }
@@ -215,7 +210,7 @@ function OpenReply({ articleId, headId, userId }) {
         query: ThreadMessagesQuery,
         variables,
         data: {
-          threadMessages: [publishMessage, ...threadMessages],
+          threadMessages: [...threadMessages, publishMessage],
         },
       });
       cache.writeQuery({
@@ -275,9 +270,15 @@ function OpenReply({ articleId, headId, userId }) {
   const addHighlight = (highlight) => {
     const data = apolloClient.readQuery({
       query: OpenReplyQuery,
+      variables: {
+        articleId,
+        userId,
+        headId,
+      },
     });
-    const comment = data.threadReplies.get(headId);
+    const comment = data.draftMessage;
     const highlights = [...comment.highlights, highlight];
+    console.log(highlights);
     const updatedComment = { ...comment, highlights };
     highlightsVar(highlights);
     update(updatedComment);
@@ -323,6 +324,12 @@ function OpenReply({ articleId, headId, userId }) {
             createThreadMessage({
               variables: {
                 id: comment.id,
+                body: comment.body,
+                highlights: comment.highlights,
+              },
+              context: {
+                debounceTimeout: 0,
+                debounceKey: comment.id,
               },
             })
           }
