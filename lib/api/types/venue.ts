@@ -10,7 +10,7 @@ const Venue = objectType({
     t.model.description();
     t.model.logoRef();
     t.model.submissionDeadline();
-    t.model.submissionOpen();
+    t.model.acceptingSubmissions();
     t.model.venueDate();
     t.field("role", {
       type: "Role",

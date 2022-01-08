@@ -44,32 +44,29 @@ function Venues() {
   }
 
   return (
-    <Layout>
-      <Box sx={{ maxWidth: 1000 }}>
-        <Input
-          fullWidth
-          disabled
-          sx={{ mb: 2 }}
-          placeholder="Venue search coming soon!"
-          startAdornment={
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          }
-        />
-        <Box sx={{ display: "flex" }}>
-          <Box sx={{ flex: 1 }}>
-            <Button>Following</Button>
-            <Button>Accepting Review Requests</Button>
-          </Box>
-          <Button href="/new-venue">Create New Venue</Button>
+    <Layout sx={{ maxWidth: 1000 }}>
+      <Input
+        fullWidth
+        disabled
+        placeholder="Venue search coming soon!"
+        startAdornment={
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        }
+      />
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ flex: 1 }}>
+          <Button>Following</Button>
+          <Button>Accepting Review Requests</Button>
         </Box>
-        {data.venues.map((venue) => (
-          <Box sx={{ mt: 2 }} key={venue.id}>
-            <VenueCard venue={venue} />
-          </Box>
-        ))}
+        <Button href="/new-venue">Create New Venue</Button>
       </Box>
+      {data.venues.map((venue) => (
+        <Box sx={{ mt: 2 }} key={venue.id}>
+          <VenueCard venue={venue} />
+        </Box>
+      ))}
     </Layout>
   );
 }

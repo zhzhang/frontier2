@@ -60,8 +60,8 @@ export default function Navigation() {
               onClose={handleClose}
             >
               <MenuItem
-                onClick={async () => {
-                  router.push(`/user/${user.uid}`);
+                onClick={() => {
+                  window.location.href = `/user/${user.uid}`;
                 }}
               >
                 <ListItemIcon>
@@ -70,14 +70,14 @@ export default function Navigation() {
                 <ListItemText primary="Profile" />
               </MenuItem>
               <MenuItem
-                onClick={async () => {
-                  router.push(`/review-requests/${user.uid}`);
+                onClick={() => {
+                  window.location.href = `/review-requests/${user.uid}`;
                 }}
               >
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
-                <ListItemText primary="Work Requests" />
+                <ListItemText primary="Tasks" />
               </MenuItem>
               <MenuItem
                 onClick={async () => {

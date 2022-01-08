@@ -1,11 +1,10 @@
-import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
+import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
 import { useQuery } from "@apollo/react-hooks";
 import { Grid } from "@mui/material";
 import gql from "graphql-tag";
-import SubmissionCard from "./SubmissionCard";
 
 const SubmissionsQuery = gql`
   ${ARTICLE_CARD_FIELDS}
@@ -55,14 +54,15 @@ const SubmissionsPane = ({ id }) => {
     return <Grid item>There are currently no submissions.</Grid>;
   }
   return (
-    <Grid item>
-      {submissions.map((submission) => (
-        <SubmissionCard
-          key={submission.id}
-          submission={submission}
-          venueId={id}
-        />
-      ))}
+    <Grid item container spacing={3}>
+      <Grid item sm={6}>
+        {submissions.map((submission) => (
+          <ArticleCard key={submission.id} article={submission.article} />
+        ))}
+      </Grid>
+      <Grid item sm={6}>
+        Temp
+      </Grid>
     </Grid>
   );
 };

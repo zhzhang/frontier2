@@ -124,19 +124,19 @@ model Submission {
 }
 
 model Venue {
-  id                 String            @id @default(cuid())
-  name               String
-  websiteUrl         String?
-  abbreviation       String?
-  description        String            @db.MediumText
-  logoRef            String?
-  venueDate          DateTime?
-  submissionOpen     DateTime?
-  submissionDeadline DateTime?
-  memberships        VenueMembership[]
-  submissions        Submission[]
-  threadMessage      ThreadMessage[]
-  identities         Identity[]
+  id                   String            @id @default(cuid())
+  name                 String
+  acceptingSubmissions Boolean           @default(false)
+  websiteUrl           String?
+  abbreviation         String?
+  description          String            @db.MediumText
+  logoRef              String?
+  venueDate            DateTime?
+  submissionDeadline   DateTime?
+  memberships          VenueMembership[]
+  submissions          Submission[]
+  threadMessage        ThreadMessage[]
+  identities           Identity[]
 }
 
 model VenueMembership {

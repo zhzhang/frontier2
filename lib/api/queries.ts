@@ -86,23 +86,13 @@ export default objectType({
                   {
                     AND: [
                       { submissionDeadline: { gt: now } },
-                      {
-                        OR: [
-                          { submissionOpen: null },
-                          { submissionOpen: { lt: now } },
-                        ],
-                      },
+                      { acceptingSubmissions: true },
                     ],
                   },
                   {
                     AND: [
                       { submissionDeadline: null },
-                      {
-                        OR: [
-                          { submissionOpen: null },
-                          { submissionOpen: { lt: now } },
-                        ],
-                      },
+                      { acceptingSubmissions: true },
                     ],
                   },
                 ],

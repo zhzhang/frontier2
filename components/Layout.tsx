@@ -21,16 +21,13 @@ const theme = createTheme({
   },
 });
 
-export default function Layout({ children, padded = true }) {
+export default function Layout({ children, padded = true, sx = {} }) {
   if (typeof window !== "undefined") {
     window.katex = katex;
   }
-  const sx = {
-    marginTop: "48px",
-    p: 0,
-  };
+  const baseSx = { marginTop: "48px", p: 0 };
   if (padded) {
-    sx.p = 2;
+    baseSx.p = 2;
   }
 
   return (
@@ -50,7 +47,14 @@ export default function Layout({ children, padded = true }) {
       />
 
       <Navigation />
-      <Box sx={sx}>{children}</Box>
+      <Box
+        sx={{
+          ...baseSx,
+          ...sx,
+        }}
+      >
+        {children}
+      </Box>
     </>
   );
 }

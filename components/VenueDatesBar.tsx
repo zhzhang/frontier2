@@ -33,12 +33,14 @@ export default function VenueDatesBar({ venue }) {
           <Typography>{dateformat(venueDate, "longDate")}</Typography>
         </HeaderItem>
       )}
-      <HeaderItem>
-        <OpenInNewIcon sx={iconSx} />
-        <Link href={websiteUrl} target="_blank">
-          <Typography component="span">{websiteUrl}</Typography>
-        </Link>
-      </HeaderItem>
+      {websiteUrl && (
+        <HeaderItem>
+          <OpenInNewIcon sx={iconSx} />
+          <Link href={websiteUrl} target="_blank">
+            <Typography component="span">{websiteUrl}</Typography>
+          </Link>
+        </HeaderItem>
+      )}
       {submissionOpen && (
         <HeaderItem>
           <EventAvailableIcon sx={iconSx} />

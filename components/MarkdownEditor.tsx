@@ -183,6 +183,7 @@ export default function MarkdownEditor({
   onBlur = null,
   sx = {},
   highlights = [],
+  label = null,
   deleteHighlight = (id: number) => {},
   updateArticleAndScroll = () => {},
 }) {

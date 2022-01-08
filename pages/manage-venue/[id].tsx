@@ -26,6 +26,7 @@ const VenueQuery = gql`
       venueDate
       role
       logoRef
+      acceptingSubmissions
     }
   }
 `;
@@ -41,7 +42,7 @@ function Header({ name, logoRef }) {
       }}
     >
       <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
-      <Typography variant="h5">{name}</Typography>
+      <Typography variant="h4">{name}</Typography>
     </Box>
   );
 }

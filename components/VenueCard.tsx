@@ -27,11 +27,14 @@ export default function VenueCard({ venue }) {
 
   const Header = () => {
     const parsedVenueDate = new Date(venueDate);
-    let abbrev = abbreviation;
-    if (venueDate) {
-      abbrev += ` ${parsedVenueDate.getFullYear()}`;
+    let abbrev;
+    if (abbreviation) {
+      abbrev = abbreviation;
+      if (venueDate) {
+        abbrev += ` ${parsedVenueDate.getFullYear()}`;
+      }
+      abbrev += " - ";
     }
-    abbrev += " - ";
     return (
       <Typography variant="h5" color="textSecondary">
         <Link href={`/venue/${id}`} color="inherit" underline="none">

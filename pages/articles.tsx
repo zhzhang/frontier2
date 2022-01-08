@@ -32,7 +32,7 @@ function Articles() {
     return <ErrorPage> {"Error loading articles."}</ErrorPage>;
   }
   return (
-    <Layout>
+    <Layout sx={{ maxWidth: 1000 }}>
       <Input
         fullWidth
         disabled
@@ -45,7 +45,7 @@ function Articles() {
         }
       />
       {data.articles.map((article) => (
-        <ArticleCard article={article} sx={{ mb: 2, width: 900 }} />
+        <ArticleCard article={article} sx={{ mb: 2 }} />
       ))}
     </Layout>
   );

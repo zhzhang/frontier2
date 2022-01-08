@@ -2682,19 +2682,20 @@ input UserWhereUniqueInput {
 
 type Venue {
   abbreviation: String
+  acceptingSubmissions: Boolean!
   description: String!
   id: String!
   logoRef: String
   name: String!
   role: Role
   submissionDeadline: DateTime
-  submissionOpen: DateTime
   venueDate: DateTime
   websiteUrl: String
 }
 
 input VenueCreateInput {
   abbreviation: String
+  acceptingSubmissions: Boolean
   description: String!
   id: String
   identities: IdentityCreateNestedManyWithoutVenueInput
@@ -2702,7 +2703,6 @@ input VenueCreateInput {
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
   submissionDeadline: DateTime
-  submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
   threadMessage: ThreadMessageCreateNestedManyWithoutVenueInput
   venueDate: DateTime
@@ -2755,13 +2755,13 @@ input VenueCreateOrConnectWithoutThreadMessageInput {
 
 input VenueCreateWithoutIdentitiesInput {
   abbreviation: String
+  acceptingSubmissions: Boolean
   description: String!
   id: String
   logoRef: String
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
   submissionDeadline: DateTime
-  submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
   threadMessage: ThreadMessageCreateNestedManyWithoutVenueInput
   venueDate: DateTime
@@ -2770,13 +2770,13 @@ input VenueCreateWithoutIdentitiesInput {
 
 input VenueCreateWithoutMembershipsInput {
   abbreviation: String
+  acceptingSubmissions: Boolean
   description: String!
   id: String
   identities: IdentityCreateNestedManyWithoutVenueInput
   logoRef: String
   name: String!
   submissionDeadline: DateTime
-  submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
   threadMessage: ThreadMessageCreateNestedManyWithoutVenueInput
   venueDate: DateTime
@@ -2785,6 +2785,7 @@ input VenueCreateWithoutMembershipsInput {
 
 input VenueCreateWithoutSubmissionsInput {
   abbreviation: String
+  acceptingSubmissions: Boolean
   description: String!
   id: String
   identities: IdentityCreateNestedManyWithoutVenueInput
@@ -2792,7 +2793,6 @@ input VenueCreateWithoutSubmissionsInput {
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
   submissionDeadline: DateTime
-  submissionOpen: DateTime
   threadMessage: ThreadMessageCreateNestedManyWithoutVenueInput
   venueDate: DateTime
   websiteUrl: String
@@ -2800,6 +2800,7 @@ input VenueCreateWithoutSubmissionsInput {
 
 input VenueCreateWithoutThreadMessageInput {
   abbreviation: String
+  acceptingSubmissions: Boolean
   description: String!
   id: String
   identities: IdentityCreateNestedManyWithoutVenueInput
@@ -2807,7 +2808,6 @@ input VenueCreateWithoutThreadMessageInput {
   memberships: VenueMembershipCreateNestedManyWithoutVenueInput
   name: String!
   submissionDeadline: DateTime
-  submissionOpen: DateTime
   submissions: SubmissionCreateNestedManyWithoutVenueInput
   venueDate: DateTime
   websiteUrl: String
@@ -2990,6 +2990,7 @@ input VenueMembershipWhereUniqueInput {
 
 input VenueUpdateInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
+  acceptingSubmissions: BoolFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   identities: IdentityUpdateManyWithoutVenueInput
@@ -2997,7 +2998,6 @@ input VenueUpdateInput {
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
-  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
   threadMessage: ThreadMessageUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
@@ -3042,13 +3042,13 @@ input VenueUpdateOneWithoutThreadMessageInput {
 
 input VenueUpdateWithoutIdentitiesInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
+  acceptingSubmissions: BoolFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   logoRef: NullableStringFieldUpdateOperationsInput
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
-  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
   threadMessage: ThreadMessageUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
@@ -3057,13 +3057,13 @@ input VenueUpdateWithoutIdentitiesInput {
 
 input VenueUpdateWithoutMembershipsInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
+  acceptingSubmissions: BoolFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   identities: IdentityUpdateManyWithoutVenueInput
   logoRef: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
-  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
   threadMessage: ThreadMessageUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
@@ -3072,6 +3072,7 @@ input VenueUpdateWithoutMembershipsInput {
 
 input VenueUpdateWithoutSubmissionsInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
+  acceptingSubmissions: BoolFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   identities: IdentityUpdateManyWithoutVenueInput
@@ -3079,7 +3080,6 @@ input VenueUpdateWithoutSubmissionsInput {
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
-  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   threadMessage: ThreadMessageUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
   websiteUrl: NullableStringFieldUpdateOperationsInput
@@ -3087,6 +3087,7 @@ input VenueUpdateWithoutSubmissionsInput {
 
 input VenueUpdateWithoutThreadMessageInput {
   abbreviation: NullableStringFieldUpdateOperationsInput
+  acceptingSubmissions: BoolFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   identities: IdentityUpdateManyWithoutVenueInput
@@ -3094,7 +3095,6 @@ input VenueUpdateWithoutThreadMessageInput {
   memberships: VenueMembershipUpdateManyWithoutVenueInput
   name: StringFieldUpdateOperationsInput
   submissionDeadline: NullableDateTimeFieldUpdateOperationsInput
-  submissionOpen: NullableDateTimeFieldUpdateOperationsInput
   submissions: SubmissionUpdateManyWithoutVenueInput
   venueDate: NullableDateTimeFieldUpdateOperationsInput
   websiteUrl: NullableStringFieldUpdateOperationsInput
@@ -3125,6 +3125,7 @@ input VenueWhereInput {
   NOT: [VenueWhereInput!]
   OR: [VenueWhereInput!]
   abbreviation: StringNullableFilter
+  acceptingSubmissions: BoolFilter
   description: StringFilter
   id: StringFilter
   identities: IdentityListRelationFilter
@@ -3132,7 +3133,6 @@ input VenueWhereInput {
   memberships: VenueMembershipListRelationFilter
   name: StringFilter
   submissionDeadline: DateTimeNullableFilter
-  submissionOpen: DateTimeNullableFilter
   submissions: SubmissionListRelationFilter
   threadMessage: ThreadMessageListRelationFilter
   venueDate: DateTimeNullableFilter

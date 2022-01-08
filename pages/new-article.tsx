@@ -58,7 +58,6 @@ const VenueQuery = gql`
 `;
 
 function NewArticle({ venue }) {
-  const router = useRouter();
   const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [title, setTitle] = useState("");
@@ -110,7 +109,21 @@ function NewArticle({ venue }) {
       <ErrorSnackbar error={error} />
       <Grid container spacing={3}>
         <Grid item xs={5}>
-          <Typography variant="h4">New Article</Typography>
+          <Box sx={{ display: "flex" }}>
+            <Typography variant="h4" sx={{ flex: 1 }}>
+              New Article
+            </Typography>
+            {file && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setFile(null)}
+                size="small"
+              >
+                Choose Different PDF
+              </Button>
+            )}
+          </Box>
           <TextField
             required
             fullWidth
@@ -177,16 +190,9 @@ function NewArticle({ venue }) {
         </Grid>
         <Grid item xs={7}>
           {file ? (
-            <div style={{ height: 600 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setFile(null)}
-              >
-                Choose Different PDF
-              </Button>
+            <Box sx={{ height: 600 }}>
               <PdfViewer file={file} />
-            </div>
+            </Box>
           ) : (
             <Dropzone
               onDrop={(acceptedFiles) => {
