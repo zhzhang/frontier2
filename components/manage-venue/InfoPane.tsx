@@ -37,16 +37,18 @@ const UpdateVenueMutation = gql`
   }
 `;
 
-export default function InfoPane({ userId }) {
+export default function InfoPane({ venue }) {
   const [errorMessage, setErrorMessage] = useState(null);
-  const [name, setName] = useState("");
-  const [abbreviation, setAbbreviation] = useState("");
+  const [name, setName] = useState(venue.name);
+  const [abbreviation, setAbbreviation] = useState(venue.abbreviation);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(venue.description);
   const [createVenue, { error }] = useMutation(UpdateVenueMutation);
   const [logoUrl, setLogoUrl] = useState("");
-  const [venueDate, setVenueDate] = useState(null);
-  const [submissionDeadline, setSubmissionDeadline] = useState(null);
+  const [venueDate, setVenueDate] = useState(venue.venueDate);
+  const [submissionDeadline, setSubmissionDeadline] = useState(
+    venue.submissionDeadline
+  );
   const [crop, setCrop] = useState({ aspect: 1, width: 10000 });
   const imgRef = useRef(null);
 
