@@ -121,7 +121,6 @@ function Relations({ userId, relations }) {
       });
     },
   });
-  console.log(target);
   const handleAddRelation = () => {
     addRelation({
       variables: {

@@ -33,7 +33,7 @@ const rules = {
 };
 export const permissions = shield(
   {
-    Mutation: rules.isAuthenticated,
+    Mutation: rules.isAuthenticated, // Mutations only allowed for logged-in users.
   },
   { debug: true }
 );
