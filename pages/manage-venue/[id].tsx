@@ -5,28 +5,24 @@ import Layout from "@/components/Layout";
 import InfoPane from "@/components/manage-venue/InfoPane";
 import MembersPane from "@/components/manage-venue/MembersPane";
 import SubmissionsPane from "@/components/manage-venue/SubmissionsPane";
+import { VENUE_CARD_FIELDS } from "@/components/VenueCard";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
+import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
 
 const VenueQuery = gql`
+  ${VENUE_CARD_FIELDS}
   query VenueQuery($where: VenueWhereUniqueInput!) {
     venue(where: $where) {
-      id
-      name
-      abbreviation
-      description
-      venueDate
+      ...VenueCardFields
       role
-      logoRef
-      acceptingSubmissions
     }
   }
 `;
@@ -69,55 +65,38 @@ function Venue() {
   }
 
   const { name, logoRef } = data.venue;
-  const handleSelectTab = (key) => () => {
-    router.query.view = key;
+
+  const handleChange = (_, newValue) => {
+    router.query.view = newValue;
     router.push(router, undefined, { shallow: true });
   };
 
-  let renderedView;
-  switch (view) {
-    case "info":
-      renderedView = <InfoPane venue={data.venue} />;
-      break;
-    case "submissions":
-      renderedView = <SubmissionsPane id={id} />;
-      break;
-    case "members":
-      renderedView = <MembersPane id={id} />;
-      break;
-  }
+  const sx = {
+    p: 0,
+    pt: 2,
+  };
 
   return (
     <Layout>
       <Header name={name} logoRef={logoRef} />
-      <Grid container>
-        <Grid item xs={2}>
-          <List sx={{ mr: 1 }}>
-            {TABS.map(({ name, key }) => (
-              <ListItem
-                button
-                selected={view === key}
-                key={key}
-                onClick={handleSelectTab(key)}
-              >
-                <ListItemText primary={name} />
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-        <Grid
-          item
-          container
-          xs={10}
-          spacing={2}
-          sx={{
-            overflowY: "scroll",
-            height: "100%",
-          }}
-        >
-          {renderedView}
-        </Grid>
-      </Grid>
+      <TabContext value={view}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab label="Venue Info" value="info" />
+            <Tab label="Submissions" value="submissions" />
+            <Tab label="Members" value="members" />
+          </TabList>
+        </Box>
+        <TabPanel value="info" sx={sx}>
+          <InfoPane venue={data.venue} />
+        </TabPanel>
+        <TabPanel value="submissions" sx={sx}>
+          <SubmissionsPane id={id} />
+        </TabPanel>
+        <TabPanel value="members" sx={sx}>
+          <MembersPane id={id} />
+        </TabPanel>
+      </TabContext>
     </Layout>
   );
 }

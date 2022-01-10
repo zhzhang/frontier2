@@ -1,5 +1,6 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import VenueDatesBar from "@/components/VenueDatesBar";
+import { formatVenueAbbreviation } from "@/lib/utils";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
@@ -15,6 +16,9 @@ export const VENUE_CARD_FIELDS = gql`
     websiteUrl
     logoRef
     venueDate
+    logoRef
+    submissionDeadline
+    acceptingSubmissions
   }
 `;
 
@@ -27,12 +31,8 @@ export default function VenueCard({ venue }) {
 
   const Header = () => {
     const parsedVenueDate = new Date(venueDate);
-    let abbrev;
-    if (abbreviation) {
-      abbrev = abbreviation;
-      if (venueDate) {
-        abbrev += ` ${parsedVenueDate.getFullYear()}`;
-      }
+    let abbrev = formatVenueAbbreviation(venue);
+    if (abbrev) {
       abbrev += " - ";
     }
     return (

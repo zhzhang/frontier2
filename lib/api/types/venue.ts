@@ -16,7 +16,7 @@ const Venue = objectType({
       type: "Role",
       resolve: async (root, _, ctx) => {
         const userId = ctx.user.id;
-        const membership = ctx.prisma.venueMembership.findFirst({
+        const membership = await ctx.prisma.venueMembership.findFirst({
           where: {
             userId,
             venueId: root.id,

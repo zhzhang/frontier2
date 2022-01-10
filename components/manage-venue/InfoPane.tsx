@@ -1,6 +1,7 @@
 import MarkdownEditor from "@/components/MarkdownEditor";
 import { getCroppedImg } from "@/lib/crop";
 import { uploadFile } from "@/lib/firebase";
+import { UploadTypeEnum } from "@/lib/types";
 import { useMutation } from "@apollo/react-hooks";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
@@ -43,9 +44,12 @@ export default function InfoPane({ venue }) {
   const [abbreviation, setAbbreviation] = useState(venue.abbreviation);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [description, setDescription] = useState(venue.description);
-  const [createVenue, { error }] = useMutation(UpdateVenueMutation);
+  const [updateVenue, { error }] = useMutation(UpdateVenueMutation);
   const [logoUrl, setLogoUrl] = useState("");
   const [venueDate, setVenueDate] = useState(venue.venueDate);
+  const [acceptingSubmissions, setAcceptingSubmissions] = useState(
+    venue.acceptingSubmissions
+  );
   const [submissionDeadline, setSubmissionDeadline] = useState(
     venue.submissionDeadline
   );
@@ -57,29 +61,31 @@ export default function InfoPane({ venue }) {
   }, []);
 
   const handleSubmit = async () => {
-    let input = {
-      name,
-      description,
-      venueDate,
-      submissionDeadline,
-      memberships: {
-        create: [
-          {
-            role: "ADMIN",
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
-          },
-        ],
+    let variables = {
+      data: {
+        name: {
+          set: name,
+        },
+        description: {
+          set: description,
+        },
+        venueDate: {
+          set: venueDate,
+        },
+        submissionDeadline: {
+          set: submissionDeadline,
+        },
+        acceptingSubmissions: {
+          set: acceptingSubmissions,
+        },
+      },
+      where: {
+        id: venue.id,
       },
     };
     if (!imgRef.current) {
-      const { data } = await createVenue({
-        variables: {
-          data: input,
-        },
+      const { data } = await updateVenue({
+        variables,
       });
       window.location.href = `/manage-venue/${data.createOneVenue.id}?view=members`;
       return;
@@ -99,13 +105,10 @@ export default function InfoPane({ venue }) {
       async () => {
         setUploadProgress(0);
         try {
-          input.logoRef = refPath;
-          const { data } = await createVenue({
-            variables: {
-              data: input,
-            },
+          input.data.logoRef = refPath;
+          const { data } = await updateVenue({
+            variables,
           });
-          window.location.href = `/manage-venue/${data.createOneVenue.id}?view=members`;
         } catch (error) {
           setErrorMessage(error.message);
         }
@@ -217,7 +220,14 @@ export default function InfoPane({ venue }) {
         <Grid item xs={12}>
           <FormGroup>
             <FormControlLabel
-              control={<Switch defaultChecked />}
+              control={
+                <Switch
+                  checked={acceptingSubmissions}
+                  onChange={() =>
+                    setAcceptingSubmissions(!acceptingSubmissions)
+                  }
+                />
+              }
               label="Accepting Submissions"
             />
           </FormGroup>
@@ -231,7 +241,7 @@ export default function InfoPane({ venue }) {
               disabled={!canSubmit}
               sx={{ mr: 2 }}
             >
-              Create
+              Save
             </Button>
             <CircularProgress variant="determinate" value={uploadProgress} />
           </Box>

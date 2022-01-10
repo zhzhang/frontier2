@@ -885,6 +885,7 @@ type Query {
   searchEditors(organizationId: String!, query: String): [User]
   searchOpenVenues(query: String): [Venue]
   searchUsers(query: String): [User]
+  submissionOwnerCandidates(venueId: String): [User]
   submissions(after: SubmissionWhereUniqueInput, before: SubmissionWhereUniqueInput, first: Int, last: Int, where: SubmissionWhereInput): [Submission!]!
   threadMessages(after: ThreadMessageWhereUniqueInput, before: ThreadMessageWhereUniqueInput, first: Int, last: Int, orderBy: [ThreadMessageOrderByInput!], where: ThreadMessageWhereInput): [ThreadMessage!]!
   user(where: UserWhereUniqueInput!): User
@@ -1399,6 +1400,7 @@ input StringNullableFilter {
 
 type Submission {
   article: Article!
+  createdAt: DateTime!
   id: String!
   owner: User
   reviewRequests(after: ReviewRequestWhereUniqueInput, before: ReviewRequestWhereUniqueInput, first: Int, last: Int): [ReviewRequest!]!

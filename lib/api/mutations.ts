@@ -49,6 +49,7 @@ export default objectType({
         return true;
       },
     });
+    t.crud.createOneVenue();
     t.crud.deleteOneVenueMembership();
     t.crud.updateOneSubmission();
     t.crud.createOneReviewRequest();
@@ -197,6 +198,5 @@ export default objectType({
         return relation.userId === ctx.user.id;
       },
     });
-    t.crud.createOneVenue();
   },
 });

@@ -85,6 +85,7 @@ async function main() {
       description: `The International Conference on Learning Representations (ICLR) is the premier gathering of professionals dedicated to the advancement of the branch of artificial intelligence called representation learning, but generally referred to as deep learning. ICLR is globally renowned for presenting and publishing cutting-edge research on all aspects of deep learning used in the fields of artificial intelligence, statistics and data science, as well as important application areas such as machine vision, computational biology, speech recognition, text understanding, gaming, and robotics.`,
       logoRef: "logos/Mt1ozX07_400x400.jpg",
       websiteUrl: "https://iclr.cc/",
+      acceptingSubmissions: true,
     },
   });
   const arr = await prisma.venue.create({
@@ -95,6 +96,7 @@ async function main() {
       websiteUrl: "https://aclrollingreview.org/",
       description:
         "A new rolling review initiative of the Association for Computational Linguistics.",
+      acceptingSubmissions: true,
     },
   });
 
@@ -575,6 +577,7 @@ async function main() {
         "The North American Chapter of the Association for Computational Linguistics (NAACL) provides a regional focus for members of the Association for Computational Linguistics (ACL) in North America as well as in Central and South America, organizes annual conferences, promotes cooperation and information exchange among related scientific and professional societies, encourages and facilitates ACL membership by people and institutions in the Americas, and provides a source of information on regional activities for the ACL Executive Committee.",
       submissionDeadline: "2022-06-05T10:00:00.000Z",
       venueDate: "2022-06-10T10:00:00.000Z",
+      acceptingSubmissions: true,
     },
   });
 

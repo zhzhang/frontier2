@@ -1,3 +1,4 @@
+import { formatVenueAbbreviation } from "@/lib/utils";
 import { useQuery } from "@apollo/react-hooks";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -29,13 +30,10 @@ export default function SubmissionTargetTypeahead({
     },
   });
   const options = data
-    ? data.searchOpenVenues.map(({ abbreviation, venueDate, name }) => {
-        let abbrev = abbreviation;
-        if (venueDate) {
-          abbrev = `${abbrev} ${new Date(venueDate).getFullYear()}`;
-        }
-        abbrev = abbreviation && `(${abbrev}) `;
-        return { name: `${abbrev}${name}`, type: "Venue" };
+    ? data.searchOpenVenues.map((venue) => {
+        let abbrev = formatVenueAbbreviation(venue);
+        abbrev = abbrev ? `(${abbrev})` : "";
+        return { name: `${abbrev}${venue.name}`, type: "Venue" };
       })
     : [];
 

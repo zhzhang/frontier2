@@ -4,6 +4,7 @@ import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import ArticlesPane from "@/components/venue/ArticlesPane";
 import InfoPane from "@/components/venue/InfoPane";
+import { VENUE_CARD_FIELDS } from "@/components/VenueCard";
 import VenueDatesBar from "@/components/VenueDatesBar";
 import { withApollo } from "@/lib/apollo";
 import { useQuery } from "@apollo/react-hooks";
@@ -18,17 +19,11 @@ import gql from "graphql-tag";
 import { useRouter } from "next/router";
 
 const VenueQuery = gql`
+  ${VENUE_CARD_FIELDS}
   query VenueQuery($where: VenueWhereUniqueInput!) {
     venue(where: $where) {
-      id
-      name
-      description
-      websiteUrl
-      logoRef
+      ...VenueCardFields
       role
-      venueDate
-      submissionOpen
-      submissionDeadline
     }
   }
 `;
@@ -39,6 +34,7 @@ function Venue() {
   const { loading, error, data } = useQuery(VenueQuery, {
     variables: { where: { id } },
   });
+  console.log(data);
 
   if (loading) {
     return <Spinner animation="border" />;

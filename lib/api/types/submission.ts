@@ -8,6 +8,7 @@ const Submission = objectType({
     t.model.owner();
     t.model.venue();
     t.model.reviewRequests();
+    t.model.createdAt();
   },
 });
 

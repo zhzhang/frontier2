@@ -6,7 +6,6 @@ export default objectType({
   definition(t) {
     t.crud.user();
     t.crud.article();
-    // t.crud.articles({filtering: true});
     t.crud.articles({
       filtering: true,
       resolve: async (root, args, ctx, info, originalResolve) => {
@@ -54,6 +53,22 @@ export default objectType({
           },
         });
         return draftMessage;
+      },
+    });
+    t.list.field("submissionOwnerCandidates", {
+      type: "User",
+      args: { venueId: stringArg() },
+      resolve: async (_, { venueId }, ctx) => {
+        const results = await ctx.prisma.venueMembership.findMany({
+          where: {
+            venueId,
+            role: "CHAIR",
+          },
+          include: {
+            user: true,
+          },
+        });
+        return results.map((role) => role.user);
       },
     });
     t.list.field("searchOpenVenues", {

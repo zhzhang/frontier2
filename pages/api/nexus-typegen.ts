@@ -2693,6 +2693,7 @@ export interface NexusGenObjects {
     status: string; // String!
   }
   Submission: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // String!
   }
   ThreadMessage: { // root type
@@ -2794,6 +2795,7 @@ export interface NexusGenFieldTypes {
     searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchOpenVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    submissionOwnerCandidates: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     submissions: NexusGenRootTypes['Submission'][]; // [Submission!]!
     threadMessages: NexusGenRootTypes['ThreadMessage'][]; // [ThreadMessage!]!
     user: NexusGenRootTypes['User'] | null; // User
@@ -2817,6 +2819,7 @@ export interface NexusGenFieldTypes {
   }
   Submission: { // field return type
     article: NexusGenRootTypes['Article']; // Article!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // String!
     owner: NexusGenRootTypes['User'] | null; // User
     reviewRequests: NexusGenRootTypes['ReviewRequest'][]; // [ReviewRequest!]!
@@ -2920,6 +2923,7 @@ export interface NexusGenFieldTypeNames {
     searchEditors: 'User'
     searchOpenVenues: 'Venue'
     searchUsers: 'User'
+    submissionOwnerCandidates: 'User'
     submissions: 'Submission'
     threadMessages: 'ThreadMessage'
     user: 'User'
@@ -2943,6 +2947,7 @@ export interface NexusGenFieldTypeNames {
   }
   Submission: { // field return type name
     article: 'Article'
+    createdAt: 'DateTime'
     id: 'String'
     owner: 'User'
     reviewRequests: 'ReviewRequest'
@@ -3095,6 +3100,9 @@ export interface NexusGenArgTypes {
     }
     searchUsers: { // args
       query?: string | null; // String
+    }
+    submissionOwnerCandidates: { // args
+      venueId?: string | null; // String
     }
     submissions: { // args
       after?: NexusGenInputs['SubmissionWhereUniqueInput'] | null; // SubmissionWhereUniqueInput
