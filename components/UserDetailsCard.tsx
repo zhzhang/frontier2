@@ -1,5 +1,6 @@
 import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import UserPopover from "@/components/UserPopover";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -53,7 +54,7 @@ export default function UserDetailsCard({ user, onAssign }) {
   return (
     <FlexBox>
       <Accordion sx={{ flex: 1 }}>
-        <AccordionSummary>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
