@@ -170,6 +170,7 @@ function NewArticle({ venue }) {
             sx={{ mb: 2, mt: 2 }}
             label="Request review by..."
             onChange={(_, selected) => {
+              console.log(selected);
               setSubmissionTarget(selected);
             }}
             value={submissionTarget}

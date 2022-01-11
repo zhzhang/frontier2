@@ -35,7 +35,7 @@ export default function UserCard({ user }) {
         <Typography
           variant="h6"
           sx={{
-            p: 1,
+            pl: 1,
           }}
         >
           {name}

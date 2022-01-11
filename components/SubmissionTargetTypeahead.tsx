@@ -33,7 +33,7 @@ export default function SubmissionTargetTypeahead({
     ? data.searchOpenVenues.map((venue) => {
         let abbrev = formatVenueAbbreviation(venue);
         abbrev = abbrev ? `(${abbrev})` : "";
-        return { name: `${abbrev}${venue.name}`, type: "Venue" };
+        return { id: venue.id, name: `${abbrev}${venue.name}`, type: "Venue" };
       })
     : [];
 

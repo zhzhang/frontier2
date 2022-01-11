@@ -50,6 +50,7 @@ function SubmissionCard({
     borderRadius: "4px",
     m: "1px",
     p: 1,
+    mb: 1,
   };
   const [hover, setHover] = useState(false);
   const selected =
@@ -110,7 +111,7 @@ function ActionPane({ submission, venueId }) {
     return (
       <Box>
         <Typography variant="h5">Assign an owner</Typography>
-        <AssignOwner submission={submission} venueId={venueId} />;
+        <AssignOwner submission={submission} venueId={venueId} />
       </Box>
     );
   }

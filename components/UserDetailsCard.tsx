@@ -1,11 +1,13 @@
 import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
-import FirebaseAvatar from "@/components/FirebaseAvatar";
-import BusinessIcon from "@mui/icons-material/Business";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import UserPopover from "@/components/UserPopover";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
+import { useState } from "react";
 
 const ArticlesQuery = gql`
   ${ARTICLE_CARD_FIELDS}
@@ -35,42 +37,35 @@ const ArticlesQuery = gql`
   }
 `;
 
-export default function UserDetailsCard({ user }) {
-  const { profilePictureUrl, institution, website, name } = user;
-  const iconSx = { fontSize: "1.2rem", verticalAlign: "middle", mr: 0.3 };
+function FlexBox({ children }) {
+  return <Box sx={{ display: "flex", width: "100%" }}>{children}</Box>;
+}
+
+export default function UserDetailsCard({ user, onAssign }) {
+  const { profilePictureUrl, name } = user;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleEnter = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleLeave = () => {
+    setAnchorEl(null);
+  };
   return (
-    <Box
-      sx={{
-        p: 1,
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-        }}
-      >
-        <FirebaseAvatar name={name} storeRef={profilePictureUrl} />
-        <Typography
-          variant="h6"
-          sx={{
-            p: 1,
-          }}
-        >
-          {name}
-        </Typography>
-      </Box>
-      {institution && (
-        <Typography sx={{ mt: 1 }}>
-          <BusinessIcon sx={iconSx} />
-          {institution}
-        </Typography>
-      )}
-      {website && (
-        <Box sx={{ mt: 1 }}>
-          <OpenInNewIcon sx={iconSx} />
-          <Link variant="body1">{website}</Link>
-        </Box>
-      )}
-    </Box>
+    <FlexBox>
+      <Accordion sx={{ flex: 1 }}>
+        <AccordionSummary>
+          <Typography
+            onMouseEnter={handleEnter}
+            onMouseLeave={handleLeave}
+            sx={{ flex: 1 }}
+          >
+            {name}
+          </Typography>
+          <UserPopover user={user} anchorEl={anchorEl} />
+        </AccordionSummary>
+        <AccordionDetails>Test</AccordionDetails>
+      </Accordion>
+      <Button size="small">Assign</Button>
+    </FlexBox>
   );
 }
