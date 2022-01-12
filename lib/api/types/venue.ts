@@ -22,7 +22,7 @@ const Venue = objectType({
             venueId: root.id,
           },
         });
-        return membership.role;
+        return membership && membership.role;
       },
     });
   },

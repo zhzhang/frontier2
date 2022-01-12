@@ -143,7 +143,6 @@ function User() {
     variables: { where: { id } },
   });
 
-  console.log(data);
   if (loading) {
     return <Spinner animation="border" />;
   }
@@ -163,7 +162,7 @@ function User() {
     <Layout>
       <TabContext value={view}>
         <Grid container spacing={3}>
-          <Grid item sm={3} justifyContent="center">
+          <Grid item sm={2.5} justifyContent="center">
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <FirebaseAvatar
                 sx={{
@@ -217,7 +216,7 @@ function User() {
               ))}
             </List>
           </Grid>
-          <Grid item sm={9}>
+          <Grid item sm={9.5}>
             <TabPanel value="articles" index={0} sx={contentSx}>
               <ArticlesTab userId={id} />
             </TabPanel>

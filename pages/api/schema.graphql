@@ -3,6 +3,7 @@
 
 
 type Article {
+  abstract: String!
   acceptedVenues: [Venue]
   anonymous: Boolean!
   authors: [Identity]
@@ -56,6 +57,7 @@ input ArticleCreateOrConnectWithoutThreadMessagesInput {
 }
 
 input ArticleCreateWithoutAuthorsInput {
+  abstract: String!
   anonymous: Boolean
   id: String
   reviewRequest: ReviewRequestCreateNestedManyWithoutArticleInput
@@ -66,6 +68,7 @@ input ArticleCreateWithoutAuthorsInput {
 }
 
 input ArticleCreateWithoutReviewRequestInput {
+  abstract: String!
   anonymous: Boolean
   authors: IdentityCreateNestedManyWithoutArticleInput
   id: String
@@ -76,6 +79,7 @@ input ArticleCreateWithoutReviewRequestInput {
 }
 
 input ArticleCreateWithoutSubmissionsInput {
+  abstract: String!
   anonymous: Boolean
   authors: IdentityCreateNestedManyWithoutArticleInput
   id: String
@@ -86,6 +90,7 @@ input ArticleCreateWithoutSubmissionsInput {
 }
 
 input ArticleCreateWithoutThreadMessagesInput {
+  abstract: String!
   anonymous: Boolean
   authors: IdentityCreateNestedManyWithoutArticleInput
   id: String
@@ -128,6 +133,7 @@ input ArticleUpdateOneRequiredWithoutThreadMessagesInput {
 }
 
 input ArticleUpdateWithoutAuthorsInput {
+  abstract: StringFieldUpdateOperationsInput
   anonymous: BoolFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   reviewRequest: ReviewRequestUpdateManyWithoutArticleInput
@@ -138,6 +144,7 @@ input ArticleUpdateWithoutAuthorsInput {
 }
 
 input ArticleUpdateWithoutReviewRequestInput {
+  abstract: StringFieldUpdateOperationsInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: IdentityUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
@@ -148,6 +155,7 @@ input ArticleUpdateWithoutReviewRequestInput {
 }
 
 input ArticleUpdateWithoutSubmissionsInput {
+  abstract: StringFieldUpdateOperationsInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: IdentityUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
@@ -158,6 +166,7 @@ input ArticleUpdateWithoutSubmissionsInput {
 }
 
 input ArticleUpdateWithoutThreadMessagesInput {
+  abstract: StringFieldUpdateOperationsInput
   anonymous: BoolFieldUpdateOperationsInput
   authors: IdentityUpdateManyWithoutArticleInput
   id: StringFieldUpdateOperationsInput
@@ -188,7 +197,6 @@ input ArticleUpsertWithoutThreadMessagesInput {
 }
 
 type ArticleVersion {
-  abstract: String!
   createdAt: DateTime!
   id: String!
   ref: String
@@ -196,7 +204,6 @@ type ArticleVersion {
 }
 
 input ArticleVersionCreateManyArticleInput {
-  abstract: String!
   createdAt: DateTime
   id: String
   ref: String
@@ -221,7 +228,6 @@ input ArticleVersionCreateOrConnectWithoutArticleInput {
 }
 
 input ArticleVersionCreateWithoutArticleInput {
-  abstract: String!
   createdAt: DateTime
   id: String
   ref: String
@@ -238,7 +244,6 @@ input ArticleVersionScalarWhereInput {
   AND: [ArticleVersionScalarWhereInput!]
   NOT: [ArticleVersionScalarWhereInput!]
   OR: [ArticleVersionScalarWhereInput!]
-  abstract: StringFilter
   articleId: StringFilter
   createdAt: DateTimeFilter
   id: StringFilter
@@ -247,7 +252,6 @@ input ArticleVersionScalarWhereInput {
 }
 
 input ArticleVersionUpdateManyMutationInput {
-  abstract: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   ref: NullableStringFieldUpdateOperationsInput
@@ -279,7 +283,6 @@ input ArticleVersionUpdateWithWhereUniqueWithoutArticleInput {
 }
 
 input ArticleVersionUpdateWithoutArticleInput {
-  abstract: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   ref: NullableStringFieldUpdateOperationsInput
@@ -296,7 +299,6 @@ input ArticleVersionWhereInput {
   AND: [ArticleVersionWhereInput!]
   NOT: [ArticleVersionWhereInput!]
   OR: [ArticleVersionWhereInput!]
-  abstract: StringFilter
   article: ArticleWhereInput
   articleId: StringFilter
   createdAt: DateTimeFilter
@@ -313,6 +315,7 @@ input ArticleWhereInput {
   AND: [ArticleWhereInput!]
   NOT: [ArticleWhereInput!]
   OR: [ArticleWhereInput!]
+  abstract: StringFilter
   anonymous: BoolFilter
   authors: IdentityListRelationFilter
   id: StringFilter

@@ -30,6 +30,7 @@ CREATE TABLE `Relation` (
 CREATE TABLE `Article` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
+    `abstract` MEDIUMTEXT NOT NULL,
     `anonymous` BOOLEAN NOT NULL DEFAULT true,
 
     PRIMARY KEY (`id`)
@@ -51,7 +52,6 @@ CREATE TABLE `Identity` (
 -- CreateTable
 CREATE TABLE `ArticleVersion` (
     `id` VARCHAR(191) NOT NULL,
-    `abstract` MEDIUMTEXT NOT NULL,
     `ref` VARCHAR(191),
     `articleId` VARCHAR(191) NOT NULL,
     `versionNumber` INTEGER NOT NULL,
@@ -95,12 +95,12 @@ CREATE TABLE `Submission` (
 CREATE TABLE `Venue` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `acceptingSubmissions` BOOLEAN NOT NULL DEFAULT false,
     `websiteUrl` VARCHAR(191),
     `abbreviation` VARCHAR(191),
     `description` MEDIUMTEXT NOT NULL,
     `logoRef` VARCHAR(191),
     `venueDate` DATETIME(3),
-    `submissionOpen` DATETIME(3),
     `submissionDeadline` DATETIME(3),
 
     PRIMARY KEY (`id`)
@@ -128,15 +128,6 @@ CREATE TABLE `ReviewRequest` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Identity` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Identity` ADD FOREIGN KEY (`venueId`) REFERENCES `Venue`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Identity` ADD FOREIGN KEY (`articleId`) REFERENCES `Article`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `Relation` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -155,6 +146,15 @@ ALTER TABLE `ThreadMessage` ADD FOREIGN KEY (`articleId`) REFERENCES `Article`(`
 ALTER TABLE `ThreadMessage` ADD FOREIGN KEY (`venueId`) REFERENCES `Venue`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Identity` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Identity` ADD FOREIGN KEY (`venueId`) REFERENCES `Venue`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Identity` ADD FOREIGN KEY (`articleId`) REFERENCES `Article`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `ArticleVersion` ADD FOREIGN KEY (`articleId`) REFERENCES `Article`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -167,6 +167,12 @@ ALTER TABLE `Submission` ADD FOREIGN KEY (`venueId`) REFERENCES `Venue`(`id`) ON
 ALTER TABLE `Submission` ADD FOREIGN KEY (`ownerId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `VenueMembership` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `VenueMembership` ADD FOREIGN KEY (`venueId`) REFERENCES `Venue`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `ReviewRequest` ADD FOREIGN KEY (`articleId`) REFERENCES `Article`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -174,9 +180,3 @@ ALTER TABLE `ReviewRequest` ADD FOREIGN KEY (`submissionId`) REFERENCES `Submiss
 
 -- AddForeignKey
 ALTER TABLE `ReviewRequest` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `VenueMembership` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `VenueMembership` ADD FOREIGN KEY (`venueId`) REFERENCES `Venue`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

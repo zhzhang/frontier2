@@ -156,7 +156,8 @@ export default objectType({
         }
         const input = {
           data: {
-            title: title,
+            title,
+            abstract,
             authors: {
               create: authorCreationArgs,
             },
@@ -164,7 +165,6 @@ export default objectType({
             versions: {
               create: [
                 {
-                  abstract: abstract,
                   ref: ref,
                   versionNumber: 1,
                 },

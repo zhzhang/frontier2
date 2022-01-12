@@ -1,20 +1,19 @@
 import ErrorSnackbar from "@/components/ErrorSnackbar";
-import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import MarkdownEditor from "@/components/MarkdownEditor";
 import PdfViewer from "@/components/PDFViewer";
 import SubmissionTargetTypeahed from "@/components/SubmissionTargetTypeahead";
+import { USER_CARD_FIELDS } from "@/components/UserCard";
 import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
 import { uploadFile } from "@/lib/firebase";
 import { UploadTypeEnum } from "@/lib/types";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/react-hooks";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import CircularProgress from "@mui/material/CircularProgress";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -45,28 +44,65 @@ const CreateArticleMutation = gql`
   }
 `;
 
-const VenueQuery = gql`
-  query VenueQuery($where: VenueWhereUniqueInput!) {
-    venue(where: $where) {
+const ArticleQuery = gql`
+  ${USER_CARD_FIELDS}
+  query ArticleQuery($id: String!) {
+    article(where: { id: $id }) {
       id
-      name
-      abbreviation
-      logoRef
-      venueDate
+      title
+      abstract
+      anonymous
+      authors {
+        number
+        user {
+          ...UserCardFields
+        }
+      }
+      versions {
+        id
+        ref
+        versionNumber
+        createdAt
+      }
     }
   }
 `;
 
-function NewArticle({ venue }) {
+function RequestReviews({ article }) {
+  const [submissionTarget, setSubmissionTarget] = useState(null);
+  return (
+    <>
+      <SubmissionTargetTypeahed
+        sx={{ mb: 2, mt: 2 }}
+        label="Request review by..."
+        onChange={(_, selected) => {
+          console.log(selected);
+          setSubmissionTarget(selected);
+        }}
+        value={submissionTarget}
+      />
+      {article.anonymous && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleSubmit()}
+          sx={{ mr: 2, mt: 2 }}
+        >
+          Request
+        </Button>
+      )}
+    </>
+  );
+}
+
+function ManageArticle({ article }) {
   const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [title, setTitle] = useState("");
-  const [submissionTarget, setSubmissionTarget] = useState(venue);
+  const [title, setTitle] = useState(article.title);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [abstract, setAbstract] = useState("");
+  const [abstract, setAbstract] = useState(article.abstract);
   const [authors, setAuthors] = useState([]);
-  const [anonymous, setAnonymous] = useState(true);
-  const [createArticle, { error }] = useMutation(CreateArticleMutation);
+  const [createArticle, _] = useMutation(CreateArticleMutation);
 
   const handleSubmit = () => {
     const { uploadTask, refPath } = uploadFile(file, UploadTypeEnum.ARTICLE);
@@ -87,10 +123,8 @@ function NewArticle({ venue }) {
             variables: {
               title,
               abstract,
-              anonymous,
               ref: refPath,
               authorIds: authors.map((a) => a.id),
-              venueId: submissionTarget && submissionTarget.id,
             },
           });
           window.location.href = `/article/${data.createArticle.id}`;
@@ -106,12 +140,12 @@ function NewArticle({ venue }) {
 
   return (
     <Layout>
-      <ErrorSnackbar error={error} />
+      <ErrorSnackbar error={errorMessage} />
       <Grid container spacing={3}>
         <Grid item xs={5}>
           <Box sx={{ display: "flex" }}>
             <Typography variant="h4" sx={{ flex: 1 }}>
-              New Article
+              New Article Version
             </Typography>
             {file && (
               <Button
@@ -129,6 +163,7 @@ function NewArticle({ venue }) {
             fullWidth
             variant="outlined"
             label="Title"
+            value={title}
             onChange={(event) => setTitle(event.target.value)}
             sx={{ mt: 2 }}
           />
@@ -141,38 +176,14 @@ function NewArticle({ venue }) {
               setAuthors(selected);
             }}
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={anonymous}
-                onChange={() => setAnonymous(!anonymous)}
-                name="anonymize"
-              />
-            }
-            label="Anonymize Authors"
-          />
-          {!anonymous && (
-            <Alert severity="warning" sx={{ mb: 2 }}>
-              Submitting without anonymization will disqualify this publication
-              for review with many venues.
-            </Alert>
-          )}
           <MarkdownEditor
             body={abstract}
             onChange={(abstract) => setAbstract(abstract)}
             label="Abstract"
             placeholder="Abstract"
             sx={{
-              mb: 2,
+              mt: 2,
             }}
-          />
-          <SubmissionTargetTypeahed
-            sx={{ mb: 2, mt: 2 }}
-            label="Request review by..."
-            onChange={(_, selected) => {
-              setSubmissionTarget(selected);
-            }}
-            value={submissionTarget}
           />
           <Box sx={{ display: "flex", mb: 2 }}>
             <Button
@@ -180,13 +191,30 @@ function NewArticle({ venue }) {
               color="primary"
               onClick={() => handleSubmit()}
               disabled={!canSubmit}
-              sx={{ mr: 2 }}
+              sx={{ mr: 2, mt: 2 }}
             >
-              Publish
+              Publish New Version
             </Button>
             <CircularProgress variant="determinate" value={uploadProgress} />
           </Box>
           {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+          <Typography variant="h4" sx={{ flex: 1 }}>
+            Request Review
+          </Typography>
+          <RequestReviews article={article} />
+          <Typography variant="h4" sx={{ flex: 1 }}>
+            Additional Actions
+          </Typography>
+          {article.anonymous && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleSubmit()}
+              sx={{ mr: 2, mt: 2 }}
+            >
+              Deanonymize
+            </Button>
+          )}
         </Grid>
         <Grid item xs={7}>
           {file ? (
@@ -229,19 +257,15 @@ function NewArticle({ venue }) {
   );
 }
 
-function NewArticleWithVenue() {
-  const router = useRouter();
-  const { venue } = router.query;
-  const { loading, error, data } = useQuery(VenueQuery, {
-    variables: { where: { id: venue } },
+function LoadArticle() {
+  const { id, reviewId, version } = useRouter().query;
+  const { loading, error, data } = useQuery(ArticleQuery, {
+    variables: { id },
   });
-
-  if (venue) {
-    if (loading) {
-      return <Spinner />;
-    }
+  if (loading || error) {
+    return null;
   }
-  return <NewArticle venue={data && data.venue} />;
+  return <ManageArticle article={data.article} />;
 }
 
-export default withApollo(NewArticleWithVenue);
+export default withApollo(LoadArticle);

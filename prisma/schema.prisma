@@ -46,6 +46,7 @@ model Relation {
 model Article {
   id             String           @id @default(cuid())
   title          String
+  abstract       String           @db.MediumText
   authors        Identity[]
   versions       ArticleVersion[]
   submissions    Submission[]
@@ -76,7 +77,6 @@ model Identity {
 
 model ArticleVersion {
   id            String   @id @default(cuid())
-  abstract      String   @db.MediumText
   ref           String?
   article       Article  @relation(fields: [articleId], references: [id])
   articleId     String

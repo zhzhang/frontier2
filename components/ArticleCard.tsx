@@ -16,13 +16,13 @@ export const ARTICLE_CARD_FIELDS = gql`
   fragment ArticleCardFields on Article {
     id
     title
+    abstract
     authors {
       user {
         ...UserCardFields
       }
     }
     versions {
-      abstract
       ref
       createdAt
     }
@@ -48,7 +48,7 @@ function AcceptedVenues({ venues, ...props }) {
 }
 
 export default function ArticleCard({ article, sx = null }) {
-  const { id, title, versions, authors, acceptedVenues } = article;
+  const { id, title, abstract, authors, acceptedVenues } = article;
   const [showAbstract, setShowAbstract] = useState(false);
 
   return (
@@ -64,7 +64,7 @@ export default function ArticleCard({ article, sx = null }) {
       >
         {showAbstract ? "Hide Abstract" : "Show Abstract"}
       </Button>
-      {showAbstract && <Markdown>{versions[0].abstract}</Markdown>}
+      {showAbstract && <Markdown>{abstract}</Markdown>}
       <AcceptedVenues venues={acceptedVenues} />
     </Box>
   );

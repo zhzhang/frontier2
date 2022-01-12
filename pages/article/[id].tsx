@@ -75,6 +75,7 @@ const ArticleQuery = gql`
     article(where: { id: $id }) {
       id
       title
+      abstract
       authors {
         number
         user {
@@ -83,7 +84,6 @@ const ArticleQuery = gql`
       }
       versions {
         id
-        abstract
         ref
         versionNumber
         createdAt
@@ -155,7 +155,7 @@ function LeftPane() {
   if (!data) {
     return null;
   }
-  const { id, title, authors, versions } = data.article;
+  const { id, title, authors, versions, abstract } = data.article;
   const { selectedVersion } = data;
   return (
     <Box
@@ -190,7 +190,7 @@ function LeftPane() {
           <Typography>Abstract</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Markdown>{selectedVersion.abstract}</Markdown>
+          <Markdown>{abstract}</Markdown>
         </AccordionDetails>
       </Accordion>
       <Divider sx={{ mt: 2, mb: 1 }} />

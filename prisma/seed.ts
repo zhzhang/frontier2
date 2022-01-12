@@ -107,6 +107,7 @@ async function main() {
       id: "cklgwx4zu000058v2vz52cajm",
       title:
         "Investigating the Effect of Auxiliary Objectives for the Automated Grading of Learner English Speech Transcriptions",
+      abstract: abstract,
       authors: {
         create: [
           {
@@ -132,13 +133,11 @@ async function main() {
       versions: {
         create: [
           {
-            abstract: abstract,
             ref: "articles/ACL2020_SpeechScoring.pdf",
             versionNumber: 1,
             createdAt: "2020-01-06T12:00:00.000Z",
           },
           {
-            abstract: abstract,
             ref: "articles/ACL2020_SpeechScoring_camera_ready.pdf",
             versionNumber: 2,
             createdAt: "2020-06-11T12:00:00.000Z",
@@ -539,6 +538,8 @@ async function main() {
   const article2 = await prisma.article.create({
     data: {
       title: "Grammatical Error Detection in Transcriptions of Spoken English",
+      abstract:
+        "We describe the collection of transcription corrections and grammatical error annotations for the CROWDED Corpus of spoken English monologues on business topics. The corpus recordings were crowdsourced from native speakers of English and learners of English with German as their first language. The new transcriptions and annotations are obtained from different crowdworkers: we analyse the 1108 new crowdworker submissions and propose that they can be used for automatic transcription post-editing and grammatical error correction for speech. To further explore the data we train grammatical error detection models with various configurations including pretrained and contextual word representations as input, additional features and auxiliary objectives, and extra training data from written error-annotated corpora. We find that a model concatenating pre-trained and contextual word representations as input performs best, and that additional information does not lead to further performance gains",
       authors: {
         create: [
           {
@@ -555,8 +556,6 @@ async function main() {
       versions: {
         create: [
           {
-            abstract:
-              "We describe the collection of transcription corrections and grammatical error annotations for the CROWDED Corpus of spoken English monologues on business topics. The corpus recordings were crowdsourced from native speakers of English and learners of English with German as their first language. The new transcriptions and annotations are obtained from different crowdworkers: we analyse the 1108 new crowdworker submissions and propose that they can be used for automatic transcription post-editing and grammatical error correction for speech. To further explore the data we train grammatical error detection models with various configurations including pretrained and contextual word representations as input, additional features and auxiliary objectives, and extra training data from written error-annotated corpora. We find that a model concatenating pre-trained and contextual word representations as input performs best, and that additional information does not lead to further performance gains",
             ref: "articles/CrowdED_GED.pdf",
             versionNumber: 1,
             createdAt: "2020-01-06T12:00:00.000Z",

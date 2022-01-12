@@ -204,84 +204,85 @@ export default function MarkdownEditor({
     style.borderColor = "black";
   }
   return (
-    <Box
-      component="form"
-      noValidate
-      autoComplete="off"
-      key={key}
-      sx={{
-        ...sx,
-        ...style,
-      }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      <FormControl
-        fullWidth
-        onFocus={() => {
-          onFocus && onFocus();
-        }}
-        onBlur={() => {
-          onBlur && onBlur();
-        }}
+    <Box sx={sx}>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        key={key}
         sx={{
-          borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
+          ...style,
         }}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
       >
-        <InputBase
-          multiline
-          required
-          placeholder={placeholder}
-          defaultValue={body}
-          maxRows={20}
-          sx={{ p: 1.5 }}
-          onChange={({ target }) => onChange(target.value)}
-        />
-      </FormControl>
-      <Box sx={{ display: "flex", pr: 0.5 }}>
-        {STYLES.map((style) => (
-          <StyleButton {...style} key={style.style} />
-        ))}
-        {articleMode && <StyleButton {...HIGHLIGHT_STYLE} />}
-        <Button
-          sx={{
-            marginLeft: "auto",
-            p: 0,
-            height: 20,
-            mb: 0.3,
-            mt: 0.3,
+        <FormControl
+          fullWidth
+          onFocus={() => {
+            onFocus && onFocus();
           }}
-          onClick={() => toggleShowPreview(!previewOpen)}
-          size="small"
-          fullWidth={false}
-        >
-          {previewOpen ? "Hide Preview" : "Show Preview"}
-        </Button>
-      </Box>
-      {highlights.map((highlight) => (
-        <Highlight
-          key={highlight.id}
-          highlight={highlight}
-          highlights={highlights}
-          updateArticleAndScroll={updateArticleAndScroll}
-          deleteHighlight={deleteHighlight}
-        />
-      ))}
-      {previewOpen && (
-        <Box
+          onBlur={() => {
+            onBlur && onBlur();
+          }}
           sx={{
-            borderTop: "1px solid rgba(0, 0, 0, 0.23)",
-            padding: 2,
+            borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
           }}
         >
-          <Markdown
+          <InputBase
+            multiline
+            required
+            placeholder={placeholder}
+            defaultValue={body}
+            maxRows={20}
+            sx={{ p: 1.5 }}
+            onChange={({ target }) => onChange(target.value)}
+          />
+        </FormControl>
+        <Box sx={{ display: "flex", pr: 0.5 }}>
+          {STYLES.map((style) => (
+            <StyleButton {...style} key={style.style} />
+          ))}
+          {articleMode && <StyleButton {...HIGHLIGHT_STYLE} />}
+          <Button
+            sx={{
+              marginLeft: "auto",
+              p: 0,
+              height: 20,
+              mb: 0.3,
+              mt: 0.3,
+            }}
+            onClick={() => toggleShowPreview(!previewOpen)}
+            size="small"
+            fullWidth={false}
+          >
+            {previewOpen ? "Hide Preview" : "Show Preview"}
+          </Button>
+        </Box>
+        {highlights.map((highlight) => (
+          <Highlight
+            key={highlight.id}
+            highlight={highlight}
             highlights={highlights}
             updateArticleAndScroll={updateArticleAndScroll}
+            deleteHighlight={deleteHighlight}
+          />
+        ))}
+        {previewOpen && (
+          <Box
+            sx={{
+              borderTop: "1px solid rgba(0, 0, 0, 0.23)",
+              padding: 2,
+            }}
           >
-            {body}
-          </Markdown>
-        </Box>
-      )}
+            <Markdown
+              highlights={highlights}
+              updateArticleAndScroll={updateArticleAndScroll}
+            >
+              {body}
+            </Markdown>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 }

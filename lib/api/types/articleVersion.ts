@@ -5,7 +5,6 @@ const ArticleVersion = objectType({
   definition(t) {
     t.model.id();
     t.model.ref();
-    t.model.abstract();
     t.model.createdAt();
     t.model.versionNumber();
   },

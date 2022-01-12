@@ -79,6 +79,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ArticleWhereUniqueInput']; // ArticleWhereUniqueInput!
   }
   ArticleCreateWithoutAuthorsInput: { // input type
+    abstract: string; // String!
     anonymous?: boolean | null; // Boolean
     id?: string | null; // String
     reviewRequest?: NexusGenInputs['ReviewRequestCreateNestedManyWithoutArticleInput'] | null; // ReviewRequestCreateNestedManyWithoutArticleInput
@@ -88,6 +89,7 @@ export interface NexusGenInputs {
     versions?: NexusGenInputs['ArticleVersionCreateNestedManyWithoutArticleInput'] | null; // ArticleVersionCreateNestedManyWithoutArticleInput
   }
   ArticleCreateWithoutReviewRequestInput: { // input type
+    abstract: string; // String!
     anonymous?: boolean | null; // Boolean
     authors?: NexusGenInputs['IdentityCreateNestedManyWithoutArticleInput'] | null; // IdentityCreateNestedManyWithoutArticleInput
     id?: string | null; // String
@@ -97,6 +99,7 @@ export interface NexusGenInputs {
     versions?: NexusGenInputs['ArticleVersionCreateNestedManyWithoutArticleInput'] | null; // ArticleVersionCreateNestedManyWithoutArticleInput
   }
   ArticleCreateWithoutSubmissionsInput: { // input type
+    abstract: string; // String!
     anonymous?: boolean | null; // Boolean
     authors?: NexusGenInputs['IdentityCreateNestedManyWithoutArticleInput'] | null; // IdentityCreateNestedManyWithoutArticleInput
     id?: string | null; // String
@@ -106,6 +109,7 @@ export interface NexusGenInputs {
     versions?: NexusGenInputs['ArticleVersionCreateNestedManyWithoutArticleInput'] | null; // ArticleVersionCreateNestedManyWithoutArticleInput
   }
   ArticleCreateWithoutThreadMessagesInput: { // input type
+    abstract: string; // String!
     anonymous?: boolean | null; // Boolean
     authors?: NexusGenInputs['IdentityCreateNestedManyWithoutArticleInput'] | null; // IdentityCreateNestedManyWithoutArticleInput
     id?: string | null; // String
@@ -143,6 +147,7 @@ export interface NexusGenInputs {
     upsert?: NexusGenInputs['ArticleUpsertWithoutThreadMessagesInput'] | null; // ArticleUpsertWithoutThreadMessagesInput
   }
   ArticleUpdateWithoutAuthorsInput: { // input type
+    abstract?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     reviewRequest?: NexusGenInputs['ReviewRequestUpdateManyWithoutArticleInput'] | null; // ReviewRequestUpdateManyWithoutArticleInput
@@ -152,6 +157,7 @@ export interface NexusGenInputs {
     versions?: NexusGenInputs['ArticleVersionUpdateManyWithoutArticleInput'] | null; // ArticleVersionUpdateManyWithoutArticleInput
   }
   ArticleUpdateWithoutReviewRequestInput: { // input type
+    abstract?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     authors?: NexusGenInputs['IdentityUpdateManyWithoutArticleInput'] | null; // IdentityUpdateManyWithoutArticleInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -161,6 +167,7 @@ export interface NexusGenInputs {
     versions?: NexusGenInputs['ArticleVersionUpdateManyWithoutArticleInput'] | null; // ArticleVersionUpdateManyWithoutArticleInput
   }
   ArticleUpdateWithoutSubmissionsInput: { // input type
+    abstract?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     authors?: NexusGenInputs['IdentityUpdateManyWithoutArticleInput'] | null; // IdentityUpdateManyWithoutArticleInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -170,6 +177,7 @@ export interface NexusGenInputs {
     versions?: NexusGenInputs['ArticleVersionUpdateManyWithoutArticleInput'] | null; // ArticleVersionUpdateManyWithoutArticleInput
   }
   ArticleUpdateWithoutThreadMessagesInput: { // input type
+    abstract?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     anonymous?: NexusGenInputs['BoolFieldUpdateOperationsInput'] | null; // BoolFieldUpdateOperationsInput
     authors?: NexusGenInputs['IdentityUpdateManyWithoutArticleInput'] | null; // IdentityUpdateManyWithoutArticleInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -195,7 +203,6 @@ export interface NexusGenInputs {
     update: NexusGenInputs['ArticleUpdateWithoutThreadMessagesInput']; // ArticleUpdateWithoutThreadMessagesInput!
   }
   ArticleVersionCreateManyArticleInput: { // input type
-    abstract: string; // String!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
     ref?: string | null; // String
@@ -216,7 +223,6 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ArticleVersionWhereUniqueInput']; // ArticleVersionWhereUniqueInput!
   }
   ArticleVersionCreateWithoutArticleInput: { // input type
-    abstract: string; // String!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
     ref?: string | null; // String
@@ -231,7 +237,6 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ArticleVersionScalarWhereInput'][] | null; // [ArticleVersionScalarWhereInput!]
     NOT?: NexusGenInputs['ArticleVersionScalarWhereInput'][] | null; // [ArticleVersionScalarWhereInput!]
     OR?: NexusGenInputs['ArticleVersionScalarWhereInput'][] | null; // [ArticleVersionScalarWhereInput!]
-    abstract?: NexusGenInputs['StringFilter'] | null; // StringFilter
     articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -239,7 +244,6 @@ export interface NexusGenInputs {
     versionNumber?: NexusGenInputs['IntFilter'] | null; // IntFilter
   }
   ArticleVersionUpdateManyMutationInput: { // input type
-    abstract?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     ref?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -267,7 +271,6 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ArticleVersionWhereUniqueInput']; // ArticleVersionWhereUniqueInput!
   }
   ArticleVersionUpdateWithoutArticleInput: { // input type
-    abstract?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     ref?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -282,7 +285,6 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ArticleVersionWhereInput'][] | null; // [ArticleVersionWhereInput!]
     NOT?: NexusGenInputs['ArticleVersionWhereInput'][] | null; // [ArticleVersionWhereInput!]
     OR?: NexusGenInputs['ArticleVersionWhereInput'][] | null; // [ArticleVersionWhereInput!]
-    abstract?: NexusGenInputs['StringFilter'] | null; // StringFilter
     article?: NexusGenInputs['ArticleWhereInput'] | null; // ArticleWhereInput
     articleId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -297,6 +299,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ArticleWhereInput'][] | null; // [ArticleWhereInput!]
     NOT?: NexusGenInputs['ArticleWhereInput'][] | null; // [ArticleWhereInput!]
     OR?: NexusGenInputs['ArticleWhereInput'][] | null; // [ArticleWhereInput!]
+    abstract?: NexusGenInputs['StringFilter'] | null; // StringFilter
     anonymous?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     authors?: NexusGenInputs['IdentityListRelationFilter'] | null; // IdentityListRelationFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -2665,12 +2668,12 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Article: { // root type
+    abstract: string; // String!
     anonymous: boolean; // Boolean!
     id: string; // String!
     title: string; // String!
   }
   ArticleVersion: { // root type
-    abstract: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // String!
     ref?: string | null; // String
@@ -2746,6 +2749,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Article: { // field return type
+    abstract: string; // String!
     acceptedVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     anonymous: boolean; // Boolean!
     authors: Array<NexusGenRootTypes['Identity'] | null> | null; // [Identity]
@@ -2754,7 +2758,6 @@ export interface NexusGenFieldTypes {
     versions: NexusGenRootTypes['ArticleVersion'][]; // [ArticleVersion!]!
   }
   ArticleVersion: { // field return type
-    abstract: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // String!
     ref: string | null; // String
@@ -2874,6 +2877,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Article: { // field return type name
+    abstract: 'String'
     acceptedVenues: 'Venue'
     anonymous: 'Boolean'
     authors: 'Identity'
@@ -2882,7 +2886,6 @@ export interface NexusGenFieldTypeNames {
     versions: 'ArticleVersion'
   }
   ArticleVersion: { // field return type name
-    abstract: 'String'
     createdAt: 'DateTime'
     id: 'String'
     ref: 'String'

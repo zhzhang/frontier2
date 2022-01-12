@@ -7,6 +7,7 @@ const Article = objectType({
   definition(t) {
     t.model.id();
     t.model.title();
+    t.model.abstract();
     t.model.anonymous();
     t.model.versions({ pagination: false });
     t.nullable.list.field("authors", {
