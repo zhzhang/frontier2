@@ -2,7 +2,7 @@ import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
-import { useQuery } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -11,31 +11,37 @@ import gql from "graphql-tag";
 import { useState } from "react";
 import UserDetailsCard from "../UserDetailsCard";
 
-const SubmissionsQuery = gql`
+const SUBMISSION_FIELDS = gql`
   ${ARTICLE_CARD_FIELDS}
   ${USER_CARD_FIELDS}
+  fragment SubmissionFields on Submission {
+    id
+    createdAt
+    owner {
+      ...UserCardFields
+    }
+    article {
+      ...ArticleCardFields
+    }
+    reviewRequests {
+      user {
+        ...UserCardFields
+      }
+      submission {
+        venue {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+const SubmissionsQuery = gql`
+  ${SUBMISSION_FIELDS}
   query SubmissionsQuery($where: SubmissionWhereInput!) {
     submissions(where: $where) {
-      id
-      createdAt
-      owner {
-        id
-        name
-      }
-      article {
-        ...ArticleCardFields
-      }
-      reviewRequests {
-        user {
-          ...UserCardFields
-        }
-        submission {
-          venue {
-            id
-            name
-          }
-        }
-      }
+      ...SubmissionFields
     }
   }
 `;
@@ -73,7 +79,7 @@ function SubmissionCard({
       onMouseLeave={() => setHover(false)}
     >
       <ArticleCard key={submission.id} article={submission.article} />
-      <Typography>Assigned chair: {submission.owner}</Typography>
+      <Typography>Assigned chair: {submission.owner.name}</Typography>
     </Box>
   );
 }
@@ -87,17 +93,37 @@ const ActionEditorsQuery = gql`
   }
 `;
 
+const AssignOwnerMutation = gql`
+  ${SUBMISSION_FIELDS}
+  mutation AssignOwnerMutation($input: AssignSubmissionInput!) {
+    assignSubmissionOwner(input: $input) {
+      ...SubmissionFields
+    }
+  }
+`;
+
 function AssignOwner({ submission, venueId }) {
   const { loading, error, data } = useQuery(ActionEditorsQuery, {
     variables: { venueId },
   });
+  const [assignOwner, _] = useMutation(AssignOwnerMutation);
   if (loading) {
     return <Skeleton variant="text" />;
   }
+  const onAssign = (id) => {
+    assignOwner({
+      variables: {
+        input: {
+          ownerId: id,
+          submissionId: submission.id,
+        },
+      },
+    });
+  };
   return (
     <Box>
       {data.submissionOwnerCandidates.map((user) => (
-        <UserDetailsCard key={user.id} user={user} />
+        <UserDetailsCard key={user.id} user={user} onAssign={onAssign} />
       ))}
     </Box>
   );
@@ -115,6 +141,7 @@ function ActionPane({ submission, venueId }) {
       </Box>
     );
   }
+  return null;
 }
 
 export default function SubmissionsPane({ id }) {
@@ -122,6 +149,7 @@ export default function SubmissionsPane({ id }) {
     variables: { where: { venueId: { equals: id } } },
   });
   const [selectedSubmission, setSelectedSubmission] = useState(null);
+  console.log(data);
   if (loading) {
     return <Spinner />;
   } else if (error) {
@@ -135,7 +163,11 @@ export default function SubmissionsPane({ id }) {
   }
   const submissions = data.submissions;
   if (submissions.length === 0) {
-    return <Grid item>There are currently no submissions.</Grid>;
+    return (
+      <Grid item>
+        <Typography>There are currently no submissions.</Typography>
+      </Grid>
+    );
   }
   return (
     <Grid item container spacing={3}>

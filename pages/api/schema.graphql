@@ -330,6 +330,11 @@ input ArticleWhereUniqueInput {
   id: String
 }
 
+input AssignSubmissionInput {
+  ownerId: String!
+  submissionId: String!
+}
+
 input BoolFieldUpdateOperationsInput {
   set: Boolean
 }
@@ -762,6 +767,7 @@ scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/fi
 scalar Json
 
 type Mutation {
+  assignSubmissionOwner(input: AssignSubmissionInput!): Submission
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createOneRelation(data: RelationCreateInput!): Relation!
   createOneReviewRequest(data: ReviewRequestCreateInput!): ReviewRequest!

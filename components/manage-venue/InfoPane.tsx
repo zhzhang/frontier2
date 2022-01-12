@@ -87,7 +87,7 @@ export default function InfoPane({ venue }) {
       const { data } = await updateVenue({
         variables,
       });
-      window.location.href = `/manage-venue/${data.createOneVenue.id}?view=members`;
+      window.location.href = `/manage-venue/${data.updateOneVenue.id}?view=members`;
       return;
     }
     const img = await getCroppedImg(imgRef.current, crop, "hello");

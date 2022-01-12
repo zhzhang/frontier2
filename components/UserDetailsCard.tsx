@@ -43,7 +43,7 @@ function FlexBox({ children }) {
 }
 
 export default function UserDetailsCard({ user, onAssign }) {
-  const { profilePictureUrl, name } = user;
+  const { id, profilePictureUrl, name } = user;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
     setAnchorEl(event.currentTarget);
@@ -66,7 +66,9 @@ export default function UserDetailsCard({ user, onAssign }) {
         </AccordionSummary>
         <AccordionDetails>Test</AccordionDetails>
       </Accordion>
-      <Button size="small">Assign</Button>
+      <Button size="small" onClick={() => onAssign(id)}>
+        Assign
+      </Button>
     </FlexBox>
   );
 }

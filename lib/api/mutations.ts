@@ -1,5 +1,6 @@
 import {
   booleanArg,
+  inputObjectType,
   list,
   nonNull,
   nullable,
@@ -34,6 +35,14 @@ function readStreamData(stream) {
   });
 }
 
+const AssignSubmissionInputType = inputObjectType({
+  name: "AssignSubmissionInput",
+  definition(t) {
+    t.nonNull.string("submissionId");
+    t.nonNull.string("ownerId");
+  },
+});
+
 export default objectType({
   name: "Mutation",
   definition(t) {
@@ -45,13 +54,33 @@ export default objectType({
     });
     t.crud.createOneVenueMembership({
       authorize: (_, args, ctx) => {
-        console.log(ctx.user);
         return true;
       },
     });
     t.crud.createOneVenue();
     t.crud.deleteOneVenueMembership();
     t.crud.updateOneSubmission();
+    t.field("assignSubmissionOwner", {
+      type: "Submission",
+      args: {
+        input: nonNull(AssignSubmissionInputType),
+      },
+      resolve: async (_, { input: { submissionId, ownerId } }, ctx) => {
+        const submission = await ctx.prisma.submission.update({
+          where: {
+            id: submissionId,
+          },
+          data: {
+            owner: {
+              connect: {
+                id: ownerId,
+              },
+            },
+          },
+        });
+        return submission;
+      },
+    });
     t.crud.createOneReviewRequest();
     t.crud.createOneThreadMessage();
     t.field("publishMessage", {

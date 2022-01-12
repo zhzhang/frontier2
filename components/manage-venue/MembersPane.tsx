@@ -10,6 +10,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import gql from "graphql-tag";
+import _ from "lodash";
 import { useState } from "react";
 
 const MembershipsQuery = gql`
@@ -49,16 +50,34 @@ const DeleteOneVenueMembershipMutation = gql`
 `;
 
 function MembersSelector({ id, role }) {
+  const variables = {
+    where: { venueId: { equals: id }, role: { equals: role } },
+  };
   const { loading, error, data } = useQuery(MembershipsQuery, {
-    variables: {
-      where: { venueId: { equals: id }, role: { equals: role } },
-    },
+    variables,
   });
   const [createVenueMembership, createResult] = useMutation(
     CreateOneVenueMembershipMutation
   );
   const [deleteVenueMembership, deleteResult] = useMutation(
-    DeleteOneVenueMembershipMutation
+    DeleteOneVenueMembershipMutation,
+    {
+      update(cache, { data: { deleteOneVenueMembership } }) {
+        const { venueMemberships } = cache.readQuery({
+          query: MembershipsQuery,
+          variables,
+        });
+        cache.writeQuery({
+          query: MembershipsQuery,
+          variables,
+          data: {
+            venueMemberships: _.reject(venueMemberships, {
+              id: deleteOneVenueMembership.id,
+            }),
+          },
+        });
+      },
+    }
   );
   const [newAdmins, setNewAdmins] = useState([]);
   if (loading) {
@@ -73,8 +92,8 @@ function MembersSelector({ id, role }) {
   }
   const admins = data.venueMemberships;
 
-  const handleAdd = (user) => {
-    createVenueMembership({
+  const handleAdd = async (user) => {
+    const membership = createVenueMembership({
       variables: {
         data: {
           role,
@@ -94,7 +113,7 @@ function MembersSelector({ id, role }) {
   };
 
   return (
-    <>
+    <Grid container spacing={3}>
       <Grid item sm={10}>
         <Typography variant="h6">{`${role[0]}${role
           .slice(1)
@@ -112,6 +131,7 @@ function MembersSelector({ id, role }) {
       <Grid item sm={2}>
         <Button
           color="primary"
+          size="large"
           variant="contained"
           onClick={() => {
             newAdmins.map((user) => handleAdd(user));
@@ -129,15 +149,14 @@ function MembersSelector({ id, role }) {
             </colgroup>
             <TableBody>
               {admins.map(({ id, user: { name } }) => {
-                console.log(name);
                 return (
                   <TableRow>
                     <TableCell>{name}</TableCell>
                     <TableCell>
                       <Button
                         color="secondary"
-                        onClick={() =>
-                          deleteVenueMembership({
+                        onClick={async () =>
+                          await deleteVenueMembership({
                             variables: {
                               where: {
                                 id,
@@ -156,7 +175,7 @@ function MembersSelector({ id, role }) {
           </Table>
         </TableContainer>
       </Grid>
-    </>
+    </Grid>
   );
 }
 

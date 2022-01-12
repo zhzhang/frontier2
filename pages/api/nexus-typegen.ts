@@ -312,6 +312,10 @@ export interface NexusGenInputs {
   ArticleWhereUniqueInput: { // input type
     id?: string | null; // String
   }
+  AssignSubmissionInput: { // input type
+    ownerId: string; // String!
+    submissionId: string; // String!
+  }
   BoolFieldUpdateOperationsInput: { // input type
     set?: boolean | null; // Boolean
   }
@@ -2772,6 +2776,7 @@ export interface NexusGenFieldTypes {
     venue: NexusGenRootTypes['Venue'] | null; // Venue
   }
   Mutation: { // field return type
+    assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createOneRelation: NexusGenRootTypes['Relation']; // Relation!
     createOneReviewRequest: NexusGenRootTypes['ReviewRequest']; // ReviewRequest!
@@ -2900,6 +2905,7 @@ export interface NexusGenFieldTypeNames {
     venue: 'Venue'
   }
   Mutation: { // field return type name
+    assignSubmissionOwner: 'Submission'
     createArticle: 'Article'
     createOneRelation: 'Relation'
     createOneReviewRequest: 'ReviewRequest'
@@ -3005,6 +3011,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    assignSubmissionOwner: { // args
+      input: NexusGenInputs['AssignSubmissionInput']; // AssignSubmissionInput!
+    }
     createArticle: { // args
       abstract: string; // String!
       anonymous: boolean; // Boolean!
