@@ -16,6 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import _ from "lodash";
@@ -37,8 +38,8 @@ import {
 
 const ThreadHeadsQuery = gql`
   ${THREAD_MESSAGE_FIELDS}
-  query ThreadHeads($input: ThreadHeadsInput!) {
-    threadHeads(input: $input) {
+  query ThreadHeads($input: ThreadMessagesInput!) {
+    threadMessages(input: $input) {
       ...ThreadMessageFields
     }
     article @client
@@ -47,8 +48,8 @@ const ThreadHeadsQuery = gql`
 
 const DraftMessagesQuery = gql`
   ${THREAD_MESSAGE_FIELDS}
-  query DraftMessageQuery($userId: String!, $articleId: String!) {
-    draftMessage(userId: $userId, articleId: $articleId, headId: null) {
+  query DraftMessageQuery($articleId: String!) {
+    draftMessage(articleId: $articleId, headId: null) {
       ...ThreadMessageFields
     }
     focusedEditor @client
@@ -123,7 +124,6 @@ function NewThreadPrompt({ userId, articleId }) {
 
 function NewThread({ userId, articleId }) {
   const variables = {
-    userId,
     articleId,
   };
   const { loading, error, data } = useQuery(DraftMessagesQuery, {
@@ -170,10 +170,12 @@ function NewThread({ userId, articleId }) {
     },
   });
   if (loading) {
-    return <>Loading</>;
+    return (
+      <Typography variant="h1">{loading ? <Skeleton /> : "h1"}</Typography>
+    );
   }
   if (error) {
-    return <>Error</>;
+    return <Error>Error checking for existing drafts.</Error>;
   }
   if (!data.draftMessage) {
     return <NewThreadPrompt userId={userId} articleId={articleId} />;
@@ -346,7 +348,7 @@ function DiscussionSidebar({ articleId }) {
   return (
     <>
       <AuthenticatedNewThread articleId={articleId} />
-      {data.threadHeads.map((message) => (
+      {data.threadMessages.map((message) => (
         <Box key={message.id}>
           <RenderRoot message={message} articleId={articleId} />
           <Thread headId={message.id} articleId={articleId} />

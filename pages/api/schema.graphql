@@ -45,19 +45,21 @@ scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/fi
 type Mutation {
   assignSubmissionOwner(input: AssignSubmissionInput!): Submission
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
+  createThreadMessage(input: ThreadMessageCreateInput!): ThreadMessage
   publishMessage(body: String!, highlights: JSON!, id: String!): ThreadMessage
 }
 
 type Query {
   article(id: String): Article
-  draftMessage(articleId: String, headId: String, userId: String): ThreadMessage
+  draftMessage(articleId: String, headId: String, type: String): ThreadMessage
   feedArticles: [Article]
   reviewerAssignedSubmissions: [Submission]
   searchEditors(organizationId: String!, query: String): [User]
   searchOpenVenues(query: String): [Venue]
   searchUsers(query: String): [User]
   submissionOwnerCandidates(venueId: String): [User]
-  threadHeads(input: ThreadHeadsInput): [ThreadMessage]
+  threadMessages(input: ThreadMessagesInput): [ThreadMessage]
+  user(id: String): User
   venues: [Venue]
 }
 
@@ -98,17 +100,12 @@ type Submission {
   venue: Venue
 }
 
-input ThreadHeadsInput {
-  after: String
-  articleId: String!
-}
-
 type ThreadMessage {
   article: Article
   authorIdentity: Identity
   body: String
   decision: Boolean
-  headId: Boolean
+  headId: String
   highlights: JSON
   id: String
   publishTimestamp: DateTime
@@ -117,6 +114,18 @@ type ThreadMessage {
   released: Boolean
   type: String
   venue: Venue
+}
+
+input ThreadMessageCreateInput {
+  articleId: String!
+  headId: String
+  type: String!
+}
+
+input ThreadMessagesInput {
+  after: String
+  articleId: String!
+  headId: String
 }
 
 """The `Upload` scalar type represents a file upload."""

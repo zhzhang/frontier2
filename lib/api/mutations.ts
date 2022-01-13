@@ -1,3 +1,4 @@
+import prisma from "@/lib/prisma";
 import {
   booleanArg,
   inputObjectType,
@@ -46,6 +47,41 @@ const AssignSubmissionInputType = inputObjectType({
 export default objectType({
   name: "Mutation",
   definition(t) {
+    const ThreadMessageCreateInputType = inputObjectType({
+      name: "ThreadMessageCreateInput",
+      definition(t) {
+        t.nonNull.string("type");
+        t.nonNull.string("articleId");
+        t.nullable.string("headId");
+      },
+    });
+    t.field("createThreadMessage", {
+      type: "ThreadMessage",
+      args: {
+        input: nonNull(ThreadMessageCreateInputType),
+      },
+      resolve: async (_, { input: { articleId, headId, type } }, { user }) => {
+        // TODO make sure headId null if not comment.
+        return await prisma.threadMessage.create({
+          data: {
+            type,
+            body: "",
+            highlights: [],
+            article: {
+              connect: {
+                id: articleId,
+              },
+            },
+            headId,
+            author: {
+              connect: {
+                id: user.id,
+              },
+            },
+          },
+        });
+      },
+    });
     t.field("assignSubmissionOwner", {
       type: "Submission",
       args: {

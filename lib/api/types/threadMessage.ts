@@ -12,11 +12,14 @@ const ThreadMessage = objectType({
     t.nullable.field("authorIdentity", {
       type: "Identity",
       resolve: async ({ authorIdentityId }, _args, _ctx) => {
-        return await prisma.identity.findUnique({
-          where: {
-            id: authorIdentityId,
-          },
-        });
+        return (
+          (await authorIdentityId) &&
+          prisma.identity.findUnique({
+            where: {
+              id: authorIdentityId,
+            },
+          })
+        );
       },
     });
     t.nullable.field("article", {
@@ -46,7 +49,7 @@ const ThreadMessage = objectType({
     t.boolean("published");
     t.boolean("released");
     t.int("rating");
-    t.boolean("headId");
+    t.string("headId");
   },
 });
 

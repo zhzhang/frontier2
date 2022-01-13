@@ -4,6 +4,7 @@ import {
   default as Spinner,
 } from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
+import ErrorPage from "@/components/ErrorPage";
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Layout from "@/components/Layout";
 import Review from "@/components/Review";
@@ -122,8 +123,8 @@ function ReviewsTab({ userId }) {
 
 const UserQuery = gql`
   ${USER_CARD_FIELDS}
-  query UserQuery($where: UserWhereUniqueInput!) {
-    user(where: $where) {
+  query UserQuery($id: String!) {
+    user(id: $id) {
       ...UserCardFields
     }
   }
@@ -140,14 +141,14 @@ function User() {
   const id = router.query.id;
   const view = router.query.view ? router.query.view : "articles";
   const { loading, error, data } = useQuery(UserQuery, {
-    variables: { where: { id } },
+    variables: { id },
   });
 
   if (loading) {
     return <Spinner animation="border" />;
   }
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <ErrorPage>Error loading the user profile.</ErrorPage>;
   }
 
   const { name, profilePictureUrl, institution, twitter, website } = data.user;

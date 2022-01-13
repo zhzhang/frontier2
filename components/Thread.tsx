@@ -49,8 +49,8 @@ export const THREAD_MESSAGE_FIELDS = gql`
 
 const ThreadMessagesQuery = gql`
   ${THREAD_MESSAGE_FIELDS}
-  query ThreadMessagesQuery($where: ThreadMessageWhereInput!) {
-    threadMessages(where: $where) {
+  query ThreadMessagesQuery($input: ThreadMessagesInput!) {
+    threadMessages(input: $input) {
       ...ThreadMessageFields
     }
     threadReplies @client
@@ -59,8 +59,8 @@ const ThreadMessagesQuery = gql`
 
 const CreateThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
-  mutation createOneThreadMessage($data: ThreadMessageCreateInput!) {
-    createOneThreadMessage(data: $data) {
+  mutation createThreadMessage($input: ThreadMessageCreateInput!) {
+    createThreadMessage(input: $input) {
       ...ThreadMessageFields
     }
   }
@@ -102,12 +102,8 @@ export const PublishThreadMessage = gql`
 
 const OpenReplyQuery = gql`
   ${THREAD_MESSAGE_FIELDS}
-  query DraftMessageQuery(
-    $userId: String!
-    $articleId: String!
-    $headId: String!
-  ) {
-    draftMessage(userId: $userId, articleId: $articleId, headId: $headId) {
+  query DraftMessageQuery($articleId: String!, $headId: String!) {
+    draftMessage(articleId: $articleId, headId: $headId) {
       ...ThreadMessageFields
     }
     focusedEditor @client
@@ -119,16 +115,17 @@ export function ReplyButton({ headId, articleId }) {
   const auth = useAuth();
   const [loginOpen, toggleLoginOpen] = useState(false);
   const [createThreadMessage, updateResp] = useMutation(CreateThreadMessage, {
-    update(cache, { data: { createOneThreadMessage } }) {
+    update(cache, { data: { createThreadMessage } }) {
       cache.writeQuery({
         query: OpenReplyQuery,
         variables: {
-          articleId,
-          userId: auth.user.uid,
-          headId,
+          input: {
+            articleId,
+            headId,
+          },
         },
         data: {
-          draftMessage: createOneThreadMessage,
+          draftMessage: createThreadMessage,
         },
       });
     },
@@ -142,21 +139,10 @@ export function ReplyButton({ headId, articleId }) {
           if (auth.user) {
             createThreadMessage({
               variables: {
-                data: {
+                input: {
                   type: "COMMENT",
-                  body: "",
-                  highlights: [],
                   headId,
-                  article: {
-                    connect: {
-                      id: articleId,
-                    },
-                  },
-                  author: {
-                    connect: {
-                      id: auth.user.uid,
-                    },
-                  },
+                  articleId,
                 },
               },
             });
@@ -278,7 +264,6 @@ function OpenReply({ articleId, headId, userId }) {
     });
     const comment = data.draftMessage;
     const highlights = [...comment.highlights, highlight];
-    console.log(highlights);
     const updatedComment = { ...comment, highlights };
     highlightsVar(highlights);
     update(updatedComment);
@@ -371,14 +356,10 @@ export default function Thread({ headId, articleId }) {
   const auth = useAuth();
   const { loading, error, data } = useQuery(ThreadMessagesQuery, {
     variables: {
-      where: {
-        AND: [{ headId: { equals: headId } }, { published: { equals: true } }],
+      input: {
+        headId,
+        articleId,
       },
-      orderBy: [
-        {
-          publishTimestamp: "asc",
-        },
-      ],
     },
   });
   if (loading || auth.loading) {

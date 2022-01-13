@@ -11,6 +11,19 @@ import { RoleEnum } from "../types";
 export default objectType({
   name: "Query",
   definition(t) {
+    t.field("user", {
+      type: "User",
+      args: {
+        id: stringArg(),
+      },
+      resolve: async (_root, { id }, _ctx) => {
+        return await prisma.user.findUnique({
+          where: {
+            id,
+          },
+        });
+      },
+    });
     t.field("article", {
       type: "Article",
       args: {
@@ -30,6 +43,15 @@ export default objectType({
         return await prisma.article.findMany();
       },
     });
+    t.list.field("userArticles", {
+      type: "Article",
+      args: {
+        userId: stringArg(),
+      },
+      resolve: async (_root, { userId }, _ctx) => {
+        return await prisma.article.findMany();
+      },
+    });
     t.list.field("venues", {
       type: "Venue",
       resolve: async (_root, _args, _ctx) => {
@@ -37,23 +59,24 @@ export default objectType({
       },
     });
 
-    const ThreadHeadsInputType = inputObjectType({
-      name: "ThreadHeadsInput",
+    const ThreadMessagesInputType = inputObjectType({
+      name: "ThreadMessagesInput",
       definition(t) {
         t.nonNull.string("articleId");
+        t.nullable.string("headId");
         t.nullable.string("after");
       },
     });
-    t.list.field("threadHeads", {
+    t.list.field("threadMessages", {
       type: "ThreadMessage",
       args: {
-        input: ThreadHeadsInputType,
+        input: ThreadMessagesInputType,
       },
-      resolve: async (_root, { input: { articleId } }, _ctx) => {
+      resolve: async (_root, { input: { articleId, headId } }, _ctx) => {
         return await prisma.threadMessage.findMany({
           where: {
             articleId,
-            headId: null,
+            headId: headId || null,
             published: true,
             released: true,
           },
@@ -68,16 +91,16 @@ export default objectType({
     t.nullable.field("draftMessage", {
       type: "ThreadMessage",
       args: {
-        userId: stringArg(),
+        type: stringArg(),
         articleId: stringArg(),
         headId: nullable(stringArg()),
       },
-      resolve: async (_, { articleId, userId, headId }, ctx) => {
-        const draftMessage = await ctx.prisma.threadMessage.findFirst({
+      resolve: async (_, { articleId, headId }, { user }) => {
+        const draftMessage = await prisma.threadMessage.findFirst({
           where: {
             articleId,
             author: {
-              id: userId,
+              id: user.id,
             },
             headId,
             published: false,
