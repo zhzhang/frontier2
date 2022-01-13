@@ -72,7 +72,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 const ArticleQuery = gql`
   ${USER_CARD_FIELDS}
   query ArticleQuery($id: String!) {
-    article(where: { id: $id }) {
+    article(id: $id) {
       id
       title
       abstract

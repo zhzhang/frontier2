@@ -41,6 +41,10 @@ export interface NexusGenInputs {
     ownerId: string; // String!
     submissionId: string; // String!
   }
+  ThreadHeadsInput: { // input type
+    after?: string | null; // String
+    articleId: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -100,6 +104,7 @@ export interface NexusGenObjects {
     id?: string | null; // String
     publishTimestamp?: NexusGenScalars['DateTime'] | null; // DateTime
     published?: boolean | null; // Boolean
+    rating?: number | null; // Int
     released?: boolean | null; // Boolean
     type?: string | null; // String
   }
@@ -168,6 +173,7 @@ export interface NexusGenFieldTypes {
     publishMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
   }
   Query: { // field return type
+    article: NexusGenRootTypes['Article'] | null; // Article
     draftMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     feedArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
@@ -175,6 +181,8 @@ export interface NexusGenFieldTypes {
     searchOpenVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     submissionOwnerCandidates: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    threadHeads: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
+    venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Relation: { // field return type
     endYear: string | null; // String
@@ -197,7 +205,7 @@ export interface NexusGenFieldTypes {
   }
   ThreadMessage: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
-    authorIdentityId: NexusGenRootTypes['Identity'] | null; // Identity
+    authorIdentity: NexusGenRootTypes['Identity'] | null; // Identity
     body: string | null; // String
     decision: boolean | null; // Boolean
     headId: boolean | null; // Boolean
@@ -205,6 +213,7 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
     publishTimestamp: NexusGenScalars['DateTime'] | null; // DateTime
     published: boolean | null; // Boolean
+    rating: number | null; // Int
     released: boolean | null; // Boolean
     type: string | null; // String
     venue: NexusGenRootTypes['Venue'] | null; // Venue
@@ -267,6 +276,7 @@ export interface NexusGenFieldTypeNames {
     publishMessage: 'ThreadMessage'
   }
   Query: { // field return type name
+    article: 'Article'
     draftMessage: 'ThreadMessage'
     feedArticles: 'Article'
     reviewerAssignedSubmissions: 'Submission'
@@ -274,6 +284,8 @@ export interface NexusGenFieldTypeNames {
     searchOpenVenues: 'Venue'
     searchUsers: 'User'
     submissionOwnerCandidates: 'User'
+    threadHeads: 'ThreadMessage'
+    venues: 'Venue'
   }
   Relation: { // field return type name
     endYear: 'String'
@@ -296,7 +308,7 @@ export interface NexusGenFieldTypeNames {
   }
   ThreadMessage: { // field return type name
     article: 'Article'
-    authorIdentityId: 'Identity'
+    authorIdentity: 'Identity'
     body: 'String'
     decision: 'Boolean'
     headId: 'Boolean'
@@ -304,6 +316,7 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     publishTimestamp: 'DateTime'
     published: 'Boolean'
+    rating: 'Int'
     released: 'Boolean'
     type: 'String'
     venue: 'Venue'
@@ -357,6 +370,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    article: { // args
+      id?: string | null; // String
+    }
     draftMessage: { // args
       articleId?: string | null; // String
       headId?: string | null; // String
@@ -374,6 +390,9 @@ export interface NexusGenArgTypes {
     }
     submissionOwnerCandidates: { // args
       venueId?: string | null; // String
+    }
+    threadHeads: { // args
+      input?: NexusGenInputs['ThreadHeadsInput'] | null; // ThreadHeadsInput
     }
   }
 }

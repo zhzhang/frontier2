@@ -1,14 +1,68 @@
 import prisma from "@/lib/prisma";
-import { nonNull, nullable, objectType, stringArg } from "nexus";
+import {
+  inputObjectType,
+  nonNull,
+  nullable,
+  objectType,
+  stringArg,
+} from "nexus";
 import { RoleEnum } from "../types";
 
 export default objectType({
   name: "Query",
   definition(t) {
+    t.field("article", {
+      type: "Article",
+      args: {
+        id: stringArg(),
+      },
+      resolve: async (_root, { id }, _ctx) => {
+        return await prisma.article.findUnique({
+          where: {
+            id,
+          },
+        });
+      },
+    });
     t.list.field("feedArticles", {
       type: "Article",
-      resolve: async (_root, _arg, _ctx) => {
+      resolve: async (_root, _args, _ctx) => {
         return await prisma.article.findMany();
+      },
+    });
+    t.list.field("venues", {
+      type: "Venue",
+      resolve: async (_root, _args, _ctx) => {
+        return await prisma.venue.findMany();
+      },
+    });
+
+    const ThreadHeadsInputType = inputObjectType({
+      name: "ThreadHeadsInput",
+      definition(t) {
+        t.nonNull.string("articleId");
+        t.nullable.string("after");
+      },
+    });
+    t.list.field("threadHeads", {
+      type: "ThreadMessage",
+      args: {
+        input: ThreadHeadsInputType,
+      },
+      resolve: async (_root, { input: { articleId } }, _ctx) => {
+        return await prisma.threadMessage.findMany({
+          where: {
+            articleId,
+            headId: null,
+            published: true,
+            released: true,
+          },
+          orderBy: [
+            {
+              publishTimestamp: "desc",
+            },
+          ],
+        });
       },
     });
     t.nullable.field("draftMessage", {

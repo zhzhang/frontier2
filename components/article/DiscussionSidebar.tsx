@@ -35,13 +35,10 @@ import {
   updateArticleAndScroll,
 } from "./vars";
 
-const ThreadMessagesQuery = gql`
+const ThreadHeadsQuery = gql`
   ${THREAD_MESSAGE_FIELDS}
-  query ThreadMessages(
-    $where: ThreadMessageWhereInput!
-    $orderBy: [ThreadMessageOrderByInput!]
-  ) {
-    threadMessages(where: $where, orderBy: $orderBy) {
+  query ThreadHeads($input: ThreadHeadsInput!) {
+    threadHeads(input: $input) {
       ...ThreadMessageFields
     }
     article @client
@@ -332,19 +329,11 @@ function RenderRoot({ message, articleId }) {
 }
 
 function DiscussionSidebar({ articleId }) {
-  const { loading, error, data } = useQuery(ThreadMessagesQuery, {
+  const { loading, error, data } = useQuery(ThreadHeadsQuery, {
     variables: {
-      where: {
-        articleId: { equals: articleId },
-        headId: { equals: null },
-        published: { equals: true },
-        released: { equals: true },
+      input: {
+        articleId,
       },
-      orderBy: [
-        {
-          publishTimestamp: "desc",
-        },
-      ],
     },
   });
   if (loading) {
@@ -357,7 +346,7 @@ function DiscussionSidebar({ articleId }) {
   return (
     <>
       <AuthenticatedNewThread articleId={articleId} />
-      {data.threadMessages.map((message) => (
+      {data.threadHeads.map((message) => (
         <Box key={message.id}>
           <RenderRoot message={message} articleId={articleId} />
           <Thread headId={message.id} articleId={articleId} />
