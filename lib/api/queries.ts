@@ -4,36 +4,6 @@ import { RoleEnum } from "../types";
 export default objectType({
   name: "Query",
   definition(t) {
-    t.crud.user();
-    t.crud.article();
-    t.crud.articles({
-      filtering: true,
-      resolve: async (root, args, ctx, info, originalResolve) => {
-        return await originalResolve(root, args, ctx, info);
-      },
-    });
-    t.crud.identities({
-      filtering: true,
-      resolve: async (root, args, ctx, info, originalResolve) => {
-        const initial = await originalResolve(root, args, ctx, info);
-        const output = [];
-        for (const entry of initial) {
-          if (!entry.anonymized || ctx.user?.id === entry.userId) {
-            output.push(entry);
-          }
-        }
-        return output;
-      },
-    });
-    t.crud.venue();
-    t.crud.venues({
-      filtering: true,
-    });
-    t.crud.threadMessages({ filtering: true, ordering: true });
-    t.crud.submissions({ filtering: true });
-    t.crud.venueMembership();
-    t.crud.venueMemberships({ filtering: true });
-    t.crud.reviewRequests({ filtering: true });
     t.nullable.field("draftMessage", {
       type: "ThreadMessage",
       args: {

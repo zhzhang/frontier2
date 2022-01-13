@@ -46,20 +46,6 @@ const AssignSubmissionInputType = inputObjectType({
 export default objectType({
   name: "Mutation",
   definition(t) {
-    t.crud.updateOneUser({
-      authorize: (_, { where: { id } }, ctx) => id === ctx.user.id,
-    });
-    t.crud.updateOneVenue({
-      authorize: (_, { where: { id } }, ctx) => true,
-    });
-    t.crud.createOneVenueMembership({
-      authorize: (_, args, ctx) => {
-        return true;
-      },
-    });
-    t.crud.createOneVenue();
-    t.crud.deleteOneVenueMembership();
-    t.crud.updateOneSubmission();
     t.field("assignSubmissionOwner", {
       type: "Submission",
       args: {
@@ -81,8 +67,6 @@ export default objectType({
         return submission;
       },
     });
-    t.crud.createOneReviewRequest();
-    t.crud.createOneThreadMessage();
     t.field("publishMessage", {
       type: "ThreadMessage",
       args: {
@@ -154,9 +138,6 @@ export default objectType({
         });
       },
     });
-    t.crud.upsertOneThreadMessage();
-    t.crud.updateOneThreadMessage();
-    t.crud.deleteOneThreadMessage();
     t.field("createArticle", {
       type: "Article",
       args: {
@@ -211,20 +192,6 @@ export default objectType({
           });
         }
         return article;
-      },
-    });
-    t.crud.createOneRelation({
-      authorize: (_, { data: { user } }, ctx) =>
-        user.connect.id === ctx.user.id,
-    });
-    t.crud.deleteOneRelation({
-      authorize: async (_, { where: { id } }, ctx) => {
-        const relation = await ctx.prisma.relation.findUnique({
-          where: {
-            id,
-          },
-        });
-        return relation.userId === ctx.user.id;
       },
     });
   },

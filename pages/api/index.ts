@@ -19,7 +19,6 @@ import { rule, shield } from "graphql-shield";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
 import jwt_decode from "jwt-decode";
 import { asNexusMethod, fieldAuthorizePlugin, makeSchema } from "nexus";
-import { nexusPrisma } from "nexus-plugin-prisma";
 import path from "path";
 
 export type Upload = Promise<FileUpload>;
@@ -39,12 +38,7 @@ export const permissions = shield(
 );
 
 export const schema = makeSchema({
-  plugins: [
-    nexusPrisma({
-      experimentalCRUD: true,
-    }),
-    fieldAuthorizePlugin(),
-  ],
+  plugins: [fieldAuthorizePlugin()],
   types: [
     GraphQLDateTime,
     Query,
