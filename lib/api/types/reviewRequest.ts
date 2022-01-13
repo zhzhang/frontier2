@@ -1,13 +1,21 @@
+import prisma from "@/lib/prisma";
 import { objectType } from "nexus";
 
 const ReviewRequest = objectType({
   name: "ReviewRequest",
   definition(t) {
-    t.model.id();
-    t.model.user();
-    t.model.article();
-    t.model.submission();
-    t.model.status();
+    t.string("id");
+    t.string("status");
+    t.nullable.field("user", {
+      type: "User",
+      resolve: async ({ userId }, _args, _ctx) => {
+        return await prisma.user.findUnique({
+          where: {
+            id: userId,
+          },
+        });
+      },
+    });
   },
 });
 

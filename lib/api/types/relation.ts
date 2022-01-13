@@ -15,10 +15,19 @@ export const RelationType = enumType({
 const Relation = objectType({
   name: "Relation",
   definition(t) {
-    t.model.id();
-    t.model.target();
-    t.model.endYear();
-    t.model.relation();
+    t.string("id");
+    t.string("relation");
+    t.string("endYear");
+    t.nullable.field("target", {
+      type: "User",
+      resolve: async ({ targetId }, _args, _ctx) => {
+        return await prisma.user.findUnique({
+          where: {
+            id: targetId,
+          },
+        });
+      },
+    });
   },
 });
 

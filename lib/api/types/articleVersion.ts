@@ -1,13 +1,13 @@
 import { objectType } from "nexus";
 
-const ArticleVersion = objectType({
+export default objectType({
   name: "ArticleVersion",
   definition(t) {
-    t.model.id();
-    t.model.ref();
-    t.model.createdAt();
-    t.model.versionNumber();
+    t.string("id");
+    t.string("ref");
+    t.int("versionNumber");
+    t.field("createdAt", {
+      type: "DateTime",
+    });
   },
 });
-
-export default ArticleVersion;

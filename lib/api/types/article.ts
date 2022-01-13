@@ -5,11 +5,20 @@ import { objectType } from "nexus";
 const Article = objectType({
   name: "Article",
   definition(t) {
-    t.model.id();
-    t.model.title();
-    t.model.abstract();
-    t.model.anonymous();
-    t.model.versions({ pagination: false });
+    t.string("id");
+    t.string("title");
+    t.string("abstract");
+    t.boolean("anonymous");
+    t.nonNull.list.field("versions", {
+      type: "ArticleVersion",
+      resolve: async ({ id }, _args, ctx) => {
+        return await prisma.articleVersion.findMany({
+          where: {
+            articleId: id,
+          },
+        });
+      },
+    });
     t.nullable.list.field("authors", {
       type: "Identity",
       resolve: async ({ id, anonymous }, _args, ctx) => {

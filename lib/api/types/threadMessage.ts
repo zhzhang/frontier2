@@ -1,21 +1,51 @@
+import prisma from "@/lib/prisma";
 import { objectType } from "nexus";
 
 const ThreadMessage = objectType({
   name: "ThreadMessage",
   definition(t) {
-    t.model.id();
-    t.model.type();
-    t.model.body();
-    t.model.highlights();
-    t.model.authorIdentity();
-    t.model.article();
-    t.model.venue();
-    t.model.rating();
-    t.model.decision();
-    t.model.publishTimestamp();
-    t.model.published();
-    t.model.released();
-    t.model.headId();
+    t.string("id");
+    t.string("type");
+    t.string("body");
+    t.json("highlights");
+    t.string("id");
+    t.nullable.field("authorIdentityId", {
+      type: "Identity",
+      resolve: async ({ authorIdentityId }, _args, _ctx) => {
+        return await prisma.identity.findUnique({
+          where: {
+            id: authorIdentityId,
+          },
+        });
+      },
+    });
+    t.nullable.field("article", {
+      type: "Article",
+      resolve: async ({ articleId }, _args, _ctx) => {
+        return await prisma.article.findUnique({
+          where: {
+            id: articleId,
+          },
+        });
+      },
+    });
+    t.nullable.field("venue", {
+      type: "Venue",
+      resolve: async ({ venueId }, _args, _ctx) => {
+        return await prisma.venue.findUnique({
+          where: {
+            id: venueId,
+          },
+        });
+      },
+    });
+    t.boolean("decision");
+    t.field("publishTimestamp", {
+      type: "DateTime",
+    });
+    t.boolean("published");
+    t.boolean("released");
+    t.boolean("headId");
   },
 });
 

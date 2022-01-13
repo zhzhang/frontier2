@@ -1,9 +1,16 @@
+import prisma from "@/lib/prisma";
 import { nonNull, nullable, objectType, stringArg } from "nexus";
 import { RoleEnum } from "../types";
 
 export default objectType({
   name: "Query",
   definition(t) {
+    t.list.field("feedArticles", {
+      type: "Article",
+      resolve: async (_root, _arg, _ctx) => {
+        return await prisma.article.findMany();
+      },
+    });
     t.nullable.field("draftMessage", {
       type: "ThreadMessage",
       args: {

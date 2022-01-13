@@ -13,7 +13,7 @@ import React from "react";
 const GetArticlesQuery = gql`
   ${ARTICLE_CARD_FIELDS}
   query GetArticlesQuery {
-    articles {
+    feedArticles {
       ...ArticleCardFields
     }
   }
@@ -44,7 +44,7 @@ function Articles() {
           </InputAdornment>
         }
       />
-      {data.articles.map((article) => (
+      {data.feedArticles.map((article) => (
         <ArticleCard article={article} sx={{ mb: 2 }} />
       ))}
     </Layout>
