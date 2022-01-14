@@ -66,6 +66,12 @@ export interface NexusGenInputs {
     headId?: string | null; // String
     venueId: string; // String!
   }
+  VenueMembershipsInput: { // input type
+    after?: string | null; // String
+    headId?: string | null; // String
+    role: string; // String!
+    venueId: string; // String!
+  }
   VenueSubmissionsInput: { // input type
     after?: string | null; // String
     headId?: string | null; // String
@@ -185,6 +191,7 @@ export interface NexusGenFieldTypes {
     assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
+    deleteVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
     publishMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
   }
   Query: { // field return type
@@ -202,6 +209,7 @@ export interface NexusGenFieldTypes {
     userReviews: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
     venue: NexusGenRootTypes['Venue'] | null; // Venue
     venueArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
+    venueMemberships: Array<NexusGenRootTypes['VenueMembership'] | null> | null; // [VenueMembership]
     venueSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
@@ -288,6 +296,7 @@ export interface NexusGenFieldTypeNames {
     assignSubmissionOwner: 'Submission'
     createArticle: 'Article'
     createThreadMessage: 'ThreadMessage'
+    deleteVenueMembership: 'VenueMembership'
     publishMessage: 'ThreadMessage'
   }
   Query: { // field return type name
@@ -305,6 +314,7 @@ export interface NexusGenFieldTypeNames {
     userReviews: 'ThreadMessage'
     venue: 'Venue'
     venueArticles: 'Article'
+    venueMemberships: 'VenueMembership'
     venueSubmissions: 'Submission'
     venues: 'Venue'
   }
@@ -387,6 +397,9 @@ export interface NexusGenArgTypes {
     createThreadMessage: { // args
       input: NexusGenInputs['ThreadMessageCreateInput']; // ThreadMessageCreateInput!
     }
+    deleteVenueMembership: { // args
+      id?: string | null; // String
+    }
     publishMessage: { // args
       body: string; // String!
       highlights: NexusGenScalars['JSON']; // JSON!
@@ -432,6 +445,9 @@ export interface NexusGenArgTypes {
     }
     venueArticles: { // args
       input?: NexusGenInputs['VenueArticlesInput'] | null; // VenueArticlesInput
+    }
+    venueMemberships: { // args
+      input?: NexusGenInputs['VenueMembershipsInput'] | null; // VenueMembershipsInput
     }
     venueSubmissions: { // args
       input?: NexusGenInputs['VenueSubmissionsInput'] | null; // VenueSubmissionsInput

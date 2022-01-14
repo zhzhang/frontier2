@@ -1,3 +1,4 @@
+import { isAdmin } from "@/lib/api/utils";
 import prisma from "@/lib/prisma";
 import {
   booleanArg,
@@ -12,7 +13,7 @@ import stream from "stream";
 import { jsonArg } from "./types/json";
 import { messageTypeToIdentityContext } from "./utils";
 
-function s3UploadFromStream(bucket, key) {
+function uploadFromStream(bucket, key) {
   const pass = new stream.PassThrough();
 
   const params = {
@@ -36,17 +37,60 @@ function readStreamData(stream) {
   });
 }
 
-const AssignSubmissionInputType = inputObjectType({
-  name: "AssignSubmissionInput",
-  definition(t) {
-    t.nonNull.string("submissionId");
-    t.nonNull.string("ownerId");
-  },
-});
-
 export default objectType({
   name: "Mutation",
   definition(t) {
+    const VenueCreateInputType = inputObjectType({
+      name: "VenueCreateInput",
+      definition(t) {
+        t.nonNull.string("type");
+        t.upload("logoFile");
+      },
+    });
+    t.field("createVenue", {
+      type: "Venue",
+      args: {
+        input: VenueCreateInputType,
+      },
+      resolve: async (_, { id }, { user }) => {
+        const membership = await prisma.venueMembership.findUnique({
+          where: {
+            id,
+          },
+        });
+        if (!isAdmin(membership.venueId, user.id)) {
+          return null;
+        }
+        return await prisma.venueMembership.delete({
+          where: {
+            id,
+          },
+        });
+      },
+    });
+
+    t.nullable.field("deleteVenueMembership", {
+      type: "VenueMembership",
+      args: {
+        id: stringArg(),
+      },
+      resolve: async (_, { id }, { user }) => {
+        const membership = await prisma.venueMembership.findUnique({
+          where: {
+            id,
+          },
+        });
+        if (!isAdmin(membership.venueId, user.id)) {
+          return null;
+        }
+        return await prisma.venueMembership.delete({
+          where: {
+            id,
+          },
+        });
+      },
+    });
+
     const ThreadMessageCreateInputType = inputObjectType({
       name: "ThreadMessageCreateInput",
       definition(t) {
@@ -82,6 +126,14 @@ export default objectType({
         });
       },
     });
+
+    const AssignSubmissionInputType = inputObjectType({
+      name: "AssignSubmissionInput",
+      definition(t) {
+        t.nonNull.string("submissionId");
+        t.nonNull.string("ownerId");
+      },
+    });
     t.field("assignSubmissionOwner", {
       type: "Submission",
       args: {
@@ -103,6 +155,7 @@ export default objectType({
         return submission;
       },
     });
+
     t.field("publishMessage", {
       type: "ThreadMessage",
       args: {

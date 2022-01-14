@@ -14,8 +14,8 @@ import _ from "lodash";
 import { useState } from "react";
 
 const MembershipsQuery = gql`
-  query MembershipsQuery($where: VenueMembershipWhereInput!) {
-    venueMemberships(where: $where) {
+  query MembershipsQuery($input: VenueMembershipsInput!) {
+    venueMemberships(input: $input) {
       id
       role
       user {
@@ -41,9 +41,9 @@ const CreateOneVenueMembershipMutation = gql`
   }
 `;
 
-const DeleteOneVenueMembershipMutation = gql`
-  mutation DeleteOneVenueMembership($where: VenueMembershipWhereUniqueInput!) {
-    deleteOneVenueMembership(where: $where) {
+const DeleteVenueMembershipMutation = gql`
+  mutation DeleteVenueMembership($id: String!) {
+    deleteVenueMembership(id: $id) {
       id
     }
   }
@@ -51,7 +51,7 @@ const DeleteOneVenueMembershipMutation = gql`
 
 function MembersSelector({ id, role }) {
   const variables = {
-    where: { venueId: { equals: id }, role: { equals: role } },
+    input: { venueId: id, role },
   };
   const { loading, error, data } = useQuery(MembershipsQuery, {
     variables,
@@ -60,7 +60,7 @@ function MembersSelector({ id, role }) {
     CreateOneVenueMembershipMutation
   );
   const [deleteVenueMembership, deleteResult] = useMutation(
-    DeleteOneVenueMembershipMutation,
+    DeleteVenueMembershipMutation,
     {
       update(cache, { data: { deleteOneVenueMembership } }) {
         const { venueMemberships } = cache.readQuery({
@@ -142,7 +142,7 @@ function MembersSelector({ id, role }) {
       </Grid>
       <Grid item sm={12}>
         <TableContainer>
-          <Table aria-label="simple table">
+          <Table>
             <colgroup>
               <col style={{ width: "90%" }} />
               <col style={{ width: "10%" }} />
@@ -154,13 +154,11 @@ function MembersSelector({ id, role }) {
                     <TableCell>{name}</TableCell>
                     <TableCell>
                       <Button
-                        color="secondary"
+                        color="error"
                         onClick={async () =>
                           await deleteVenueMembership({
                             variables: {
-                              where: {
-                                id,
-                              },
+                              id,
                             },
                           })
                         }

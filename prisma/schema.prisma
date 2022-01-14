@@ -149,7 +149,7 @@ model Venue {
 }
 
 model VenueMembership {
-  id      Int    @id @default(autoincrement())
+  id      String @id @default(cuid())
   user    User   @relation(fields: [userId], references: [id])
   venue   Venue  @relation(fields: [venueId], references: [id])
   role    String

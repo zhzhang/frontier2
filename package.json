@@ -11,8 +11,8 @@
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
     "generate:nexus": "ts-node -r tsconfig-paths/register --transpile-only -P nexus.tsconfig.json pages/api",
-    "migrate:dev": "prisma migrate dev --preview-feature",
-    "reseed:dev": "NODE_ENV=dev && prisma migrate reset --preview-feature && prisma migrate dev --preview-feature"
+    "migrate:dev": "prisma migrate dev",
+    "reseed:dev": "NODE_ENV=dev && prisma migrate reset && ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
