@@ -66,6 +66,11 @@ export interface NexusGenInputs {
     headId?: string | null; // String
     venueId: string; // String!
   }
+  VenueSubmissionsInput: { // input type
+    after?: string | null; // String
+    headId?: string | null; // String
+    venueId: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -197,6 +202,7 @@ export interface NexusGenFieldTypes {
     userReviews: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
     venue: NexusGenRootTypes['Venue'] | null; // Venue
     venueArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
+    venueSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Relation: { // field return type
@@ -299,6 +305,7 @@ export interface NexusGenFieldTypeNames {
     userReviews: 'ThreadMessage'
     venue: 'Venue'
     venueArticles: 'Article'
+    venueSubmissions: 'Submission'
     venues: 'Venue'
   }
   Relation: { // field return type name
@@ -425,6 +432,9 @@ export interface NexusGenArgTypes {
     }
     venueArticles: { // args
       input?: NexusGenInputs['VenueArticlesInput'] | null; // VenueArticlesInput
+    }
+    venueSubmissions: { // args
+      input?: NexusGenInputs['VenueSubmissionsInput'] | null; // VenueSubmissionsInput
     }
   }
 }

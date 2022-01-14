@@ -27,20 +27,14 @@ const SUBMISSION_FIELDS = gql`
       user {
         ...UserCardFields
       }
-      submission {
-        venue {
-          id
-          name
-        }
-      }
     }
   }
 `;
 
 const SubmissionsQuery = gql`
   ${SUBMISSION_FIELDS}
-  query SubmissionsQuery($where: SubmissionWhereInput!) {
-    submissions(where: $where) {
+  query SubmissionsQuery($input: VenueSubmissionsInput!) {
+    venueSubmissions(input: $input) {
       ...SubmissionFields
     }
   }
@@ -146,10 +140,9 @@ function ActionPane({ submission, venueId }) {
 
 export default function SubmissionsPane({ id }) {
   const { loading, error, data } = useQuery(SubmissionsQuery, {
-    variables: { where: { venueId: { equals: id } } },
+    variables: { input: { venueId: id } },
   });
   const [selectedSubmission, setSelectedSubmission] = useState(null);
-  console.log(data);
   if (loading) {
     return <Spinner />;
   } else if (error) {
@@ -161,7 +154,7 @@ export default function SubmissionsPane({ id }) {
       </Grid>
     );
   }
-  const submissions = data.submissions;
+  const submissions = data.venueSubmissions;
   if (submissions.length === 0) {
     return (
       <Grid item>

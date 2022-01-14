@@ -104,7 +104,7 @@ model ThreadMessage {
   headId           String?
   venue            Venue?            @relation(fields: [venueId], references: [id])
   venueId          String?
-  rating           Int               @default(0)
+  rating           Json?
   decision         Boolean           @default(false)
   published        Boolean           @default(false)
   publishTimestamp DateTime?
@@ -123,13 +123,22 @@ model Submission {
   reviewRequests ReviewRequest[]
 }
 
+enum ReviewPolicyType {
+  OPEN
+  SINGLE_BLIND
+  DOUBLE_BLIND
+}
+
 model Venue {
   id                   String            @id @default(cuid())
   name                 String
   acceptingSubmissions Boolean           @default(false)
+  reviewPolicy         ReviewPolicyType  @default(DOUBLE_BLIND)
+  ratingFields         Json?
   websiteUrl           String?
   abbreviation         String?
   description          String            @db.MediumText
+  template             String?           @db.MediumText
   logoRef              String?
   venueDate            DateTime?
   submissionDeadline   DateTime?

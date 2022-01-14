@@ -83,11 +83,15 @@ function Venue() {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Venue Info" value="info" />
+            <Tab label="Review Settings" value="review-settings" />
             <Tab label="Submissions" value="submissions" />
             <Tab label="Members" value="members" />
           </TabList>
         </Box>
         <TabPanel value="info" sx={sx}>
+          <InfoPane venue={data.venue} />
+        </TabPanel>
+        <TabPanel value="review-settings" sx={sx}>
           <InfoPane venue={data.venue} />
         </TabPanel>
         <TabPanel value="submissions" sx={sx}>

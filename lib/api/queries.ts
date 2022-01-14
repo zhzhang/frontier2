@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { RoleEnum } from "@/lib/types";
 import {
   inputObjectType,
   nonNull,
@@ -6,7 +7,17 @@ import {
   objectType,
   stringArg,
 } from "nexus";
-import { RoleEnum } from "../types";
+
+async function isAdmin(venueId: string, userId: string): Promise<boolean> {
+  const membership = await prisma.venueMembership.findFirst({
+    where: {
+      userId,
+      venueId,
+      role: "ADMIN",
+    },
+  });
+  return Boolean(membership);
+}
 
 export default objectType({
   name: "Query",
@@ -144,6 +155,30 @@ export default objectType({
           },
         });
         return decisions.map(({ article }) => article);
+      },
+    });
+    const VenueSubmissionsInputType = inputObjectType({
+      name: "VenueSubmissionsInput",
+      definition(t) {
+        t.nonNull.string("venueId");
+        t.nullable.string("headId");
+        t.nullable.string("after");
+      },
+    });
+    t.list.field("venueSubmissions", {
+      type: "Submission",
+      args: {
+        input: VenueSubmissionsInputType,
+      },
+      resolve: async (_root, { input: { venueId, headId } }, { user }) => {
+        if (!(await isAdmin(venueId, user.id))) {
+          return [];
+        }
+        return await prisma.submission.findMany({
+          where: {
+            venueId,
+          },
+        });
       },
     });
 
