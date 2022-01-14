@@ -15,9 +15,7 @@ export default function Authors({ authors, sx = null, ...props }) {
   const children = [];
   for (let i = 0; i < authors.length; i++) {
     const author = authors[i];
-    children.push(
-      <AuthorPopover identity={author} key={author.number} {...props} />
-    );
+    children.push(<AuthorPopover author={author} key={author.id} {...props} />);
     if (i < authors.length - 1) {
       children.push(", ");
     }

@@ -51,6 +51,21 @@ export interface NexusGenInputs {
     articleId: string; // String!
     headId?: string | null; // String
   }
+  UserArticlesInput: { // input type
+    after?: string | null; // String
+    limit?: number | null; // Int
+    userId: string; // String!
+  }
+  UserReviewsInput: { // input type
+    after?: string | null; // String
+    limit?: number | null; // Int
+    userId: string; // String!
+  }
+  VenueArticlesInput: { // input type
+    after?: string | null; // String
+    headId?: string | null; // String
+    venueId: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -81,11 +96,6 @@ export interface NexusGenObjects {
     id?: string | null; // String
     ref?: string | null; // String
     versionNumber?: number | null; // Int
-  }
-  Identity: { // root type
-    context?: string | null; // String
-    id?: string | null; // String
-    number?: number | null; // Int
   }
   Mutation: {};
   Query: {};
@@ -155,7 +165,7 @@ export interface NexusGenFieldTypes {
     abstract: string | null; // String
     acceptedVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     anonymous: boolean | null; // Boolean
-    authors: Array<NexusGenRootTypes['Identity'] | null> | null; // [Identity]
+    authors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     id: string | null; // String
     title: string | null; // String
     versions: Array<NexusGenRootTypes['ArticleVersion'] | null>; // [ArticleVersion]!
@@ -165,13 +175,6 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
     ref: string | null; // String
     versionNumber: number | null; // Int
-  }
-  Identity: { // field return type
-    context: string | null; // String
-    id: string | null; // String
-    number: number | null; // Int
-    user: NexusGenRootTypes['User'] | null; // User
-    venue: NexusGenRootTypes['Venue'] | null; // Venue
   }
   Mutation: { // field return type
     assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
@@ -190,6 +193,10 @@ export interface NexusGenFieldTypes {
     submissionOwnerCandidates: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     threadMessages: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
     user: NexusGenRootTypes['User'] | null; // User
+    userArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
+    userReviews: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
+    venue: NexusGenRootTypes['Venue'] | null; // Venue
+    venueArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Relation: { // field return type
@@ -213,7 +220,7 @@ export interface NexusGenFieldTypes {
   }
   ThreadMessage: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
-    authorIdentity: NexusGenRootTypes['Identity'] | null; // Identity
+    author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
     decision: boolean | null; // Boolean
     headId: string | null; // String
@@ -260,7 +267,7 @@ export interface NexusGenFieldTypeNames {
     abstract: 'String'
     acceptedVenues: 'Venue'
     anonymous: 'Boolean'
-    authors: 'Identity'
+    authors: 'User'
     id: 'String'
     title: 'String'
     versions: 'ArticleVersion'
@@ -270,13 +277,6 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     ref: 'String'
     versionNumber: 'Int'
-  }
-  Identity: { // field return type name
-    context: 'String'
-    id: 'String'
-    number: 'Int'
-    user: 'User'
-    venue: 'Venue'
   }
   Mutation: { // field return type name
     assignSubmissionOwner: 'Submission'
@@ -295,6 +295,10 @@ export interface NexusGenFieldTypeNames {
     submissionOwnerCandidates: 'User'
     threadMessages: 'ThreadMessage'
     user: 'User'
+    userArticles: 'Article'
+    userReviews: 'ThreadMessage'
+    venue: 'Venue'
+    venueArticles: 'Article'
     venues: 'Venue'
   }
   Relation: { // field return type name
@@ -318,7 +322,7 @@ export interface NexusGenFieldTypeNames {
   }
   ThreadMessage: { // field return type name
     article: 'Article'
-    authorIdentity: 'Identity'
+    author: 'User'
     body: 'String'
     decision: 'Boolean'
     headId: 'String'
@@ -409,6 +413,18 @@ export interface NexusGenArgTypes {
     }
     user: { // args
       id?: string | null; // String
+    }
+    userArticles: { // args
+      input?: NexusGenInputs['UserArticlesInput'] | null; // UserArticlesInput
+    }
+    userReviews: { // args
+      input?: NexusGenInputs['UserReviewsInput'] | null; // UserReviewsInput
+    }
+    venue: { // args
+      id?: string | null; // String
+    }
+    venueArticles: { // args
+      input?: NexusGenInputs['VenueArticlesInput'] | null; // VenueArticlesInput
     }
   }
 }

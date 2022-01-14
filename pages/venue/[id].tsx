@@ -20,8 +20,8 @@ import { useRouter } from "next/router";
 
 const VenueQuery = gql`
   ${VENUE_CARD_FIELDS}
-  query VenueQuery($where: VenueWhereUniqueInput!) {
-    venue(where: $where) {
+  query VenueQuery($id: String!) {
+    venue(id: $id) {
       ...VenueCardFields
       role
     }
@@ -32,9 +32,8 @@ function Venue() {
   const router = useRouter();
   const id = router.query.id;
   const { loading, error, data } = useQuery(VenueQuery, {
-    variables: { where: { id } },
+    variables: { id },
   });
-  console.log(data);
 
   if (loading) {
     return <Spinner animation="border" />;

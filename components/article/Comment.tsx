@@ -28,12 +28,9 @@ export default function Comment({
           display: "flex",
         }}
       >
-        <ProfilePicturePopover
-          identity={message.authorIdentity}
-          sx={{ mr: 1 }}
-        />
+        <ProfilePicturePopover user={message.author} sx={{ mr: 1 }} />
         <Box>
-          <AuthorPopover identity={message.authorIdentity} />
+          <AuthorPopover author={message.author} />
           <Typography {...typographyProps}>{" • "}</Typography>
           <TimeAgo {...typographyProps} time={message.publishTimestamp} />
           <Markdown

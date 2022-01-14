@@ -18,9 +18,7 @@ export const ARTICLE_CARD_FIELDS = gql`
     title
     abstract
     authors {
-      user {
-        ...UserCardFields
-      }
+      ...UserCardFields
     }
     versions {
       ref

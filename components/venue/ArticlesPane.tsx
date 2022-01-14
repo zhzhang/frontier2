@@ -8,19 +8,9 @@ import gql from "graphql-tag";
 
 const AcceptedArticlesQuery = gql`
   ${ARTICLE_CARD_FIELDS}
-  query AcceptedArticlesQuery($where: ThreadMessageWhereInput!) {
-    threadMessages(where: $where) {
-      id
-      body
-      article {
-        ...ArticleCardFields
-      }
-      authorIdentity {
-        user {
-          id
-          name
-        }
-      }
+  query AcceptedArticlesQuery($input: VenueArticlesInput!) {
+    venueArticles(input: $input) {
+      ...ArticleCardFields
     }
   }
 `;
@@ -28,24 +18,8 @@ const AcceptedArticlesQuery = gql`
 function ArticlesPane({ id }) {
   const { loading, error, data } = useQuery(AcceptedArticlesQuery, {
     variables: {
-      where: {
-        AND: [
-          {
-            venueId: {
-              equals: id,
-            },
-          },
-          {
-            decision: {
-              equals: true,
-            },
-          },
-          {
-            released: {
-              equals: true,
-            },
-          },
-        ],
+      input: {
+        venueId: id,
       },
     },
   });
@@ -58,15 +32,15 @@ function ArticlesPane({ id }) {
       </Error>
     );
   }
-  const decisions = data.threadMessages;
+  const articles = data.venueArticles;
   let interiorComponent;
-  if (decisions.length === 0) {
+  if (articles.length === 0) {
     interiorComponent = (
       <Typography>This venue has not accepted any articles.</Typography>
     );
   } else {
-    interiorComponent = decisions.map((decision) => (
-      <ArticleCard key={decision.id} article={decision.article} />
+    interiorComponent = articles.map((article) => (
+      <ArticleCard key={article.id} article={article} />
     ));
   }
 

@@ -6,7 +6,7 @@ type Article {
   abstract: String
   acceptedVenues: [Venue]
   anonymous: Boolean
-  authors: [Identity]
+  authors: [User]
   id: String
   title: String
   versions: [ArticleVersion]!
@@ -28,14 +28,6 @@ input AssignSubmissionInput {
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
-
-type Identity {
-  context: String
-  id: String
-  number: Int
-  user: User
-  venue: Venue
-}
 
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
@@ -60,6 +52,10 @@ type Query {
   submissionOwnerCandidates(venueId: String): [User]
   threadMessages(input: ThreadMessagesInput): [ThreadMessage]
   user(id: String): User
+  userArticles(input: UserArticlesInput): [Article]
+  userReviews(input: UserReviewsInput): [ThreadMessage]
+  venue(id: String): Venue
+  venueArticles(input: VenueArticlesInput): [Article]
   venues: [Venue]
 }
 
@@ -102,7 +98,7 @@ type Submission {
 
 type ThreadMessage {
   article: Article
-  authorIdentity: Identity
+  author: User
   body: String
   decision: Boolean
   headId: String
@@ -141,6 +137,18 @@ type User {
   website: String
 }
 
+input UserArticlesInput {
+  after: String
+  limit: Int
+  userId: String!
+}
+
+input UserReviewsInput {
+  after: String
+  limit: Int
+  userId: String!
+}
+
 type Venue {
   abbreviation: String
   acceptingSubmissions: Boolean
@@ -152,6 +160,12 @@ type Venue {
   submissionDeadline: DateTime
   venueDate: DateTime
   websiteUrl: String
+}
+
+input VenueArticlesInput {
+  after: String
+  headId: String
+  venueId: String!
 }
 
 type VenueMembership {

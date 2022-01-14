@@ -77,10 +77,7 @@ const ArticleQuery = gql`
       title
       abstract
       authors {
-        number
-        user {
-          ...UserCardFields
-        }
+        ...UserCardFields
       }
       versions {
         id

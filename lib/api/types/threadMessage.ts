@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { userFromIdentity } from "@/lib/utils";
 import { objectType } from "nexus";
 
 const ThreadMessage = objectType({
@@ -9,17 +10,21 @@ const ThreadMessage = objectType({
     t.string("body");
     t.json("highlights");
     t.string("id");
-    t.nullable.field("authorIdentity", {
-      type: "Identity",
+    t.nullable.field("author", {
+      type: "User",
       resolve: async ({ authorIdentityId }, _args, _ctx) => {
-        return (
-          (await authorIdentityId) &&
-          prisma.identity.findUnique({
-            where: {
-              id: authorIdentityId,
-            },
-          })
-        );
+        if (!authorIdentityId) {
+          return authorIdentityId;
+        }
+        const authorIdentity = await prisma.identity.findUnique({
+          where: {
+            id: authorIdentityId,
+          },
+          include: {
+            user: true,
+          },
+        });
+        return userFromIdentity(authorIdentity);
       },
     });
     t.nullable.field("article", {
@@ -35,11 +40,14 @@ const ThreadMessage = objectType({
     t.nullable.field("venue", {
       type: "Venue",
       resolve: async ({ venueId }, _args, _ctx) => {
-        return await prisma.venue.findUnique({
-          where: {
-            id: venueId,
-          },
-        });
+        return (
+          venueId &&
+          (await prisma.venue.findUnique({
+            where: {
+              id: venueId,
+            },
+          }))
+        );
       },
     });
     t.boolean("decision");

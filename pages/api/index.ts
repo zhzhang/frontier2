@@ -2,7 +2,6 @@ import Mutation from "@/lib/api/mutations";
 import Query from "@/lib/api/queries";
 import Article from "@/lib/api/types/article";
 import ArticleVersion from "@/lib/api/types/articleVersion";
-import Identity from "@/lib/api/types/identity";
 import { JSON } from "@/lib/api/types/json";
 import Relation, { RelationType } from "@/lib/api/types/relation";
 import ReviewRequest from "@/lib/api/types/reviewRequest";
@@ -46,7 +45,6 @@ export const schema = makeSchema({
     User,
     Article,
     ArticleVersion,
-    Identity,
     Venue,
     Submission,
     ReviewRequest,

@@ -1,15 +1,11 @@
-import { userFromIdentity } from "@/lib/utils";
 import Link from "@mui/material/Link";
 import { useState } from "react";
 import UserPopover from "./UserPopover";
-import VenuePopover from "./VenuePopover";
 
-export default function AuthorPopover({ identity, color = "textSecondary" }) {
+export default function AuthorPopover({ author, color = "textSecondary" }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const anonymous = !Boolean(identity.user);
-  const user = userFromIdentity(identity);
-  const { id, name } = user;
-  const { venue } = identity;
+  const anonymous = !Boolean(author);
+  const { id, name } = author;
   const handleEnter = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -28,13 +24,9 @@ export default function AuthorPopover({ identity, color = "textSecondary" }) {
       >
         {name}
       </Link>
-      {venue && (
-        <>
-          {" - "}
-          <VenuePopover venue={venue} />
-        </>
+      {author !== "anonymous" && (
+        <UserPopover user={author} anchorEl={anchorEl} />
       )}
-      {user !== "anonymous" && <UserPopover user={user} anchorEl={anchorEl} />}
     </>
   );
 }

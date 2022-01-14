@@ -20,7 +20,7 @@ const Article = objectType({
       },
     });
     t.nullable.list.field("authors", {
-      type: "Identity",
+      type: "User",
       resolve: async ({ id, anonymous }, _args, ctx) => {
         if (anonymous) {
           return null;
@@ -34,7 +34,7 @@ const Article = objectType({
             user: true,
           },
         });
-        return _.sortBy(authorships, ["number"]);
+        return _.sortBy(authorships, ["number"]).map(({ user }) => user);
       },
     });
     t.list.field("acceptedVenues", {

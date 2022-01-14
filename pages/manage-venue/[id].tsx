@@ -19,8 +19,8 @@ import { useRouter } from "next/router";
 
 const VenueQuery = gql`
   ${VENUE_CARD_FIELDS}
-  query VenueQuery($where: VenueWhereUniqueInput!) {
-    venue(where: $where) {
+  query VenueQuery($id: String!) {
+    venue(id: $id) {
       ...VenueCardFields
       role
     }
@@ -54,7 +54,7 @@ function Venue() {
   const id = router.query.id;
   const view = router.query.view ? router.query.view : "info";
   const { loading, error, data } = useQuery(VenueQuery, {
-    variables: { where: { id } },
+    variables: { id },
   });
 
   if (loading) {

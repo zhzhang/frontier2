@@ -27,15 +27,11 @@ export const THREAD_MESSAGE_FIELDS = gql`
   fragment ThreadMessageFields on ThreadMessage {
     id
     type
-    authorIdentity {
-      context
-      number
-      user {
-        ...UserCardFields
-      }
-      venue {
-        ...VenueCardFields
-      }
+    author {
+      ...UserCardFields
+    }
+    venue {
+      ...VenueCardFields
     }
     headId
     body

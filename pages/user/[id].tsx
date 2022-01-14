@@ -29,25 +29,20 @@ import gql from "graphql-tag";
 import { useRouter } from "next/router";
 import normalizeUrl from "normalize-url";
 
-const AuthorshipsQuery = gql`
+const ArticlesQuery = gql`
   ${ARTICLE_CARD_FIELDS}
-  query AuthorshipsQuery($where: IdentityWhereInput!) {
-    identities(where: $where) {
-      article {
-        ...ArticleCardFields
-      }
+  query ArticlesQuery($input: UserArticlesInput!) {
+    userArticles(input: $input) {
+      ...ArticleCardFields
     }
   }
 `;
 
 function ArticlesTab({ userId }) {
-  const { loading, error, data } = useQuery(AuthorshipsQuery, {
+  const { loading, error, data } = useQuery(ArticlesQuery, {
     variables: {
-      where: {
-        AND: [
-          { userId: { equals: userId } },
-          { context: { equals: "AUTHOR" } },
-        ],
+      input: {
+        userId,
       },
     },
   });
@@ -57,13 +52,12 @@ function ArticlesTab({ userId }) {
   if (error) {
     return <Error>{error.message}</Error>;
   }
-  if (data.identities.length === 0) {
+  if (data.userArticles.length === 0) {
     return <Typography>This user has no public articles.</Typography>;
   }
   return (
     <>
-      {data.identities.map((authorship) => {
-        const { article } = authorship;
+      {data.userArticles.map((article) => {
         return (
           <ArticleCard article={article} key={article.id} sx={{ mb: 1 }} />
         );
@@ -75,8 +69,8 @@ function ArticlesTab({ userId }) {
 const ReviewsQuery = gql`
   ${THREAD_MESSAGE_FIELDS}
   ${ARTICLE_CARD_FIELDS}
-  query ReviewsQuery($where: ThreadMessageWhereInput!) {
-    threadMessages(where: $where) {
+  query ReviewsQuery($input: UserReviewsInput!) {
+    userReviews(input: $input) {
       ...ThreadMessageFields
       article {
         ...ArticleCardFields
@@ -88,8 +82,8 @@ const ReviewsQuery = gql`
 function ReviewsTab({ userId }) {
   const { loading, error, data } = useQuery(ReviewsQuery, {
     variables: {
-      where: {
-        AND: [{ authorId: { equals: userId } }, { type: { equals: "REVIEW" } }],
+      input: {
+        userId,
       },
     },
   });
@@ -99,12 +93,12 @@ function ReviewsTab({ userId }) {
   if (error) {
     return <Error>{error.message}</Error>;
   }
-  if (data.threadMessages.length === 0) {
+  if (data.userReviews.length === 0) {
     return <Typography>This user has no public reviews.</Typography>;
   }
   return (
     <>
-      {data.threadMessages.map((review) => {
+      {data.userReviews.map((review) => {
         return (
           <>
             <Review

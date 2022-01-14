@@ -42,7 +42,7 @@ function Rating({ rating }) {
 }
 
 export default function Review({ review, articleId }) {
-  const { id, authorIdentity, highlights, body, publishTimestamp } = review;
+  const { id, author, highlights, body, publishTimestamp } = review;
   const typographyProps = {
     component: "span",
     sx: {
@@ -54,10 +54,10 @@ export default function Review({ review, articleId }) {
     <Box sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ marginRight: 1 }}>
-          <ProfilePicturePopover identity={authorIdentity} />
+          <ProfilePicturePopover user={author} />
         </Box>
         <Box>
-          <AuthorPopover identity={authorIdentity} />
+          <AuthorPopover author={author} />
           <Typography {...typographyProps}>{" • "}</Typography>
           <TimeAgo {...typographyProps} time={publishTimestamp} />
           <Markdown

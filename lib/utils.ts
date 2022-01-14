@@ -1,5 +1,5 @@
-export function userFromIdentity({ user, context, number }) {
-  if (user) {
+export function userFromIdentity({ user, context, number, anonymized }) {
+  if (!anonymized) {
     return user;
   }
   return {

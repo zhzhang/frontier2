@@ -43,19 +43,107 @@ export default objectType({
         return await prisma.article.findMany();
       },
     });
+
+    const UserArticlesInputType = inputObjectType({
+      name: "UserArticlesInput",
+      definition(t) {
+        t.nonNull.string("userId");
+        t.nullable.int("limit");
+        t.nullable.string("after");
+      },
+    });
     t.list.field("userArticles", {
       type: "Article",
       args: {
-        userId: stringArg(),
+        input: UserArticlesInputType,
       },
-      resolve: async (_root, { userId }, _ctx) => {
-        return await prisma.article.findMany();
+      resolve: async (_root, { input: { userId } }, _ctx) => {
+        const authorships = await prisma.identity.findMany({
+          where: {
+            userId,
+            context: "AUTHOR",
+          },
+          include: {
+            article: true,
+          },
+        });
+        return authorships.map(({ article }) => article);
+      },
+    });
+
+    const UserReviewsInputType = inputObjectType({
+      name: "UserReviewsInput",
+      definition(t) {
+        t.nonNull.string("userId");
+        t.nullable.int("limit");
+        t.nullable.string("after");
+      },
+    });
+    t.list.field("userReviews", {
+      type: "ThreadMessage",
+      args: {
+        input: UserReviewsInputType,
+      },
+      resolve: async (_root, { input: { userId } }, _ctx) => {
+        return await prisma.threadMessage.findMany({
+          where: {
+            authorId: userId,
+            type: "REVIEW",
+          },
+          include: {
+            article: true,
+          },
+        });
+      },
+    });
+
+    t.field("venue", {
+      type: "Venue",
+      args: {
+        id: stringArg(),
+      },
+      resolve: async (_root, { id }, _ctx) => {
+        return await prisma.venue.findUnique({ where: { id } });
       },
     });
     t.list.field("venues", {
       type: "Venue",
       resolve: async (_root, _args, _ctx) => {
         return await prisma.venue.findMany();
+      },
+    });
+
+    const VenueArticlesInputType = inputObjectType({
+      name: "VenueArticlesInput",
+      definition(t) {
+        t.nonNull.string("venueId");
+        t.nullable.string("headId");
+        t.nullable.string("after");
+      },
+    });
+    t.list.field("venueArticles", {
+      type: "Article",
+      args: {
+        input: VenueArticlesInputType,
+      },
+      resolve: async (_root, { input: { venueId, headId } }, _ctx) => {
+        const decisions = await prisma.threadMessage.findMany({
+          where: {
+            type: "DECISION",
+            venueId,
+            published: true,
+            released: true,
+          },
+          orderBy: [
+            {
+              publishTimestamp: "desc",
+            },
+          ],
+          include: {
+            article: true,
+          },
+        });
+        return decisions.map(({ article }) => article);
       },
     });
 
@@ -88,6 +176,7 @@ export default objectType({
         });
       },
     });
+
     t.nullable.field("draftMessage", {
       type: "ThreadMessage",
       args: {

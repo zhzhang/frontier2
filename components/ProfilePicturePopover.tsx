@@ -1,12 +1,10 @@
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import UserPopover from "@/components/UserPopover";
-import { userFromIdentity } from "@/lib/utils";
 import Router from "next/router";
 import { useState } from "react";
 
-export default function ProfilePicturePopover({ identity, sx = null }) {
+export default function ProfilePicturePopover({ user, sx = null }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const user = userFromIdentity(identity);
   const { id, name, profilePictureUrl } = user;
   const anonymous = id === "anonymous";
   const handleEnter = (event) => {
