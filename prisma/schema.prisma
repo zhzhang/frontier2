@@ -137,7 +137,7 @@ model Venue {
   ratingFields         Json?
   websiteUrl           String?
   abbreviation         String?
-  description          String            @db.MediumText
+  description          String?           @db.MediumText
   template             String?           @db.MediumText
   logoRef              String?
   venueDate            DateTime?

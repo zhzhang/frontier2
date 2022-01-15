@@ -4,6 +4,7 @@ import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ApolloProvider } from "@apollo/react-hooks";
 import DebounceLink from "apollo-link-debounce";
+import { createUploadLink } from "apollo-upload-client";
 import jwtDecode from "jwt-decode";
 import React from "react";
 
@@ -107,6 +108,9 @@ function createApolloClient(initialState = {}, typePolicies = {}) {
     link: from([
       new DebounceLink(1000),
       authLink,
+      createUploadLink({
+        uri: "/api",
+      }),
       new HttpLink({ uri: "/api" }),
     ]),
     cache,

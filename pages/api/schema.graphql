@@ -38,6 +38,7 @@ type Mutation {
   assignSubmissionOwner(input: AssignSubmissionInput!): Submission
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createThreadMessage(input: ThreadMessageCreateInput!): ThreadMessage
+  createVenue(input: VenueCreateInput): Venue
   deleteVenueMembership(id: String): VenueMembership
   publishMessage(body: String!, highlights: JSON!, id: String!): ThreadMessage
 }
@@ -169,6 +170,12 @@ input VenueArticlesInput {
   after: String
   headId: String
   venueId: String!
+}
+
+input VenueCreateInput {
+  abbreviation: String
+  name: String!
+  venueDate: DateTime
 }
 
 type VenueMembership {

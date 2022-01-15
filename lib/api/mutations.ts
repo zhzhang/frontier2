@@ -27,24 +27,15 @@ function uploadFromStream(bucket, key) {
   return pass;
 }
 
-function readStreamData(stream) {
-  return new Promise(function (resolve, reject) {
-    stream
-      .on("data", (data) => console.log(data))
-      .on("end", () => resolve(""))
-      .on("error", reject);
-    console.log("data listen hit");
-  });
-}
-
 export default objectType({
   name: "Mutation",
   definition(t) {
     const VenueCreateInputType = inputObjectType({
       name: "VenueCreateInput",
       definition(t) {
-        t.nonNull.string("type");
-        t.upload("logoFile");
+        t.nonNull.string("name");
+        t.nullable.string("abbreviation");
+        t.nullable.field("venueDate", { type: "DateTime" });
       },
     });
     t.field("createVenue", {
@@ -52,18 +43,28 @@ export default objectType({
       args: {
         input: VenueCreateInputType,
       },
-      resolve: async (_, { id }, { user }) => {
-        const membership = await prisma.venueMembership.findUnique({
-          where: {
-            id,
-          },
-        });
-        if (!isAdmin(membership.venueId, user.id)) {
-          return null;
-        }
-        return await prisma.venueMembership.delete({
-          where: {
-            id,
+      resolve: async (
+        _,
+        { input: { name, abbreviation, venueDate } },
+        { user }
+      ) => {
+        return await prisma.venue.create({
+          data: {
+            name,
+            abbreviation: abbreviation || null,
+            venueDate: venueDate || null,
+            memberships: {
+              create: [
+                {
+                  role: "ADMIN",
+                  user: {
+                    connect: {
+                      id: user.id,
+                    },
+                  },
+                },
+              ],
+            },
           },
         });
       },

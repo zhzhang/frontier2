@@ -12,6 +12,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
@@ -43,12 +44,6 @@ function Header({ name, logoRef }) {
   );
 }
 
-const TABS = [
-  { name: "Venue Info", key: "info" },
-  { name: "Submissions", key: "submissions" },
-  { name: "Members", key: "members" },
-];
-
 function Venue() {
   const router = useRouter();
   const id = router.query.id;
@@ -78,28 +73,50 @@ function Venue() {
 
   return (
     <Layout>
-      <Header name={name} logoRef={logoRef} />
       <TabContext value={view}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Venue Info" value="info" />
-            <Tab label="Review Settings" value="review-settings" />
-            <Tab label="Submissions" value="submissions" />
-            <Tab label="Members" value="members" />
-          </TabList>
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: 200,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: 200,
+              boxSizing: "border-box",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              marginTop: "48px",
+            }}
+          >
+            <Header name={name} logoRef={logoRef} />
+            <TabList
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+              orientation="vertical"
+            >
+              <Tab label="Venue Info" value="info" />
+              <Tab label="Review Settings" value="review-settings" />
+              <Tab label="Submissions" value="submissions" />
+              <Tab label="Members" value="members" />
+            </TabList>
+          </Box>
+        </Drawer>
+        <Box sx={{ marginLeft: "200px" }}>
+          <TabPanel value="info" sx={sx}>
+            <InfoPane venue={data.venue} />
+          </TabPanel>
+          <TabPanel value="review-settings" sx={sx}>
+            <InfoPane venue={data.venue} />
+          </TabPanel>
+          <TabPanel value="submissions" sx={sx}>
+            <SubmissionsPane id={id} />
+          </TabPanel>
+          <TabPanel value="members" sx={sx}>
+            <MembersPane id={id} />
+          </TabPanel>
         </Box>
-        <TabPanel value="info" sx={sx}>
-          <InfoPane venue={data.venue} />
-        </TabPanel>
-        <TabPanel value="review-settings" sx={sx}>
-          <InfoPane venue={data.venue} />
-        </TabPanel>
-        <TabPanel value="submissions" sx={sx}>
-          <SubmissionsPane id={id} />
-        </TabPanel>
-        <TabPanel value="members" sx={sx}>
-          <MembersPane id={id} />
-        </TabPanel>
       </TabContext>
     </Layout>
   );

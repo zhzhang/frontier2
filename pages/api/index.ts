@@ -13,15 +13,13 @@ import Venue from "@/lib/api/types/venue";
 import VenueMembership from "@/lib/api/types/venueMembership";
 import { GraphQLDateTime } from "@/lib/graphql-iso-date";
 import prisma from "@/lib/prisma";
-import { ApolloServer } from "apollo-server-micro";
+import { ApolloServer, GraphQLUpload } from "apollo-server-micro";
 import { rule, shield } from "graphql-shield";
-import { FileUpload, GraphQLUpload } from "graphql-upload";
 import jwt_decode from "jwt-decode";
 import { asNexusMethod, fieldAuthorizePlugin, makeSchema } from "nexus";
 import path from "path";
 
-export type Upload = Promise<FileUpload>;
-export const Upload = asNexusMethod(GraphQLUpload!, "upload");
+export const Upload = asNexusMethod(GraphQLUpload, "upload");
 
 // Build the schema.
 const rules = {

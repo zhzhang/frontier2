@@ -27,7 +27,11 @@ export default function Navigation() {
     setAnchorEl(null);
   };
   return (
-    <AppBar position="fixed" elevation={0}>
+    <AppBar
+      position="fixed"
+      elevation={0}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar variant="dense">
         <Typography variant="h6" sx={{ flex: 1 }}>
           FRONTIER

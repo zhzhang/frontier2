@@ -11,9 +11,6 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
@@ -47,9 +44,6 @@ export default function InfoPane({ venue }) {
   const [updateVenue, { error }] = useMutation(UpdateVenueMutation);
   const [logoUrl, setLogoUrl] = useState("");
   const [venueDate, setVenueDate] = useState(venue.venueDate);
-  const [acceptingSubmissions, setAcceptingSubmissions] = useState(
-    venue.acceptingSubmissions
-  );
   const [submissionDeadline, setSubmissionDeadline] = useState(
     venue.submissionDeadline
   );
@@ -116,7 +110,7 @@ export default function InfoPane({ venue }) {
     );
   };
 
-  const canSubmit = description.length > 0 && name.length > 0;
+  const canSubmit = name.length > 0;
 
   return (
     <Grid item container spacing={3}>
@@ -133,7 +127,6 @@ export default function InfoPane({ venue }) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            required
             fullWidth
             variant="outlined"
             label="Abbreviation"
@@ -146,7 +139,7 @@ export default function InfoPane({ venue }) {
             body={description}
             onChange={(abstract) => setDescription(abstract)}
             label="Description"
-            placeholder="Write a description for your venue."
+            placeholder="Add a description for this venue."
           />
         </Grid>
         <Grid item xs={4}>
@@ -216,21 +209,6 @@ export default function InfoPane({ venue }) {
             }}
             renderInput={(params) => <TextField fullWidth {...params} />}
           />
-        </Grid>
-        <Grid item xs={12}>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={acceptingSubmissions}
-                  onChange={() =>
-                    setAcceptingSubmissions(!acceptingSubmissions)
-                  }
-                />
-              }
-              label="Accepting Submissions"
-            />
-          </FormGroup>
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ display: "flex" }}>
