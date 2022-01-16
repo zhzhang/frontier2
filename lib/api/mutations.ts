@@ -70,6 +70,80 @@ export default objectType({
       },
     });
 
+    const VenueUpdateInputType = inputObjectType({
+      name: "VenueUpdateInput",
+      definition(t) {
+        t.nonNull.string("venueId");
+        t.nullable.string("name");
+        t.nullable.string("description");
+        t.nullable.string("abbreviation");
+        t.nullable.field("venueDate", { type: "DateTime" });
+        t.nullable.field("submissionDeadline", { type: "DateTime" });
+      },
+    });
+    t.field("updateVenue", {
+      type: "Venue",
+      args: {
+        input: VenueUpdateInputType,
+      },
+      resolve: async (_, { input: { venueId, ...data } }, { user }) => {
+        if (!isAdmin(venueId, user.id)) {
+          throw Error("You are not authorized to update this venue.");
+        }
+        return await prisma.venue.update({
+          data,
+          where: {
+            id: venueId,
+          },
+        });
+      },
+    });
+
+    const VenueMembershipCreateInputType = inputObjectType({
+      name: "VenueMembershipsCreateInput",
+      definition(t) {
+        t.nonNull.string("venueId");
+        t.nonNull.string("role");
+        t.nonNull.list.string("userIds");
+      },
+    });
+    t.list.field("createVenueMemberships", {
+      type: "VenueMembership",
+      args: {
+        input: VenueMembershipCreateInputType,
+      },
+      resolve: async (
+        _root,
+        { input: { venueId, role, userIds } },
+        { user }
+      ) => {
+        if (!isAdmin(venueId, user.id)) {
+          throw Error("You are not authorized to update this venue.");
+        }
+        let response = [];
+        for (let userId of userIds) {
+          const previous = await prisma.venueMembership.findFirst({
+            where: {
+              venueId,
+              userId,
+              role,
+            },
+          });
+          if (!previous) {
+            const resp = await prisma.venueMembership.create({
+              data: {
+                venueId,
+                userId,
+                role,
+              },
+            });
+            response.push(resp);
+          }
+        }
+        return response;
+      },
+    });
+
     t.nullable.field("deleteVenueMembership", {
       type: "VenueMembership",
       args: {

@@ -32,14 +32,19 @@ function Header({ name, logoRef }) {
   return (
     <Box
       sx={{
+        m: 1,
         display: "flex",
-        "& > *": {
-          m: 1,
-        },
       }}
     >
-      <FirebaseAvatar storeRef={logoRef} variant="rounded" name={name} />
-      <Typography variant="h4">{name}</Typography>
+      <FirebaseAvatar
+        storeRef={logoRef}
+        variant="rounded"
+        name={name}
+        sx={{ width: "64px", height: "64px" }}
+      />
+      <Typography variant="h6" sx={{ ml: 1 }}>
+        {name}
+      </Typography>
     </Box>
   );
 }
@@ -77,10 +82,10 @@ function Venue() {
         <Drawer
           variant="permanent"
           sx={{
-            width: 200,
+            width: 300,
             flexShrink: 0,
             [`& .MuiDrawer-paper`]: {
-              width: 200,
+              width: 300,
               boxSizing: "border-box",
             },
           }}
@@ -103,7 +108,7 @@ function Venue() {
             </TabList>
           </Box>
         </Drawer>
-        <Box sx={{ marginLeft: "200px" }}>
+        <Box sx={{ marginLeft: "300px" }}>
           <TabPanel value="info" sx={sx}>
             <InfoPane venue={data.venue} />
           </TabPanel>

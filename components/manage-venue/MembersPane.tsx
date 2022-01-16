@@ -27,9 +27,9 @@ const MembershipsQuery = gql`
   }
 `;
 
-const CreateOneVenueMembershipMutation = gql`
-  mutation CreateOneVenueMembership($data: VenueMembershipCreateInput!) {
-    createOneVenueMembership(data: $data) {
+const CreateVenueMembershipsMutation = gql`
+  mutation CreateVenueMemberships($input: VenueMembershipsCreateInput!) {
+    createVenueMemberships(input: $input) {
       id
       role
       user {
@@ -56,13 +56,28 @@ function MembersSelector({ id, role }) {
   const { loading, error, data } = useQuery(MembershipsQuery, {
     variables,
   });
-  const [createVenueMembership, createResult] = useMutation(
-    CreateOneVenueMembershipMutation
+  const [createVenueMemberships, createResult] = useMutation(
+    CreateVenueMembershipsMutation,
+    {
+      update(cache, { data: { createVenueMemberships } }) {
+        const { venueMemberships } = cache.readQuery({
+          query: MembershipsQuery,
+          variables,
+        });
+        cache.writeQuery({
+          query: MembershipsQuery,
+          variables,
+          data: {
+            venueMemberships: [...createVenueMemberships, ...venueMemberships],
+          },
+        });
+      },
+    }
   );
   const [deleteVenueMembership, deleteResult] = useMutation(
     DeleteVenueMembershipMutation,
     {
-      update(cache, { data: { deleteOneVenueMembership } }) {
+      update(cache, { data: { deleteVenueMembership } }) {
         const { venueMemberships } = cache.readQuery({
           query: MembershipsQuery,
           variables,
@@ -72,13 +87,14 @@ function MembersSelector({ id, role }) {
           variables,
           data: {
             venueMemberships: _.reject(venueMemberships, {
-              id: deleteOneVenueMembership.id,
+              id: deleteVenueMembership.id,
             }),
           },
         });
       },
     }
   );
+  const mutationError = createResult.error || deleteResult.error;
   const [newAdmins, setNewAdmins] = useState([]);
   if (loading) {
     return <Spinner animation="border" style={{ top: "50%", left: "50%" }} />;
@@ -92,21 +108,13 @@ function MembersSelector({ id, role }) {
   }
   const admins = data.venueMemberships;
 
-  const handleAdd = async (user) => {
-    const membership = createVenueMembership({
+  const handleAdd = async () => {
+    createVenueMemberships({
       variables: {
-        data: {
+        input: {
           role,
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-          venue: {
-            connect: {
-              id,
-            },
-          },
+          venueId: id,
+          userIds: newAdmins.map((user) => user.id),
         },
       },
     });
@@ -133,9 +141,7 @@ function MembersSelector({ id, role }) {
           color="primary"
           size="large"
           variant="contained"
-          onClick={() => {
-            newAdmins.map((user) => handleAdd(user));
-          }}
+          onClick={() => handleAdd()}
         >
           Add
         </Button>
@@ -172,6 +178,9 @@ function MembersSelector({ id, role }) {
             </TableBody>
           </Table>
         </TableContainer>
+      </Grid>
+      <Grid item sm={12}>
+        {mutationError && <Error>{mutationError.message}</Error>}
       </Grid>
     </Grid>
   );

@@ -134,11 +134,11 @@ model Venue {
   name                 String
   acceptingSubmissions Boolean           @default(false)
   reviewPolicy         ReviewPolicyType  @default(DOUBLE_BLIND)
+  reviewTemplate       String?           @db.MediumText
   ratingFields         Json?
   websiteUrl           String?
   abbreviation         String?
   description          String?           @db.MediumText
-  template             String?           @db.MediumText
   logoRef              String?
   venueDate            DateTime?
   submissionDeadline   DateTime?

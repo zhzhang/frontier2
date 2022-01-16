@@ -7,6 +7,8 @@ export default objectType({
     t.string("name");
     t.string("abbreviation");
     t.string("description");
+    t.nullable.string("reviewTemplate");
+    t.nullable.json("ratingFields");
     t.nullable.string("websiteUrl");
     t.nullable.string("logoRef");
     t.boolean("acceptingSubmissions");

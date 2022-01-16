@@ -39,8 +39,10 @@ type Mutation {
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createThreadMessage(input: ThreadMessageCreateInput!): ThreadMessage
   createVenue(input: VenueCreateInput): Venue
+  createVenueMemberships(input: VenueMembershipsCreateInput): [VenueMembership]
   deleteVenueMembership(id: String): VenueMembership
   publishMessage(body: String!, highlights: JSON!, id: String!): ThreadMessage
+  updateVenue(input: VenueUpdateInput): Venue
 }
 
 type Query {
@@ -160,6 +162,8 @@ type Venue {
   id: String
   logoRef: String
   name: String
+  ratingFields: JSON
+  reviewTemplate: String
   role: Role
   submissionDeadline: DateTime
   venueDate: DateTime
@@ -185,6 +189,12 @@ type VenueMembership {
   venue: Venue
 }
 
+input VenueMembershipsCreateInput {
+  role: String!
+  userIds: [String]!
+  venueId: String!
+}
+
 input VenueMembershipsInput {
   after: String
   headId: String
@@ -195,5 +205,14 @@ input VenueMembershipsInput {
 input VenueSubmissionsInput {
   after: String
   headId: String
+  venueId: String!
+}
+
+input VenueUpdateInput {
+  abbreviation: String
+  description: String
+  name: String
+  submissionDeadline: DateTime
+  venueDate: DateTime
   venueId: String!
 }
