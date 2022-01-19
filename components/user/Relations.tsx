@@ -1,15 +1,8 @@
-import Spinner from "@/components/CenteredSpinner";
-import Error from "@/components/Error";
-import ErrorPage from "@/components/ErrorPage";
-import Layout from "@/components/Layout";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
 import UserTypeahead from "@/components/UserTypeahead";
 import { withApollo } from "@/lib/apollo";
-import { getCroppedImg } from "@/lib/crop";
-import { uploadFile, useAuth } from "@/lib/firebase";
-import { RelationEnum, UploadTypeEnum } from "@/lib/types";
-import { useMutation, useQuery } from "@apollo/react-hooks";
-import Box from "@mui/material/Box";
+import { RelationEnum } from "@/lib/types";
+import { useMutation } from "@apollo/react-hooks";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
@@ -24,10 +17,7 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
-import Router from "next/router";
-import { useCallback, useRef, useState } from "react";
-import Dropzone from "react-dropzone";
-import ReactCrop from "react-image-crop";
+import { useState } from "react";
 
 const UserQuery = gql`
   ${USER_CARD_FIELDS}
@@ -48,9 +38,10 @@ const UserQuery = gql`
 `;
 
 const UpdateUserMutation = gql`
-  mutation UpdateUser($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
-    updateOneUser(data: $data, where: $where) {
-      id
+  ${USER_CARD_FIELDS}
+  mutation UpdateUser($input: UserUpdateInput!) {
+    updateUser(input: $input) {
+      ...UserCardFields
     }
   }
 `;
@@ -235,12 +226,9 @@ function Editor({ user }) {
   const [name, setName] = useState(user.name);
   const [website, setWebsite] = useState(user.website || "");
   const [institution, setInstitution] = useState(user.institution || "");
-  const [profilePictureUrl, setProfilePictureUrl] = useState("");
-  const [crop, setCrop] = useState({ aspect: 1, width: 10000 });
-  const imgRef = useRef(null);
   const [updateUser, result] = useMutation(UpdateUserMutation);
   let variables = {
-    where: {
+    input: {
       id: user.id,
     },
     data: {
@@ -254,35 +242,10 @@ function Editor({ user }) {
     variables.data.institution = { set: institution };
   }
   const handleUpdateUser = async () => {
-    if (!imgRef.current) {
-      await updateUser({
-        variables,
-      });
-      Router.push(`/user/${user.id}`);
-      return;
-    }
-    const img = await getCroppedImg(imgRef.current, crop, "hello");
-    const { uploadTask, refPath } = uploadFile(
-      img,
-      UploadTypeEnum.PROFILE_IMAGE
-    );
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {},
-      async () => {
-        variables.data.profilePictureUrl = { set: refPath };
-        await updateUser({
-          variables,
-        });
-        Router.push(`/user/${user.id}`);
-      }
-    );
+    await updateUser({
+      variables,
+    });
   };
-
-  const onLoad = useCallback((img) => {
-    imgRef.current = img;
-  }, []);
 
   return (
     <Grid container spacing={3}>
@@ -290,42 +253,6 @@ function Editor({ user }) {
         <Typography variant="h4">Edit Your Profile</Typography>
       </Grid>
       <Grid item container sm={3} spacing={3}>
-        <Grid item>
-          {profilePictureUrl ? (
-            <ReactCrop
-              src={profilePictureUrl}
-              crop={crop}
-              onChange={(newCrop) => setCrop(newCrop)}
-              onImageLoaded={onLoad}
-            />
-          ) : (
-            <Dropzone
-              onDrop={(acceptedFiles) => {
-                setProfilePictureUrl(URL.createObjectURL(acceptedFiles[0]));
-              }}
-              accept={["image/png", "image/jpeg"]}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <Box
-                  {...getRootProps()}
-                  style={{
-                    border: "1px solid rgba(0, 0, 0, 0.23)",
-                    borderRadius: "4px",
-                    borderStyle: "dashed",
-                    padding: 1,
-                    height: "150px",
-                  }}
-                >
-                  <input {...getInputProps()} />
-                  <Typography>
-                    (Optional) Drag and drop a logo image here, or click to
-                    select file.
-                  </Typography>
-                </Box>
-              )}
-            </Dropzone>
-          )}
-        </Grid>
         <Grid item xs={12}>
           <TextField
             required
@@ -360,44 +287,8 @@ function Editor({ user }) {
           Save
         </Button>
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h5">Relations</Typography>
-      </Grid>
-      <Relations userId={user.id} relations={user.relations} />
     </Grid>
   );
 }
 
-function EditProfile({ id }) {
-  const { loading, error, data } = useQuery(UserQuery, {
-    variables: { where: { id } },
-  });
-  if (loading) {
-    return <Spinner />;
-  } else if (error) {
-    return <Error>Error loading profile information.</Error>;
-  }
-  return <Editor user={data.user} />;
-}
-
-function RetrieveAndEditProfile() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return <Spinner animation="border" />;
-  } else if (!user) {
-    return (
-      <ErrorPage dismissible={false}>
-        Please log in to edit your profile.
-      </ErrorPage>
-    );
-  }
-
-  return (
-    <Layout>
-      <EditProfile id={user.uid} />
-    </Layout>
-  );
-}
-
-export default withApollo(RetrieveAndEditProfile);
+export default withApollo(Editor);

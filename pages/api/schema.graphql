@@ -42,6 +42,7 @@ type Mutation {
   createVenueMemberships(input: VenueMembershipsCreateInput): [VenueMembership]
   deleteVenueMembership(id: String): VenueMembership
   publishMessage(body: String!, highlights: JSON!, id: String!): ThreadMessage
+  updateUser(input: UserUpdateInput): User
   updateVenue(input: VenueUpdateInput): Venue
 }
 
@@ -84,6 +85,7 @@ enum RelationType {
 type ReviewRequest {
   id: String
   status: String
+  type: String
   user: User
 }
 
@@ -97,7 +99,7 @@ type Submission {
   article: Article
   createdAt: DateTime
   id: String
-  owner: User
+  owner: ReviewRequest
   reviewRequests: [ReviewRequest]
   venue: Venue
 }
@@ -153,6 +155,15 @@ input UserReviewsInput {
   after: String
   limit: Int
   userId: String!
+}
+
+input UserUpdateInput {
+  id: String!
+  institution: String
+  name: String
+  profilePictureRef: String
+  twitter: String
+  website: String
 }
 
 type Venue {

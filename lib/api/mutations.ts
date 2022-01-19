@@ -1,5 +1,6 @@
 import { isAdmin } from "@/lib/api/utils";
 import prisma from "@/lib/prisma";
+import { ForbiddenError } from "apollo-server-micro";
 import {
   booleanArg,
   inputObjectType,
@@ -30,6 +31,37 @@ function uploadFromStream(bucket, key) {
 export default objectType({
   name: "Mutation",
   definition(t) {
+    const UserUpdateInputType = inputObjectType({
+      name: "UserUpdateInput",
+      definition(t) {
+        t.nonNull.string("id");
+        t.nullable.string("name");
+        t.nullable.string("website");
+        t.nullable.string("twitter");
+        t.nullable.string("institution");
+        t.nullable.string("profilePictureRef");
+      },
+    });
+    t.field("updateUser", {
+      type: "User",
+      args: {
+        input: UserUpdateInputType,
+      },
+      resolve: async (_, { input: { id, ...data } }, { user }) => {
+        if (id !== user.id) {
+          return new ForbiddenError(
+            "You are not authorized to modify this user."
+          );
+        }
+        return await prisma.user.update({
+          data,
+          where: {
+            id,
+          },
+        });
+      },
+    });
+
     const VenueCreateInputType = inputObjectType({
       name: "VenueCreateInput",
       definition(t) {
@@ -90,7 +122,9 @@ export default objectType({
       },
       resolve: async (_, { input: { venueId, ...data } }, { user }) => {
         if (!isAdmin(venueId, user.id)) {
-          throw Error("You are not authorized to update this venue.");
+          return new ForbiddenError(
+            "You are not authorized to update this venue."
+          );
         }
         return await prisma.venue.update({
           data,
@@ -120,7 +154,9 @@ export default objectType({
         { user }
       ) => {
         if (!isAdmin(venueId, user.id)) {
-          throw Error("You are not authorized to update this venue.");
+          return new ForbiddenError(
+            "You are not authorized to update this venue."
+          );
         }
         let response = [];
         for (let userId of userIds) {

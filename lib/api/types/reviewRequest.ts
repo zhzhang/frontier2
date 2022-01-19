@@ -5,6 +5,7 @@ const ReviewRequest = objectType({
   name: "ReviewRequest",
   definition(t) {
     t.string("id");
+    t.string("type");
     t.string("status");
     t.nullable.field("user", {
       type: "User",

@@ -9,24 +9,21 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useState } from "react";
+import { REVIEW_REQUEST_CARD_FIELDS } from "../ReviewRequestCard";
 import UserDetailsCard from "../UserDetailsCard";
 
 const SUBMISSION_FIELDS = gql`
   ${ARTICLE_CARD_FIELDS}
   ${USER_CARD_FIELDS}
+  ${REVIEW_REQUEST_CARD_FIELDS}
   fragment SubmissionFields on Submission {
     id
     createdAt
     owner {
-      ...UserCardFields
+      ...ReviewRequestCardFields
     }
     article {
       ...ArticleCardFields
-    }
-    reviewRequests {
-      user {
-        ...UserCardFields
-      }
     }
   }
 `;
@@ -74,7 +71,7 @@ function SubmissionCard({
       onMouseLeave={() => setHover(false)}
     >
       <ArticleCard key={id} article={article} />
-      {owner && <Typography>Assigned chair: {owner.name}</Typography>}
+      {owner && <Typography>Assigned to: {owner.user.name}</Typography>}
     </Box>
   );
 }
