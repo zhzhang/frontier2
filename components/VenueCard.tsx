@@ -25,8 +25,8 @@ export const VENUE_CARD_FIELDS = gql`
 export default function VenueCard({ venue }) {
   const { id, name, abbreviation, logoRef, venueDate } = venue;
   const logoSx = {
-    height: "3.5rem",
-    width: "3.5rem",
+    height: "4rem",
+    width: "4rem",
   };
 
   const Header = () => {
@@ -36,7 +36,7 @@ export default function VenueCard({ venue }) {
       abbrev += " - ";
     }
     return (
-      <Typography variant="h5" color="textSecondary">
+      <Typography variant="h6" color="textSecondary">
         <Link href={`/venue/${id}`} color="inherit" underline="none">
           {abbrev}
           {name}
@@ -57,7 +57,7 @@ export default function VenueCard({ venue }) {
       >
         {logoRef === null ? (
           <Avatar sx={logoSx} variant="rounded">
-            T
+            {name[0]}
           </Avatar>
         ) : (
           <FirebaseAvatar

@@ -128,7 +128,7 @@ function ArticleView() {
         defaultSize={50}
         onChange={(size) => setPaneSize(size)}
       >
-        <Pane initialSize="40%" minSize="20%" maxSize="80%" size={paneSize[0]}>
+        <Pane initialSize="50%" minSize="20%" maxSize="80%" size={paneSize[0]}>
           <LeftPane />
         </Pane>
         <PdfViewerWrapper />

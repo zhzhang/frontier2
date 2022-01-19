@@ -1,42 +1,50 @@
-import { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
+import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
+import Error from "@/components/Error";
 import UserPopover from "@/components/UserPopover";
+import { useQuery } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useState } from "react";
 
 const ArticlesQuery = gql`
   ${ARTICLE_CARD_FIELDS}
-  query SubmissionsQuery($where: SubmissionWhereInput!) {
-    submissions(where: $where) {
-      id
-      createdAt
-      owner {
-        id
-        name
-      }
-      article {
-        ...ArticleCardFields
-      }
-      reviewRequests {
-        user {
-          ...UserCardFields
-        }
-        submission {
-          venue {
-            id
-            name
-          }
-        }
-      }
+  query ArticlesQuery($input: UserArticlesInput!) {
+    userArticles(input: $input) {
+      ...ArticleCardFields
     }
   }
 `;
+
+function Articles({ userId }) {
+  const { loading, error, data } = useQuery(ArticlesQuery, {
+    variables: {
+      input: {
+        userId,
+      },
+    },
+  });
+  if (loading) {
+    return <Skeleton variant="text" />;
+  }
+  if (error) {
+    return <Error>Unable to load this user's articles.</Error>;
+  }
+  const { userArticles } = data;
+  return (
+    <>
+      {userArticles.map((article) => (
+        <ArticleCard key={article.id} article={article} />
+      ))}
+    </>
+  );
+}
 
 function FlexBox({ children }) {
   return <Box sx={{ display: "flex", width: "100%" }}>{children}</Box>;
@@ -64,7 +72,9 @@ export default function UserDetailsCard({ user, onAssign }) {
           </Typography>
           <UserPopover user={user} anchorEl={anchorEl} />
         </AccordionSummary>
-        <AccordionDetails>Test</AccordionDetails>
+        <AccordionDetails>
+          <Articles userId={user.id} />
+        </AccordionDetails>
       </Accordion>
       <Button size="small" onClick={() => onAssign(id)}>
         Assign

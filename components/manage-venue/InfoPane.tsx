@@ -26,6 +26,7 @@ const UpdateVenueMutation = gql`
     }
   }
 `;
+
 function tmp() {
   const [logoUrl, setLogoUrl] = useState("");
   const imgRef = useRef(null);

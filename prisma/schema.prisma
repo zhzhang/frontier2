@@ -16,7 +16,6 @@ model User {
   profilePictureUrl String?           @unique
   institution       String?
   venueMemberships  VenueMembership[]
-  chairSubmissions  Submission[]
   relations         Relation[]
   relationsAsTarget Relation[]        @relation("target")
   reviewRequests    ReviewRequest[]
@@ -109,6 +108,7 @@ model ThreadMessage {
   published        Boolean           @default(false)
   publishTimestamp DateTime?
   released         Boolean           @default(true)
+  reviewRequest    ReviewRequest?
 }
 
 model Submission {
@@ -117,8 +117,6 @@ model Submission {
   articleId      String
   venue          Venue           @relation(fields: [venueId], references: [id])
   venueId        String
-  owner          User?           @relation(fields: [ownerId], references: [id])
-  ownerId        String?
   createdAt      DateTime        @default(now())
   reviewRequests ReviewRequest[]
 }
@@ -157,13 +155,30 @@ model VenueMembership {
   venueId String
 }
 
+enum ReviewRequestType {
+  REVIEW
+  CHAIR
+}
+
+enum ReviewRequestStatus {
+  CREATED
+  RELEASED
+  ACCEPTED
+  DECLINED
+  COMPLETED
+}
+
 model ReviewRequest {
-  id           String      @id @default(cuid())
+  id           String              @id @default(cuid())
+  type         ReviewRequestType
   articleId    String
-  article      Article     @relation(fields: [articleId], references: [id])
-  submission   Submission? @relation(fields: [submissionId], references: [id])
-  userId       String
-  user         User        @relation(fields: [userId], references: [id])
-  status       String
+  article      Article             @relation(fields: [articleId], references: [id])
   submissionId String?
+  submission   Submission?         @relation(fields: [submissionId], references: [id])
+  userId       String
+  user         User                @relation(fields: [userId], references: [id])
+  note         String
+  status       ReviewRequestStatus @default(CREATED)
+  reviewId     String?             @unique
+  review       ThreadMessage?      @relation(fields: [reviewId], references: [id])
 }

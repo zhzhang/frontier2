@@ -45,6 +45,7 @@ function SubmissionCard({
   selectedSubmission,
   setSelectedSubmission,
 }) {
+  const { id, owner, article } = submission;
   let style = {
     border: "1px solid rgba(0, 0, 0, 0.23)",
     borderRadius: "4px",
@@ -72,8 +73,8 @@ function SubmissionCard({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <ArticleCard key={submission.id} article={submission.article} />
-      <Typography>Assigned chair: {submission.owner.name}</Typography>
+      <ArticleCard key={id} article={article} />
+      {owner && <Typography>Assigned chair: {owner.name}</Typography>}
     </Box>
   );
 }
@@ -127,7 +128,8 @@ function ActionPane({ submission, venueId }) {
   if (!submission) {
     return <Typography>Select a submission to proceed.</Typography>;
   }
-  if (!submission.owner) {
+  // if (!submission.owner) {
+  if (true) {
     return (
       <Box>
         <Typography variant="h5">Assign an owner</Typography>
@@ -165,9 +167,6 @@ export default function SubmissionsPane({ id }) {
   return (
     <Grid item container spacing={3}>
       <Grid item sm={6}>
-        <Typography>
-          Show owner assigned, in review, completed, unreleased.
-        </Typography>
         {submissions.map((submission) => (
           <SubmissionCard
             key={submission.id}

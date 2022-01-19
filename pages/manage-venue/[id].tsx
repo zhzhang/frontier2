@@ -1,9 +1,11 @@
+import ClippedDrawer from "@/components/ClippedDrawer";
 import ErrorPage from "@/components/ErrorPage";
 import FirebaseAvatar from "@/components/FirebaseAvatar";
 import Spinner from "@/components/FixedSpinner";
 import Layout from "@/components/Layout";
 import InfoPane from "@/components/manage-venue/InfoPane";
 import MembersPane from "@/components/manage-venue/MembersPane";
+import ReviewSettingsPane from "@/components/manage-venue/ReviewSettingsPane";
 import SubmissionsPane from "@/components/manage-venue/SubmissionsPane";
 import { VENUE_CARD_FIELDS } from "@/components/VenueCard";
 import { withApollo } from "@/lib/apollo";
@@ -12,7 +14,6 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
@@ -23,6 +24,7 @@ const VenueQuery = gql`
   query VenueQuery($id: String!) {
     venue(id: $id) {
       ...VenueCardFields
+      reviewTemplate
       role
     }
   }
@@ -79,41 +81,28 @@ function Venue() {
   return (
     <Layout>
       <TabContext value={view}>
-        <Drawer
-          variant="permanent"
-          sx={{
-            width: 300,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: 300,
-              boxSizing: "border-box",
-            },
-          }}
+        <ClippedDrawer
+          drawer={
+            <>
+              <Header name={name} logoRef={logoRef} />
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+                orientation="vertical"
+              >
+                <Tab label="Venue Info" value="info" />
+                <Tab label="Review Settings" value="review-settings" />
+                <Tab label="Submissions" value="submissions" />
+                <Tab label="Members" value="members" />
+              </TabList>
+            </>
+          }
         >
-          <Box
-            sx={{
-              marginTop: "48px",
-            }}
-          >
-            <Header name={name} logoRef={logoRef} />
-            <TabList
-              onChange={handleChange}
-              aria-label="lab API tabs example"
-              orientation="vertical"
-            >
-              <Tab label="Venue Info" value="info" />
-              <Tab label="Review Settings" value="review-settings" />
-              <Tab label="Submissions" value="submissions" />
-              <Tab label="Members" value="members" />
-            </TabList>
-          </Box>
-        </Drawer>
-        <Box sx={{ marginLeft: "300px" }}>
           <TabPanel value="info" sx={sx}>
             <InfoPane venue={data.venue} />
           </TabPanel>
           <TabPanel value="review-settings" sx={sx}>
-            <InfoPane venue={data.venue} />
+            <ReviewSettingsPane venue={data.venue} />
           </TabPanel>
           <TabPanel value="submissions" sx={sx}>
             <SubmissionsPane id={id} />
@@ -121,7 +110,7 @@ function Venue() {
           <TabPanel value="members" sx={sx}>
             <MembersPane id={id} />
           </TabPanel>
-        </Box>
+        </ClippedDrawer>
       </TabContext>
     </Layout>
   );

@@ -89,8 +89,10 @@ export interface NexusGenInputs {
   }
   VenueUpdateInput: { // input type
     abbreviation?: string | null; // String
+    acceptingSubmissions?: boolean | null; // Boolean
     description?: string | null; // String
     name?: string | null; // String
+    reviewTemplate?: string | null; // String
     submissionDeadline?: NexusGenScalars['DateTime'] | null; // DateTime
     venueDate?: NexusGenScalars['DateTime'] | null; // DateTime
     venueId: string; // String!

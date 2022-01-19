@@ -23,15 +23,17 @@ export default objectType({
     });
     t.nullable.field("owner", {
       type: "User",
-      resolve: async ({ ownerId }, _args, _) => {
-        return (
-          ownerId &&
-          (await prisma.user.findUnique({
-            where: {
-              id: ownerId,
-            },
-          }))
-        );
+      resolve: async ({ id }, _args, _) => {
+        const reviewRequest = await prisma.reviewRequest.findFirst({
+          where: {
+            submissionId: id,
+            type: "CHAIR",
+          },
+          include: {
+            user: true,
+          },
+        });
+        return reviewRequest && reviewRequest.user;
       },
     });
     t.nullable.field("venue", {

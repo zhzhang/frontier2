@@ -210,8 +210,10 @@ input VenueSubmissionsInput {
 
 input VenueUpdateInput {
   abbreviation: String
+  acceptingSubmissions: Boolean
   description: String
   name: String
+  reviewTemplate: String
   submissionDeadline: DateTime
   venueDate: DateTime
   venueId: String!

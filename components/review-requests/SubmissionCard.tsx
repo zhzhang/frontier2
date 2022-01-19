@@ -6,22 +6,8 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
-import { createStyles, makeStyles, Theme } from "@mui/material/styles";
 import gql from "graphql-tag";
 import { useState } from "react";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      marginBottom: theme.spacing(1),
-      padding: theme.spacing(1),
-    },
-    divider: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
-    },
-  })
-);
 
 const RequestReviewersMutation = gql`
   mutation AssignOwner($data: ReviewRequestCreateInput!) {
@@ -36,7 +22,6 @@ const RequestReviewersMutation = gql`
 `;
 
 export default function SubmissionCard({ submission, venueId }) {
-  const classes = useStyles();
   const { id, owner, article, reviewRequests } = submission;
   const [reviewers, setReviewers] = useState([]);
   const [requestReviewers, { loading, error, data }] = useMutation(

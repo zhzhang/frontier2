@@ -13,5 +13,5 @@ export default function FirebaseAvatar({
     const url = useRef(storeRef);
     return <Avatar {...props} src={url} alt={name} />;
   }
-  return <Avatar {...props} />;
+  return <Avatar {...props}>{name[0]}</Avatar>;
 }

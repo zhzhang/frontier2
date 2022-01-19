@@ -77,6 +77,8 @@ export default objectType({
         t.nullable.string("name");
         t.nullable.string("description");
         t.nullable.string("abbreviation");
+        t.nullable.string("reviewTemplate");
+        t.nullable.boolean("acceptingSubmissions");
         t.nullable.field("venueDate", { type: "DateTime" });
         t.nullable.field("submissionDeadline", { type: "DateTime" });
       },
@@ -215,14 +217,44 @@ export default objectType({
         input: nonNull(AssignSubmissionInputType),
       },
       resolve: async (_, { input: { submissionId, ownerId } }, ctx) => {
-        const submission = await ctx.prisma.submission.update({
+        const submission = await ctx.prisma.submission.findUnique({
           where: {
             id: submissionId,
           },
+        });
+        const prev = await ctx.prisma.reviewRequest.findFirst({
+          where: {
+            submissionId,
+            userId: ownerId,
+            type: "CHAIR",
+          },
+        });
+        if (prev.status === "RELEASED") {
+          throw Error("Must wait for chair to decline before re-assigning.");
+        }
+        await ctx.prisma.reviewRequest.delete({
+          where: {
+            id: prev.id,
+          },
+        });
+        const request = await ctx.prisma.reviewRequest.create({
           data: {
-            owner: {
+            status: "RELEASED",
+            type: "CHAIR",
+            note: "",
+            submission: {
+              connect: {
+                id: submissionId,
+              },
+            },
+            user: {
               connect: {
                 id: ownerId,
+              },
+            },
+            article: {
+              connect: {
+                id: submission.articleId,
               },
             },
           },
