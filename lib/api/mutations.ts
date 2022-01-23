@@ -62,6 +62,65 @@ export default objectType({
       },
     });
 
+    const AddRelationInputType = inputObjectType({
+      name: "AddRelationInput",
+      definition(t) {
+        t.nonNull.string("userId");
+        t.nonNull.string("targetId");
+        t.nonNull.string("relation");
+        t.nullable.field("endDate", { type: "DateTime" });
+      },
+    });
+    t.field("addRelation", {
+      type: "Relation",
+      args: {
+        input: AddRelationInputType,
+      },
+      resolve: async (
+        _,
+        { input: { userId, targetId, ...data } },
+        { user }
+      ) => {
+        if (userId !== user.id) {
+          return new ForbiddenError(
+            "You are not authorized to modify this user."
+          );
+        }
+        return await prisma.relation.create({
+          data: {
+            id: userId + targetId,
+            targetId,
+            userId,
+            ...data,
+          },
+        });
+      },
+    });
+    t.field("deleteRelation", {
+      type: "Relation",
+      args: {
+        id: stringArg(),
+      },
+      resolve: async (_, { id }, { user }) => {
+        const relation = await prisma.relation.findUnique({
+          where: {
+            id,
+          },
+        });
+        if (relation.userId !== user.id) {
+          return new ForbiddenError(
+            "You are not authorized to modify this user."
+          );
+        }
+        await prisma.relation.delete({
+          where: {
+            id,
+          },
+        });
+        return relation;
+      },
+    });
+
     const VenueCreateInputType = inputObjectType({
       name: "VenueCreateInput",
       definition(t) {

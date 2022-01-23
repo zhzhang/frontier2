@@ -1,6 +1,7 @@
 import { isAdmin } from "@/lib/api/utils";
 import prisma from "@/lib/prisma";
 import { RoleEnum } from "@/lib/types";
+import { ForbiddenError } from "apollo-server-micro";
 import {
   inputObjectType,
   nonNull,
@@ -25,6 +26,39 @@ export default objectType({
         });
       },
     });
+    t.list.field("userRelations", {
+      type: "Relation",
+      args: {
+        userId: stringArg(),
+      },
+      resolve: async (_root, { userId }, { user }) => {
+        if (user?.id !== userId) {
+          return new ForbiddenError("Cannot access this user's relations.");
+        }
+        return await prisma.relation.findMany({
+          where: {
+            userId,
+          },
+        });
+      },
+    });
+    t.list.field("userRequests", {
+      type: "ReviewRequest",
+      args: {
+        userId: stringArg(),
+      },
+      resolve: async (_root, { userId }, { user }) => {
+        if (user?.id !== userId) {
+          return new ForbiddenError("Cannot access this user's relations.");
+        }
+        return await prisma.reviewRequest.findMany({
+          where: {
+            userId,
+          },
+        });
+      },
+    });
+
     t.field("article", {
       type: "Article",
       args: {

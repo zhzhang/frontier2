@@ -37,6 +37,12 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AddRelationInput: { // input type
+    endDate?: NexusGenScalars['DateTime'] | null; // DateTime
+    relation: string; // String!
+    targetId: string; // String!
+    userId: string; // String!
+  }
   AssignSubmissionInput: { // input type
     ownerId: string; // String!
     submissionId: string; // String!
@@ -139,7 +145,7 @@ export interface NexusGenObjects {
   Mutation: {};
   Query: {};
   Relation: { // root type
-    endYear?: string | null; // String
+    endDate?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
     relation?: string | null; // String
   }
@@ -209,6 +215,7 @@ export interface NexusGenFieldTypes {
     anonymous: boolean | null; // Boolean
     authors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     id: string | null; // String
+    latestVersion: NexusGenRootTypes['ArticleVersion']; // ArticleVersion!
     title: string | null; // String
     versions: Array<NexusGenRootTypes['ArticleVersion'] | null>; // [ArticleVersion]!
   }
@@ -219,11 +226,13 @@ export interface NexusGenFieldTypes {
     versionNumber: number | null; // Int
   }
   Mutation: { // field return type
+    addRelation: NexusGenRootTypes['Relation'] | null; // Relation
     assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     createVenue: NexusGenRootTypes['Venue'] | null; // Venue
     createVenueMemberships: Array<NexusGenRootTypes['VenueMembership'] | null> | null; // [VenueMembership]
+    deleteRelation: NexusGenRootTypes['Relation'] | null; // Relation
     deleteVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
     publishMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     updateUser: NexusGenRootTypes['User'] | null; // User
@@ -241,6 +250,8 @@ export interface NexusGenFieldTypes {
     threadMessages: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
     user: NexusGenRootTypes['User'] | null; // User
     userArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
+    userRelations: Array<NexusGenRootTypes['Relation'] | null> | null; // [Relation]
+    userRequests: Array<NexusGenRootTypes['ReviewRequest'] | null> | null; // [ReviewRequest]
     userReviews: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
     venue: NexusGenRootTypes['Venue'] | null; // Venue
     venueArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
@@ -249,16 +260,18 @@ export interface NexusGenFieldTypes {
     venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Relation: { // field return type
-    endYear: string | null; // String
+    endDate: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // String
     relation: string | null; // String
     target: NexusGenRootTypes['User'] | null; // User
   }
   ReviewRequest: { // field return type
+    article: NexusGenRootTypes['Article'] | null; // Article
     id: string | null; // String
     status: string | null; // String
     type: string | null; // String
     user: NexusGenRootTypes['User'] | null; // User
+    venue: NexusGenRootTypes['Venue'] | null; // Venue
   }
   Submission: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
@@ -321,6 +334,7 @@ export interface NexusGenFieldTypeNames {
     anonymous: 'Boolean'
     authors: 'User'
     id: 'String'
+    latestVersion: 'ArticleVersion'
     title: 'String'
     versions: 'ArticleVersion'
   }
@@ -331,11 +345,13 @@ export interface NexusGenFieldTypeNames {
     versionNumber: 'Int'
   }
   Mutation: { // field return type name
+    addRelation: 'Relation'
     assignSubmissionOwner: 'Submission'
     createArticle: 'Article'
     createThreadMessage: 'ThreadMessage'
     createVenue: 'Venue'
     createVenueMemberships: 'VenueMembership'
+    deleteRelation: 'Relation'
     deleteVenueMembership: 'VenueMembership'
     publishMessage: 'ThreadMessage'
     updateUser: 'User'
@@ -353,6 +369,8 @@ export interface NexusGenFieldTypeNames {
     threadMessages: 'ThreadMessage'
     user: 'User'
     userArticles: 'Article'
+    userRelations: 'Relation'
+    userRequests: 'ReviewRequest'
     userReviews: 'ThreadMessage'
     venue: 'Venue'
     venueArticles: 'Article'
@@ -361,16 +379,18 @@ export interface NexusGenFieldTypeNames {
     venues: 'Venue'
   }
   Relation: { // field return type name
-    endYear: 'String'
+    endDate: 'DateTime'
     id: 'String'
     relation: 'String'
     target: 'User'
   }
   ReviewRequest: { // field return type name
+    article: 'Article'
     id: 'String'
     status: 'String'
     type: 'String'
     user: 'User'
+    venue: 'Venue'
   }
   Submission: { // field return type name
     article: 'Article'
@@ -428,6 +448,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    addRelation: { // args
+      input?: NexusGenInputs['AddRelationInput'] | null; // AddRelationInput
+    }
     assignSubmissionOwner: { // args
       input: NexusGenInputs['AssignSubmissionInput']; // AssignSubmissionInput!
     }
@@ -447,6 +470,9 @@ export interface NexusGenArgTypes {
     }
     createVenueMemberships: { // args
       input?: NexusGenInputs['VenueMembershipsCreateInput'] | null; // VenueMembershipsCreateInput
+    }
+    deleteRelation: { // args
+      id?: string | null; // String
     }
     deleteVenueMembership: { // args
       id?: string | null; // String
@@ -493,6 +519,12 @@ export interface NexusGenArgTypes {
     }
     userArticles: { // args
       input?: NexusGenInputs['UserArticlesInput'] | null; // UserArticlesInput
+    }
+    userRelations: { // args
+      userId?: string | null; // String
+    }
+    userRequests: { // args
+      userId?: string | null; // String
     }
     userReviews: { // args
       input?: NexusGenInputs['UserReviewsInput'] | null; // UserReviewsInput

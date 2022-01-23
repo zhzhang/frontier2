@@ -20,7 +20,7 @@ export const ARTICLE_CARD_FIELDS = gql`
     authors {
       ...UserCardFields
     }
-    versions {
+    latestVersion {
       ref
       createdAt
     }

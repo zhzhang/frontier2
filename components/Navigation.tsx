@@ -75,7 +75,7 @@ export default function Navigation() {
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  window.location.href = `/review-requests/${user.uid}`;
+                  window.location.href = `/user/${user.uid}?view=requests`;
                 }}
               >
                 <ListItemIcon>

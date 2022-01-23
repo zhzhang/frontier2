@@ -1,6 +1,6 @@
 import CenteredSpinner from "@/components/CenteredSpinner";
+import * as pdfjs from "@/lib/pdfjs";
 import { useEffect, useState } from "react";
-import * as pdfjs from "../pdfjs";
 
 const PDFLoader = ({ url, children }) => {
   const [document, setDocument] = useState(null);

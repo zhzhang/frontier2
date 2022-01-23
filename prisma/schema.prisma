@@ -35,11 +35,11 @@ enum RelationType {
 model Relation {
   id       String       @id
   user     User         @relation(fields: [userId], references: [id])
-  target   User         @relation(name: "target", fields: [targetId], references: [id])
-  relation RelationType
-  endYear  String
   userId   String
+  target   User         @relation(name: "target", fields: [targetId], references: [id])
   targetId String
+  relation RelationType
+  endDate  DateTime?
 }
 
 model Article {

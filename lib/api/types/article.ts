@@ -19,6 +19,19 @@ const Article = objectType({
         });
       },
     });
+    t.nonNull.field("latestVersion", {
+      type: "ArticleVersion",
+      resolve: async ({ id }, _args, ctx) => {
+        return await prisma.articleVersion.findFirst({
+          where: {
+            articleId: id,
+          },
+          orderBy: {
+            versionNumber: "desc",
+          },
+        });
+      },
+    });
     t.nullable.list.field("authors", {
       type: "User",
       resolve: async ({ id, anonymous }, _args, ctx) => {

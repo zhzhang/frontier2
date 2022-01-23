@@ -18,6 +18,7 @@ export default function ClippedDrawer({ drawer, children }) {
         <Box
           sx={{
             marginTop: "48px",
+            height: "calc(100vh - 48px)",
           }}
         >
           {drawer}

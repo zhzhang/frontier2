@@ -40,7 +40,7 @@ export default function Editor({ user }) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Typography variant="h4">Edit Your Profile</Typography>
+        <Typography variant="h5">Edit Profile</Typography>
       </Grid>
       <Grid item container sm={6} spacing={3}>
         <Grid item xs={12}>

@@ -1,5 +1,6 @@
 import ZoomIn from "@mui/icons-material/ZoomIn";
 import ZoomOut from "@mui/icons-material/ZoomOut";
+import Box from "@mui/material/Box";
 import _ from "lodash";
 import * as pdfjsWeb from "pdfjs-dist/web/pdf_viewer";
 import "pdfjs-dist/web/pdf_viewer.css";
@@ -383,6 +384,12 @@ export default class PdfArticle extends React.Component {
   };
 
   render() {
+    const { sx } = this.props;
+    const style = sx || {
+      position: "relative",
+      overflow: "auto",
+      height: "calc(100vh - 48px)",
+    };
     return (
       <>
         <div style={{ position: "absolute", zIndex: 100000, margin: 10 }}>
@@ -399,10 +406,10 @@ export default class PdfArticle extends React.Component {
             />
           </div>
         </div>
-        <div ref={this.attachRef} className={styles.PdfAnnotator}>
+        <Box ref={this.attachRef} sx={style}>
           {this.renderTip()}
           <div className="pdfViewer" onMouseDown={this.onMouseDown} />
-        </div>
+        </Box>
       </>
     );
   }

@@ -11,6 +11,8 @@ import Layout from "@/components/Layout";
 import Review from "@/components/Review";
 import { THREAD_MESSAGE_FIELDS } from "@/components/Thread";
 import EditProfile from "@/components/user/EditProfile";
+import Relations from "@/components/user/Relations";
+import Requests from "@/components/user/Requests";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
 import { withApollo } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
@@ -208,9 +210,9 @@ function User() {
                 <Tab label="Articles" value="articles" />
                 <Tab label="Reviews" value="reviews" />
                 {isUser && <Divider />}
+                {isUser && <Tab label="Review Requests" value="requests" />}
                 {isUser && <Tab label="Edit Profile" value="edit" />}
                 {isUser && <Tab label="Relations" value="relations" />}
-                {isUser && <Tab label="Review Requests" value="requests" />}
               </TabList>
             </>
           }
@@ -223,6 +225,12 @@ function User() {
           </TabPanel>
           <TabPanel value="edit" sx={contentSx}>
             <EditProfile user={data.user} />
+          </TabPanel>
+          <TabPanel value="relations" sx={contentSx}>
+            <Relations userId={id} />
+          </TabPanel>
+          <TabPanel value="requests" sx={contentSx}>
+            <Requests userId={id} />
           </TabPanel>
         </ClippedDrawer>
       </TabContext>

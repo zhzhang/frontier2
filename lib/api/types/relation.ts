@@ -1,3 +1,4 @@
+import prisma from "@/lib/prisma";
 import { enumType, objectType } from "nexus";
 
 export const RelationType = enumType({
@@ -17,8 +18,8 @@ const Relation = objectType({
   definition(t) {
     t.string("id");
     t.string("relation");
-    t.string("endYear");
-    t.nullable.field("target", {
+    t.nullable.field("endDate", { type: "DateTime" });
+    t.field("target", {
       type: "User",
       resolve: async ({ targetId }, _args, _ctx) => {
         return await prisma.user.findUnique({
