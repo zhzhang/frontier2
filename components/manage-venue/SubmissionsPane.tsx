@@ -16,10 +16,10 @@ const SUBMISSION_FIELDS = gql`
   ${ARTICLE_CARD_FIELDS}
   ${USER_CARD_FIELDS}
   ${REVIEW_REQUEST_CARD_FIELDS}
-  fragment SubmissionFields on Submission {
+  fragment SubmissionFields on ReviewRequest {
     id
     createdAt
-    owner {
+    chairRequest {
       ...ReviewRequestCardFields
     }
     article {
@@ -30,8 +30,8 @@ const SUBMISSION_FIELDS = gql`
 
 const SubmissionsQuery = gql`
   ${SUBMISSION_FIELDS}
-  query SubmissionsQuery($input: VenueSubmissionsInput!) {
-    venueSubmissions(input: $input) {
+  query SubmissionsQuery($input: VenueReviewRequestsInput!) {
+    venueReviewRequests(input: $input) {
       ...SubmissionFields
     }
   }
@@ -42,7 +42,7 @@ function SubmissionCard({
   selectedSubmission,
   setSelectedSubmission,
 }) {
-  const { id, owner, article } = submission;
+  const { id, chairRequest, article } = submission;
   let style = {
     border: "1px solid rgba(0, 0, 0, 0.23)",
     borderRadius: "4px",
@@ -71,7 +71,9 @@ function SubmissionCard({
       onMouseLeave={() => setHover(false)}
     >
       <ArticleCard key={id} article={article} />
-      {owner && <Typography>Assigned to: {owner.user.name}</Typography>}
+      {chairRequest && (
+        <Typography>Assigned to: {chairRequest.user.name}</Typography>
+      )}
     </Box>
   );
 }
@@ -107,7 +109,7 @@ function AssignOwner({ submission, venueId }) {
       variables: {
         input: {
           ownerId: id,
-          submissionId: submission.id,
+          rootId: submission.id,
         },
       },
     });
@@ -153,28 +155,25 @@ export default function SubmissionsPane({ id }) {
       </Grid>
     );
   }
-  const submissions = data.venueSubmissions;
+  const submissions = data.venueReviewRequests;
   if (submissions.length === 0) {
-    return (
-      <Grid item>
-        <Typography>There are currently no submissions.</Typography>
-      </Grid>
-    );
+    return <Typography>There are currently no submissions.</Typography>;
   }
+  const selected = selectedSubmission || submissions[0];
   return (
-    <Grid item container spacing={3}>
+    <Grid container spacing={3}>
       <Grid item sm={6}>
         {submissions.map((submission) => (
           <SubmissionCard
             key={submission.id}
             submission={submission}
-            selectedSubmission={selectedSubmission}
+            selectedSubmission={selected}
             setSelectedSubmission={setSelectedSubmission}
           />
         ))}
       </Grid>
       <Grid item sm={6}>
-        <ActionPane venueId={id} submission={selectedSubmission} />
+        <ActionPane venueId={id} submission={selected} />
       </Grid>
     </Grid>
   );

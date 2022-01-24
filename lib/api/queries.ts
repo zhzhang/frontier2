@@ -182,25 +182,26 @@ export default objectType({
       },
     });
 
-    const VenueSubmissionsInputType = inputObjectType({
-      name: "VenueSubmissionsInput",
+    const VenueReviewRequestsInputType = inputObjectType({
+      name: "VenueReviewRequestsInput",
       definition(t) {
         t.nonNull.string("venueId");
         t.nullable.string("headId");
         t.nullable.string("after");
       },
     });
-    t.list.field("venueSubmissions", {
-      type: "Submission",
+    t.list.field("venueReviewRequests", {
+      type: "ReviewRequest",
       args: {
-        input: VenueSubmissionsInputType,
+        input: VenueReviewRequestsInputType,
       },
       resolve: async (_root, { input: { venueId, headId } }, { user }) => {
         if (!(await isAdmin(venueId, user.id))) {
           return [];
         }
-        return await prisma.submission.findMany({
+        return await prisma.reviewRequest.findMany({
           where: {
+            type: "ROOT",
             venueId,
           },
         });
@@ -377,24 +378,6 @@ export default objectType({
           },
         });
         return memberships.map((membership) => membership.user);
-      },
-    });
-    t.list.field("reviewerAssignedSubmissions", {
-      type: "Submission",
-      resolve: async (_, _args, ctx) => {
-        const user = await ctx.prisma.user.findUnique({
-          where: {
-            id: ctx.user.id,
-          },
-          include: {
-            reviewRequests: {
-              include: {
-                article: true,
-              },
-            },
-          },
-        });
-        return user.reviewRequests;
       },
     });
   },

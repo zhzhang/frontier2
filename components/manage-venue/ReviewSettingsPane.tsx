@@ -41,7 +41,7 @@ export default function ReviewSettingsPane({ venue }) {
   };
 
   return (
-    <Grid item container spacing={3}>
+    <Grid item container spacing={3} sx={{ maxWidth: 800 }}>
       <Grid item xs={12}>
         <FormGroup>
           <FormControlLabel

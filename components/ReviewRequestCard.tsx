@@ -1,8 +1,12 @@
 import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
 import { VENUE_CARD_FIELDS } from "@/components/VenueCard";
+import VenuePopover from "@/components/VenuePopover";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
+import _ from "lodash";
 import { useState } from "react";
 
 export const REVIEW_REQUEST_CARD_FIELDS = gql`
@@ -50,7 +54,6 @@ export default function ReviewRequestCard({
     style.borderColor = "black";
   }
   const { article, type, venue } = reviewRequest;
-  console.log(venue);
   return (
     <Box
       sx={style}
@@ -59,7 +62,9 @@ export default function ReviewRequestCard({
       onMouseLeave={() => setHover(false)}
     >
       <ArticleCard article={article} />
-      {type}
+      <Divider sx={{ mt: 0.5, mb: 0.5 }} />
+      <Typography component="span">{_.capitalize(type)} for </Typography>
+      <VenuePopover venue={venue} />
     </Box>
   );
 }

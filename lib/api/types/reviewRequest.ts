@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { ReviewRequestTypeEnum } from "@/lib/types";
 import { objectType } from "nexus";
 
 const ReviewRequest = objectType({
@@ -6,7 +7,9 @@ const ReviewRequest = objectType({
   definition(t) {
     t.string("id");
     t.string("type");
+    t.field("createdAt", { type: "DateTime" });
     t.string("status");
+    t.string("note");
     t.field("article", {
       type: "Article",
       resolve: async ({ articleId }, _args, _ctx) => {
@@ -19,16 +22,23 @@ const ReviewRequest = objectType({
     });
     t.field("venue", {
       type: "Venue",
-      resolve: async ({ submissionId }, _args, _ctx) => {
-        const submission = await prisma.submission.findUnique({
+      resolve: async ({ venueId }, _args, _ctx) => {
+        return await prisma.venue.findUnique({
           where: {
-            id: submissionId,
-          },
-          include: {
-            venue: true,
+            id: venueId,
           },
         });
-        return submission.venue;
+      },
+    });
+    t.nullable.field("chairRequest", {
+      type: "ReviewRequest",
+      resolve: async ({ id }, _args, _ctx) => {
+        return await prisma.reviewRequest.findFirst({
+          where: {
+            type: ReviewRequestTypeEnum.CHAIR,
+            parentRequestId: id,
+          },
+        });
       },
     });
     t.nullable.field("user", {

@@ -1,5 +1,10 @@
 import { isAdmin } from "@/lib/api/utils";
 import prisma from "@/lib/prisma";
+import {
+  ReviewRequestStatusEnum,
+  ReviewRequestTypeEnum,
+  RoleEnum,
+} from "@/lib/types";
 import { ForbiddenError } from "apollo-server-micro";
 import {
   booleanArg,
@@ -147,7 +152,7 @@ export default objectType({
             memberships: {
               create: [
                 {
-                  role: "ADMIN",
+                  role: RoleEnum.ADMIN,
                   user: {
                     connect: {
                       id: user.id,
@@ -302,44 +307,47 @@ export default objectType({
     const AssignSubmissionInputType = inputObjectType({
       name: "AssignSubmissionInput",
       definition(t) {
-        t.nonNull.string("submissionId");
+        t.nonNull.string("rootId");
         t.nonNull.string("ownerId");
       },
     });
     t.field("assignSubmissionOwner", {
-      type: "Submission",
+      type: "ReviewRequest",
       args: {
         input: nonNull(AssignSubmissionInputType),
       },
-      resolve: async (_, { input: { submissionId, ownerId } }, ctx) => {
-        const submission = await ctx.prisma.submission.findUnique({
+      resolve: async (_, { input: { rootId, ownerId } }, ctx) => {
+        const submission = await ctx.prisma.reviewRequest.findUnique({
           where: {
-            id: submissionId,
+            id: rootId,
           },
         });
         const prev = await ctx.prisma.reviewRequest.findFirst({
           where: {
-            submissionId,
+            parentRequestId: rootId,
             userId: ownerId,
-            type: "CHAIR",
+            type: ReviewRequestTypeEnum.CHAIR,
           },
         });
-        if (prev.status === "RELEASED") {
-          throw Error("Must wait for chair to decline before re-assigning.");
+        if (prev) {
+          if (prev.status === ReviewRequestStatusEnum.RELEASED) {
+            throw Error("Must wait for chair to decline before re-assigning.");
+          }
+          // Delete existing assignment first.
+          await ctx.prisma.reviewRequest.delete({
+            where: {
+              id: prev.id,
+            },
+          });
         }
-        await ctx.prisma.reviewRequest.delete({
-          where: {
-            id: prev.id,
-          },
-        });
         const request = await ctx.prisma.reviewRequest.create({
           data: {
-            status: "RELEASED",
-            type: "CHAIR",
+            status: ReviewRequestStatusEnum.RELEASED,
+            type: ReviewRequestTypeEnum.CHAIR,
             note: "",
-            submission: {
+            parentRequest: {
               connect: {
-                id: submissionId,
+                id: rootId,
               },
             },
             user: {
@@ -350,6 +358,11 @@ export default objectType({
             article: {
               connect: {
                 id: submission.articleId,
+              },
+            },
+            venue: {
+              connect: {
+                id: submission.venueId,
               },
             },
           },
@@ -475,10 +488,19 @@ export default objectType({
         };
         const article = await ctx.prisma.article.create(input);
         if (venueId) {
-          const sub = await ctx.prisma.submission.create({
+          const sub = await ctx.prisma.reviewRequest.create({
             data: {
-              articleId: article.id,
-              venueId,
+              type: ReviewRequestTypeEnum.ROOT,
+              article: {
+                connect: {
+                  id: article.id,
+                },
+              },
+              venue: {
+                connect: {
+                  id: venueId,
+                },
+              },
             },
           });
         }

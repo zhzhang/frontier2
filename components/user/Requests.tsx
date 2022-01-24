@@ -13,6 +13,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useEffect, useState } from "react";
 
@@ -74,8 +75,7 @@ function ActionPane({ selectedRequest }) {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <TabList onChange={handleChange} aria-label="lab API tabs example">
           <Tab label="Article" value="0" />
-          <Tab label="Request Reviews" value="1" />
-          <Tab label="Decline" value="2" />
+          <Tab label="Actions" value="1" />
         </TabList>
       </Box>
       <TabPanel value="0">
@@ -93,7 +93,6 @@ function ActionPane({ selectedRequest }) {
         )}
       </TabPanel>
       <TabPanel value="1">Item One</TabPanel>
-      <TabPanel value="2">Item Two</TabPanel>
     </TabContext>
   );
 }
@@ -112,19 +111,23 @@ export default function Requests({ userId }) {
     return <Error>{error.message}</Error>;
   }
   const requests = data.userRequests;
+  if (requests.length === 0) {
+    return <Typography>No pending requests!</Typography>;
+  }
+  const selected = selectedRequest || requests[0];
   return (
     <Grid item container spacing={3}>
       <Grid item sm={6}>
         {requests.map((request) => (
           <ReviewRequestCard
             reviewRequest={request}
-            selectedRequest={selectedRequest}
+            selectedRequest={selected}
             setSelectedRequest={setSelectedRequest}
           />
         ))}
       </Grid>
       <Grid item sm={6}>
-        {selectedRequest && <ActionPane selectedRequest={selectedRequest} />}
+        <ActionPane selectedRequest={selected} />
       </Grid>
     </Grid>
   );

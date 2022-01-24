@@ -29,7 +29,7 @@ type ArticleVersion {
 
 input AssignSubmissionInput {
   ownerId: String!
-  submissionId: String!
+  rootId: String!
 }
 
 """
@@ -44,7 +44,7 @@ scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/fi
 
 type Mutation {
   addRelation(input: AddRelationInput): Relation
-  assignSubmissionOwner(input: AssignSubmissionInput!): Submission
+  assignSubmissionOwner(input: AssignSubmissionInput!): ReviewRequest
   createArticle(abstract: String!, anonymous: Boolean!, authorIds: [String!]!, ref: String!, title: String!, venueId: String): Article
   createThreadMessage(input: ThreadMessageCreateInput!): ThreadMessage
   createVenue(input: VenueCreateInput): Venue
@@ -60,7 +60,6 @@ type Query {
   article(id: String): Article
   draftMessage(articleId: String, headId: String, type: String): ThreadMessage
   feedArticles: [Article]
-  reviewerAssignedSubmissions: [Submission]
   searchEditors(organizationId: String!, query: String): [User]
   searchOpenVenues(query: String): [Venue]
   searchUsers(query: String): [User]
@@ -74,7 +73,7 @@ type Query {
   venue(id: String): Venue
   venueArticles(input: VenueArticlesInput): [Article]
   venueMemberships(input: VenueMembershipsInput): [VenueMembership]
-  venueSubmissions(input: VenueSubmissionsInput): [Submission]
+  venueReviewRequests(input: VenueReviewRequestsInput): [ReviewRequest]
   venues: [Venue]
 }
 
@@ -96,7 +95,10 @@ enum RelationType {
 
 type ReviewRequest {
   article: Article
+  chairRequest: ReviewRequest
+  createdAt: DateTime
   id: String
+  note: String
   status: String
   type: String
   user: User
@@ -107,15 +109,6 @@ enum Role {
   ACTION_EDITOR
   ADMIN
   NONE
-}
-
-type Submission {
-  article: Article
-  createdAt: DateTime
-  id: String
-  owner: ReviewRequest
-  reviewRequests: [ReviewRequest]
-  venue: Venue
 }
 
 type ThreadMessage {
@@ -227,7 +220,7 @@ input VenueMembershipsInput {
   venueId: String!
 }
 
-input VenueSubmissionsInput {
+input VenueReviewRequestsInput {
   after: String
   headId: String
   venueId: String!

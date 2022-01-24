@@ -480,13 +480,6 @@ async function main() {
     },
   });
 
-  await prisma.submission.create({
-    data: {
-      articleId: article.id,
-      venueId: iclr.id,
-    },
-  });
-
   const decision = await prisma.threadMessage.create({
     data: {
       type: "DECISION",

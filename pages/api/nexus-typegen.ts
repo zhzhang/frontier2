@@ -45,7 +45,7 @@ export interface NexusGenInputs {
   }
   AssignSubmissionInput: { // input type
     ownerId: string; // String!
-    submissionId: string; // String!
+    rootId: string; // String!
   }
   ThreadMessageCreateInput: { // input type
     articleId: string; // String!
@@ -96,7 +96,7 @@ export interface NexusGenInputs {
     role: string; // String!
     venueId: string; // String!
   }
-  VenueSubmissionsInput: { // input type
+  VenueReviewRequestsInput: { // input type
     after?: string | null; // String
     headId?: string | null; // String
     venueId: string; // String!
@@ -150,13 +150,11 @@ export interface NexusGenObjects {
     relation?: string | null; // String
   }
   ReviewRequest: { // root type
-    id?: string | null; // String
-    status?: string | null; // String
-    type?: string | null; // String
-  }
-  Submission: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
+    note?: string | null; // String
+    status?: string | null; // String
+    type?: string | null; // String
   }
   ThreadMessage: { // root type
     body?: string | null; // String
@@ -227,7 +225,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     addRelation: NexusGenRootTypes['Relation'] | null; // Relation
-    assignSubmissionOwner: NexusGenRootTypes['Submission'] | null; // Submission
+    assignSubmissionOwner: NexusGenRootTypes['ReviewRequest'] | null; // ReviewRequest
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     createVenue: NexusGenRootTypes['Venue'] | null; // Venue
@@ -242,7 +240,6 @@ export interface NexusGenFieldTypes {
     article: NexusGenRootTypes['Article'] | null; // Article
     draftMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     feedArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
-    reviewerAssignedSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
     searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchOpenVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
@@ -256,7 +253,7 @@ export interface NexusGenFieldTypes {
     venue: NexusGenRootTypes['Venue'] | null; // Venue
     venueArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     venueMemberships: Array<NexusGenRootTypes['VenueMembership'] | null> | null; // [VenueMembership]
-    venueSubmissions: Array<NexusGenRootTypes['Submission'] | null> | null; // [Submission]
+    venueReviewRequests: Array<NexusGenRootTypes['ReviewRequest'] | null> | null; // [ReviewRequest]
     venues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
   }
   Relation: { // field return type
@@ -267,18 +264,13 @@ export interface NexusGenFieldTypes {
   }
   ReviewRequest: { // field return type
     article: NexusGenRootTypes['Article'] | null; // Article
+    chairRequest: NexusGenRootTypes['ReviewRequest'] | null; // ReviewRequest
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // String
+    note: string | null; // String
     status: string | null; // String
     type: string | null; // String
     user: NexusGenRootTypes['User'] | null; // User
-    venue: NexusGenRootTypes['Venue'] | null; // Venue
-  }
-  Submission: { // field return type
-    article: NexusGenRootTypes['Article'] | null; // Article
-    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
-    id: string | null; // String
-    owner: NexusGenRootTypes['ReviewRequest'] | null; // ReviewRequest
-    reviewRequests: Array<NexusGenRootTypes['ReviewRequest'] | null> | null; // [ReviewRequest]
     venue: NexusGenRootTypes['Venue'] | null; // Venue
   }
   ThreadMessage: { // field return type
@@ -346,7 +338,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     addRelation: 'Relation'
-    assignSubmissionOwner: 'Submission'
+    assignSubmissionOwner: 'ReviewRequest'
     createArticle: 'Article'
     createThreadMessage: 'ThreadMessage'
     createVenue: 'Venue'
@@ -361,7 +353,6 @@ export interface NexusGenFieldTypeNames {
     article: 'Article'
     draftMessage: 'ThreadMessage'
     feedArticles: 'Article'
-    reviewerAssignedSubmissions: 'Submission'
     searchEditors: 'User'
     searchOpenVenues: 'Venue'
     searchUsers: 'User'
@@ -375,7 +366,7 @@ export interface NexusGenFieldTypeNames {
     venue: 'Venue'
     venueArticles: 'Article'
     venueMemberships: 'VenueMembership'
-    venueSubmissions: 'Submission'
+    venueReviewRequests: 'ReviewRequest'
     venues: 'Venue'
   }
   Relation: { // field return type name
@@ -386,18 +377,13 @@ export interface NexusGenFieldTypeNames {
   }
   ReviewRequest: { // field return type name
     article: 'Article'
+    chairRequest: 'ReviewRequest'
+    createdAt: 'DateTime'
     id: 'String'
+    note: 'String'
     status: 'String'
     type: 'String'
     user: 'User'
-    venue: 'Venue'
-  }
-  Submission: { // field return type name
-    article: 'Article'
-    createdAt: 'DateTime'
-    id: 'String'
-    owner: 'ReviewRequest'
-    reviewRequests: 'ReviewRequest'
     venue: 'Venue'
   }
   ThreadMessage: { // field return type name
@@ -538,8 +524,8 @@ export interface NexusGenArgTypes {
     venueMemberships: { // args
       input?: NexusGenInputs['VenueMembershipsInput'] | null; // VenueMembershipsInput
     }
-    venueSubmissions: { // args
-      input?: NexusGenInputs['VenueSubmissionsInput'] | null; // VenueSubmissionsInput
+    venueReviewRequests: { // args
+      input?: NexusGenInputs['VenueReviewRequestsInput'] | null; // VenueReviewRequestsInput
     }
   }
 }

@@ -191,7 +191,10 @@ function NewArticle({ venue }) {
         <Grid item xs={7}>
           {file ? (
             <Box sx={{ height: 600 }}>
-              <PdfViewer file={file} />
+              <PdfViewer
+                file={file}
+                sx={{ height: "calc(100vh - 120px)", overflow: "auto" }}
+              />
             </Box>
           ) : (
             <Dropzone

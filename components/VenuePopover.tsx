@@ -27,13 +27,12 @@ export default function VenuePopover({ venue, color = "textSecondary" }) {
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
         href={`/venue/${id}`}
-        color="inherit"
         underline="hover"
         component="span"
         variant="body1"
         color={color}
       >
-        {abbrev}
+        {abbrev || name}
       </Link>
       <Popover
         id={id}
