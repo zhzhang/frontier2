@@ -112,7 +112,7 @@ function AssignOwner({ submission, venueId }) {
   if (loading) {
     return <Skeleton variant="text" />;
   }
-  const onAssign = (id) => {
+  const onRequest = (id) => {
     assignOwner({
       variables: {
         input: {
@@ -125,7 +125,7 @@ function AssignOwner({ submission, venueId }) {
   return (
     <Box>
       {data.submissionOwnerCandidates.map((user) => (
-        <UserDetailsCard key={user.id} user={user} onAssign={onAssign} />
+        <UserDetailsCard key={user.id} user={user} onRequest={onRequest} />
       ))}
     </Box>
   );
@@ -140,10 +140,10 @@ function Actions({ submission, venueId }) {
   // if (!submission.owner) {
   return (
     <Box>
-      <Typography variant="h5">Assign an owner</Typography>
+      <Typography variant="h6">Select Chair</Typography>
       <AssignOwner submission={submission} venueId={venueId} />
       <Divider sx={{ mt: 1, mb: 0.5 }} />
-      <Typography variant="h5">Write Decision</Typography>
+      <Typography variant="h6">Write Decision</Typography>
       <Button
         color="primary"
         onClick={async () => {

@@ -125,7 +125,6 @@ function updateMostUsedTeXCmds(newTeX, mostUsedCommands, lastTex) {
       return nred;
     }, nmuc);
 
-  // console.log(nmuc)
   return nmuc;
 }
 

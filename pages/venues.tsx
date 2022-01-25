@@ -157,10 +157,7 @@ function Venues() {
         <CreateVenue />
       </Modal>
       <Box sx={{ display: "flex" }}>
-        <Box sx={{ flex: 1 }}>
-          <Button>Following</Button>
-          <Button>Accepting Review Requests</Button>
-        </Box>
+        <Box sx={{ flex: 1 }}></Box>
         <Button onClick={() => toggleCreateOpen(true)}>Create New Venue</Button>
       </Box>
       {data.venues.map((venue) => (

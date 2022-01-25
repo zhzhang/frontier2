@@ -47,6 +47,14 @@ export interface NexusGenInputs {
     ownerId: string; // String!
     rootId: string; // String!
   }
+  ChairRequestReviewInput: { // input type
+    parentRequestId: string; // String!
+    userId: string; // String!
+  }
+  SearchReviewersInput: { // input type
+    articleId: string; // String!
+    query: string; // String!
+  }
   ThreadMessageCreateInput: { // input type
     articleId: string; // String!
     headId?: string | null; // String
@@ -235,6 +243,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     addRelation: NexusGenRootTypes['Relation'] | null; // Relation
     assignSubmissionOwner: NexusGenRootTypes['ReviewRequest'] | null; // ReviewRequest
+    chairRequestReview: NexusGenRootTypes['ReviewRequest'] | null; // ReviewRequest
     createArticle: NexusGenRootTypes['Article'] | null; // Article
     createThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     createVenue: NexusGenRootTypes['Venue'] | null; // Venue
@@ -253,6 +262,7 @@ export interface NexusGenFieldTypes {
     feedArticles: Array<NexusGenRootTypes['Article'] | null> | null; // [Article]
     searchEditors: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchOpenVenues: Array<NexusGenRootTypes['Venue'] | null> | null; // [Venue]
+    searchReviewers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     searchUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     submissionOwnerCandidates: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     threadMessages: Array<NexusGenRootTypes['ThreadMessage'] | null> | null; // [ThreadMessage]
@@ -350,6 +360,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     addRelation: 'Relation'
     assignSubmissionOwner: 'ReviewRequest'
+    chairRequestReview: 'ReviewRequest'
     createArticle: 'Article'
     createThreadMessage: 'ThreadMessage'
     createVenue: 'Venue'
@@ -368,6 +379,7 @@ export interface NexusGenFieldTypeNames {
     feedArticles: 'Article'
     searchEditors: 'User'
     searchOpenVenues: 'Venue'
+    searchReviewers: 'User'
     searchUsers: 'User'
     submissionOwnerCandidates: 'User'
     threadMessages: 'ThreadMessage'
@@ -453,6 +465,9 @@ export interface NexusGenArgTypes {
     assignSubmissionOwner: { // args
       input: NexusGenInputs['AssignSubmissionInput']; // AssignSubmissionInput!
     }
+    chairRequestReview: { // args
+      input: NexusGenInputs['ChairRequestReviewInput']; // ChairRequestReviewInput!
+    }
     createArticle: { // args
       abstract: string; // String!
       anonymous: boolean; // Boolean!
@@ -508,6 +523,9 @@ export interface NexusGenArgTypes {
     }
     searchOpenVenues: { // args
       query?: string | null; // String
+    }
+    searchReviewers: { // args
+      input?: NexusGenInputs['SearchReviewersInput'] | null; // SearchReviewersInput
     }
     searchUsers: { // args
       query?: string | null; // String

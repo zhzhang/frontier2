@@ -50,7 +50,7 @@ function FlexBox({ children }) {
   return <Box sx={{ display: "flex", width: "100%" }}>{children}</Box>;
 }
 
-export default function UserDetailsCard({ user, onAssign }) {
+export default function UserDetailsCard({ user, onRequest }) {
   const { id, profilePictureUrl, name } = user;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleEnter = (event) => {
@@ -73,8 +73,8 @@ export default function UserDetailsCard({ user, onAssign }) {
           <Articles userId={user.id} />
         </AccordionDetails>
       </Accordion>
-      <Button size="small" onClick={() => onAssign(id)}>
-        Assign
+      <Button size="small" onClick={() => onRequest(id)}>
+        Request
       </Button>
     </FlexBox>
   );

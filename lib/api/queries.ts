@@ -1,6 +1,10 @@
 import { isAdmin } from "@/lib/api/utils";
 import prisma from "@/lib/prisma";
-import { RoleEnum } from "@/lib/types";
+import {
+  IdentityContextEnum,
+  RoleEnum,
+  ThreadMessageTypeEnum,
+} from "@/lib/types";
 import { ForbiddenError } from "apollo-server-micro";
 import {
   inputObjectType,
@@ -96,7 +100,7 @@ export default objectType({
         const authorships = await prisma.identity.findMany({
           where: {
             userId,
-            context: "AUTHOR",
+            context: IdentityContextEnum.AUTHOR,
           },
           include: {
             article: true,
@@ -164,7 +168,7 @@ export default objectType({
       resolve: async (_root, { input: { venueId, headId } }, _ctx) => {
         const decisions = await prisma.threadMessage.findMany({
           where: {
-            type: "DECISION",
+            type: ThreadMessageTypeEnum.DECISION,
             venueId,
             published: true,
             released: true,
@@ -347,6 +351,7 @@ export default objectType({
         });
       },
     });
+
     t.list.field("searchUsers", {
       type: "User",
       args: { query: stringArg() },
@@ -363,6 +368,47 @@ export default objectType({
         });
       },
     });
+
+    const SearchReviewersInputType = inputObjectType({
+      name: "SearchReviewersInput",
+      definition(t) {
+        t.nonNull.string("articleId");
+        t.nonNull.string("query");
+      },
+    });
+    t.list.field("searchReviewers", {
+      type: "User",
+      args: { input: SearchReviewersInputType },
+      resolve: async (_, { input: { articleId, query } }, ctx) => {
+        const [initial, authors] = await Promise.all([
+          ctx.prisma.user.findMany({
+            where: {
+              name: {
+                contains: query,
+              },
+            },
+          }),
+          ctx.prisma.identity.findMany({
+            where: {
+              context: IdentityContextEnum.AUTHOR,
+              articleId,
+            },
+          }),
+        ]);
+        return initial;
+        const result = [];
+        for (const user of initial) {
+          for (const author of authors) {
+            if (user.id === author.userId) {
+              continue;
+            }
+            result.push(user);
+          }
+        }
+        return result;
+      },
+    });
+
     t.list.field("searchEditors", {
       type: "User",
       args: { query: stringArg(), organizationId: nonNull(stringArg()) },

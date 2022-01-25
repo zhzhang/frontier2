@@ -46,7 +46,6 @@ function AcceptedVenues({ venues, ...props }) {
 }
 
 export default function ArticleCard({ article, sx = null }) {
-  console.log(article);
   const { id, title, abstract, authors, acceptedVenues } = article;
   const [showAbstract, setShowAbstract] = useState(false);
 

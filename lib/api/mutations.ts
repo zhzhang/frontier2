@@ -386,13 +386,13 @@ export default objectType({
       args: {
         input: nonNull(AssignSubmissionInputType),
       },
-      resolve: async (_, { input: { rootId, ownerId } }, ctx) => {
-        const submission = await ctx.prisma.reviewRequest.findUnique({
+      resolve: async (_, { input: { rootId, ownerId } }, { user }) => {
+        const submission = await prisma.reviewRequest.findUnique({
           where: {
             id: rootId,
           },
         });
-        const prev = await ctx.prisma.reviewRequest.findFirst({
+        const prev = await prisma.reviewRequest.findFirst({
           where: {
             parentRequestId: rootId,
             userId: ownerId,
@@ -404,13 +404,13 @@ export default objectType({
             throw Error("Must wait for chair to decline before re-assigning.");
           }
           // Delete existing assignment first.
-          await ctx.prisma.reviewRequest.delete({
+          await prisma.reviewRequest.delete({
             where: {
               id: prev.id,
             },
           });
         }
-        const request = await ctx.prisma.reviewRequest.create({
+        await prisma.reviewRequest.create({
           data: {
             status: ReviewRequestStatusEnum.RELEASED,
             type: ReviewRequestTypeEnum.CHAIR,
@@ -441,6 +441,65 @@ export default objectType({
       },
     });
 
+    const ChairRequestReviewInputType = inputObjectType({
+      name: "ChairRequestReviewInput",
+      definition(t) {
+        t.nonNull.string("parentRequestId");
+        t.nonNull.string("userId");
+      },
+    });
+    t.field("chairRequestReview", {
+      type: "ReviewRequest",
+      args: {
+        input: nonNull(ChairRequestReviewInputType),
+      },
+      resolve: async (_, { input: { parentRequestId, userId } }, { user }) => {
+        const parent = await prisma.reviewRequest.findUnique({
+          where: {
+            id: parentRequestId,
+          },
+        });
+        if (parent.userId !== user.id) {
+          return new ForbiddenError("Not authorized to make this request.");
+        }
+        // const prev = await prisma.reviewRequest.findFirst({
+        //   where: {
+        //     parentRequestId: rootId,
+        //     userId: ownerId,
+        //     type: ReviewRequestTypeEnum.CHAIR,
+        //   },
+        // });
+        await prisma.reviewRequest.create({
+          data: {
+            status: ReviewRequestStatusEnum.RELEASED,
+            type: ReviewRequestTypeEnum.REVIEW,
+            note: "",
+            parentRequest: {
+              connect: {
+                id: parent.id,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+            article: {
+              connect: {
+                id: parent.articleId,
+              },
+            },
+            venue: {
+              connect: {
+                id: parent.venueId,
+              },
+            },
+          },
+        });
+        return parent;
+      },
+    });
+
     t.field("publishMessage", {
       type: "ThreadMessage",
       args: {
@@ -448,8 +507,8 @@ export default objectType({
         body: nonNull(stringArg()),
         highlights: nonNull(jsonArg()),
       },
-      resolve: async (_, { id, body, highlights }, ctx) => {
-        const message = await ctx.prisma.threadMessage.findUnique({
+      resolve: async (_args, { id, body, highlights }, _ctx) => {
+        const message = await prisma.threadMessage.findUnique({
           where: {
             id,
           },
@@ -458,7 +517,7 @@ export default objectType({
         if (body.length === 0) {
           throw Error("Cannot publish an empty message.");
         }
-        let identity = await ctx.prisma.identity.findFirst({
+        let identity = await prisma.identity.findFirst({
           where: {
             userId: authorId,
             articleId,
@@ -466,7 +525,7 @@ export default objectType({
         });
         if (!identity) {
           const context = messageTypeToIdentityContext(type);
-          const articleIdentities = await ctx.prisma.identity.findMany({
+          const articleIdentities = await prisma.identity.findMany({
             where: {
               AND: [
                 {
@@ -478,7 +537,7 @@ export default objectType({
               ],
             },
           });
-          identity = await ctx.prisma.identity.create({
+          identity = await prisma.identity.create({
             data: {
               userId: authorId,
               articleId,
@@ -489,7 +548,7 @@ export default objectType({
             },
           });
         }
-        return await ctx.prisma.threadMessage.update({
+        return await prisma.threadMessage.update({
           where: {
             id,
           },
@@ -525,9 +584,9 @@ export default objectType({
       resolve: async (
         _,
         { title, abstract, authorIds, anonymous, ref, venueId },
-        ctx
+        { user }
       ) => {
-        if (!authorIds.includes(ctx.user.id)) {
+        if (!authorIds.includes(user.id)) {
           throw Error("The submitter of the article must be an author.");
         }
         let authorCreationArgs = [];
@@ -556,9 +615,9 @@ export default objectType({
             },
           },
         };
-        const article = await ctx.prisma.article.create(input);
+        const article = await prisma.article.create(input);
         if (venueId) {
-          const sub = await ctx.prisma.reviewRequest.create({
+          const sub = await prisma.reviewRequest.create({
             data: {
               type: ReviewRequestTypeEnum.ROOT,
               article: {

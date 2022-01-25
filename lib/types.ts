@@ -4,6 +4,12 @@ export enum RoleEnum {
   NONE = "NONE",
 }
 
+export enum IdentityContextEnum {
+  AUTHOR = "AUTHOR",
+  REVIEWER = "REVIEWER",
+  CHAIR = "CHAIR",
+}
+
 export enum ThreadMessageTypeEnum {
   COMMENT = "COMMENT",
   REVIEW = "REVIEW",

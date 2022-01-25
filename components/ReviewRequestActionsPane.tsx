@@ -34,12 +34,12 @@ export default function ReviewRequestActionPane({ article, children }) {
           <Tab label="Actions" value="1" />
         </TabList>
       </Box>
-      <TabPanel value="0">
+      <TabPanel value="0" sx={{ p: 0 }}>
         {document ? (
           <PdfAnnotator
             document={document}
             sx={{
-              height: "calc(100vh - 195px)",
+              height: "calc(100vh - 165px)",
               position: "relative",
               overflow: "auto",
             }}
@@ -48,7 +48,9 @@ export default function ReviewRequestActionPane({ article, children }) {
           <CenteredSpinner />
         )}
       </TabPanel>
-      <TabPanel value="1">{children}</TabPanel>
+      <TabPanel value="1" sx={{ p: 0 }}>
+        {children}
+      </TabPanel>
     </TabContext>
   );
 }
