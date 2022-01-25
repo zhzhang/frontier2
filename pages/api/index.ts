@@ -6,7 +6,9 @@ import { JSON } from "@/lib/api/types/json";
 import Relation, { RelationType } from "@/lib/api/types/relation";
 import ReviewRequest from "@/lib/api/types/reviewRequest";
 import Role from "@/lib/api/types/role";
-import ThreadMessage from "@/lib/api/types/threadMessage";
+import ThreadMessage, {
+  ThreadMessageType,
+} from "@/lib/api/types/threadMessage";
 import User from "@/lib/api/types/user";
 import Venue from "@/lib/api/types/venue";
 import VenueMembership from "@/lib/api/types/venueMembership";
@@ -47,6 +49,7 @@ export const schema = makeSchema({
     Relation,
     RelationType,
     ThreadMessage,
+    ThreadMessageType,
     VenueMembership,
     Role,
     Upload,

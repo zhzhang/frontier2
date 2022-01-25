@@ -140,7 +140,6 @@ function User() {
   const { loading, error, data } = useQuery(UserQuery, {
     variables: { id },
   });
-  console.log(data);
 
   const isUser = !auth.loading && auth.user && auth.user.uid === id;
 
@@ -160,7 +159,7 @@ function User() {
   };
 
   return (
-    <Layout>
+    <Layout padded={false}>
       <TabContext value={view}>
         <ClippedDrawer
           drawer={
@@ -217,19 +216,19 @@ function User() {
             </>
           }
         >
-          <TabPanel value="articles" sx={contentSx}>
+          <TabPanel value="articles">
             <ArticlesTab userId={id} />
           </TabPanel>
-          <TabPanel value="reviews" sx={contentSx}>
+          <TabPanel value="reviews">
             <ReviewsTab userId={id} />
           </TabPanel>
-          <TabPanel value="edit" sx={contentSx}>
+          <TabPanel value="edit">
             <EditProfile user={data.user} />
           </TabPanel>
-          <TabPanel value="relations" sx={contentSx}>
+          <TabPanel value="relations">
             <Relations userId={id} />
           </TabPanel>
-          <TabPanel value="requests" sx={contentSx}>
+          <TabPanel value="requests">
             <Requests userId={id} />
           </TabPanel>
         </ClippedDrawer>

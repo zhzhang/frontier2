@@ -23,7 +23,7 @@ import _ from "lodash";
 import { useState } from "react";
 import MarkdownEditor from "../MarkdownEditor";
 import {
-  DeleteOneThreadMessage,
+  DeleteThreadMessage,
   PublishThreadMessage,
   THREAD_MESSAGE_FIELDS,
   UpdateThreadMessage,
@@ -58,8 +58,8 @@ const DraftMessagesQuery = gql`
 
 const CreateThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
-  mutation createOneThreadMessage($data: ThreadMessageCreateInput!) {
-    createOneThreadMessage(data: $data) {
+  mutation createThreadMessage($input: ThreadMessageCreateInput!) {
+    createThreadMessage(input: $input) {
       ...ThreadMessageFields
     }
   }
@@ -87,32 +87,14 @@ function NewThreadPrompt({ userId, articleId }) {
         onClick={async () => {
           const resp = await createThreadMessage({
             variables: {
-              data: {
+              input: {
                 type,
-                body: "",
-                highlights: [],
-                article: {
-                  connect: {
-                    id: articleId,
-                  },
-                },
-                author: {
-                  connect: {
-                    id: userId,
-                  },
-                },
+                articleId,
               },
             },
           });
-          apolloClient.writeQuery({
-            query: DraftMessagesQuery,
-            variables: {
-              userId,
-              articleId,
-            },
-            data: {
-              draftMessage: resp.data.createOneThreadMessage,
-            },
+          apolloClient.refetchQueries({
+            include: ["DraftMessageQuery"],
           });
         }}
       >
@@ -130,7 +112,7 @@ function NewThread({ userId, articleId }) {
     variables,
   });
   const [updateThreadMessage, updateResp] = useMutation(UpdateThreadMessage);
-  const [deleteThread, deleteResp] = useMutation(DeleteOneThreadMessage);
+  const [deleteThread, deleteResp] = useMutation(DeleteThreadMessage);
   const [publishMessage, publishResp] = useMutation(PublishThreadMessage, {
     update(cache, { data: { publishMessage } }) {
       const variables = {
@@ -194,16 +176,9 @@ function NewThread({ userId, articleId }) {
   const update = (message) => {
     updateThreadMessage({
       variables: {
-        where: {
+        input: {
           id: message.id,
-        },
-        data: {
-          type: {
-            set: message.type,
-          },
-          body: {
-            set: message.body,
-          },
+          body: message.body,
           highlights: message.highlights,
         },
       },
@@ -277,17 +252,11 @@ function NewThread({ userId, articleId }) {
           onClick={async () => {
             await deleteThread({
               variables: {
-                where: {
-                  id: message.id,
-                },
+                id: message.id,
               },
             });
-            apolloClient.writeQuery({
-              query: DraftMessagesQuery,
-              variables,
-              data: {
-                draftMessage: null,
-              },
+            apolloClient.refetchQueries({
+              include: ["DraftMessageQuery"],
             });
           }}
         >

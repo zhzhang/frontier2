@@ -50,15 +50,17 @@ type Mutation {
   createVenue(input: VenueCreateInput): Venue
   createVenueMemberships(input: VenueMembershipsCreateInput): [VenueMembership]
   deleteRelation(id: String): Relation
+  deleteThreadMessage(id: String): ThreadMessage
   deleteVenueMembership(id: String): VenueMembership
   publishMessage(body: String!, highlights: JSON!, id: String!): ThreadMessage
+  updateThreadMessage(input: ThreadMessageUpdateInput!): ThreadMessage
   updateUser(input: UserUpdateInput): User
   updateVenue(input: VenueUpdateInput): Venue
 }
 
 type Query {
   article(id: String): Article
-  draftMessage(articleId: String, headId: String, type: String): ThreadMessage
+  draftMessage(articleId: String, headId: String): ThreadMessage
   feedArticles: [Article]
   searchEditors(organizationId: String!, query: String): [User]
   searchOpenVenues(query: String): [Venue]
@@ -111,6 +113,12 @@ enum Role {
   NONE
 }
 
+enum TheadMessageType {
+  COMMENT
+  DECISION
+  REVIEW
+}
+
 type ThreadMessage {
   article: Article
   author: User
@@ -123,14 +131,21 @@ type ThreadMessage {
   published: Boolean
   rating: Int
   released: Boolean
-  type: String
+  type: TheadMessageType
   venue: Venue
 }
 
 input ThreadMessageCreateInput {
   articleId: String!
   headId: String
-  type: String!
+  reviewRequestId: String
+  type: TheadMessageType!
+}
+
+input ThreadMessageUpdateInput {
+  body: String
+  highlights: JSON
+  id: String!
 }
 
 input ThreadMessagesInput {

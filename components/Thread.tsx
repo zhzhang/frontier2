@@ -64,20 +64,17 @@ const CreateThreadMessage = gql`
 
 export const UpdateThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
-  mutation UpdateOneThreadMessage(
-    $where: ThreadMessageWhereUniqueInput!
-    $data: ThreadMessageUpdateInput!
-  ) {
-    updateOneThreadMessage(where: $where, data: $data) {
+  mutation UpdateThreadMessage($input: ThreadMessageUpdateInput!) {
+    updateThreadMessage(input: $input) {
       ...ThreadMessageFields
     }
   }
 `;
 
-export const DeleteOneThreadMessage = gql`
+export const DeleteThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
-  mutation DeleteThreadMessage($where: ThreadMessageWhereUniqueInput!) {
-    deleteOneThreadMessage(where: $where) {
+  mutation DeleteThreadMessage($id: String!) {
+    deleteThreadMessage(id: $id) {
       ...ThreadMessageFields
     }
   }
@@ -115,10 +112,8 @@ export function ReplyButton({ headId, articleId }) {
       cache.writeQuery({
         query: OpenReplyQuery,
         variables: {
-          input: {
-            articleId,
-            headId,
-          },
+          articleId,
+          headId,
         },
         data: {
           draftMessage: createThreadMessage,
@@ -168,21 +163,14 @@ function OpenReply({ articleId, headId, userId }) {
     },
   });
   const [updateThreadMessage, updateResp] = useMutation(UpdateThreadMessage);
-  const [deleteThread, deleteResp] = useMutation(DeleteOneThreadMessage);
-  const [createThreadMessage, createResp] = useMutation(PublishThreadMessage, {
+  const [deleteThread, deleteResp] = useMutation(DeleteThreadMessage);
+  const [publishThreadMessage, createResp] = useMutation(PublishThreadMessage, {
     update(cache, { data: { publishMessage } }) {
       const variables = {
-        where: {
-          AND: [
-            { headId: { equals: headId } },
-            { published: { equals: true } },
-          ],
+        input: {
+          headId,
+          articleId,
         },
-        orderBy: [
-          {
-            publishTimestamp: "asc",
-          },
-        ],
       };
       const { threadMessages } = cache.readQuery({
         query: ThreadMessagesQuery,
@@ -199,7 +187,6 @@ function OpenReply({ articleId, headId, userId }) {
         query: OpenReplyQuery,
         variables: {
           articleId,
-          userId,
           headId,
         },
         data: {
@@ -219,16 +206,9 @@ function OpenReply({ articleId, headId, userId }) {
   const update = (message) => {
     updateThreadMessage({
       variables: {
-        where: {
+        input: {
           id: message.id,
-        },
-        data: {
-          type: {
-            set: message.type,
-          },
-          body: {
-            set: message.body,
-          },
+          body: message.body,
           highlights: message.highlights,
         },
       },
@@ -302,7 +282,7 @@ function OpenReply({ articleId, headId, userId }) {
         <Button
           size="small"
           onClick={() =>
-            createThreadMessage({
+            publishThreadMessage({
               variables: {
                 id: comment.id,
                 body: comment.body,
@@ -323,9 +303,7 @@ function OpenReply({ articleId, headId, userId }) {
           onClick={async () => {
             await deleteThread({
               variables: {
-                where: {
-                  id: comment.id,
-                },
+                id: comment.id,
               },
             });
             apolloClient.writeQuery({

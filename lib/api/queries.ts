@@ -268,7 +268,6 @@ export default objectType({
     t.nullable.field("draftMessage", {
       type: "ThreadMessage",
       args: {
-        type: stringArg(),
         articleId: stringArg(),
         headId: nullable(stringArg()),
       },

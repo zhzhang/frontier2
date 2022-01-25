@@ -1,6 +1,7 @@
 import CenteredSpinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import { PdfAnnotator } from "@/components/pdf-annotator";
+import ReviewRequestActionsPane from "@/components/ReviewRequestActionsPane";
 import ReviewRequestCard, {
   REVIEW_REQUEST_CARD_FIELDS,
 } from "@/components/ReviewRequestCard";
@@ -127,7 +128,9 @@ export default function Requests({ userId }) {
         ))}
       </Grid>
       <Grid item sm={6}>
-        <ActionPane selectedRequest={selected} />
+        <ReviewRequestActionsPane article={selected?.article}>
+          Test
+        </ReviewRequestActionsPane>
       </Grid>
     </Grid>
   );

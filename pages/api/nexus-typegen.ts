@@ -50,7 +50,13 @@ export interface NexusGenInputs {
   ThreadMessageCreateInput: { // input type
     articleId: string; // String!
     headId?: string | null; // String
-    type: string; // String!
+    reviewRequestId?: string | null; // String
+    type: NexusGenEnums['TheadMessageType']; // TheadMessageType!
+  }
+  ThreadMessageUpdateInput: { // input type
+    body?: string | null; // String
+    highlights?: NexusGenScalars['JSON'] | null; // JSON
+    id: string; // String!
   }
   ThreadMessagesInput: { // input type
     after?: string | null; // String
@@ -116,6 +122,7 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   RelationType: "ADVISEE" | "ADVISOR" | "COAUTHOR" | "COWORKER" | "FAMILY" | "SOCIAL"
   Role: "ACTION_EDITOR" | "ADMIN" | "NONE"
+  TheadMessageType: "COMMENT" | "DECISION" | "REVIEW"
 }
 
 export interface NexusGenScalars {
@@ -166,7 +173,7 @@ export interface NexusGenObjects {
     published?: boolean | null; // Boolean
     rating?: number | null; // Int
     released?: boolean | null; // Boolean
-    type?: string | null; // String
+    type?: NexusGenEnums['TheadMessageType'] | null; // TheadMessageType
   }
   User: { // root type
     email?: string | null; // String
@@ -231,8 +238,10 @@ export interface NexusGenFieldTypes {
     createVenue: NexusGenRootTypes['Venue'] | null; // Venue
     createVenueMemberships: Array<NexusGenRootTypes['VenueMembership'] | null> | null; // [VenueMembership]
     deleteRelation: NexusGenRootTypes['Relation'] | null; // Relation
+    deleteThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     deleteVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
     publishMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
+    updateThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     updateUser: NexusGenRootTypes['User'] | null; // User
     updateVenue: NexusGenRootTypes['Venue'] | null; // Venue
   }
@@ -285,7 +294,7 @@ export interface NexusGenFieldTypes {
     published: boolean | null; // Boolean
     rating: number | null; // Int
     released: boolean | null; // Boolean
-    type: string | null; // String
+    type: NexusGenEnums['TheadMessageType'] | null; // TheadMessageType
     venue: NexusGenRootTypes['Venue'] | null; // Venue
   }
   User: { // field return type
@@ -344,8 +353,10 @@ export interface NexusGenFieldTypeNames {
     createVenue: 'Venue'
     createVenueMemberships: 'VenueMembership'
     deleteRelation: 'Relation'
+    deleteThreadMessage: 'ThreadMessage'
     deleteVenueMembership: 'VenueMembership'
     publishMessage: 'ThreadMessage'
+    updateThreadMessage: 'ThreadMessage'
     updateUser: 'User'
     updateVenue: 'Venue'
   }
@@ -398,7 +409,7 @@ export interface NexusGenFieldTypeNames {
     published: 'Boolean'
     rating: 'Int'
     released: 'Boolean'
-    type: 'String'
+    type: 'TheadMessageType'
     venue: 'Venue'
   }
   User: { // field return type name
@@ -460,6 +471,9 @@ export interface NexusGenArgTypes {
     deleteRelation: { // args
       id?: string | null; // String
     }
+    deleteThreadMessage: { // args
+      id?: string | null; // String
+    }
     deleteVenueMembership: { // args
       id?: string | null; // String
     }
@@ -467,6 +481,9 @@ export interface NexusGenArgTypes {
       body: string; // String!
       highlights: NexusGenScalars['JSON']; // JSON!
       id: string; // String!
+    }
+    updateThreadMessage: { // args
+      input: NexusGenInputs['ThreadMessageUpdateInput']; // ThreadMessageUpdateInput!
     }
     updateUser: { // args
       input?: NexusGenInputs['UserUpdateInput'] | null; // UserUpdateInput
@@ -482,7 +499,6 @@ export interface NexusGenArgTypes {
     draftMessage: { // args
       articleId?: string | null; // String
       headId?: string | null; // String
-      type?: string | null; // String
     }
     searchEditors: { // args
       organizationId: string; // String!

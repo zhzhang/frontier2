@@ -1,9 +1,12 @@
 import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
+import AuthorPopover from "@/components/AuthorPopover";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
+import ReviewRequestActionsPane from "@/components/ReviewRequestActionsPane";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
@@ -72,7 +75,9 @@ function SubmissionCard({
     >
       <ArticleCard key={id} article={article} />
       {chairRequest && (
-        <Typography>Assigned to: {chairRequest.user.name}</Typography>
+        <Typography>
+          Assigned to: <AuthorPopover author={chairRequest.user} />
+        </Typography>
       )}
     </Box>
   );
@@ -123,7 +128,7 @@ function AssignOwner({ submission, venueId }) {
   );
 }
 
-function ActionPane({ submission, venueId }) {
+function Actions({ submission, venueId }) {
   if (!submission) {
     return <Typography>Select a submission to proceed.</Typography>;
   }
@@ -133,6 +138,8 @@ function ActionPane({ submission, venueId }) {
       <Box>
         <Typography variant="h5">Assign an owner</Typography>
         <AssignOwner submission={submission} venueId={venueId} />
+        <Divider sx={{ mt: 1, mb: 0.5 }} />
+        <Typography variant="h5">Write Decision</Typography>
       </Box>
     );
   }
@@ -173,7 +180,9 @@ export default function SubmissionsPane({ id }) {
         ))}
       </Grid>
       <Grid item sm={6}>
-        <ActionPane venueId={id} submission={selected} />
+        <ReviewRequestActionsPane article={selected?.article}>
+          <Actions venueId={id} submission={selected} />
+        </ReviewRequestActionsPane>
       </Grid>
     </Grid>
   );

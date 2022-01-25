@@ -4,6 +4,12 @@ export enum RoleEnum {
   NONE = "NONE",
 }
 
+export enum ThreadMessageTypeEnum {
+  COMMENT = "COMMENT",
+  REVIEW = "REVIEW",
+  DECISION = "DECISION",
+}
+
 export enum ReviewRequestStatusEnum {
   CREATED = "CREATED",
   RELEASED = "RELEASED",

@@ -73,13 +73,8 @@ function Venue() {
     router.push(router, undefined, { shallow: true });
   };
 
-  const sx = {
-    p: 0,
-    pt: 2,
-  };
-
   return (
-    <Layout>
+    <Layout padded={false}>
       <TabContext value={view}>
         <ClippedDrawer
           drawer={
@@ -98,16 +93,16 @@ function Venue() {
             </>
           }
         >
-          <TabPanel value="info" sx={sx}>
+          <TabPanel value="info">
             <InfoPane venue={data.venue} />
           </TabPanel>
-          <TabPanel value="review-settings" sx={sx}>
+          <TabPanel value="review-settings">
             <ReviewSettingsPane venue={data.venue} />
           </TabPanel>
-          <TabPanel value="submissions" sx={sx}>
+          <TabPanel value="submissions">
             <SubmissionsPane id={id} />
           </TabPanel>
-          <TabPanel value="members" sx={sx}>
+          <TabPanel value="members">
             <MembersPane id={id} />
           </TabPanel>
         </ClippedDrawer>

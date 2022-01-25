@@ -271,8 +271,9 @@ export default objectType({
     const ThreadMessageCreateInputType = inputObjectType({
       name: "ThreadMessageCreateInput",
       definition(t) {
-        t.nonNull.string("type");
+        t.nonNull.field("type", { type: "TheadMessageType" });
         t.nonNull.string("articleId");
+        t.nullable.string("reviewRequestId");
         t.nullable.string("headId");
       },
     });
@@ -299,6 +300,62 @@ export default objectType({
                 id: user.id,
               },
             },
+          },
+        });
+      },
+    });
+
+    const ThreadMessageUpdateInputType = inputObjectType({
+      name: "ThreadMessageUpdateInput",
+      definition(t) {
+        t.nonNull.string("id");
+        t.nullable.string("body");
+        t.nullable.json("highlights");
+      },
+    });
+    t.field("updateThreadMessage", {
+      type: "ThreadMessage",
+      args: {
+        input: nonNull(ThreadMessageUpdateInputType),
+      },
+      resolve: async (_, { input: { id, body, highlights } }, { user }) => {
+        const message = await prisma.threadMessage.findUnique({
+          where: {
+            id,
+          },
+        });
+        if (message.authorId !== user?.id) {
+          return new ForbiddenError("Not authorized to modify this post.");
+        }
+        return await prisma.threadMessage.update({
+          where: {
+            id,
+          },
+          data: {
+            body,
+            highlights,
+          },
+        });
+      },
+    });
+
+    t.field("deleteThreadMessage", {
+      type: "ThreadMessage",
+      args: {
+        id: stringArg(),
+      },
+      resolve: async (_, { id }, { user }) => {
+        const message = await prisma.threadMessage.findUnique({
+          where: {
+            id,
+          },
+        });
+        if (message.authorId !== user?.id) {
+          return new ForbiddenError("Not authorized to modify this post.");
+        }
+        return await prisma.threadMessage.delete({
+          where: {
+            id,
           },
         });
       },

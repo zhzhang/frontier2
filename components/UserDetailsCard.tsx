@@ -63,16 +63,13 @@ export default function UserDetailsCard({ user, onAssign }) {
     <FlexBox>
       <Accordion sx={{ flex: 1 }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography
-            onMouseEnter={handleEnter}
-            onMouseLeave={handleLeave}
-            sx={{ flex: 1 }}
-          >
+          <Typography onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
             {name}
           </Typography>
           <UserPopover user={user} anchorEl={anchorEl} />
         </AccordionSummary>
         <AccordionDetails>
+          <Typography variant="h6">Recent Articles</Typography>
           <Articles userId={user.id} />
         </AccordionDetails>
       </Accordion>

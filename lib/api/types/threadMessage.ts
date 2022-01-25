@@ -1,12 +1,21 @@
 import prisma from "@/lib/prisma";
 import { userFromIdentity } from "@/lib/utils";
-import { objectType } from "nexus";
+import { enumType, objectType } from "nexus";
+
+export const ThreadMessageType = enumType({
+  name: "TheadMessageType",
+  members: {
+    COMMENT: "COMMENT",
+    REVIEW: "REVIEW",
+    DECISION: "DECISION",
+  },
+});
 
 const ThreadMessage = objectType({
   name: "ThreadMessage",
   definition(t) {
     t.string("id");
-    t.string("type");
+    t.field("type", { type: ThreadMessageType });
     t.string("body");
     t.json("highlights");
     t.string("id");
