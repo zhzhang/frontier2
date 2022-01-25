@@ -16,6 +16,7 @@ export const REVIEW_REQUEST_CARD_FIELDS = gql`
   fragment ReviewRequestCardFields on ReviewRequest {
     id
     type
+    status
     user {
       ...UserCardFields
     }

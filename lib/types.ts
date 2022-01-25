@@ -19,6 +19,7 @@ export enum ThreadMessageTypeEnum {
 export enum ReviewRequestStatusEnum {
   CREATED = "CREATED",
   RELEASED = "RELEASED",
+  DECLINED = "DECLINED",
 }
 
 export enum RelationEnum {

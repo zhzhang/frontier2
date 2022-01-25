@@ -184,7 +184,6 @@ export default function MarkdownEditor({
   sx = {},
   highlights = [],
   footer = null,
-  label = null,
   deleteHighlight = (id: number) => {},
   updateArticleAndScroll = () => {},
 }) {

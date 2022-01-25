@@ -330,7 +330,6 @@ export default objectType({
         { input: { id, body, highlights, decision } },
         { user }
       ) => {
-        console.log(decision);
         const message = await prisma.threadMessage.findUnique({
           where: {
             id,
@@ -497,6 +496,39 @@ export default objectType({
           },
         });
         return parent;
+      },
+    });
+
+    const DeclineReviewRequestInputType = inputObjectType({
+      name: "DeclineReviewRequestInput",
+      definition(t) {
+        t.nonNull.string("id");
+        t.nullable.string("note");
+      },
+    });
+    t.field("declineReviewRequest", {
+      type: "ReviewRequest",
+      args: {
+        input: nonNull(DeclineReviewRequestInputType),
+      },
+      resolve: async (_, { input: { id, note } }, { user }) => {
+        const reviewRequest = await prisma.reviewRequest.findUnique({
+          where: {
+            id,
+          },
+        });
+        if (reviewRequest.userId !== user.id) {
+          return new ForbiddenError("Not authorized to modify this request.");
+        }
+        return await prisma.reviewRequest.update({
+          where: {
+            id,
+          },
+          data: {
+            status: ReviewRequestStatusEnum.DECLINED,
+            note,
+          },
+        });
       },
     });
 

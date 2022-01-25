@@ -51,6 +51,10 @@ export interface NexusGenInputs {
     parentRequestId: string; // String!
     userId: string; // String!
   }
+  DeclineReviewRequestInput: { // input type
+    id: string; // String!
+    note?: string | null; // String
+  }
   SearchReviewersInput: { // input type
     articleId: string; // String!
     query: string; // String!
@@ -248,6 +252,7 @@ export interface NexusGenFieldTypes {
     createThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     createVenue: NexusGenRootTypes['Venue'] | null; // Venue
     createVenueMemberships: Array<NexusGenRootTypes['VenueMembership'] | null> | null; // [VenueMembership]
+    declineReviewRequest: NexusGenRootTypes['ReviewRequest'] | null; // ReviewRequest
     deleteRelation: NexusGenRootTypes['Relation'] | null; // Relation
     deleteThreadMessage: NexusGenRootTypes['ThreadMessage'] | null; // ThreadMessage
     deleteVenueMembership: NexusGenRootTypes['VenueMembership'] | null; // VenueMembership
@@ -365,6 +370,7 @@ export interface NexusGenFieldTypeNames {
     createThreadMessage: 'ThreadMessage'
     createVenue: 'Venue'
     createVenueMemberships: 'VenueMembership'
+    declineReviewRequest: 'ReviewRequest'
     deleteRelation: 'Relation'
     deleteThreadMessage: 'ThreadMessage'
     deleteVenueMembership: 'VenueMembership'
@@ -484,6 +490,9 @@ export interface NexusGenArgTypes {
     }
     createVenueMemberships: { // args
       input?: NexusGenInputs['VenueMembershipsCreateInput'] | null; // VenueMembershipsCreateInput
+    }
+    declineReviewRequest: { // args
+      input: NexusGenInputs['DeclineReviewRequestInput']; // DeclineReviewRequestInput!
     }
     deleteRelation: { // args
       id?: string | null; // String

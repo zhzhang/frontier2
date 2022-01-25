@@ -2,6 +2,7 @@ import { isAdmin } from "@/lib/api/utils";
 import prisma from "@/lib/prisma";
 import {
   IdentityContextEnum,
+  ReviewRequestStatusEnum,
   RoleEnum,
   ThreadMessageTypeEnum,
 } from "@/lib/types";
@@ -58,6 +59,7 @@ export default objectType({
         return await prisma.reviewRequest.findMany({
           where: {
             userId,
+            status: ReviewRequestStatusEnum.RELEASED,
           },
         });
       },

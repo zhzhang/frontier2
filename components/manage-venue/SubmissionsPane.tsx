@@ -2,6 +2,7 @@ import ArticleCard, { ARTICLE_CARD_FIELDS } from "@/components/ArticleCard";
 import AuthorPopover from "@/components/AuthorPopover";
 import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
+import OrDivider from "@/components/OrDivider";
 import ReviewRequestActionsPane from "@/components/ReviewRequestActionsPane";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
 import UserDetailsCard from "@/components/UserDetailsCard";
@@ -9,7 +10,6 @@ import { ThreadMessageTypeEnum } from "@/lib/types";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
@@ -142,26 +142,30 @@ function Actions({ submission, venueId }) {
     <Box>
       <Typography variant="h6">Select Chair</Typography>
       <AssignOwner submission={submission} venueId={venueId} />
-      <Divider sx={{ mt: 1, mb: 0.5 }} />
-      <Typography variant="h6">Write Decision</Typography>
-      <Button
-        color="primary"
-        onClick={async () => {
-          const articleId = submission.article.id;
-          await createThreadMessage({
-            variables: {
-              input: {
-                type: ThreadMessageTypeEnum.DECISION,
-                articleId,
-                venueId,
+      <OrDivider sx={{ mt: 1, mb: 0.5 }} />
+      <Box sx={{ display: "flex" }}>
+        <Typography variant="h6" sx={{ flex: 1 }}>
+          Write Decision
+        </Typography>
+        <Button
+          color="primary"
+          onClick={async () => {
+            const articleId = submission.article.id;
+            await createThreadMessage({
+              variables: {
+                input: {
+                  type: ThreadMessageTypeEnum.DECISION,
+                  articleId,
+                  venueId,
+                },
               },
-            },
-          });
-          window.location.href = `/article/${articleId}`;
-        }}
-      >
-        Begin
-      </Button>
+            });
+            window.location.href = `/article/${articleId}`;
+          }}
+        >
+          Begin
+        </Button>
+      </Box>
     </Box>
   );
 }
