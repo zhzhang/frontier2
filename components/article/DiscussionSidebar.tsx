@@ -13,8 +13,11 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Dialog from "@mui/material/Dialog";
 import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Link from "@mui/material/Link";
 import MenuItem from "@mui/material/MenuItem";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
@@ -23,6 +26,7 @@ import _ from "lodash";
 import { useState } from "react";
 import MarkdownEditor from "../MarkdownEditor";
 import {
+  CreateThreadMessage,
   DeleteThreadMessage,
   PublishThreadMessage,
   THREAD_MESSAGE_FIELDS,
@@ -53,15 +57,6 @@ const DraftMessagesQuery = gql`
       ...ThreadMessageFields
     }
     focusedEditor @client
-  }
-`;
-
-const CreateThreadMessage = gql`
-  ${THREAD_MESSAGE_FIELDS}
-  mutation createThreadMessage($input: ThreadMessageCreateInput!) {
-    createThreadMessage(input: $input) {
-      ...ThreadMessageFields
-    }
   }
 `;
 
@@ -101,6 +96,24 @@ function NewThreadPrompt({ userId, articleId }) {
         Begin
       </Button>
     </Card>
+  );
+}
+
+function DecisionRadio({ decision, onChange }) {
+  const value = decision ? "accept" : "reject";
+  return (
+    <FormControl component="fieldset" sx={{ pl: 1 }}>
+      <RadioGroup
+        row
+        value={value}
+        onChange={onChange}
+        aria-label="gender"
+        name="row-radio-buttons-group"
+      >
+        <FormControlLabel value="accept" control={<Radio />} label="Accept" />
+        <FormControlLabel value="reject" control={<Radio />} label="Reject" />
+      </RadioGroup>
+    </FormControl>
   );
 }
 
@@ -180,6 +193,7 @@ function NewThread({ userId, articleId }) {
           id: message.id,
           body: message.body,
           highlights: message.highlights,
+          decision: message.decision,
         },
       },
       context: {
@@ -211,6 +225,14 @@ function NewThread({ userId, articleId }) {
       highlights: _.reject(message.highlights, { id }),
     });
   };
+  const setDecision = (_, value: string) => {
+    const decision = value === "accept" ? true : false;
+    update({
+      ...message,
+      decision,
+    });
+  };
+  console.log(message);
   return (
     <Box>
       <MarkdownEditor
@@ -220,6 +242,9 @@ function NewThread({ userId, articleId }) {
         deleteHighlight={deleteHighlight}
         focused={
           data.focusedEditor === message.id || data.focusedEditor === "new"
+        }
+        footer={
+          <DecisionRadio decision={message.decision} onChange={setDecision} />
         }
         onFocus={() => {
           focusedEditorVar(message.id);
@@ -233,36 +258,39 @@ function NewThread({ userId, articleId }) {
         placeholder={`Write a ${message.type.toLowerCase()}!`}
         sx={{ mt: 1 }}
       />
-      <div style={{ textAlign: "right" }}>
-        <Button
-          onClick={() =>
-            publishMessage({
-              variables: {
-                id: message.id,
-                body: message.body,
-                highlights: message.highlights,
-              },
-            })
-          }
-        >
-          Publish
-        </Button>
-        <Button
-          color="error"
-          onClick={async () => {
-            await deleteThread({
-              variables: {
-                id: message.id,
-              },
-            });
-            apolloClient.refetchQueries({
-              include: ["DraftMessageQuery"],
-            });
-          }}
-        >
-          Delete
-        </Button>
-      </div>
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ flex: 1 }} />
+        <Box sx={{ textAlign: "right" }}>
+          <Button
+            onClick={() =>
+              publishMessage({
+                variables: {
+                  id: message.id,
+                  body: message.body,
+                  highlights: message.highlights,
+                },
+              })
+            }
+          >
+            Publish
+          </Button>
+          <Button
+            color="error"
+            onClick={async () => {
+              await deleteThread({
+                variables: {
+                  id: message.id,
+                },
+              });
+              apolloClient.refetchQueries({
+                include: ["DraftMessageQuery"],
+              });
+            }}
+          >
+            Delete
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 }

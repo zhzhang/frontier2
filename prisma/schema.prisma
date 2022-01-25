@@ -103,7 +103,7 @@ model ThreadMessage {
   venue            Venue?            @relation(fields: [venueId], references: [id])
   venueId          String?
   rating           Json?
-  decision         Boolean           @default(false)
+  decision         Boolean           @default(true)
   published        Boolean           @default(false)
   publishTimestamp DateTime?
   released         Boolean           @default(true)

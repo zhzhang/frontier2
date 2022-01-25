@@ -55,6 +55,7 @@ export interface NexusGenInputs {
   }
   ThreadMessageUpdateInput: { // input type
     body?: string | null; // String
+    decision?: boolean | null; // Boolean
     highlights?: NexusGenScalars['JSON'] | null; // JSON
     id: string; // String!
   }

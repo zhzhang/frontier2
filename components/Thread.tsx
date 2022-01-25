@@ -53,7 +53,7 @@ const ThreadMessagesQuery = gql`
   }
 `;
 
-const CreateThreadMessage = gql`
+export const CreateThreadMessage = gql`
   ${THREAD_MESSAGE_FIELDS}
   mutation createThreadMessage($input: ThreadMessageCreateInput!) {
     createThreadMessage(input: $input) {

@@ -144,6 +144,7 @@ input ThreadMessageCreateInput {
 
 input ThreadMessageUpdateInput {
   body: String
+  decision: Boolean
   highlights: JSON
   id: String!
 }

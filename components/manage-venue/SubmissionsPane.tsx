@@ -4,8 +4,11 @@ import Spinner from "@/components/CenteredSpinner";
 import Error from "@/components/Error";
 import ReviewRequestActionsPane from "@/components/ReviewRequestActionsPane";
 import { USER_CARD_FIELDS } from "@/components/UserCard";
+import UserDetailsCard from "@/components/UserDetailsCard";
+import { ThreadMessageTypeEnum } from "@/lib/types";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
@@ -13,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import gql from "graphql-tag";
 import { useState } from "react";
 import { REVIEW_REQUEST_CARD_FIELDS } from "../ReviewRequestCard";
-import UserDetailsCard from "../UserDetailsCard";
+import { CreateThreadMessage } from "../Thread";
 
 const SUBMISSION_FIELDS = gql`
   ${ARTICLE_CARD_FIELDS}
@@ -129,21 +132,37 @@ function AssignOwner({ submission, venueId }) {
 }
 
 function Actions({ submission, venueId }) {
+  const [createThreadMessage, { loading, error, data }] =
+    useMutation(CreateThreadMessage);
   if (!submission) {
     return <Typography>Select a submission to proceed.</Typography>;
   }
   // if (!submission.owner) {
-  if (true) {
-    return (
-      <Box>
-        <Typography variant="h5">Assign an owner</Typography>
-        <AssignOwner submission={submission} venueId={venueId} />
-        <Divider sx={{ mt: 1, mb: 0.5 }} />
-        <Typography variant="h5">Write Decision</Typography>
-      </Box>
-    );
-  }
-  return null;
+  return (
+    <Box>
+      <Typography variant="h5">Assign an owner</Typography>
+      <AssignOwner submission={submission} venueId={venueId} />
+      <Divider sx={{ mt: 1, mb: 0.5 }} />
+      <Typography variant="h5">Write Decision</Typography>
+      <Button
+        color="primary"
+        onClick={async () => {
+          const articleId = submission.article.id;
+          await createThreadMessage({
+            variables: {
+              input: {
+                type: ThreadMessageTypeEnum.DECISION,
+                articleId,
+              },
+            },
+          });
+          window.location.href = `/article/${articleId}`;
+        }}
+      >
+        Begin
+      </Button>
+    </Box>
+  );
 }
 
 export default function SubmissionsPane({ id }) {

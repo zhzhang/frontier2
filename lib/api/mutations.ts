@@ -311,6 +311,7 @@ export default objectType({
         t.nonNull.string("id");
         t.nullable.string("body");
         t.nullable.json("highlights");
+        t.nullable.boolean("decision");
       },
     });
     t.field("updateThreadMessage", {
@@ -318,7 +319,12 @@ export default objectType({
       args: {
         input: nonNull(ThreadMessageUpdateInputType),
       },
-      resolve: async (_, { input: { id, body, highlights } }, { user }) => {
+      resolve: async (
+        _,
+        { input: { id, body, highlights, decision } },
+        { user }
+      ) => {
+        console.log(decision);
         const message = await prisma.threadMessage.findUnique({
           where: {
             id,
@@ -334,6 +340,7 @@ export default objectType({
           data: {
             body,
             highlights,
+            decision,
           },
         });
       },

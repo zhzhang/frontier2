@@ -183,6 +183,7 @@ export default function MarkdownEditor({
   onBlur = null,
   sx = {},
   highlights = [],
+  footer = null,
   label = null,
   deleteHighlight = (id: number) => {},
   updateArticleAndScroll = () => {},
@@ -237,6 +238,7 @@ export default function MarkdownEditor({
             sx={{ p: 1.5 }}
             onChange={({ target }) => onChange(target.value)}
           />
+          {footer}
         </FormControl>
         <Box sx={{ display: "flex", pr: 0.5 }}>
           {STYLES.map((style) => (
