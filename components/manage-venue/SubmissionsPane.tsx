@@ -153,6 +153,7 @@ function Actions({ submission, venueId }) {
               input: {
                 type: ThreadMessageTypeEnum.DECISION,
                 articleId,
+                venueId,
               },
             },
           });

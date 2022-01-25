@@ -140,6 +140,7 @@ input ThreadMessageCreateInput {
   headId: String
   reviewRequestId: String
   type: TheadMessageType!
+  venueId: String
 }
 
 input ThreadMessageUpdateInput {

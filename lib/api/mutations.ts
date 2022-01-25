@@ -275,6 +275,7 @@ export default objectType({
         t.nonNull.string("articleId");
         t.nullable.string("reviewRequestId");
         t.nullable.string("headId");
+        t.nullable.string("venueId");
       },
     });
     t.field("createThreadMessage", {
@@ -282,7 +283,11 @@ export default objectType({
       args: {
         input: nonNull(ThreadMessageCreateInputType),
       },
-      resolve: async (_, { input: { articleId, headId, type } }, { user }) => {
+      resolve: async (
+        _,
+        { input: { articleId, headId, venueId, type } },
+        { user }
+      ) => {
         // TODO make sure headId null if not comment.
         return await prisma.threadMessage.create({
           data: {
@@ -300,6 +305,7 @@ export default objectType({
                 id: user.id,
               },
             },
+            venue: venueId ? { connect: { id: venueId } } : undefined,
           },
         });
       },

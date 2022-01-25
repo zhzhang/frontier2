@@ -6,6 +6,7 @@ import Review from "@/components/Review";
 import Thread from "@/components/Thread";
 import { apolloClient } from "@/lib/apollo";
 import { useAuth } from "@/lib/firebase";
+import { ThreadMessageTypeEnum } from "@/lib/types";
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/react-hooks";
 import Box from "@mui/material/Box";
@@ -129,24 +130,16 @@ function NewThread({ userId, articleId }) {
   const [publishMessage, publishResp] = useMutation(PublishThreadMessage, {
     update(cache, { data: { publishMessage } }) {
       const variables = {
-        where: {
-          articleId: { equals: articleId },
-          headId: { equals: null },
-          published: { equals: true },
-          released: { equals: true },
+        input: {
+          articleId,
         },
-        orderBy: [
-          {
-            publishTimestamp: "desc",
-          },
-        ],
       };
       const { threadMessages } = cache.readQuery({
-        query: ThreadMessagesQuery,
+        query: ThreadHeadsQuery,
         variables,
       });
       cache.writeQuery({
-        query: ThreadMessagesQuery,
+        query: ThreadHeadsQuery,
         variables,
         data: {
           threadMessages: [publishMessage, ...threadMessages],
@@ -155,7 +148,6 @@ function NewThread({ userId, articleId }) {
       cache.writeQuery({
         query: DraftMessagesQuery,
         variables: {
-          userId,
           articleId,
         },
         data: {
@@ -232,7 +224,6 @@ function NewThread({ userId, articleId }) {
       decision,
     });
   };
-  console.log(message);
   return (
     <Box>
       <MarkdownEditor
@@ -244,7 +235,9 @@ function NewThread({ userId, articleId }) {
           data.focusedEditor === message.id || data.focusedEditor === "new"
         }
         footer={
-          <DecisionRadio decision={message.decision} onChange={setDecision} />
+          message.type === ThreadMessageTypeEnum.DECISION ? (
+            <DecisionRadio decision={message.decision} onChange={setDecision} />
+          ) : null
         }
         onFocus={() => {
           focusedEditorVar(message.id);

@@ -52,6 +52,7 @@ export interface NexusGenInputs {
     headId?: string | null; // String
     reviewRequestId?: string | null; // String
     type: NexusGenEnums['TheadMessageType']; // TheadMessageType!
+    venueId?: string | null; // String
   }
   ThreadMessageUpdateInput: { // input type
     body?: string | null; // String
