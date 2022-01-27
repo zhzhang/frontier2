@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DB_URL")
 }
 
@@ -45,7 +45,7 @@ model Relation {
 model Article {
   id             String           @id @default(cuid())
   title          String
-  abstract       String           @db.MediumText
+  abstract       String           @db.Text
   authors        Identity[]
   versions       ArticleVersion[]
   anonymous      Boolean          @default(true)
@@ -91,7 +91,7 @@ enum ThreadMessageType {
 model ThreadMessage {
   id               String            @id @default(cuid())
   type             ThreadMessageType
-  body             String            @db.MediumText
+  body             String            @db.Text
   highlights       Json
   authorIdentity   Identity?         @relation(fields: [authorIdentityId], references: [id])
   authorIdentityId String?
@@ -121,11 +121,11 @@ model Venue {
   name                 String
   acceptingSubmissions Boolean           @default(false)
   reviewPolicy         ReviewPolicyType  @default(DOUBLE_BLIND)
-  reviewTemplate       String?           @db.MediumText
+  reviewTemplate       String?           @db.Text
   ratingFields         Json?
   websiteUrl           String?
   abbreviation         String?
-  description          String?           @db.MediumText
+  description          String?           @db.Text
   logoRef              String?
   venueDate            DateTime?
   submissionDeadline   DateTime?
@@ -165,7 +165,7 @@ model ReviewRequest {
   article         Article             @relation(fields: [articleId], references: [id])
   venue           Venue               @relation(fields: [venueId], references: [id])
   venueId         String
-  parentRequest   ReviewRequest?      @relation("ReviewRequestToReviewRequest", fields: [reviewRequestId], references: [id])
+  parentRequest   ReviewRequest?      @relation("ReviewRequestToReviewRequest", fields: [parentRequestId], references: [id])
   parentRequestId String?
   user            User?               @relation(fields: [userId], references: [id])
   userId          String?

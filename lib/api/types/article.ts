@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { ThreadMessageTypeEnum } from "@/lib/types";
 import _ from "lodash";
 import { objectType } from "nexus";
 
@@ -54,7 +55,11 @@ const Article = objectType({
       type: "Venue",
       resolve: async (parent) => {
         const acceptances = await prisma.threadMessage.findMany({
-          where: { articleId: parent.id, decision: true },
+          where: {
+            articleId: parent.id,
+            decision: true,
+            type: ThreadMessageTypeEnum.DECISION,
+          },
           include: {
             venue: true,
           },
