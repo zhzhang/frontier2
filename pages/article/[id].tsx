@@ -207,7 +207,7 @@ function PdfViewerWrapper() {
     data;
   return (
     <PdfViewer
-      fileRef={selectedVersion.ref}
+      file={selectedVersion.ref}
       highlights={highlights}
       addHighlight={addHighlight}
       articleVersion={selectedVersion.versionNumber}

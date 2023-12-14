@@ -133,12 +133,12 @@ async function main() {
       versions: {
         create: [
           {
-            ref: "articles/ACL2020_SpeechScoring.pdf",
+            ref: "https://8clewayepb9hnxbi.public.blob.vercel-storage.com/2020.acl-main.206.pdf",
             versionNumber: 1,
             createdAt: "2020-01-06T12:00:00.000Z",
           },
           {
-            ref: "articles/ACL2020_SpeechScoring_camera_ready.pdf",
+            ref: "https://8clewayepb9hnxbi.public.blob.vercel-storage.com/2020.acl-main.206.pdf",
             versionNumber: 2,
             createdAt: "2020-06-11T12:00:00.000Z",
           },
